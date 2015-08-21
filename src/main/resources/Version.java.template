@@ -1,4 +1,4 @@
-package gov.usgs.volcanoes.swarm;
+package gov.usgs.volcanoes.util;
 
 public final class Version {
 
