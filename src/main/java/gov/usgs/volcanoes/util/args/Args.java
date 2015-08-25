@@ -1,4 +1,4 @@
-package gov.usgs.volcanoes.util;
+package gov.usgs.volcanoes.util.args;
 
 import com.martiansoftware.jsap.JSAPException;
 import com.martiansoftware.jsap.JSAPResult;
