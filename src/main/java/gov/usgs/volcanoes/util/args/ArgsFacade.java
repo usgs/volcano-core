@@ -10,6 +10,7 @@ import com.martiansoftware.jsap.ParseException;
 import com.martiansoftware.jsap.Switch;
 
 import gov.usgs.volcanoes.util.args.decorator.ConfigFileArg;
+import gov.usgs.volcanoes.util.args.decorator.VerboseArg;
 import gov.usgs.volcanoes.util.args.parser.DateStringParser;
 
 /**
@@ -30,14 +31,10 @@ public class ArgsFacade {
 	public static final String PROGRAM_NAME = "java -jar gov.usgs.volcanoes.args.ArgsFacade";
 	public static final String EXPLANATION = "I am demonstrate how to use the args package\n";
 	private static final Parameter[] PARAMETERS = new Parameter[] {
-			new Switch("verbose", 'v', "verbose", "Verbose logging.") };
+			new Switch("knockKnock", 'k', "knockKnock", "Knock Knock.") };
 
 	// ConfigFileArg will want a default
 	public static final String DEFAULT_CONFIG_FILENAME = "facadeConfig.config";
-
-	public static final String INPUT_TIME_FORMAT = "yyyyMMddHHmm";
-
-	private static final DateStringParser DATE_PARSER = new DateStringParser(INPUT_TIME_FORMAT);
 
 	public static void main(String[] args) {
 
@@ -49,6 +46,7 @@ public class ArgsFacade {
 
 			// config file decorator
 			arguments = new ConfigFileArg(DEFAULT_CONFIG_FILENAME, arguments);
+			arguments = new VerboseArg(arguments);
 		} catch (JSAPException e1) {
 			LOGGER.error("Couldn't parse command line. ({})", e1.getLocalizedMessage());
 			System.exit(1);
@@ -67,5 +65,8 @@ public class ArgsFacade {
 
 		String configFileName = jsapResult.getString("config-filename");
 		LOGGER.debug("Setting: config-filename={}", configFileName);
+		
+		if (jsapResult.getBoolean("knockKnock"))
+			System.out.println("Who's there?");
 	}
 }
