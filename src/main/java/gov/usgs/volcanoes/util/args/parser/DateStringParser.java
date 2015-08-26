@@ -1,4 +1,4 @@
-package gov.usgs.volcanoes.util.args;
+package gov.usgs.volcanoes.util.args.parser;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
