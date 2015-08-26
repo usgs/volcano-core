@@ -8,6 +8,14 @@ import com.martiansoftware.jsap.JSAPResult;
 import com.martiansoftware.jsap.Parameter;
 import com.martiansoftware.jsap.ParseException;
 
+/**
+ * 
+ * @author Tom Parker
+ * 
+ *         I waive copyright and related rights in the this work worldwide
+ *         through the CC0 1.0 Universal public domain dedication.
+ *         https://creativecommons.org/publicdomain/zero/1.0/legalcode
+ */
 public abstract class ArgsDecorator implements Arguments {
     protected static final Logger LOGGER = LoggerFactory.getLogger(ArgsDecorator.class);
 	protected final Arguments nextArg;
