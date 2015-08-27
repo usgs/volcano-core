@@ -8,7 +8,6 @@ import com.martiansoftware.jsap.JSAPException;
 import com.martiansoftware.jsap.JSAPResult;
 import com.martiansoftware.jsap.ParseException;
 import com.martiansoftware.jsap.StringParser;
-import com.martiansoftware.jsap.UnflaggedOption;
 
 import gov.usgs.volcanoes.util.args.ArgsDecorator;
 import gov.usgs.volcanoes.util.args.Arguments;
@@ -36,7 +35,7 @@ public class DateRangeArg extends ArgsDecorator {
 
 	public JSAPResult parse(String[] args) throws ParseException {
 		JSAPResult jsap = super.parse(args);
-		
+
 		validateDates(jsap.getDate("startTime"), jsap.getDate("endTime"));
 		return nextArg.parse(args);
 	}
@@ -45,13 +44,13 @@ public class DateRangeArg extends ArgsDecorator {
 		// fast return if args not present
 		if (startTime == null && endTime == null)
 			return;
-		
+
 		// If one require the other
 		if (startTime != null && endTime == null)
 			throw new ParseException("endTime must be specified if startTime is specified");
 		if (endTime != null && startTime == null)
 			throw new ParseException("startTime must be specified if endTime is specified");
-		
+
 		// endTime must be greater than startTime
 		if (!endTime.after(startTime))
 			throw new ParseException("endTime must be greater than startTime.");

@@ -46,4 +46,8 @@ public class Args implements Arguments {
 	public void registerParameter(Parameter parameter) throws JSAPException {
 		jsap.registerParameter(parameter);
 	}
+	
+	public Parameter getById(String id) {
+		return jsap.getByID(id);
+	}
 }

@@ -2,6 +2,7 @@ package gov.usgs.volcanoes.util.args.parser;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Locale;
 import java.util.TimeZone;
 
 import com.martiansoftware.jsap.ParseException;
@@ -20,7 +21,7 @@ public class DateStringParser extends StringParser {
     private SimpleDateFormat format;
     
     public DateStringParser(String inputFormat) {
-        format = new SimpleDateFormat(inputFormat);
+        format = new SimpleDateFormat(inputFormat, Locale.ENGLISH);
         format.setTimeZone(TimeZone.getTimeZone("UTC"));
     }
 

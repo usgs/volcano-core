@@ -16,4 +16,5 @@ import com.martiansoftware.jsap.ParseException;
 public interface Arguments {
 	public JSAPResult parse(String[] args) throws ParseException;
 	public void registerParameter(Parameter parameter) throws JSAPException;
+	public Parameter getById(String id);
 }

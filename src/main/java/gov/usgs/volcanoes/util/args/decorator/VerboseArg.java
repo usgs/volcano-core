@@ -3,13 +3,10 @@ package gov.usgs.volcanoes.util.args.decorator;
 import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
 
-import com.martiansoftware.jsap.JSAP;
 import com.martiansoftware.jsap.JSAPException;
 import com.martiansoftware.jsap.JSAPResult;
-import com.martiansoftware.jsap.Parameter;
 import com.martiansoftware.jsap.ParseException;
 import com.martiansoftware.jsap.Switch;
-import com.martiansoftware.jsap.UnflaggedOption;
 
 import gov.usgs.volcanoes.util.args.ArgsDecorator;
 import gov.usgs.volcanoes.util.args.Arguments;
@@ -26,9 +23,9 @@ public class VerboseArg extends ArgsDecorator {
 
 	public VerboseArg(Arguments nextArg) throws JSAPException {
 		super(nextArg);
-        nextArg.registerParameter(new Switch("verbose", 'v', "verbose", "Verbose logging."));
+		nextArg.registerParameter(new Switch("verbose", 'v', "verbose", "Verbose logging."));
 	}
-	
+
 	public JSAPResult parse(String[] args) throws ParseException {
 		JSAPResult jsap = super.parse(args);
 

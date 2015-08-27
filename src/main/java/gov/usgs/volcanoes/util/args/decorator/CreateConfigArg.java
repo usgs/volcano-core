@@ -15,6 +15,8 @@ import gov.usgs.volcanoes.util.args.Arguments;
 
 /**
  * 
+ * Create an example config file and exit.
+ * 
  * @author Tom Parker
  * 
  *         I waive copyright and related rights in the this work worldwide
@@ -23,18 +25,39 @@ import gov.usgs.volcanoes.util.args.Arguments;
  */
 public class CreateConfigArg extends ArgsDecorator {
 
+	/** String representing an example configfile resource */
 	private final String exampleConfigFile;
-	
-	public CreateConfigArg(String exampleConfigFile, Arguments nextArg) throws JSAPException {
+
+	/**
+	 * Construct a CreateConfigArg adding its Parameter to the list.
+	 * 
+	 * @param exampleConfigFile
+	 *            String resource of example configfile
+	 * @param nextArg
+	 *            The next Argument in the list
+	 * @throws JSAPException
+	 *             If parameter is already registered or cannot be added.
+	 */
+	public CreateConfigArg(final String exampleConfigFile, final Arguments nextArg) throws JSAPException {
 		super(nextArg);
 		this.exampleConfigFile = exampleConfigFile;
 		nextArg.registerParameter(new Switch("create-config", 'c', "create-config",
 				"Create an example config file in the curent working directory."));
+		
+		if (getById("config-filename") == null) 
+			throw new JSAPException("ConfigFileArg must be applied before CreateConfigArg.");
 	}
 
-	public JSAPResult parse(String[] args) throws ParseException {
-		JSAPResult jsap = nextArg.parse(args);
-		String configFileName = jsap.getString("config-filename");
+	/**
+	 * Pass the args up the chain. If called upon, create the example config and
+	 * exit.
+	 * 
+	 * @return the JSAPResult
+	 */
+	@Override
+	public JSAPResult parse(final String[] args) throws ParseException {
+		final JSAPResult jsap = nextArg.parse(args);
+		final String configFileName = jsap.getString("config-filename");
 		if (jsap.getBoolean("create-config")) {
 			createConfig(exampleConfigFile, configFileName);
 			System.exit(1);
@@ -42,6 +65,16 @@ public class CreateConfigArg extends ArgsDecorator {
 		return nextArg.parse(args);
 	}
 
+	/**
+	 * Create the file.
+	 * 
+	 * @param exampleConfig
+	 *            example config file as a restource string
+	 * @param configFileName
+	 *            path and name of created configFile
+	 * @throws ParseException
+	 *             if exampleConfig is not provided
+	 */
 	private void createConfig(String exampleConfig, String configFileName) throws ParseException {
 		if (exampleConfig == null)
 			throw new ParseException(

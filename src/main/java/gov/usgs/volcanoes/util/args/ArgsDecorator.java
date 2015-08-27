@@ -31,4 +31,9 @@ public abstract class ArgsDecorator implements Arguments {
 	public void registerParameter(Parameter parameter) throws JSAPException {
 		nextArg.registerParameter(parameter);
 	}
+	
+	public Parameter getById(String id) {
+		return nextArg.getById(id);
+	}
+
 }

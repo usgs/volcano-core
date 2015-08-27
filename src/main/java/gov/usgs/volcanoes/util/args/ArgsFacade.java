@@ -1,5 +1,6 @@
 package gov.usgs.volcanoes.util.args;
 
+import org.apache.log4j.BasicConfigurator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -10,8 +11,8 @@ import com.martiansoftware.jsap.ParseException;
 import com.martiansoftware.jsap.Switch;
 
 import gov.usgs.volcanoes.util.args.decorator.ConfigFileArg;
+import gov.usgs.volcanoes.util.args.decorator.CreateConfigArg;
 import gov.usgs.volcanoes.util.args.decorator.VerboseArg;
-import gov.usgs.volcanoes.util.args.parser.DateStringParser;
 
 /**
  * A class demonstrating use of the args package
@@ -36,7 +37,13 @@ public class ArgsFacade {
 	// ConfigFileArg will want a default
 	public static final String DEFAULT_CONFIG_FILENAME = "facadeConfig.config";
 
-	public static void main(String[] args) {
+	// So will CreateConfigArg
+	public static final String EXAMPLE_CONFIG_FILENAME = "facadeConfig.config";
+
+	public static void main(String... args) {
+
+		// keep log4j happy
+		BasicConfigurator.configure();
 
 		// base arguments
 		Arguments arguments = new Args(PROGRAM_NAME, EXPLANATION, PARAMETERS);
@@ -46,9 +53,10 @@ public class ArgsFacade {
 
 			// config file decorator
 			arguments = new ConfigFileArg(DEFAULT_CONFIG_FILENAME, arguments);
+			arguments = new CreateConfigArg(EXAMPLE_CONFIG_FILENAME, arguments);
 			arguments = new VerboseArg(arguments);
 		} catch (JSAPException e1) {
-			LOGGER.error("Couldn't parse command line. ({})", e1.getLocalizedMessage());
+			LOGGER.error("Problem creating decorator: {}", e1.getLocalizedMessage());
 			System.exit(1);
 		}
 
@@ -63,9 +71,9 @@ public class ArgsFacade {
 		boolean verbose = jsapResult.getBoolean("verbose");
 		LOGGER.debug("Setting: verbose={}", verbose);
 
-		String configFileName = jsapResult.getString("config-filename");
+		final String configFileName = jsapResult.getString("config-filename");
 		LOGGER.debug("Setting: config-filename={}", configFileName);
-		
+
 		if (jsapResult.getBoolean("knockKnock"))
 			System.out.println("Who's there?");
 	}
