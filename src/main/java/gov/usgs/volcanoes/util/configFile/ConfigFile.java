@@ -121,7 +121,7 @@ public class ConfigFile implements Cloneable {
 						boolean done = false;
 						while (!done) {
 							String is = in.readLine();
-							if (is.toLowerCase().equals("@end-multiline"))
+							if (is != null && is.toLowerCase().equals("@end-multiline"))
 								done = true;
 							else {
 								sb.append(is);
