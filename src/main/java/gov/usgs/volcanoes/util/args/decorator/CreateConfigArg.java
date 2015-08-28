@@ -99,10 +99,15 @@ public class CreateConfigArg extends ArgsDecorator {
 			try {
 				if (is != null)
 					is.close();
-				if (os != null)
-					os.close();
 			} catch (IOException e2) {
 				LOGGER.error("Error creating config. " + e2.getMessage());
+			}
+			
+			try {
+				if (os != null)
+					os.close();
+			} catch (IOException e3) {
+				LOGGER.error("Error creating config. " + e3.getMessage());
 			}
 		}
 	}
