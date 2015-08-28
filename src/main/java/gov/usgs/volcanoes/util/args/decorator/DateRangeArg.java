@@ -52,7 +52,7 @@ public class DateRangeArg extends ArgsDecorator {
 			throw new ParseException("startTime must be specified if endTime is specified");
 
 		// endTime must be greater than startTime
-		if (!endTime.after(startTime))
+		if (endTime != null && endTime.after(startTime))
 			throw new ParseException("endTime must be greater than startTime.");
 	}
 }
