@@ -30,6 +30,11 @@ public class DateRangeArgTest {
 		arg = new DateRangeArg(FORMAT, new Args(null, null, new Parameter[0]));
 	}
 
+	@Test
+	public void when_givenNothing_then_returnNothing() throws JSAPException {
+		new DateRangeArg(FORMAT, new Args(null, null, new Parameter[0]));
+	}
+	
 	@Test(expected = ParseException.class)
 	public void when_OnlyStartTime_then_Exception() throws ParseException {
 		String[] commandLine1 = { "--startTime", START_TIME };
