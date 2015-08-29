@@ -1,8 +1,6 @@
 package gov.usgs.volcanoes.util.args.decorator;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -38,5 +36,4 @@ public class ConfigFileArgTest {
 		JSAPResult jsapResult = arg.parse(new String[0]);
 		assertEquals(jsapResult.getString("config-filename"), DEFAULT_FILENAME);
 	}
-
 }

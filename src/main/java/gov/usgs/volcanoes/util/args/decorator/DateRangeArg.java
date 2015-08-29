@@ -41,10 +41,6 @@ public class DateRangeArg extends ArgsDecorator {
 	}
 
 	private void validateDates(Date startTime, Date endTime) throws ParseException {
-		// fast return if args not present
-		if (startTime == null && endTime == null)
-			return;
-
 		// If one require the other
 		if (startTime != null && endTime == null)
 			throw new ParseException("endTime must be specified if startTime is specified");

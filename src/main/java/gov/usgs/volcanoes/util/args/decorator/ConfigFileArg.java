@@ -35,9 +35,6 @@ public class ConfigFileArg extends ArgsDecorator {
 	public ConfigFileArg(final String defaultFileName, final Arguments nextArg) throws JSAPException {
 		super(nextArg);
 		
-		if (getById("config-filename") != null)
-			throw new JSAPException("CreateFileArg implies ConfigFileArg. Do not add both.");
-			
 		registerParameter(new UnflaggedOption("config-filename", JSAP.STRING_PARSER, defaultFileName,
 				JSAP.NOT_REQUIRED, JSAP.NOT_GREEDY, "The config file name."));
 	}

@@ -6,7 +6,6 @@ import java.text.SimpleDateFormat;
 import java.util.TimeZone;
 
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 
 import com.martiansoftware.jsap.JSAPException;
@@ -42,7 +41,7 @@ public class DateRangeArgTest {
 	}
 
 	@Test(expected = ParseException.class)
-	public void when_OnlyEndTime_then_Exception() throws ParseException {
+	public void when_OnlyEndTime_then_Exception() throws ParseException {		
 		String[] commandLine2 = { "--endTime", END_TIME };
 		arg.parse(commandLine2);
 	}
@@ -53,6 +52,12 @@ public class DateRangeArgTest {
 		arg.parse(commandLine2);
 	}
 
+	@Test
+	public void when_nothingIn_then_nothingOut() throws ParseException {
+		arg.parse(new String[0]);
+	}
+	
+	
 	@Test
 	public void when_InputGood_then_OutputGood() throws ParseException, java.text.ParseException {
 		SimpleDateFormat format = new SimpleDateFormat(FORMAT);

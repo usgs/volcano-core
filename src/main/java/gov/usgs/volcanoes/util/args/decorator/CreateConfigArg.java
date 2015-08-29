@@ -38,14 +38,15 @@ public class CreateConfigArg extends ArgsDecorator {
 	 * @throws JSAPException
 	 *             If parameter is already registered or cannot be added.
 	 */
-	public CreateConfigArg(final String exampleConfigFile, final Arguments nextArg) throws JSAPException {
+	public CreateConfigArg(final String exampleConfigFile, Arguments nextArg) throws JSAPException {
 		super(nextArg);
 		this.exampleConfigFile = exampleConfigFile;
+
 		nextArg.registerParameter(new Switch("create-config", 'c', "create-config",
 				"Create an example config file in the curent working directory."));
-		
-		if (getById("config-filename") == null) 
-			throw new JSAPException("ConfigFileArg must be applied before CreateConfigArg.");
+
+		if (nextArg.getById("config-filename") == null)
+			throw new JSAPException("CreateConfigArg relies on ConfigFileArg. Please wrap it first.");
 	}
 
 	/**
@@ -60,7 +61,6 @@ public class CreateConfigArg extends ArgsDecorator {
 		final String configFileName = jsap.getString("config-filename");
 		if (jsap.getBoolean("create-config")) {
 			createConfig(exampleConfigFile, configFileName);
-			System.exit(1);
 		}
 		return nextArg.parse(args);
 	}
@@ -76,10 +76,6 @@ public class CreateConfigArg extends ArgsDecorator {
 	 *             if exampleConfig is not provided
 	 */
 	private void createConfig(String exampleConfig, String configFileName) throws ParseException {
-		if (exampleConfig == null)
-			throw new ParseException(
-					"Example config filename not specified. Add a setProperty(\"exampleConfig\", \"fileName\") call to the code.");
-
 		LOGGER.info("Creating example config " + exampleConfig);
 		InputStream is = null;
 		OutputStream os = null;
