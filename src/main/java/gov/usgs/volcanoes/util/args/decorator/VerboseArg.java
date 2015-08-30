@@ -5,7 +5,6 @@ import org.apache.log4j.Logger;
 
 import com.martiansoftware.jsap.JSAPException;
 import com.martiansoftware.jsap.JSAPResult;
-import com.martiansoftware.jsap.ParseException;
 import com.martiansoftware.jsap.Switch;
 
 import gov.usgs.volcanoes.util.args.ArgsDecorator;

@@ -25,7 +25,6 @@ import gov.usgs.volcanoes.util.types.Types;
 public class ConfigFile implements Cloneable {
 	private Map<String, List<String>> config;
 	private String name;
-	private boolean successfullyRead = false;
 
 	/**
 	 * Default constructor
@@ -49,8 +48,9 @@ public class ConfigFile implements Cloneable {
 	 * 
 	 * @param fn
 	 *            name of file to init class
+	 * @throws FileNotFoundException 
 	 */
-	public ConfigFile(String fn) {
+	public ConfigFile(String fn) throws FileNotFoundException {
 		setName(fn);
 
 		config = new HashMap<String, List<String>>();
@@ -58,21 +58,13 @@ public class ConfigFile implements Cloneable {
 	}
 
 	/**
-	 * Check reading of file
-	 * 
-	 * @return flag if configuration file was successfully read
-	 */
-	public boolean wasSuccessfullyRead() {
-		return successfullyRead;
-	}
-
-	/**
 	 * Loads configuration from disk file
 	 * 
 	 * @param fn
 	 *            name of file to read
+	 * @throws FileNotFoundException 
 	 */
-	public void readConfigFile(String fn) {
+	public void readConfigFile(String fn) throws FileNotFoundException {
 		readConfigFile(fn, true);
 	}
 
@@ -81,8 +73,9 @@ public class ConfigFile implements Cloneable {
 	 * 
 	 * @param fn
 	 *            name of file to read
+	 * @throws FileNotFoundException 
 	 */
-	public void readConfigFile(String fn, boolean l) {
+	public void readConfigFile(String fn, boolean l) throws FileNotFoundException {
 		readConfigFile(new File(fn), l);
 	}
 
@@ -91,8 +84,9 @@ public class ConfigFile implements Cloneable {
 	 * 
 	 * @param fn
 	 *            name of file to read
+	 * @throws FileNotFoundException 
 	 */
-	public void readConfigFile(File f) {
+	public void readConfigFile(File f) throws FileNotFoundException {
 		readConfigFile(f, true);
 	}
 
@@ -103,8 +97,9 @@ public class ConfigFile implements Cloneable {
 	 *            name of file to read
 	 * @param l
 	 *            flag, if false force parameter value replacing
+	 * @throws FileNotFoundException 
 	 */
-	public void readConfigFile(File f, boolean l) {
+	public void readConfigFile(File f, boolean l) throws FileNotFoundException {
 		try {
 			// File f = new File(fn);
 			BufferedReader in = new BufferedReader(new FileReader(f));
@@ -146,8 +141,8 @@ public class ConfigFile implements Cloneable {
 				}
 			}
 			in.close();
-			successfullyRead = true;
 		} catch (FileNotFoundException e) {
+			throw e;
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -467,7 +462,6 @@ public class ConfigFile implements Cloneable {
 		else
 			result = new ConfigFile();
 
-		result.successfullyRead = true;
 		result.name = prefix;
 		for (String key : config.keySet()) {
 			if (key.startsWith(prefix) && key.length() > prefix.length()) {
@@ -596,18 +590,6 @@ public class ConfigFile implements Cloneable {
 		return fileName;
 	}
 
-	/**
-	 * Testcase
-	 * 
-	 * @param args
-	 *            list of disk configuration files to read
-	 */
-	public static void main(String[] args) {
-		for (int i = 0; i < args.length; i++) {
-			ConfigFile cf = new ConfigFile(args[i]);
-			System.out.println(cf);
-		}
-	}
 
 	public ConfigFile clone() {
 		ConfigFile cf = new ConfigFile();

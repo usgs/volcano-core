@@ -1,16 +1,12 @@
 package gov.usgs.volcanoes.util.args.decorator;
 
 import java.io.File;
-import java.io.IOException;
 import java.io.InputStream;
-import java.net.URISyntaxException;
-import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Path;
 
 import com.martiansoftware.jsap.JSAPException;
 import com.martiansoftware.jsap.JSAPResult;
-import com.martiansoftware.jsap.ParseException;
 import com.martiansoftware.jsap.Switch;
 
 import gov.usgs.volcanoes.util.args.ArgsDecorator;

@@ -4,10 +4,8 @@ import org.apache.log4j.BasicConfigurator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.martiansoftware.jsap.JSAPException;
 import com.martiansoftware.jsap.JSAPResult;
 import com.martiansoftware.jsap.Parameter;
-import com.martiansoftware.jsap.ParseException;
 import com.martiansoftware.jsap.Switch;
 
 import gov.usgs.volcanoes.util.args.decorator.ConfigFileArg;
