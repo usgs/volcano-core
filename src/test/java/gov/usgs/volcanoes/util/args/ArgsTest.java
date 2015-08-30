@@ -26,7 +26,7 @@ public class ArgsTest {
 	}
 
 	@Test
-	public void when_intializedWithParam_them_paramSet() {
+	public void when_intializedWithParam_them_paramSet() throws JSAPException {
 		Parameter[] params = new Parameter[] { parameter };
 		Arguments args = new Args(null, null, params);
 
@@ -46,11 +46,11 @@ public class ArgsTest {
 	}
 
 	@Test
-	public void when_givenArgs_then_setValues() throws ParseException {
+	public void when_givenArgs_then_setValues() throws Exception {
 		Parameter[] params = new Parameter[] { parameter };
 		Arguments args = new Args(null, null, params);
 
 		JSAPResult jsapResult = args.parse(new String[] { "--" + TEST_PARAM, TEST_VAL });
 		// assertEquals(jsapResult.getString(TEST_PARAM), TEST_VAL);
-	}
+	}	
 }

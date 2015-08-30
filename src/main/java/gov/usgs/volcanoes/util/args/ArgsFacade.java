@@ -40,7 +40,7 @@ public class ArgsFacade {
 	// So will CreateConfigArg
 	public static final String EXAMPLE_CONFIG_FILENAME = "facadeConfig.config";
 
-	public static void main(String... args) {
+	public static void main(String... args) throws Exception {
 
 		// keep log4j happy
 		BasicConfigurator.configure();
@@ -49,24 +49,14 @@ public class ArgsFacade {
 		Arguments arguments = new Args(PROGRAM_NAME, EXPLANATION, PARAMETERS);
 
 		// add any decorators that are needed
-		try {
 
-			// config file decorator
-			arguments = new ConfigFileArg(DEFAULT_CONFIG_FILENAME, arguments);
-			arguments = new CreateConfigArg(EXAMPLE_CONFIG_FILENAME, arguments);
-			arguments = new VerboseArg(arguments);
-		} catch (JSAPException e1) {
-			LOGGER.error("Problem creating decorator: {}", e1.getLocalizedMessage());
-			System.exit(1);
-		}
+		// config file decorator
+		arguments = new ConfigFileArg(DEFAULT_CONFIG_FILENAME, arguments);
+		arguments = new CreateConfigArg(EXAMPLE_CONFIG_FILENAME, arguments);
+		arguments = new VerboseArg(arguments);
 
 		JSAPResult jsapResult = null;
-		try {
-			jsapResult = arguments.parse(args);
-		} catch (ParseException e) {
-			LOGGER.error("Cannot parse command line. ({})", e.getLocalizedMessage());
-			System.exit(1);
-		}
+		jsapResult = arguments.parse(args);
 
 		boolean verbose = jsapResult.getBoolean("verbose");
 		LOGGER.debug("Setting: verbose={}", verbose);

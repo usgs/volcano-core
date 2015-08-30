@@ -24,14 +24,14 @@ public class VerboseArgTest {
 	}
 
 	@Test
-	public void when_flagGiven_then_flagSet() throws ParseException {
+	public void when_flagGiven_then_flagSet() throws Exception {
 		String[] commandLine1 = { "--verbose" };
 		JSAPResult jsapResult = arg.parse(commandLine1);
 		assertTrue(jsapResult.getBoolean("verbose"));
 	}
 
 	@Test
-	public void when_flagNotGiven_then_flagNotSet() throws ParseException {
+	public void when_flagNotGiven_then_flagNotSet() throws Exception {
 		JSAPResult jsapResult = arg.parse(new String[0]);
 		assertFalse(jsapResult.getBoolean("verbose"));
 	}

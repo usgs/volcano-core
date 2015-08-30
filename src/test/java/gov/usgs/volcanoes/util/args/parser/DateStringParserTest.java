@@ -26,4 +26,12 @@ public class DateStringParserTest {
 		Date generated = format.parse(INPUT_TIME);
 		assertEquals(parsed, generated);
 	}
+	
+	@Test(expected = ParseException.class)
+	public void when_givenUnparsableString_then_throwHelpfulException() throws ParseException {
+		StringParser parser = new DateStringParser(INPUT_FORMAT);
+		
+		Date parsed = (Date) parser.parse("xxxxx");
+	}
+
 }

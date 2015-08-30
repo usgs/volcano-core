@@ -14,7 +14,7 @@ import com.martiansoftware.jsap.ParseException;
  *         https://creativecommons.org/publicdomain/zero/1.0/legalcode
  */
 public interface Arguments {
-	public JSAPResult parse(String[] args) throws ParseException;
+	public JSAPResult parse(String[] args) throws Exception;
 	public void registerParameter(Parameter parameter) throws JSAPException;
 	public Parameter getById(String id);
 }

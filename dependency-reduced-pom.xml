@@ -4,7 +4,7 @@
   <groupId>gov.usgs.volcanoes</groupId>
   <artifactId>util</artifactId>
   <name>Util</name>
-  <version>1.1.4</version>
+  <version>1.1.6</version>
   <url>http://maven.apache.org</url>
   <developers>
     <developer>
@@ -198,6 +198,12 @@
       <groupId>org.mockito</groupId>
       <artifactId>mockito-core</artifactId>
       <version>1.10.19</version>
+      <scope>compile</scope>
+    </dependency>
+    <dependency>
+      <groupId>commons-io</groupId>
+      <artifactId>commons-io</artifactId>
+      <version>2.4</version>
       <scope>compile</scope>
     </dependency>
   </dependencies>

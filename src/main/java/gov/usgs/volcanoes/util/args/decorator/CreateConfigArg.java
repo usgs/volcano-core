@@ -1,9 +1,12 @@
 package gov.usgs.volcanoes.util.args.decorator;
 
-import java.io.FileOutputStream;
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.OutputStream;
+import java.net.URISyntaxException;
+import java.net.URL;
+import java.nio.file.Files;
+import java.nio.file.Path;
 
 import com.martiansoftware.jsap.JSAPException;
 import com.martiansoftware.jsap.JSAPResult;
@@ -56,55 +59,14 @@ public class CreateConfigArg extends ArgsDecorator {
 	 * @return the JSAPResult
 	 */
 	@Override
-	public JSAPResult parse(final String[] args) throws ParseException {
-		final JSAPResult jsap = nextArg.parse(args);
+	public JSAPResult parse(final String[] args) throws Exception {
+		final JSAPResult jsap = super.parse(args);
 		final String configFileName = jsap.getString("config-filename");
 		if (jsap.getBoolean("create-config")) {
-			createConfig(exampleConfigFile, configFileName);
+			InputStream is = ClassLoader.getSystemClassLoader().getResourceAsStream(exampleConfigFile);
+			Path defaultPath = new File(configFileName).toPath();
+			Files.copy(is, defaultPath);
 		}
-		return nextArg.parse(args);
-	}
-
-	/**
-	 * Create the file.
-	 * 
-	 * @param exampleConfig
-	 *            example config file as a restource string
-	 * @param configFileName
-	 *            path and name of created configFile
-	 * @throws ParseException
-	 *             if exampleConfig is not provided
-	 */
-	private void createConfig(String exampleConfig, String configFileName) throws ParseException {
-		LOGGER.info("Creating example config " + exampleConfig);
-		InputStream is = null;
-		OutputStream os = null;
-
-		try {
-			is = ClassLoader.getSystemClassLoader().getResourceAsStream(exampleConfig);
-			os = new FileOutputStream(configFileName);
-
-			byte[] buffer = new byte[1024];
-			int length;
-			while ((length = is.read(buffer)) > 0) {
-				os.write(buffer, 0, length);
-			}
-		} catch (IOException e) {
-			LOGGER.error("Error creating config. " + e.getMessage());
-		} finally {
-			try {
-				if (is != null)
-					is.close();
-			} catch (IOException e2) {
-				LOGGER.error("Error creating config. " + e2.getMessage());
-			}
-			
-			try {
-				if (os != null)
-					os.close();
-			} catch (IOException e3) {
-				LOGGER.error("Error creating config. " + e3.getMessage());
-			}
-		}
+		return jsap;
 	}
 }

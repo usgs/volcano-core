@@ -26,12 +26,12 @@ public class VerboseArg extends ArgsDecorator {
 		nextArg.registerParameter(new Switch("verbose", 'v', "verbose", "Verbose logging."));
 	}
 
-	public JSAPResult parse(String[] args) throws ParseException {
+	public JSAPResult parse(String[] args) throws Exception {
 		JSAPResult jsap = super.parse(args);
 
 		if (jsap.getBoolean("verbose"))
 			Logger.getRootLogger().setLevel(Level.ALL);
-		return nextArg.parse(args);
+		return jsap;
 	}
 
 }

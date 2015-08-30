@@ -35,31 +35,31 @@ public class DateRangeArgTest {
 	}
 	
 	@Test(expected = ParseException.class)
-	public void when_OnlyStartTime_then_Exception() throws ParseException {
+	public void when_OnlyStartTime_then_Exception() throws Exception {
 		String[] commandLine1 = { "--startTime", START_TIME };
 		arg.parse(commandLine1);
 	}
 
 	@Test(expected = ParseException.class)
-	public void when_OnlyEndTime_then_Exception() throws ParseException {		
+	public void when_OnlyEndTime_then_Exception() throws Exception {		
 		String[] commandLine2 = { "--endTime", END_TIME };
 		arg.parse(commandLine2);
 	}
 
 	@Test(expected = ParseException.class)
-	public void when_EndTimeNotAfterStartTime_then_Exception() throws ParseException {
+	public void when_EndTimeNotAfterStartTime_then_Exception() throws Exception {
 		String[] commandLine2 = { "--startTime", END_TIME, "--endTime", START_TIME };
 		arg.parse(commandLine2);
 	}
 
 	@Test
-	public void when_nothingIn_then_nothingOut() throws ParseException {
+	public void when_nothingIn_then_nothingOut() throws Exception {
 		arg.parse(new String[0]);
 	}
 	
 	
 	@Test
-	public void when_InputGood_then_OutputGood() throws ParseException, java.text.ParseException {
+	public void when_InputGood_then_OutputGood() throws Exception {
 		SimpleDateFormat format = new SimpleDateFormat(FORMAT);
 		format.setTimeZone(TimeZone.getTimeZone("UTC"));
 		String[] commandLine2 = { "--startTime", START_TIME, "--endTime", END_TIME };

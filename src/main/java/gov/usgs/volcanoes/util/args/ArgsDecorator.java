@@ -24,7 +24,7 @@ public abstract class ArgsDecorator implements Arguments {
 		this.nextArg = nextArg;
 	}
 	
-	public JSAPResult parse(String[] args) throws ParseException {
+	public JSAPResult parse(String[] args) throws Exception {
 		return nextArg.parse(args);
 	}
 	

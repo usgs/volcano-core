@@ -1,5 +1,6 @@
 package gov.usgs.volcanoes.util.args.decorator;
 
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 import java.io.File;
@@ -42,9 +43,18 @@ public class CreateConfigArgTest {
 	}
 	
 	@Test
-	public void when_givenFlag_then_fileCreated() throws ParseException {
+	public void when_givenFlag_then_fileCreated() throws Exception {
 		arg.parse(new String[] {"--create-config"});
 		
 		assertTrue(file.exists());
 	}
+
+	@Test
+	public void when_notGivenFlag_then_noFileCreated() throws Exception {
+		arg.parse(new String[0]);
+		
+		assertFalse(file.exists());
+	}
+
+	
 }

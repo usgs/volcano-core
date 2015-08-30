@@ -33,11 +33,11 @@ public class DateRangeArg extends ArgsDecorator {
 				"endTime", "End of backfill period\n"));
 	}
 
-	public JSAPResult parse(String[] args) throws ParseException {
+	public JSAPResult parse(String[] args) throws Exception {
 		JSAPResult jsap = super.parse(args);
 
 		validateDates(jsap.getDate("startTime"), jsap.getDate("endTime"));
-		return nextArg.parse(args);
+		return jsap;
 	}
 
 	private void validateDates(Date startTime, Date endTime) throws ParseException {

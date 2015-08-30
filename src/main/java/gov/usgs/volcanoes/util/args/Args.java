@@ -24,22 +24,13 @@ public class Args implements Arguments {
     protected SimpleJSAP jsap;
     protected JSAPResult jsapResult;
 
-    public Args(String programName, String explanation, Parameter[] parameters) {
-    	try {
+    public Args(String programName, String explanation, Parameter[] parameters) throws JSAPException {
             jsap = new SimpleJSAP(programName, explanation, parameters);
-        } catch (JSAPException e) {
-            LOGGER.error("Try using the --help flag.");
-            System.exit(1);
-        }
     }
 
     public JSAPResult parse(String[] args) {
         jsapResult = jsap.parse(args);
-        if (jsap.messagePrinted()) {
-            if (!jsapResult.getBoolean("help"))
-                LOGGER.error("Try using the --help flag.");
-            System.exit(1);
-        }
+
         return jsapResult;
     }
 

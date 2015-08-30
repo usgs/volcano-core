@@ -24,7 +24,7 @@ public class ConfigFileArgTest {
 	}
 
 	@Test
-	public void when_filenameGiven_then_filenameSet() throws ParseException {
+	public void when_filenameGiven_then_filenameSet() throws Exception {
 		String configFile = "configFile.config";
 		String[] commandLine = { configFile };
 		JSAPResult jsapResult = arg.parse(commandLine);
@@ -32,7 +32,7 @@ public class ConfigFileArgTest {
 	}
 
 	@Test
-	public void when_filenameNotGiven_then_defaultSet() throws ParseException {
+	public void when_filenameNotGiven_then_defaultSet() throws Exception {
 		JSAPResult jsapResult = arg.parse(new String[0]);
 		assertEquals(jsapResult.getString("config-filename"), DEFAULT_FILENAME);
 	}
