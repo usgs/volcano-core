@@ -278,7 +278,7 @@
     <repository>
       <id>volcanoes.web</id>
       <name>Volcanoes website</name>
-      <url>file:///webdata/volcanoes.usgs.gov/htdocs/software/maven2</url>
+      <url>scpexe://vulcan4.wr.usgs.gov/webdata/volcanoes.usgs.gov/htdocs/software/maven2</url>
     </repository>
   </distributionManagement>
   <properties>
