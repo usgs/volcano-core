@@ -474,7 +474,7 @@ public class ConfigFile implements Cloneable {
     }
 
     /**
-     * Getter for configuration map
+     * Accessor for configuration map
      * 
      * @return map parameter name - list of parameter's values
      */
@@ -483,7 +483,7 @@ public class ConfigFile implements Cloneable {
     }
 
     /**
-     * Getter for configuration file name
+     * Accessor for configuration file name
      * 
      * @return name
      */
@@ -492,7 +492,7 @@ public class ConfigFile implements Cloneable {
     }
 
     /**
-     * Setter for configuration file name
+     * Mutator for configuration file name
      * 
      * @param n
      *            name
@@ -505,7 +505,7 @@ public class ConfigFile implements Cloneable {
     }
 
     /**
-     * Getter for string representation
+     * Create a string representation of configuration
      * 
      * @return string representation of configuration
      */
@@ -568,27 +568,6 @@ public class ConfigFile implements Cloneable {
         } catch (IOException e) {
             e.printStackTrace();
         }
-    }
-
-    /**
-     * Find the first readable file in a list of names
-     * 
-     * @param fileNames
-     * @return
-     * 
-     */
-    public static String findConfig(List<String> fileNames) {
-        String fileName = null;
-        String name;
-
-        Iterator<String> nameIter = fileNames.iterator();
-        while (fileName == null && nameIter.hasNext()) {
-            name = nameIter.next();
-            if (new File(name).canRead())
-                fileName = name;
-        }
-
-        return fileName;
     }
 
     public ConfigFile clone() {

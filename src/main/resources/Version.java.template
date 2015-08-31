@@ -1,6 +1,6 @@
 package gov.usgs.volcanoes.util;
 
-public final class Version {
+public interface Version {
 
     public static final String BUILD_TIME="@buildtime@";
 
