@@ -571,7 +571,12 @@ public class ConfigFile implements Cloneable {
     }
 
     public ConfigFile clone() {
-        ConfigFile cf = new ConfigFile();
+        ConfigFile cf = null;
+		try {
+			cf = (ConfigFile) super.clone();
+		} catch (CloneNotSupportedException thisCannotHappen) {
+			;
+		}
 
         for (String key : config.keySet())
             cf.putList(key, config.get(key));
