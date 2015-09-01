@@ -27,7 +27,7 @@
   <licenses>
     <license>
       <name>CC0 1.0 Universal</name>
-      <url>http://creativecommons.org/publicdomain/zero/1.0/&gt;</url>
+      <url>http://creativecommons.org/publicdomain/zero/1.0/</url>
       <distribution>repo</distribution>
     </license>
   </licenses>
@@ -66,6 +66,12 @@
             </lifecycleMappingMetadata>
           </configuration>
         </plugin>
+        <plugin>
+          <artifactId>maven-site-plugin</artifactId>
+          <configuration>
+            <skipDeploy>true</skipDeploy>
+          </configuration>
+        </plugin>
       </plugins>
     </pluginManagement>
     <plugins>
@@ -97,12 +103,9 @@
               <artifactSet>
                 <includes>
                   <include>gov.usgs.volcanoes:usgs</include>
-                  <include>org.freemarker:freemarker</include>
                   <include>com.martiansoftware:jsap</include>
-                  <include>net.sourceforge.jtransforms:jtransforms</include>
                   <include>org.slf4j:*</include>
                   <include>org.apache:log4j</include>
-                  <include>gov.usgs.volcanoes:swarm</include>
                 </includes>
               </artifactSet>
             </configuration>
@@ -188,24 +191,6 @@
       <version>4.3</version>
       <scope>test</scope>
     </dependency>
-    <dependency>
-      <groupId>org.mockito</groupId>
-      <artifactId>mockito-all</artifactId>
-      <version>1.8.4</version>
-      <scope>compile</scope>
-    </dependency>
-    <dependency>
-      <groupId>org.mockito</groupId>
-      <artifactId>mockito-core</artifactId>
-      <version>1.10.19</version>
-      <scope>compile</scope>
-    </dependency>
-    <dependency>
-      <groupId>commons-io</groupId>
-      <artifactId>commons-io</artifactId>
-      <version>2.4</version>
-      <scope>compile</scope>
-    </dependency>
   </dependencies>
   <reporting>
     <plugins>
@@ -280,6 +265,10 @@
       <name>Volcanoes website</name>
       <url>scpexe://vulcan4.wr.usgs.gov/webdata/volcanoes.usgs.gov/htdocs/software/maven2</url>
     </repository>
+    <site>
+      <id>util.site</id>
+      <url>scm:git:https://github.com/usgs/volcano-util.git</url>
+    </site>
   </distributionManagement>
   <properties>
     <version.template.file>src/main/resources/Version.java.template</version.template.file>

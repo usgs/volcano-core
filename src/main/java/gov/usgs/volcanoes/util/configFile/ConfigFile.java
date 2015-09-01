@@ -20,7 +20,7 @@ import java.util.Set;
  * 
  * @author Dan Cervelli
  */
-public class ConfigFile implements Cloneable {
+public final class ConfigFile implements Cloneable {
     private Map<String, List<String>> config;
     private String name;
 
@@ -456,21 +456,27 @@ public class ConfigFile implements Cloneable {
      *         prefix
      */
     public ConfigFile getSubConfig(String prefix, boolean inherit) {
-        ConfigFile result;
+        ConfigFile newConfig;
 
         if (inherit)
-            result = this.clone();
+            newConfig = this.clone();
         else
-            result = new ConfigFile();
+            newConfig = new ConfigFile();
 
-        result.name = prefix;
-        for (String key : config.keySet()) {
+        newConfig.name = prefix;
+        Map<String, List<String>> configMap = newConfig.getConfig();
+        
+        Iterator<String> it = config.keySet().iterator();
+        while (it.hasNext()) {
+            String key = it.next();
             if (key.startsWith(prefix) && key.length() > prefix.length()) {
                 String newKey = key.substring(prefix.length() + 1);
-                result.getConfig().put(newKey, config.get(key));
+                List<String> newList = new ArrayList<String>(config.get(key));
+                configMap.put(newKey, newList);
             }
         }
-        return result;
+
+        return newConfig;
     }
 
     /**
@@ -571,13 +577,7 @@ public class ConfigFile implements Cloneable {
     }
 
     public ConfigFile clone() {
-        ConfigFile cf = null;
-		try {
-			cf = (ConfigFile) super.clone();
-		} catch (CloneNotSupportedException thisCannotHappen) {
-			;
-		}
-
+		ConfigFile cf = new ConfigFile();
         for (String key : config.keySet())
             cf.putList(key, config.get(key));
 
