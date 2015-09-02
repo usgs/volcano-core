@@ -38,21 +38,6 @@
         <artifactId>wagon-ssh-external</artifactId>
         <version>1.0-beta-6</version>
       </extension>
-      <extension>
-        <groupId>org.apache.maven.wagon</groupId>
-        <artifactId>wagon-scm</artifactId>
-        <version>2.9</version>
-      </extension>
-      <extension>
-        <groupId>org.apache.maven.scm</groupId>
-        <artifactId>maven-scm-manager-plexus</artifactId>
-        <version>1.9</version>
-      </extension>
-      <extension>
-        <groupId>org.apache.maven.scm</groupId>
-        <artifactId>maven-scm-provider-gitexe</artifactId>
-        <version>1.9</version>
-      </extension>
     </extensions>
     <pluginManagement>
       <plugins>
@@ -79,12 +64,6 @@
                 </pluginExecution>
               </pluginExecutions>
             </lifecycleMappingMetadata>
-          </configuration>
-        </plugin>
-        <plugin>
-          <artifactId>maven-site-plugin</artifactId>
-          <configuration>
-            <skipDeploy>true</skipDeploy>
           </configuration>
         </plugin>
       </plugins>
@@ -188,6 +167,32 @@
           <repoToken>${env.coveralls_repo_token}</repoToken>
         </configuration>
       </plugin>
+      <plugin>
+        <artifactId>maven-site-plugin</artifactId>
+        <version>3.4</version>
+        <dependencies>
+          <dependency>
+            <groupId>org.apache.maven.wagon</groupId>
+            <artifactId>wagon-scm</artifactId>
+            <version>2.9</version>
+          </dependency>
+          <dependency>
+            <groupId>org.apache.maven.scm</groupId>
+            <artifactId>maven-scm-manager-plexus</artifactId>
+            <version>1.9.4</version>
+          </dependency>
+          <dependency>
+            <groupId>org.apache.maven.scm</groupId>
+            <artifactId>maven-scm-provider-gitexe</artifactId>
+            <version>1.9.4</version>
+          </dependency>
+          <dependency>
+            <groupId>org.apache.maven.scm</groupId>
+            <artifactId>maven-scm-api</artifactId>
+            <version>1.9.4</version>
+          </dependency>
+        </dependencies>
+      </plugin>
     </plugins>
   </build>
   <repositories>
@@ -282,7 +287,7 @@
     </repository>
     <site>
       <id>github.pages</id>
-      <url>scm:git:ssh://git@github.com/usgs/volcano-util.git</url>
+      <url>scm:git:https://git@github.com/usgs/volcano-util.git</url>
     </site>
   </distributionManagement>
   <properties>
