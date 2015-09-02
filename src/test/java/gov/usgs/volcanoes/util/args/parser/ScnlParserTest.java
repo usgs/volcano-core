@@ -32,4 +32,9 @@ public class ScnlParserTest {
 		assertEquals(ScnlTest.NETWORK, scnl.network);
 		assertEquals(Scnl.DEFAULT_LOCATION, scnl.location);
 	}
+	
+    @Test(expected = ParseException.class)
+    public void when_givenBadScnl_then_throwHelpfulException() throws ParseException {
+        parser.parse("not a SCNL");
+    }
 }

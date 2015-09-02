@@ -1,10 +1,10 @@
 package gov.usgs.volcanoes.util.data;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 import org.junit.Test;
-
-import com.martiansoftware.util.StringUtils;
 
 public class ScnlTest {
 
@@ -50,5 +50,29 @@ public class ScnlTest {
 		
 		assertEquals(EXAMPLE_SCNL, scnl.toString());
 	}
+    
+    @Test
+    public void when_equal_return_true() {
+        Scnl scnl = new Scnl(STATION, COMPONENT, NETWORK, Scnl.DEFAULT_LOCATION);
+        Scnl scn = new Scnl(STATION, COMPONENT, NETWORK);
+        
+        assertTrue(scnl.equals(scn));
+    }
+
+    @Test
+    public void when_notEqual_return_false() {
+        Scnl scnl1 = new Scnl(STATION, COMPONENT, NETWORK, LOCATION);
+        Scnl scnl2 = new Scnl(STATION, COMPONENT, NETWORK, "XX");
+        assertFalse(scnl1.equals(scnl2));
+
+        scnl2 = new Scnl(STATION, COMPONENT, "XX", LOCATION);
+        assertFalse(scnl1.equals(scnl2));
+
+        scnl2 = new Scnl(STATION, "XXX", NETWORK, LOCATION);
+        assertFalse(scnl1.equals(scnl2));
+
+        scnl2 = new Scnl("XXXX", COMPONENT, NETWORK, LOCATION);
+        assertFalse(scnl1.equals(scnl2));
+    }
 
 }
