@@ -25,8 +25,8 @@ under the License.
     <language>en-us</language>
     <copyright>&#169;2015</copyright>
     <item>
-      <title>File: 14,
-             Errors: 457,
+      <title>File: 15,
+             Errors: 369,
              Warnings: 0,
              Infos: 0
       </title>
@@ -46,7 +46,7 @@ under the License.
           <tbody>
                           <tr>
                 <td>
-                  <a href="http://maven.apache.org/checkstyle.html#gov.usgs.volcanoes.util.args.decorator.CreateConfigArg.java">gov/usgs/volcanoes/util/args/decorator/CreateConfigArg.java</a>
+                  <a href="http://maven.apache.org/checkstyle.html#gov.usgs.volcanoes.util.configFile.Parser.java">gov/usgs/volcanoes/util/configFile/Parser.java</a>
                 </td>
                 <td>
                   0
@@ -55,7 +55,7 @@ under the License.
                   0
                 </td>
                 <td>
-                  18
+                  5
                 </td>
               </tr>
                           <tr>
@@ -74,7 +74,7 @@ under the License.
               </tr>
                           <tr>
                 <td>
-                  <a href="http://maven.apache.org/checkstyle.html#gov.usgs.volcanoes.util.args.decorator.DateRangeArg.java">gov/usgs/volcanoes/util/args/decorator/DateRangeArg.java</a>
+                  <a href="http://maven.apache.org/checkstyle.html#gov.usgs.volcanoes.util.data.Scnl.java">gov/usgs/volcanoes/util/data/Scnl.java</a>
                 </td>
                 <td>
                   0
@@ -83,7 +83,7 @@ under the License.
                   0
                 </td>
                 <td>
-                  24
+                  36
                 </td>
               </tr>
                           <tr>
@@ -102,7 +102,7 @@ under the License.
               </tr>
                           <tr>
                 <td>
-                  <a href="http://maven.apache.org/checkstyle.html#gov.usgs.volcanoes.util.configFile.ConfigFile.java">gov/usgs/volcanoes/util/configFile/ConfigFile.java</a>
+                  <a href="http://maven.apache.org/checkstyle.html#gov.usgs.volcanoes.util.args.decorator.DateRangeArg.java">gov/usgs/volcanoes/util/args/decorator/DateRangeArg.java</a>
                 </td>
                 <td>
                   0
@@ -111,12 +111,12 @@ under the License.
                   0
                 </td>
                 <td>
-                  190
+                  24
                 </td>
               </tr>
                           <tr>
                 <td>
-                  <a href="http://maven.apache.org/checkstyle.html#gov.usgs.volcanoes.util.configFile.Parser.java">gov/usgs/volcanoes/util/configFile/Parser.java</a>
+                  <a href="http://maven.apache.org/checkstyle.html#gov.usgs.volcanoes.util.args.decorator.CreateConfigArg.java">gov/usgs/volcanoes/util/args/decorator/CreateConfigArg.java</a>
                 </td>
                 <td>
                   0
@@ -125,35 +125,7 @@ under the License.
                   0
                 </td>
                 <td>
-                  4
-                </td>
-              </tr>
-                          <tr>
-                <td>
-                  <a href="http://maven.apache.org/checkstyle.html#gov.usgs.volcanoes.util.types.Types.java">gov/usgs/volcanoes/util/types/Types.java</a>
-                </td>
-                <td>
-                  0
-                </td>
-                <td>
-                  0
-                </td>
-                <td>
-                  94
-                </td>
-              </tr>
-                          <tr>
-                <td>
-                  <a href="http://maven.apache.org/checkstyle.html#gov.usgs.volcanoes.util.args.parser.DateStringParser.java">gov/usgs/volcanoes/util/args/parser/DateStringParser.java</a>
-                </td>
-                <td>
-                  0
-                </td>
-                <td>
-                  0
-                </td>
-                <td>
-                  10
+                  18
                 </td>
               </tr>
                           <tr>
@@ -172,7 +144,7 @@ under the License.
               </tr>
                           <tr>
                 <td>
-                  <a href="http://maven.apache.org/checkstyle.html#gov.usgs.volcanoes.util.args.ArgsFacade.java">gov/usgs/volcanoes/util/args/ArgsFacade.java</a>
+                  <a href="http://maven.apache.org/checkstyle.html#gov.usgs.volcanoes.util.args.ArgsDecorator.java">gov/usgs/volcanoes/util/args/ArgsDecorator.java</a>
                 </td>
                 <td>
                   0
@@ -181,7 +153,21 @@ under the License.
                   0
                 </td>
                 <td>
-                  26
+                  20
+                </td>
+              </tr>
+                          <tr>
+                <td>
+                  <a href="http://maven.apache.org/checkstyle.html#gov.usgs.volcanoes.util.configFile.ConfigFile.java">gov/usgs/volcanoes/util/configFile/ConfigFile.java</a>
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  144
                 </td>
               </tr>
                           <tr>
@@ -200,7 +186,7 @@ under the License.
               </tr>
                           <tr>
                 <td>
-                  <a href="http://maven.apache.org/checkstyle.html#gov.usgs.volcanoes.util.Version.java">gov/usgs/volcanoes/util/Version.java</a>
+                  <a href="http://maven.apache.org/checkstyle.html#gov.usgs.volcanoes.util.args.parser.ScnlParser.java">gov/usgs/volcanoes/util/args/parser/ScnlParser.java</a>
                 </td>
                 <td>
                   0
@@ -209,7 +195,7 @@ under the License.
                   0
                 </td>
                 <td>
-                  13
+                  14
                 </td>
               </tr>
                           <tr>
@@ -223,12 +209,12 @@ under the License.
                   0
                 </td>
                 <td>
-                  3
+                  2
                 </td>
               </tr>
                           <tr>
                 <td>
-                  <a href="http://maven.apache.org/checkstyle.html#gov.usgs.volcanoes.util.args.ArgsDecorator.java">gov/usgs/volcanoes/util/args/ArgsDecorator.java</a>
+                  <a href="http://maven.apache.org/checkstyle.html#gov.usgs.volcanoes.util.args.ArgsFacade.java">gov/usgs/volcanoes/util/args/ArgsFacade.java</a>
                 </td>
                 <td>
                   0
@@ -237,7 +223,35 @@ under the License.
                   0
                 </td>
                 <td>
-                  20
+                  26
+                </td>
+              </tr>
+                          <tr>
+                <td>
+                  <a href="http://maven.apache.org/checkstyle.html#gov.usgs.volcanoes.util.Version.java">gov/usgs/volcanoes/util/Version.java</a>
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  16
+                </td>
+              </tr>
+                          <tr>
+                <td>
+                  <a href="http://maven.apache.org/checkstyle.html#gov.usgs.volcanoes.util.args.parser.DateStringParser.java">gov/usgs/volcanoes/util/args/parser/DateStringParser.java</a>
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  9
                 </td>
               </tr>
                       </tbody>
