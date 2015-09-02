@@ -1,8 +1,10 @@
 package gov.usgs.volcanoes.util.data;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 import org.junit.Test;
+
+import com.martiansoftware.util.StringUtils;
 
 public class ScnlTest {
 
@@ -12,13 +14,13 @@ public class ScnlTest {
 	public static final String NETWORK="NT";
 	public static final String LOCATION="01";
 
-	public static final String EXAMPLE_SCNL = String.join("$", STATION, COMPONENT, NETWORK, LOCATION);
-	public static final String EXAMPLE_SCN_AS_STRING = String.join("$", STATION, COMPONENT, NETWORK, Scnl.DEFAULT_LOCATION);
-	public static final String EXAMPLE_SCN = String.join("$", STATION, COMPONENT, NETWORK);
+	public static final String EXAMPLE_SCNL = STATION + "$" + COMPONENT + "$" + NETWORK + "$" + LOCATION;
+	public static final String EXAMPLE_SCN_AS_STRING = STATION + "$" + COMPONENT + "$" + NETWORK + "$" + Scnl.DEFAULT_LOCATION;
+	public static final String EXAMPLE_SCN = STATION + "$" + COMPONENT + "$" + NETWORK;
 	
-
 	@Test
 	public void when_calledWithFourArgs_return_scnl() {
+	    
 		Scnl scnl = new Scnl(STATION, COMPONENT, NETWORK, LOCATION);
 		assertEquals(STATION, scnl.station);
 		assertEquals(COMPONENT, scnl.channel);

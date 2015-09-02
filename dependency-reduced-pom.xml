@@ -38,6 +38,21 @@
         <artifactId>wagon-ssh-external</artifactId>
         <version>1.0-beta-6</version>
       </extension>
+      <extension>
+        <groupId>org.apache.maven.wagon</groupId>
+        <artifactId>wagon-scm</artifactId>
+        <version>2.9</version>
+      </extension>
+      <extension>
+        <groupId>org.apache.maven.scm</groupId>
+        <artifactId>maven-scm-manager-plexus</artifactId>
+        <version>1.9</version>
+      </extension>
+      <extension>
+        <groupId>org.apache.maven.scm</groupId>
+        <artifactId>maven-scm-provider-gitexe</artifactId>
+        <version>1.9</version>
+      </extension>
     </extensions>
     <pluginManagement>
       <plugins>
@@ -266,8 +281,8 @@
       <url>scpexe://vulcan4.wr.usgs.gov/webdata/volcanoes.usgs.gov/htdocs/software/maven2</url>
     </repository>
     <site>
-      <id>util.site</id>
-      <url>scm:git:https://github.com/usgs/volcano-util.git</url>
+      <id>github.pages</id>
+      <url>scm:git:ssh://git@github.com/usgs/volcano-util.git</url>
     </site>
   </distributionManagement>
   <properties>
