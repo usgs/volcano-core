@@ -19,5 +19,4 @@ public class ArgsFacadeTest {
 		ArgsFacade.main("-k");
 		assertTrue(true);
 	}
-
 }
