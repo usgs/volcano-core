@@ -5,7 +5,7 @@ package gov.usgs.volcanoes.util.data;
  * 
  * @author Tom Parker
  */
-public class Scnl {
+public class Scnl implements Comparable<Scnl> {
 
     public static final String DELIMITER = "$";
     public static final String DEFAULT_LOCATION = "--";
@@ -29,26 +29,6 @@ public class Scnl {
         location = DEFAULT_LOCATION;
     }
 
-    /**
-     * Compare another SCNL to this SCNL. A null location is different than a
-     * "--" location
-     * 
-     * @param scnl
-     * @return Are they equal?
-     */
-    public boolean equals(Scnl scnl) {
-        if (!station.equals(scnl.station))
-            return false;
-        if (!channel.equals(scnl.channel))
-            return false;
-        if (!network.equals(scnl.network))
-            return false;
-        if (!location.equals(scnl.location))
-            return false;
-
-        return true;
-    }
-
     public String toString() {
         return toString(DELIMITER);
     }
@@ -58,5 +38,9 @@ public class Scnl {
         sb.append(station).append(delimiter).append(channel).append(delimiter).append(network).append(delimiter)
                 .append(location);
         return sb.toString();
+    }
+
+    public int compareTo(Scnl scnl) {
+        return (this.toString().compareTo(scnl.toString()));
     }
 }

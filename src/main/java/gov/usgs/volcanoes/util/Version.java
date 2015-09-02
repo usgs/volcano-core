@@ -2,7 +2,7 @@ package gov.usgs.volcanoes.util;
 
 public interface Version {
 
-    public static final String BUILD_TIME="2015-09-02T21:00:40Z";
+    public static final String BUILD_TIME="2015-09-02T22:02:49Z";
 
     public static final String POM_VERSION="1.1.7-SNAPSHOT";
 
