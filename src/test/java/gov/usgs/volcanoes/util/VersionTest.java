@@ -1,5 +1,6 @@
 package gov.usgs.volcanoes.util;
 
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 
 import org.junit.Test;
@@ -8,16 +9,16 @@ public class VersionTest {
 
     @Test
     public void testBuildTime() {
-        assertNotNull(Version.BUILD_TIME);
+        assertFalse("".equals(Version.BUILD_TIME));
     }
 
     @Test
     public void testPomVersion() {
-        assertNotNull(Version.POM_VERSION);
+        assertFalse("".equals(Version.POM_VERSION));
     }
 
     @Test
     public void testVersionString() {
-        assertNotNull(Version.VERSION_STRING);
+        assertFalse("".equals(Version.VERSION_STRING));
     }
 }

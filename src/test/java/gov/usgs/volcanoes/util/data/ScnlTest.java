@@ -52,11 +52,11 @@ public class ScnlTest {
 	}
     
     @Test
-    public void when_equal_return_true() {
+    public void when_equal_return_zero() {
         Scnl scnl = new Scnl(STATION, COMPONENT, NETWORK, Scnl.DEFAULT_LOCATION);
         Scnl scn = new Scnl(STATION, COMPONENT, NETWORK);
         
-        assertTrue(scnl.equals(scn));
+        assertTrue(scnl.compareTo(scn) == 0);
     }
 
     @Test

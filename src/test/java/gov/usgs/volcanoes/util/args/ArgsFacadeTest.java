@@ -16,7 +16,6 @@ public class ArgsFacadeTest {
 
 	@Test
 	public void when_runWithArg_then_run() throws Exception {
-		ArgsFacade a = new ArgsFacade();
 		ArgsFacade.main("-k");
 		assertTrue(true);
 	}
