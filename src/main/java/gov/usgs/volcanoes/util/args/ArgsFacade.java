@@ -15,13 +15,11 @@ import gov.usgs.volcanoes.util.args.decorator.VerboseArg;
 /**
  * A class demonstrating use of the args package
  * 
- * @author Tom Parker
- * 
  *         I waive copyright and related rights in the this work worldwide
  *         through the CC0 1.0 Universal public domain dedication.
  *         https://creativecommons.org/publicdomain/zero/1.0/legalcode
  * 
- *         TODO: refactor to decorator
+ *  * @author Tom Parker
  */
 public class ArgsFacade {
 	private static final Logger LOGGER = LoggerFactory.getLogger(ArgsFacade.class);

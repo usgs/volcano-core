@@ -39,8 +39,50 @@ public class Scnl implements Comparable<Scnl> {
                 .append(location);
         return sb.toString();
     }
+    
 
     public int compareTo(Scnl scnl) {
-        return (this.toString().compareTo(scnl.toString()));
+        String me = String.format("%s$%s$%s$%s", network, station, channel, location);
+        String other = String.format("%s$%s$%s$%s", scnl.network, scnl.station, scnl.channel, scnl.location);
+                
+        return (me.compareTo(other));
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+
+        final Scnl other = (Scnl) obj;
+ 
+        if ((this.station == null) ? (other.station != null) : !this.station.equals(other.station)) {
+            return false;
+        }
+        if ((this.channel == null) ? (other.channel != null) : !this.channel.equals(other.channel)) {
+            return false;
+        }
+        if ((this.network == null) ? (other.network != null) : !this.network.equals(other.network)) {
+            return false;
+        }
+        if ((this.location == null) ? (other.location != null) : !this.location.equals(other.location)) {
+            return false;
+        }
+        return true;
+    }
+
+    @Override
+    public int hashCode() {
+        int hash = 17;
+        
+        hash = 31 * hash + (this.station != null ? this.station.hashCode() : 0);
+        hash = 31 * hash + (this.channel != null ? this.channel.hashCode() : 0);
+        hash = 31 * hash + (this.network != null ? this.network.hashCode() : 0);
+        hash = 31 * hash + (this.location != null ? this.location.hashCode() : 0);
+ 
+        return hash;
     }
 }

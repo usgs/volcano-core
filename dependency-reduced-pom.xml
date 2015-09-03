@@ -6,6 +6,10 @@
   <name>Util</name>
   <version>1.1.7-SNAPSHOT</version>
   <url>http://maven.apache.org</url>
+  <issueManagement>
+    <system>GitHub</system>
+    <url>https://github.com/usgs/volcano-util</url>
+  </issueManagement>
   <developers>
     <developer>
       <id>dcervelli</id>

@@ -2,9 +2,11 @@
  * A wrapper to JSAP, providing a simple and consistent way to handle java
  * command line arguments.
  * <P>
- * Create an Args object and wrap it with decorators as needed. A decorator is
- * not required to be compatible with all other decorators. Some combinations
- * just don't make sense.
+ * To use, create an instance of gov.usgs.volcanoes.util.args.Args and
+ * decorate it as needed. Be aware that some decorators may be incompatible with
+ * others. Not all combinatations make sense.
+ * 
+ * @see gov.usgs.volcanoes.util.args.ArgsFacade
  * 
  */
 package gov.usgs.volcanoes.util.args;

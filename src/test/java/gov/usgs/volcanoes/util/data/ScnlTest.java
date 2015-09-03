@@ -4,6 +4,12 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+
 import org.junit.Test;
 
 public class ScnlTest {
@@ -73,6 +79,27 @@ public class ScnlTest {
 
         scnl2 = new Scnl("XXXX", COMPONENT, NETWORK, LOCATION);
         assertFalse(scnl1.equals(scnl2));
+    }
+    
+    @Test
+    public void when_equal_then_returnEqual() {
+        Set<Scnl> map = new HashSet<Scnl>();
+        map.add(new Scnl(STATION, COMPONENT, NETWORK, LOCATION));
+        map.add(new Scnl(STATION, COMPONENT, NETWORK, LOCATION));
+        
+        assertTrue(map.size() == 1);
+    }
+
+    @Test
+    public void when_askedForCompare_then_compare() {
+        List<Scnl> list = new ArrayList();
+        list.add(new Scnl("Z", COMPONENT, NETWORK, LOCATION));
+        list.add(new Scnl("A", COMPONENT, NETWORK, LOCATION));
+        
+        assertTrue(list.get(0).station.equals("Z"));
+        
+        Collections.sort(list);
+        assertTrue(list.get(0).station.equals("A"));
     }
 
 }
