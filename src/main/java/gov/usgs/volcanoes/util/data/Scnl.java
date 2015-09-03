@@ -42,7 +42,10 @@ public class Scnl implements Comparable<Scnl> {
     
 
     public int compareTo(Scnl scnl) {
-        return (this.toString().compareTo(scnl.toString()));
+        String me = String.format("%s$%s$%s$%s", network, station, channel, location);
+        String other = String.format("%s$%s$%s$%s", scnl.network, scnl.station, scnl.channel, scnl.location);
+                
+        return (me.compareTo(other));
     }
 
     @Override
