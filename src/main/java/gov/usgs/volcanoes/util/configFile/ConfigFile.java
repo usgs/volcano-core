@@ -20,7 +20,7 @@ import java.util.Set;
  * 
  * @author Dan Cervelli
  */
-public final class ConfigFile implements Cloneable {
+public final class ConfigFile {
     private Map<String, List<String>> config;
     private String name;
 
@@ -459,7 +459,7 @@ public final class ConfigFile implements Cloneable {
         ConfigFile newConfig;
 
         if (inherit)
-            newConfig = this.clone();
+            newConfig = this.deepCopy();
         else
             newConfig = new ConfigFile();
 
@@ -575,12 +575,19 @@ public final class ConfigFile implements Cloneable {
             e.printStackTrace();
         }
     }
+    
+    public ConfigFile deepCopy() {
+    	ConfigFile copy = new ConfigFile();
+    	
+    	for (String key : config.keySet()) {
+    		List<String> myList = config.get(key);
+    		
+    		if (myList != null) {
+    			List<String> newList = new ArrayList<String>(myList);
+    			copy.putList(key, newList);
+    		}
+    	}
 
-    public ConfigFile clone() {
-		ConfigFile cf = new ConfigFile();
-        for (String key : config.keySet())
-            cf.putList(key, config.get(key));
-
-        return cf;
+    	return copy;
     }
 }
