@@ -105,7 +105,7 @@
 <th>Missing Classes</th></tr>
 <tr class="b">
 <td>15</td>
-<td>6</td>
+<td>5</td>
 <td>0</td>
 <td>0</td></tr></table></div>
 <div class="section">
@@ -116,63 +116,45 @@
 <th>Bugs</th></tr>
 <tr class="b">
 <td><a href="#gov.usgs.volcanoes.util.configFile.ConfigFile">gov.usgs.volcanoes.util.configFile.ConfigFile</a></td>
-<td>5</td></tr>
-<tr class="a">
-<td><a href="#gov.usgs.volcanoes.util.data.Scnl">gov.usgs.volcanoes.util.data.Scnl</a></td>
-<td>1</td></tr></table></div><a name="gov.usgs.volcanoes.util.configFile.ConfigFile"></a>
+<td>5</td></tr></table></div><a name="gov.usgs.volcanoes.util.configFile.ConfigFile"></a>
 <div class="section">
 <h3><a name="gov.usgs.volcanoes.util.configFile.ConfigFile"></a>gov.usgs.volcanoes.util.configFile.ConfigFile</h3>
 <table border="0" class="bodyTable">
-<tr class="b">
+<tr class="a">
 <th>Bug</th>
 <th>Category</th>
 <th>Details</th>
 <th>Line</th>
 <th>Priority</th></tr>
-<tr class="a">
+<tr class="b">
 <td>Found reliance on default encoding in gov.usgs.volcanoes.util.configFile.ConfigFile.readConfigFile(File, boolean): new java.io.FileReader(File)</td>
 <td>I18N</td>
 <td><a class="externalLink" href="http://findbugs.sourceforge.net/bugDescriptions.html#DM_DEFAULT_ENCODING">DM_DEFAULT_ENCODING</a></td>
 <td><a href="./xref/gov/usgs/volcanoes/util/configFile/ConfigFile.html#L103">103</a></td>
 <td>High</td></tr>
-<tr class="b">
+<tr class="a">
 <td>Found reliance on default encoding in gov.usgs.volcanoes.util.configFile.ConfigFile.writeToFile(String): new java.io.FileWriter(String)</td>
 <td>I18N</td>
 <td><a class="externalLink" href="http://findbugs.sourceforge.net/bugDescriptions.html#DM_DEFAULT_ENCODING">DM_DEFAULT_ENCODING</a></td>
 <td><a href="./xref/gov/usgs/volcanoes/util/configFile/ConfigFile.html#L562">562</a></td>
 <td>High</td></tr>
-<tr class="a">
+<tr class="b">
 <td>Exceptional return value of java.io.File.delete() ignored in gov.usgs.volcanoes.util.configFile.ConfigFile.writeToFile(String)</td>
 <td>BAD_PRACTICE</td>
 <td><a class="externalLink" href="http://findbugs.sourceforge.net/bugDescriptions.html#RV_RETURN_VALUE_IGNORED_BAD_PRACTICE">RV_RETURN_VALUE_IGNORED_BAD_PRACTICE</a></td>
 <td><a href="./xref/gov/usgs/volcanoes/util/configFile/ConfigFile.html#L558">558</a></td>
 <td>Medium</td></tr>
-<tr class="b">
+<tr class="a">
 <td>Exceptional return value of java.io.File.renameTo(File) ignored in gov.usgs.volcanoes.util.configFile.ConfigFile.writeToFile(String)</td>
 <td>BAD_PRACTICE</td>
 <td><a class="externalLink" href="http://findbugs.sourceforge.net/bugDescriptions.html#RV_RETURN_VALUE_IGNORED_BAD_PRACTICE">RV_RETURN_VALUE_IGNORED_BAD_PRACTICE</a></td>
 <td><a href="./xref/gov/usgs/volcanoes/util/configFile/ConfigFile.html#L560">560</a></td>
 <td>Medium</td></tr>
-<tr class="a">
+<tr class="b">
 <td>gov.usgs.volcanoes.util.configFile.ConfigFile.putConfig(ConfigFile, boolean) makes inefficient use of keySet iterator instead of entrySet iterator</td>
 <td>PERFORMANCE</td>
 <td><a class="externalLink" href="http://findbugs.sourceforge.net/bugDescriptions.html#WMI_WRONG_MAP_ITERATOR">WMI_WRONG_MAP_ITERATOR</a></td>
 <td><a href="./xref/gov/usgs/volcanoes/util/configFile/ConfigFile.html#L231">231</a></td>
-<td>Medium</td></tr></table></div><a name="gov.usgs.volcanoes.util.data.Scnl"></a>
-<div class="section">
-<h3><a name="gov.usgs.volcanoes.util.data.Scnl"></a>gov.usgs.volcanoes.util.data.Scnl</h3>
-<table border="0" class="bodyTable">
-<tr class="b">
-<th>Bug</th>
-<th>Category</th>
-<th>Details</th>
-<th>Line</th>
-<th>Priority</th></tr>
-<tr class="a">
-<td>gov.usgs.volcanoes.util.data.Scnl defines compareTo(Scnl) and uses Object.equals()</td>
-<td>BAD_PRACTICE</td>
-<td><a class="externalLink" href="http://findbugs.sourceforge.net/bugDescriptions.html#EQ_COMPARETO_USE_OBJECT_EQUALS">EQ_COMPARETO_USE_OBJECT_EQUALS</a></td>
-<td><a href="./xref/gov/usgs/volcanoes/util/data/Scnl.html#L44">44</a></td>
 <td>Medium</td></tr></table></div>
       </div>
     </div>
