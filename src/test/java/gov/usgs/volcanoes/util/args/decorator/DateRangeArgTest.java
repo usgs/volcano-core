@@ -16,55 +16,87 @@ import com.martiansoftware.jsap.ParseException;
 import gov.usgs.volcanoes.util.args.Args;
 import gov.usgs.volcanoes.util.args.Arguments;
 
+/**
+ * 
+ * @author Tom Parker
+ *
+ */
 public class DateRangeArgTest {
 
-	private static final String FORMAT = "yyyyMMddHHmm";
-	private static final String START_TIME = "201508010000";
-	private static final String END_TIME = "201508020000";
+  private static final String FORMAT = "yyyyMMddHHmm";
+  private static final String START_TIME = "201508010000";
+  private static final String END_TIME = "201508020000";
 
-	Arguments arg;
+  Arguments arg;
 
-	@Before
-	public void setUp() throws JSAPException {
-		arg = new DateRangeArg(FORMAT, new Args(null, null, new Parameter[0]));
-	}
+  /**
+   * 
+   * @throws JSAPException when things go wrong
+   */
+  @Before
+  public void setUp() throws JSAPException {
+    arg = new DateRangeArg(FORMAT, new Args(null, null, new Parameter[0]));
+  }
 
-	@Test
-	public void when_givenNothing_then_returnNothing() throws JSAPException {
-		new DateRangeArg(FORMAT, new Args(null, null, new Parameter[0]));
-	}
-	
-	@Test(expected = ParseException.class)
-	public void when_OnlyStartTime_then_Exception() throws Exception {
-		String[] commandLine1 = { "--startTime", START_TIME };
-		arg.parse(commandLine1);
-	}
+  /**
+   * 
+   * @throws JSAPException when things go wrong
+   */
+  @Test
+  public void when_givenNothing_then_returnNothing() throws JSAPException {
+    new DateRangeArg(FORMAT, new Args(null, null, new Parameter[0]));
+  }
 
-	@Test(expected = ParseException.class)
-	public void when_OnlyEndTime_then_Exception() throws Exception {		
-		String[] commandLine2 = { "--endTime", END_TIME };
-		arg.parse(commandLine2);
-	}
+  /**
+   * 
+   * @throws Exception when things go wrong
+   */
+  @Test(expected = ParseException.class)
+  public void when_OnlyStartTime_then_Exception() throws Exception {
+    String[] commandLine1 = {"--startTime", START_TIME};
+    arg.parse(commandLine1);
+  }
 
-	@Test(expected = ParseException.class)
-	public void when_EndTimeNotAfterStartTime_then_Exception() throws Exception {
-		String[] commandLine2 = { "--startTime", END_TIME, "--endTime", START_TIME };
-		arg.parse(commandLine2);
-	}
+  /**
+   * 
+   * @throws Exception when things go wrong
+   */
+  @Test(expected = ParseException.class)
+  public void when_OnlyEndTime_then_Exception() throws Exception {
+    String[] commandLine2 = {"--endTime", END_TIME};
+    arg.parse(commandLine2);
+  }
 
-	@Test
-	public void when_nothingIn_then_nothingOut() throws Exception {
-		arg.parse(new String[0]);
-	}
-	
-	
-	@Test
-	public void when_InputGood_then_OutputGood() throws Exception {
-		SimpleDateFormat format = new SimpleDateFormat(FORMAT);
-		format.setTimeZone(TimeZone.getTimeZone("UTC"));
-		String[] commandLine2 = { "--startTime", START_TIME, "--endTime", END_TIME };
-		JSAPResult jsapResult = arg.parse(commandLine2);
-		assertEquals(jsapResult.getDate("startTime"), format.parse(START_TIME));
-		assertEquals(jsapResult.getDate("endTime"), format.parse(END_TIME));
-	}
+  /**
+   * 
+   * @throws Exception when things go wrong
+   */
+  @Test(expected = ParseException.class)
+  public void when_EndTimeNotAfterStartTime_then_Exception() throws Exception {
+    String[] commandLine2 = {"--startTime", END_TIME, "--endTime", START_TIME};
+    arg.parse(commandLine2);
+  }
+
+  /**
+   * 
+   * @throws Exception when things go wrong
+   */
+  @Test
+  public void when_nothingIn_then_nothingOut() throws Exception {
+    arg.parse(new String[0]);
+  }
+
+  /**
+   * 
+   * @throws Exception when things go wrong
+   */
+  @Test
+  public void when_InputGood_then_OutputGood() throws Exception {
+    SimpleDateFormat format = new SimpleDateFormat(FORMAT);
+    format.setTimeZone(TimeZone.getTimeZone("UTC"));
+    String[] commandLine2 = {"--startTime", START_TIME, "--endTime", END_TIME};
+    JSAPResult jsapResult = arg.parse(commandLine2);
+    assertEquals(jsapResult.getDate("startTime"), format.parse(START_TIME));
+    assertEquals(jsapResult.getDate("endTime"), format.parse(END_TIME));
+  }
 }

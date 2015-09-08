@@ -1,10 +1,23 @@
+/**
+ * I waive copyright and related rights in the this work worldwide through the CC0 1.0
+ * Universal public domain dedication.
+ * https://creativecommons.org/publicdomain/zero/1.0/legalcode
+ */
 package gov.usgs.volcanoes.util;
 
+/**
+ * Class built by maven to hold version tags. 
+ *
+ * @author Tom Parker
+ */
 public interface Version {
 
-    public static final String BUILD_TIME="@buildtime@";
+  /** my build time. */
+  public static final String BUILD_TIME = "@buildtime@";
 
-    public static final String POM_VERSION="@pomversion@";
+  /** version taken from the POM. */
+  public static final String POM_VERSION = "@pomversion@";
 
-	public static final String VERSION_STRING = "Version: " + POM_VERSION + " Built: " + BUILD_TIME;
+  /** my version string. */
+  public static final String VERSION_STRING = "Version: " + POM_VERSION + " Built: " + BUILD_TIME;
 }

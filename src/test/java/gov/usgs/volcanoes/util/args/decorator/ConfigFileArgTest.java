@@ -13,27 +13,44 @@ import com.martiansoftware.jsap.ParseException;
 import gov.usgs.volcanoes.util.args.Args;
 import gov.usgs.volcanoes.util.args.Arguments;
 
+/**
+ * 
+ * @author tparker
+ *
+ */
 public class ConfigFileArgTest {
 
-	private static final String DEFAULT_FILENAME = "defaultFilename.config";
-	Arguments arg;
+  private static final String DEFAULT_FILENAME = "defaultFilename.config";
+  Arguments arg;
 
-	@Before
-	public void setUp() throws JSAPException {
-		arg = new ConfigFileArg(DEFAULT_FILENAME, new Args(null, null, new Parameter[0]));
-	}
+  /**
+   * 
+   * @throws JSAPException when things go wrong
+   */
+  @Before
+  public void setUp() throws JSAPException {
+    arg = new ConfigFileArg(DEFAULT_FILENAME, new Args(null, null, new Parameter[0]));
+  }
 
-	@Test
-	public void when_filenameGiven_then_filenameSet() throws Exception {
-		String configFile = "configFile.config";
-		String[] commandLine = { configFile };
-		JSAPResult jsapResult = arg.parse(commandLine);
-		assertEquals(jsapResult.getString("config-filename"), configFile);
-	}
+  /**
+   * 
+   * @throws Exception when things go wrong
+   */
+  @Test
+  public void when_filenameGiven_then_filenameSet() throws Exception {
+    String configFile = "configFile.config";
+    String[] commandLine = {configFile};
+    JSAPResult jsapResult = arg.parse(commandLine);
+    assertEquals(jsapResult.getString("config-filename"), configFile);
+  }
 
-	@Test
-	public void when_filenameNotGiven_then_defaultSet() throws Exception {
-		JSAPResult jsapResult = arg.parse(new String[0]);
-		assertEquals(jsapResult.getString("config-filename"), DEFAULT_FILENAME);
-	}
+  /**
+   * 
+   * @throws Exception when things go wrong
+   */
+  @Test
+  public void when_filenameNotGiven_then_defaultSet() throws Exception {
+    JSAPResult jsapResult = arg.parse(new String[0]);
+    assertEquals(jsapResult.getString("config-filename"), DEFAULT_FILENAME);
+  }
 }
