@@ -15,9 +15,8 @@ import gov.usgs.volcanoes.util.args.Arguments;
 /**
  * Gather a config filename from the command line.
  *
- * <p>
- * The filename is taken from the first available unflagged option and placed in "config-filename".
- * Be careful of the order that Args are added.
+ * <p>The filename is taken from the first available unflagged option and placed in 
+ * "config-filename". Be careful of the order that Args are added.
  *
  * @author Tom Parker
  */

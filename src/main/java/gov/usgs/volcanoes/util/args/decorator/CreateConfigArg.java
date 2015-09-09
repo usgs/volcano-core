@@ -5,11 +5,6 @@
 
 package gov.usgs.volcanoes.util.args.decorator;
 
-import java.io.File;
-import java.io.InputStream;
-import java.nio.file.Files;
-import java.nio.file.Path;
-
 import com.martiansoftware.jsap.JSAPException;
 import com.martiansoftware.jsap.JSAPResult;
 import com.martiansoftware.jsap.Switch;
@@ -17,11 +12,15 @@ import com.martiansoftware.jsap.Switch;
 import gov.usgs.volcanoes.util.args.ArgsDecorator;
 import gov.usgs.volcanoes.util.args.Arguments;
 
+import java.io.File;
+import java.io.InputStream;
+import java.nio.file.Files;
+import java.nio.file.Path;
+
 /**
  * Create an example config file.
  *
- * <p>
- * CreateConfigArg implies ConfigFileArg
+ * <p>CreateConfigArg implies ConfigFileArg
  *
  * @author Tom Parker
  */

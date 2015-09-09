@@ -5,15 +5,15 @@
 
 package gov.usgs.volcanoes.util.args.decorator;
 
-import org.apache.log4j.Level;
-import org.apache.log4j.Logger;
-
 import com.martiansoftware.jsap.JSAPException;
 import com.martiansoftware.jsap.JSAPResult;
 import com.martiansoftware.jsap.Switch;
 
 import gov.usgs.volcanoes.util.args.ArgsDecorator;
 import gov.usgs.volcanoes.util.args.Arguments;
+
+import org.apache.log4j.Level;
+import org.apache.log4j.Logger;
 
 /**
  * Gather a verbose flag from the command line.

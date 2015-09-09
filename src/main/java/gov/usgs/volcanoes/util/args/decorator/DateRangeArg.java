@@ -5,7 +5,6 @@
 
 package gov.usgs.volcanoes.util.args.decorator;
 
-import java.util.Date;
 
 import com.martiansoftware.jsap.FlaggedOption;
 import com.martiansoftware.jsap.JSAP;
@@ -18,11 +17,13 @@ import gov.usgs.volcanoes.util.args.ArgsDecorator;
 import gov.usgs.volcanoes.util.args.Arguments;
 import gov.usgs.volcanoes.util.args.parser.DateStringParser;
 
+import java.util.Date;
+
+
 /**
  * Gather a date range from the command line.
  *
- * <p>
- * A startTime and endTime Parameter will be added to the parameter list. Retrieve them with
+ * <p>A startTime and endTime Parameter will be added to the parameter list. Retrieve them with
  * getDate.
  *
  * @author Tom Parker
@@ -30,6 +31,8 @@ import gov.usgs.volcanoes.util.args.parser.DateStringParser;
 public class DateRangeArg extends ArgsDecorator {
 
   /**
+   * Register arguments that define a date range.
+   * 
    * @param dateFormat Format string suitable for feeding to SimpleDateFormat
    * @param nextArg The Argument object I'm wrapping
    * @throws JSAPException if parameters cannot be registered
