@@ -19,9 +19,9 @@ under the License.
 -->
 <rss version="0.91">
   <channel>
-    <title>Util - Checkstyle report</title>
+    <title>volcano-core - Checkstyle report</title>
     <link>http://maven.apache.org</link>
-    <description>Util - Checkstyle report</description>
+    <description>volcano-core - Checkstyle report</description>
     <language>en-us</language>
     <copyright>&#169;2015</copyright>
     <item>
