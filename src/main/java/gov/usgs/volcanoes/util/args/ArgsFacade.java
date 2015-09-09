@@ -1,13 +1,9 @@
 /**
- * I waive copyright and related rights in the this work worldwide through the CC0 1.0
- * Universal public domain dedication.
- * https://creativecommons.org/publicdomain/zero/1.0/legalcode
+ * I waive copyright and related rights in the this work worldwide through the CC0 1.0 Universal
+ * public domain dedication. https://creativecommons.org/publicdomain/zero/1.0/legalcode
  */
-package gov.usgs.volcanoes.util.args;
 
-import org.apache.log4j.BasicConfigurator;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+package gov.usgs.volcanoes.util.args;
 
 import com.martiansoftware.jsap.JSAPResult;
 import com.martiansoftware.jsap.Parameter;
@@ -17,28 +13,31 @@ import gov.usgs.volcanoes.util.args.decorator.ConfigFileArg;
 import gov.usgs.volcanoes.util.args.decorator.CreateConfigArg;
 import gov.usgs.volcanoes.util.args.decorator.VerboseArg;
 
+import org.apache.log4j.BasicConfigurator;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 /**
- * A class demonstrating use of the args package
- * 
+ * A class demonstrating use of the args package.
+ *
  * @author Tom Parker
  */
 public class ArgsFacade {
-  private static final Logger LOGGER = LoggerFactory.getLogger(ArgsFacade.class);
-
-  private static final String PROGRAM_NAME = "java -jar gov.usgs.volcanoes.args.ArgsFacade";
-  private static final String EXPLANATION = "I am demonstrate how to use the args package\n";
-  private static final Parameter[] PARAMETERS =
-      new Parameter[] {new Switch("knockKnock", 'k', "knockKnock", "Knock Knock.")};
-
-  /** name of the default config file */
   public static final String DEFAULT_CONFIG_FILENAME = "facadeConfig.config";
 
   private static final String EXAMPLE_CONFIG_FILENAME = "facadeConfig.config";
+  private static final String EXPLANATION = "I am demonstrate how to use the args package\n";
+  private static final Logger LOGGER = LoggerFactory.getLogger(ArgsFacade.class);
+
+  private static final Parameter[] PARAMETERS =
+      new Parameter[] {new Switch("knockKnock", 'k', "knockKnock", "Knock Knock.")};
+
+  private static final String PROGRAM_NAME = "java -jar gov.usgs.volcanoes.args.ArgsFacade";
 
   /**
-   * 
-   * @param args        Arguments provided at program launch
-   * @throws Exception  if anything goes wrong. Yes, pretty much anything.
+   *
+   * @param args Arguments provided at program launch
+   * @throws Exception if anything goes wrong. Yes, pretty much anything.
    */
   public static void main(String... args) throws Exception {
 
@@ -58,13 +57,14 @@ public class ArgsFacade {
     JSAPResult jsapResult = null;
     jsapResult = arguments.parse(args);
 
-    boolean verbose = jsapResult.getBoolean("verbose");
+    final boolean verbose = jsapResult.getBoolean("verbose");
     LOGGER.debug("Setting: verbose={}", verbose);
 
     final String configFileName = jsapResult.getString("config-filename");
     LOGGER.debug("Setting: config-filename={}", configFileName);
 
-    if (jsapResult.getBoolean("knockKnock"))
+    if (jsapResult.getBoolean("knockKnock")) {
       System.out.println("Who's there?");
+    }
   }
 }

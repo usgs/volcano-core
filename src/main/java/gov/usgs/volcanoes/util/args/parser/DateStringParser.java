@@ -3,17 +3,19 @@
  * Universal public domain dedication.
  * https://creativecommons.org/publicdomain/zero/1.0/legalcode
  */
+
 package gov.usgs.volcanoes.util.args.parser;
+
+import com.martiansoftware.jsap.ParseException;
+import com.martiansoftware.jsap.StringParser;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
 import java.util.TimeZone;
 
-import com.martiansoftware.jsap.ParseException;
-import com.martiansoftware.jsap.StringParser;
-
 /**
+ * Parse a date from a command line argument.
  * 
  * @author Tom Parker
  */
@@ -22,6 +24,7 @@ public class DateStringParser extends StringParser {
   private SimpleDateFormat format;
 
   /**
+   * Add my Parameter to the list.
    * 
    * @param inputFormat Format string suitable for feeding to SimpleDataFormat
    */

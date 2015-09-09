@@ -104,6 +104,10 @@ public class ScnlTest {
 
     scnl2 = new Scnl("XXXX", COMPONENT, NETWORK, LOCATION);
     assertFalse(scnl1.equals(scnl2));
+    
+    assertFalse(scnl1.equals(null));
+    
+    assertFalse(scnl1.equals(""));
   }
 
   /**
