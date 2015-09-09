@@ -12,45 +12,65 @@ import com.martiansoftware.jsap.JSAPResult;
 import com.martiansoftware.jsap.Parameter;
 import com.martiansoftware.jsap.ParseException;
 
+/**
+ * 
+ * @author Tom Parker
+ *
+ */
 public class ArgsTest {
 
-	private static final String TEST_PARAM = "test";
-	private static final String TEST_VAL = "testVal";
+  private static final String TEST_PARAM = "test";
+  private static final String TEST_VAL = "testVal";
 
-	private Parameter parameter;
+  private Parameter parameter;
 
-	@Before
-	public void setUp() {
-		parameter = new FlaggedOption(TEST_PARAM, JSAP.STRING_PARSER, JSAP.NO_DEFAULT, JSAP.NOT_REQUIRED, 't',
-				TEST_PARAM, "Test param.");
-	}
+  /**
+   * 
+   */
+  @Before
+  public void setUp() {
+    parameter = new FlaggedOption(TEST_PARAM, JSAP.STRING_PARSER, JSAP.NO_DEFAULT,
+        JSAP.NOT_REQUIRED, 't', TEST_PARAM, "Test param.");
+  }
 
-	@Test
-	public void when_intializedWithParam_them_paramSet() throws JSAPException {
-		Parameter[] params = new Parameter[] { parameter };
-		Arguments args = new Args(null, null, params);
+  /**
+   * 
+   * @throws JSAPException when things go wrong
+   */
+  @Test
+  public void when_intializedWithParam_them_paramSet() throws JSAPException {
+    Parameter[] params = new Parameter[] {parameter};
+    Arguments args = new Args(null, null, params);
 
-		Parameter p = args.getById(TEST_PARAM);
+    Parameter p = args.getById(TEST_PARAM);
 
-		assertSame(args.getById(TEST_PARAM), parameter);
-	}
+    assertSame(p, parameter);
+  }
 
-	@Test
-	public void when_paramRegistered_them_paramSet() throws JSAPException {
-		Arguments args = new Args(null, null, new Parameter[0]);
-		args.registerParameter(parameter);
+  /**
+   * 
+   * @throws JSAPException when things go wrong
+   */
+  @Test
+  public void when_paramRegistered_them_paramSet() throws JSAPException {
+    Arguments args = new Args(null, null, new Parameter[0]);
+    args.registerParameter(parameter);
 
-		Parameter p = args.getById(TEST_PARAM);
+    Parameter p = args.getById(TEST_PARAM);
 
-		assertSame(args.getById(TEST_PARAM), parameter);
-	}
+    assertSame(p, parameter);
+  }
 
-	@Test
-	public void when_givenArgs_then_setValues() throws Exception {
-		Parameter[] params = new Parameter[] { parameter };
-		Arguments args = new Args(null, null, params);
+  /**
+   * 
+   * @throws Exception when things go wrong
+   */
+  @Test
+  public void when_givenArgs_then_setValues() throws Exception {
+    Parameter[] params = new Parameter[] {parameter};
+    Arguments args = new Args(null, null, params);
 
-		JSAPResult jsapResult = args.parse(new String[] { "--" + TEST_PARAM, TEST_VAL });
-		// assertEquals(jsapResult.getString(TEST_PARAM), TEST_VAL);
-	}	
+    JSAPResult jsapResult = args.parse(new String[] {"--" + TEST_PARAM, TEST_VAL});
+    // assertEquals(jsapResult.getString(TEST_PARAM), TEST_VAL);
+  }
 }

@@ -14,26 +14,43 @@ import com.martiansoftware.jsap.ParseException;
 import gov.usgs.volcanoes.util.args.Args;
 import gov.usgs.volcanoes.util.args.Arguments;
 
+/**
+ * 
+ * @author Tom Parker
+ *
+ */
 public class VerboseArgTest {
 
-	Arguments arg;
+  Arguments arg;
 
-	@Before
-	public void setUp() throws JSAPException {
-		arg = new VerboseArg(new Args(null, null, new Parameter[0]));
-	}
+  /**
+   * 
+   * @throws JSAPException when things go wrong
+   */
+  @Before
+  public void setUp() throws JSAPException {
+    arg = new VerboseArg(new Args(null, null, new Parameter[0]));
+  }
 
-	@Test
-	public void when_flagGiven_then_flagSet() throws Exception {
-		String[] commandLine1 = { "--verbose" };
-		JSAPResult jsapResult = arg.parse(commandLine1);
-		assertTrue(jsapResult.getBoolean("verbose"));
-	}
+  /**
+   * 
+   * @throws Exception when things go wrong
+   */
+  @Test
+  public void when_flagGiven_then_flagSet() throws Exception {
+    String[] commandLine1 = {"--verbose"};
+    JSAPResult jsapResult = arg.parse(commandLine1);
+    assertTrue(jsapResult.getBoolean("verbose"));
+  }
 
-	@Test
-	public void when_flagNotGiven_then_flagNotSet() throws Exception {
-		JSAPResult jsapResult = arg.parse(new String[0]);
-		assertFalse(jsapResult.getBoolean("verbose"));
-	}
+  /**
+   * 
+   * @throws Exception when things go wrong
+   */
+  @Test
+  public void when_flagNotGiven_then_flagNotSet() throws Exception {
+    JSAPResult jsapResult = arg.parse(new String[0]);
+    assertFalse(jsapResult.getBoolean("verbose"));
+  }
 
 }

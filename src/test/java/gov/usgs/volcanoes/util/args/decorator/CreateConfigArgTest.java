@@ -16,45 +16,69 @@ import com.martiansoftware.jsap.ParseException;
 import gov.usgs.volcanoes.util.args.Args;
 import gov.usgs.volcanoes.util.args.Arguments;
 
+/**
+ * 
+ * @author Tom Parker
+ *
+ */
 public class CreateConfigArgTest {
 
-	private static final String DEFAULT_FILENAME = "defaultFilename.config";
-	private static final String EXAMPLE_FILENAME = "Version.java.template";
-	private Arguments arg;
-	private File file;
+  private static final String DEFAULT_FILENAME = "defaultFilename.config";
+  private static final String EXAMPLE_FILENAME = "Version.java.template";
+  private Arguments arg;
+  private File file;
 
-	@Before
-	public void setUp() throws JSAPException {
-		arg = new ConfigFileArg(DEFAULT_FILENAME, new Args(null, null, new Parameter[0]));
-		arg = new CreateConfigArg(EXAMPLE_FILENAME, arg);
-		
-		file = new File(DEFAULT_FILENAME);
-	}
-	
-	@After
-	public void tearDown() {
-		if (file.exists())
-			file.delete();
-	}
+  /**
+   * 
+   * @throws JSAPException when things go wrong
+   */
+  @Before
+  public void setUp() throws JSAPException {
+    arg = new ConfigFileArg(DEFAULT_FILENAME, new Args(null, null, new Parameter[0]));
+    arg = new CreateConfigArg(EXAMPLE_FILENAME, arg);
 
-	@Test(expected = JSAPException.class)
-	public void when_configFileNotCalled_then_trowHelpfulException() throws JSAPException {
-		arg = new CreateConfigArg(EXAMPLE_FILENAME, new Args(null, null, new Parameter[0]));
-	}
-	
-	@Test
-	public void when_givenFlag_then_fileCreated() throws Exception {
-		arg.parse(new String[] {"--create-config"});
-		
-		assertTrue(file.exists());
-	}
+    file = new File(DEFAULT_FILENAME);
+  }
 
-	@Test
-	public void when_notGivenFlag_then_noFileCreated() throws Exception {
-		arg.parse(new String[0]);
-		
-		assertFalse(file.exists());
-	}
+  /**
+   * 
+   */
+  @After
+  public void tearDown() {
+    if (file.exists())
+      file.delete();
+  }
 
-	
+  /**
+   * 
+   * @throws JSAPException when things go wrong
+   */
+  @Test(expected = JSAPException.class)
+  public void when_configFileNotCalled_then_trowHelpfulException() throws JSAPException {
+    arg = new CreateConfigArg(EXAMPLE_FILENAME, new Args(null, null, new Parameter[0]));
+  }
+
+  /**
+   * 
+   * @throws Exception when things go wrong
+   */
+  @Test
+  public void when_givenFlag_then_fileCreated() throws Exception {
+    arg.parse(new String[] {"--create-config"});
+
+    assertTrue(file.exists());
+  }
+
+  /**
+   * 
+   * @throws Exception when things go wrong
+   */
+  @Test
+  public void when_notGivenFlag_then_noFileCreated() throws Exception {
+    arg.parse(new String[0]);
+
+    assertFalse(file.exists());
+  }
+
+
 }
