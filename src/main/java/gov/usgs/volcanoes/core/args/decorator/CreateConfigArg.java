@@ -3,14 +3,14 @@
  * public domain dedication. https://creativecommons.org/publicdomain/zero/1.0/legalcode
  */
 
-package gov.usgs.volcanoes.util.args.decorator;
+package gov.usgs.volcanoes.core.args.decorator;
 
 import com.martiansoftware.jsap.JSAPException;
 import com.martiansoftware.jsap.JSAPResult;
 import com.martiansoftware.jsap.Switch;
 
-import gov.usgs.volcanoes.util.args.ArgsDecorator;
-import gov.usgs.volcanoes.util.args.Arguments;
+import gov.usgs.volcanoes.core.args.ArgsDecorator;
+import gov.usgs.volcanoes.core.args.Arguments;
 
 import java.io.File;
 import java.io.InputStream;

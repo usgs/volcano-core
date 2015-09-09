@@ -3,7 +3,7 @@
  * public domain dedication. https://creativecommons.org/publicdomain/zero/1.0/legalcode
  */
 
-package gov.usgs.volcanoes.util.args.decorator;
+package gov.usgs.volcanoes.core.args.decorator;
 
 
 import com.martiansoftware.jsap.FlaggedOption;
@@ -13,9 +13,9 @@ import com.martiansoftware.jsap.JSAPResult;
 import com.martiansoftware.jsap.ParseException;
 import com.martiansoftware.jsap.StringParser;
 
-import gov.usgs.volcanoes.util.args.ArgsDecorator;
-import gov.usgs.volcanoes.util.args.Arguments;
-import gov.usgs.volcanoes.util.args.parser.DateStringParser;
+import gov.usgs.volcanoes.core.args.ArgsDecorator;
+import gov.usgs.volcanoes.core.args.Arguments;
+import gov.usgs.volcanoes.core.args.parser.DateStringParser;
 
 import java.util.Date;
 

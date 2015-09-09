@@ -1,8 +1,6 @@
- volcano-util
-==========================
+ volcano-core
+==============
 
 [![Build Status](https://travis-ci.org/usgs/volcano-util.png)](https://travis-ci.org/usgs/volcano-util)
 [![Coverage Status](https://coveralls.io/repos/usgs/volcano-util/badge.svg?branch=master&service=github)](https://coveralls.io/github/usgs/volcano-util?branch=master)
-
-Utility classes for Java projects written by Volcano Science Center.
 

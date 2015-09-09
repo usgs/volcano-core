@@ -6,7 +6,8 @@ import org.junit.Test;
 
 import com.martiansoftware.jsap.ParseException;
 
-import gov.usgs.volcanoes.util.data.Scnl;
+import gov.usgs.volcanoes.core.args.parser.ScnlParser;
+import gov.usgs.volcanoes.core.data.Scnl;
 import gov.usgs.volcanoes.util.data.ScnlTest;
 
 /**

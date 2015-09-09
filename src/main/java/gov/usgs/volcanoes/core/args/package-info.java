@@ -4,7 +4,7 @@
  * <P>To use, create an instance of gov.usgs.volcanoes.util.args.Args and decorate it as needed. Be
  * aware that some decorators may be incompatible with others. Not all combinatations make sense.
  *
- * @see gov.usgs.volcanoes.util.args.ArgsFacade
+ * @see gov.usgs.volcanoes.core.args.ArgsFacade
  *
  */
-package gov.usgs.volcanoes.util.args;
+package gov.usgs.volcanoes.core.args;

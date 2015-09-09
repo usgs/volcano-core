@@ -3,6 +3,8 @@ package gov.usgs.volcanoes.util;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 
+import gov.usgs.volcanoes.core.Version;
+
 import org.junit.Test;
 
 /**

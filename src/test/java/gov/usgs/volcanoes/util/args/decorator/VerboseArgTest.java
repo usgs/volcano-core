@@ -11,8 +11,9 @@ import com.martiansoftware.jsap.JSAPResult;
 import com.martiansoftware.jsap.Parameter;
 import com.martiansoftware.jsap.ParseException;
 
-import gov.usgs.volcanoes.util.args.Args;
-import gov.usgs.volcanoes.util.args.Arguments;
+import gov.usgs.volcanoes.core.args.Args;
+import gov.usgs.volcanoes.core.args.Arguments;
+import gov.usgs.volcanoes.core.args.decorator.VerboseArg;
 
 /**
  * 

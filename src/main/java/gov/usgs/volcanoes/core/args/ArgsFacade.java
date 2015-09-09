@@ -3,15 +3,15 @@
  * public domain dedication. https://creativecommons.org/publicdomain/zero/1.0/legalcode
  */
 
-package gov.usgs.volcanoes.util.args;
+package gov.usgs.volcanoes.core.args;
 
 import com.martiansoftware.jsap.JSAPResult;
 import com.martiansoftware.jsap.Parameter;
 import com.martiansoftware.jsap.Switch;
 
-import gov.usgs.volcanoes.util.args.decorator.ConfigFileArg;
-import gov.usgs.volcanoes.util.args.decorator.CreateConfigArg;
-import gov.usgs.volcanoes.util.args.decorator.VerboseArg;
+import gov.usgs.volcanoes.core.args.decorator.ConfigFileArg;
+import gov.usgs.volcanoes.core.args.decorator.CreateConfigArg;
+import gov.usgs.volcanoes.core.args.decorator.VerboseArg;
 
 import org.apache.log4j.BasicConfigurator;
 import org.slf4j.Logger;

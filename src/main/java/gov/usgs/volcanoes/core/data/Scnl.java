@@ -4,7 +4,7 @@
  * https://creativecommons.org/publicdomain/zero/1.0/legalcode
  */
 
-package gov.usgs.volcanoes.util.data;
+package gov.usgs.volcanoes.core.data;
 
 /**
  * An immutable class for holding SCNL data.

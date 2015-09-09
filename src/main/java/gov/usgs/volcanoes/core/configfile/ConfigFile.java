@@ -4,7 +4,7 @@
  * https://creativecommons.org/publicdomain/zero/1.0/legalcode
  */
 
-package gov.usgs.volcanoes.util.configfile;
+package gov.usgs.volcanoes.core.configfile;
 
 import java.io.BufferedReader;
 import java.io.File;

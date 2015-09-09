@@ -3,7 +3,7 @@
 	<modelVersion>4.0.0</modelVersion>
 
 	<groupId>gov.usgs.volcanoes</groupId>
-	<artifactId>util</artifactId>
+	<artifactId>volcano-core</artifactId>
 	<version>1.1.7-SNAPSHOT</version>
 	<packaging>jar</packaging>
 
@@ -13,7 +13,7 @@
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<version.template.file>src/main/resources/Version.java.template</version.template.file>
-		<version.file>src/main/java/gov/usgs/volcanoes/util/Version.java</version.file>
+		<version.file>src/main/java/gov/usgs/volcanoes/core/Version.java</version.file>
 	</properties>
 
 	<licenses>
@@ -25,7 +25,7 @@
 	</licenses>
 
 	<issueManagement>
-		<url>https://github.com/usgs/volcano-util</url>
+		<url>https://github.com/usgs/volcano-core</url>
 		<system>GitHub</system>
 	</issueManagement>
 
@@ -47,6 +47,12 @@
 			</properties>
 		</developer>
 	</developers>
+
+	<scm>
+		<connection>scm:git:git@github.com:usgs/volcano-core.git</connection>
+		<developerConnection>scm:git:git@github.com:usgs/volcano-core.git</developerConnection>
+		<url>git@github.com:usgs/volcano-core.git</url>
+	</scm>
 
 	<reporting>
 		<plugins>
@@ -135,7 +141,7 @@
 		</repository>
 		<site>
 			<id>github.pages</id>
-			<url>scm:git:https://git@github.com/usgs/volcano-util.git</url>
+			<url>scm:git:https://git@github.com/usgs/volcano-core.git</url>
 		</site>
 	</distributionManagement>
 

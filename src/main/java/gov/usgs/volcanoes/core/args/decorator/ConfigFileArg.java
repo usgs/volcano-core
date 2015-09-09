@@ -3,14 +3,14 @@
  * public domain dedication. https://creativecommons.org/publicdomain/zero/1.0/legalcode
  */
 
-package gov.usgs.volcanoes.util.args.decorator;
+package gov.usgs.volcanoes.core.args.decorator;
 
 import com.martiansoftware.jsap.JSAP;
 import com.martiansoftware.jsap.JSAPException;
 import com.martiansoftware.jsap.UnflaggedOption;
 
-import gov.usgs.volcanoes.util.args.ArgsDecorator;
-import gov.usgs.volcanoes.util.args.Arguments;
+import gov.usgs.volcanoes.core.args.ArgsDecorator;
+import gov.usgs.volcanoes.core.args.Arguments;
 
 /**
  * Gather a config filename from the command line.
