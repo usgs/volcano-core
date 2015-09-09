@@ -3,6 +3,7 @@
  * Universal public domain dedication.
  * https://creativecommons.org/publicdomain/zero/1.0/legalcode
  */
+
 package gov.usgs.volcanoes.util.args.parser;
 
 import java.text.SimpleDateFormat;
