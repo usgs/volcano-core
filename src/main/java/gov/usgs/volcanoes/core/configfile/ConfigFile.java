@@ -572,13 +572,16 @@ public final class ConfigFile {
       final Path bak = FileSystems.getDefault().getPath(".", fn + ".bak");
 
       if (Files.exists(bak)) {
+        LOGGER.debug("Removing old backup cofig. ({})", bak);
         Files.delete(bak);
       }
       
       if (Files.exists(file)) {
+        LOGGER.debug("Making cofig backup. ({})", bak);
         Files.move(file, bak, StandardCopyOption.REPLACE_EXISTING);
       }
       
+      LOGGER.debug("Writing cofig. ({})", fn);
       final OutputStream outStream = new FileOutputStream(new File(fn));
       final Writer writer = new OutputStreamWriter(outStream, StandardCharsets.UTF_8);
       final PrintWriter out = new PrintWriter(writer);
