@@ -11,6 +11,8 @@ import org.junit.Test;
 import com.martiansoftware.jsap.ParseException;
 import com.martiansoftware.jsap.StringParser;
 
+import gov.usgs.volcanoes.core.args.parser.DateStringParser;
+
 /**
  * 
  * @author Tom Parker

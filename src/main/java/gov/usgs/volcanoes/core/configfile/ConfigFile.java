@@ -4,15 +4,28 @@
  * https://creativecommons.org/publicdomain/zero/1.0/legalcode
  */
 
-package gov.usgs.volcanoes.util.configfile;
+package gov.usgs.volcanoes.core.configfile;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.FileWriter;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.OutputStream;
+import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
+import java.io.Reader;
+import java.io.Writer;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.FileSystems;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.StandardCopyOption;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -27,6 +40,9 @@ import java.util.Set;
  * @author Dan Cervelli
  */
 public final class ConfigFile {
+  private static final Logger LOGGER = LoggerFactory.getLogger(ConfigFile.class);
+
+
   private final Map<String, List<String>> config;
   private String name;
 
@@ -67,11 +83,12 @@ public final class ConfigFile {
   public ConfigFile deepCopy() {
     final ConfigFile copy = new ConfigFile();
 
-    for (final String key : config.keySet()) {
-      final List<String> myList = config.get(key);
+    for (Map.Entry<String, List<String>> entry : config.entrySet()) {
+      final List<String> value = entry.getValue();
+      final String key = entry.getKey();
 
-      if (myList != null) {
-        final List<String> newList = new ArrayList<String>(myList);
+      if (value != null) {
+        final List<String> newList = new ArrayList<String>(value);
         copy.putList(key, newList);
       }
     }
@@ -306,12 +323,12 @@ public final class ConfigFile {
     newConfig.name = prefix;
     final Map<String, List<String>> configMap = newConfig.getConfig();
 
-    final Iterator<String> it = config.keySet().iterator();
-    while (it.hasNext()) {
-      final String key = it.next();
+    for (Map.Entry<String, List<String>> entry : config.entrySet()) {
+      String key = entry.getKey();
+      List<String> value = entry.getValue();
       if (key.startsWith(prefix) && key.length() > prefix.length()) {
         final String newKey = key.substring(prefix.length() + 1);
-        final List<String> newList = new ArrayList<String>(config.get(key));
+        final List<String> newList = new ArrayList<String>(value);
         configMap.put(newKey, newList);
       }
     }
@@ -352,12 +369,16 @@ public final class ConfigFile {
    */
   public void putConfig(ConfigFile cf, boolean preserve) {
     final Map<String, List<String>> configIn = cf.getConfig();
-    for (final String key : configIn.keySet()) {
+
+    for (Map.Entry<String, List<String>> entry : configIn.entrySet()) {
+      final String key = entry.getKey();
+      final List<String> value = entry.getValue();
+
       if (!preserve) {
         remove(key);
       }
 
-      putList(key, configIn.get(key));
+      putList(key, value);
     }
   }
 
@@ -391,7 +412,8 @@ public final class ConfigFile {
   public void readConfigFile(File file, boolean replace) throws FileNotFoundException {
     try {
       // File f = new File(fn);
-      final BufferedReader in = new BufferedReader(new FileReader(file));
+      Reader reader = new InputStreamReader(new FileInputStream(file), StandardCharsets.UTF_8);
+      final BufferedReader in = new BufferedReader(reader);
       String line;
       while ((line = in.readLine()) != null) {
         line = line.trim();
@@ -507,17 +529,19 @@ public final class ConfigFile {
   @Override
   public String toString() {
     final StringBuilder sb = new StringBuilder();
-    for (final String key : config.keySet()) {
-      final List<String> list = config.get(key);
-      if (list.size() == 1) {
-        sb.append(key + "=" + list.get(0) + "\n");
+    for (final Map.Entry<String, List<String>> entry : config.entrySet()) {
+      final String key = entry.getKey();
+      final List<String> value = entry.getValue();
+      if (value.size() == 1) {
+        sb.append(key + "=" + value.get(0) + "\n");
       } else {
         sb.append(key + "=[list]\n");
-        for (final String s : list) {
+        for (final String s : value) {
           sb.append("\t" + s + "\n");
         }
       }
     }
+
     return sb.toString();
   }
 
@@ -544,16 +568,24 @@ public final class ConfigFile {
     Arrays.sort(keys);
 
     try {
-      final File f = new File(fn);
-      final File bak = new File(fn + ".bak");
-      if (bak.exists()) {
-        bak.delete();
-      }
-      if (f.exists()) {
-        f.renameTo(bak);
-      }
+      final Path file = FileSystems.getDefault().getPath(".", fn);
+      final Path bak = FileSystems.getDefault().getPath(".", fn + ".bak");
 
-      final PrintWriter out = new PrintWriter(new FileWriter(fn));
+      if (Files.exists(bak)) {
+        LOGGER.debug("Removing old backup cofig. ({})", bak);
+        Files.delete(bak);
+      }
+      
+      if (Files.exists(file)) {
+        LOGGER.debug("Making cofig backup. ({})", bak);
+        Files.move(file, bak, StandardCopyOption.REPLACE_EXISTING);
+      }
+      
+      LOGGER.debug("Writing cofig. ({})", fn);
+      final OutputStream outStream = new FileOutputStream(new File(fn));
+      final Writer writer = new OutputStreamWriter(outStream, StandardCharsets.UTF_8);
+      final PrintWriter out = new PrintWriter(writer);
+      
       for (int i = 0; i < keys.length; i++) {
         final String k = keys[i];
         final Object o = config.get(k);

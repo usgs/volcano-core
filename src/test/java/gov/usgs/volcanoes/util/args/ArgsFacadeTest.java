@@ -6,6 +6,8 @@ import org.junit.Test;
 
 import com.martiansoftware.jsap.JSAPException;
 
+import gov.usgs.volcanoes.core.args.ArgsFacade;
+
 /**
  * 
  * @author Tom Parker

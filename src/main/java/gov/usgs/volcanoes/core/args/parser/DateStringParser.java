@@ -4,7 +4,7 @@
  * https://creativecommons.org/publicdomain/zero/1.0/legalcode
  */
 
-package gov.usgs.volcanoes.util.args.parser;
+package gov.usgs.volcanoes.core.args.parser;
 
 import com.martiansoftware.jsap.ParseException;
 import com.martiansoftware.jsap.StringParser;

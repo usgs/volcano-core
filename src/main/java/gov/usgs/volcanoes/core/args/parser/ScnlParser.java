@@ -4,12 +4,12 @@
  * https://creativecommons.org/publicdomain/zero/1.0/legalcode
  */
 
-package gov.usgs.volcanoes.util.args.parser;
+package gov.usgs.volcanoes.core.args.parser;
 
 import com.martiansoftware.jsap.ParseException;
 import com.martiansoftware.jsap.StringParser;
 
-import gov.usgs.volcanoes.util.data.Scnl;
+import gov.usgs.volcanoes.core.data.Scnl;
 
 import java.util.regex.Pattern;
 

@@ -4,7 +4,9 @@
  * https://creativecommons.org/publicdomain/zero/1.0/legalcode
  */
 
-package gov.usgs.volcanoes.util.data;
+package gov.usgs.volcanoes.core.data;
+
+import gov.usgs.volcanoes.core.util.HashCodeUtil;
 
 /**
  * An immutable class for holding SCNL data.
@@ -100,12 +102,12 @@ public class Scnl implements Comparable<Scnl> {
 
   @Override
   public int hashCode() {
-    int hash = 17;
+    int hash = HashCodeUtil.SEED;
 
-    hash = 31 * hash + (station != null ? station.hashCode() : 0);
-    hash = 31 * hash + (channel != null ? channel.hashCode() : 0);
-    hash = 31 * hash + (network != null ? network.hashCode() : 0);
-    hash = 31 * hash + (location != null ? location.hashCode() : 0);
+    hash = HashCodeUtil.hash(hash, station);
+    hash = HashCodeUtil.hash(hash, channel);
+    hash = HashCodeUtil.hash(hash, network);
+    hash = HashCodeUtil.hash(hash, location);
 
     return hash;
   }
