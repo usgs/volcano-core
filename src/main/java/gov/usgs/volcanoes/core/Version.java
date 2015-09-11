@@ -14,7 +14,7 @@ package gov.usgs.volcanoes.core;
 public interface Version {
 
   /** my build time. */
-  public static final String BUILD_TIME = "2015-09-10T16:46:29Z";
+  public static final String BUILD_TIME = "2015-09-11T20:22:21Z";
 
   /** version taken from the POM. */
   public static final String POM_VERSION = "1.2.0-SNAPSHOT";
