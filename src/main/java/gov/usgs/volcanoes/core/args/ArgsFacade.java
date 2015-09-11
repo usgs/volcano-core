@@ -23,7 +23,7 @@ import org.slf4j.LoggerFactory;
  * @author Tom Parker
  */
 public class ArgsFacade {
-  public static final String DEFAULT_CONFIG_FILENAME = "facadeConfig.config";
+  private static final String DEFAULT_CONFIG_FILENAME = "facadeConfig.config";
 
   private static final String EXAMPLE_CONFIG_FILENAME = "facadeConfig.config";
   private static final String EXPLANATION = "I am demonstrate how to use the args package\n";
