@@ -10,6 +10,10 @@
     <system>GitHub</system>
     <url>https://github.com/usgs/volcano-core</url>
   </issueManagement>
+  <ciManagement>
+    <system>Travis</system>
+    <url>https://travis-ci.org/usgs/volcano-core/</url>
+  </ciManagement>
   <developers>
     <developer>
       <id>dcervelli</id>
@@ -228,7 +232,7 @@
               <configLocation>checkstyle.xml</configLocation>
               <encoding>UTF-8</encoding>
               <consoleOutput>true</consoleOutput>
-              <failOnViolation>false</failOnViolation>
+              <failOnViolation>true</failOnViolation>
               <linkXRef>false</linkXRef>
             </configuration>
           </execution>

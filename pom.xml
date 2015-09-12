@@ -296,7 +296,7 @@
 							<configLocation>checkstyle.xml</configLocation>
 							<encoding>UTF-8</encoding>
 							<consoleOutput>true</consoleOutput>
-							<failOnViolation>false</failOnViolation>
+							<failOnViolation>true</failOnViolation>
 							<linkXRef>false</linkXRef>
 						</configuration>
 						<goals>
