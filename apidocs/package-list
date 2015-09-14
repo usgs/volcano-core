@@ -4,3 +4,4 @@ gov.usgs.volcanoes.core.args.decorator
 gov.usgs.volcanoes.core.args.parser
 gov.usgs.volcanoes.core.configfile
 gov.usgs.volcanoes.core.data
+gov.usgs.volcanoes.core.util

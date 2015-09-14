@@ -25,7 +25,7 @@ under the License.
     <language>en-us</language>
     <copyright>&#169;2015</copyright>
     <item>
-      <title>File: 15,
+      <title>File: 16,
              Errors: 0,
              Warnings: 0,
              Infos: 0
@@ -103,6 +103,20 @@ under the License.
                           <tr>
                 <td>
                   <a href="http://maven.apache.org/checkstyle.html#gov.usgs.volcanoes.core.args.decorator.DateRangeArg.java">gov/usgs/volcanoes/core/args/decorator/DateRangeArg.java</a>
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+              </tr>
+                          <tr>
+                <td>
+                  <a href="http://maven.apache.org/checkstyle.html#gov.usgs.volcanoes.core.util.HashCodeUtil.java">gov/usgs/volcanoes/core/util/HashCodeUtil.java</a>
                 </td>
                 <td>
                   0
