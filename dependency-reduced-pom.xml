@@ -283,7 +283,7 @@
         <version>3.0.0</version>
         <configuration>
           <effort>Max</effort>
-          <threshold>max</threshold>
+          <threshold>Low</threshold>
           <xmlOutput>true</xmlOutput>
         </configuration>
       </plugin>
