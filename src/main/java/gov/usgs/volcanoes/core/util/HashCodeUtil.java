@@ -51,89 +51,90 @@ import java.lang.reflect.Array;
 public final class HashCodeUtil {
 
   /**
-   * An initial value for a <tt>hashCode</tt>, to which is added contributions
-   * from fields. Using a non-zero value decreases collisons of <tt>hashCode</tt>
-   * values.
-   */
+  * An initial value for a <tt>hashCode</tt>, to which is added contributions
+  * from fields. Using a non-zero value decreases collisons of <tt>hashCode</tt>
+  * values.
+  */
   public static final int SEED = 23;
 
-  /** booleans. */
-  public static int hash(int inSeed, boolean inBoolean) {
+  /** booleans.  */
+  public static int hash(int aSeed, boolean aBoolean) {
     log("boolean...");
-    return firstTerm(inSeed) + (inBoolean ? 1 : 0);
+    return firstTerm( aSeed ) + (aBoolean ? 1 : 0);
   }
 
-  /*** chars. */
-  public static int hash(int inSeed, char inChar) {
+  /*** chars.  */
+  public static int hash(int aSeed, char aChar) {
     log("char...");
-    return firstTerm(inSeed) + (int) inChar;
+    return firstTerm(aSeed) + (int)aChar;
   }
 
-  /** ints. */
-  public static int hash(int inSeed, int inInt) {
+  /** ints.  */
+  public static int hash(int aSeed , int aInt) {
     /*
-     * Implementation Note
-     * Note that byte and short are handled by this method, through
-     * implicit conversion.
-     */
+    * Implementation Note
+    * Note that byte and short are handled by this method, through
+    * implicit conversion.
+    */
     log("int...");
-    return firstTerm(inSeed) + inInt;
+    return firstTerm(aSeed) + aInt;
   }
 
-  /** longs. */
-  public static int hash(int inSeed, long inLong) {
+  /** longs.  */
+  public static int hash(int aSeed , long aLong) {
     log("long...");
-    return firstTerm(inSeed) + (int) (inLong ^ (inLong >>> 32));
+    return firstTerm(aSeed)  + (int)(aLong ^ (aLong >>> 32));
   }
 
-  /** floats. */
-  public static int hash(int inSeed, float inFloat) {
-    return hash(inSeed, Float.floatToIntBits(inFloat));
+  /** floats.  */
+  public static int hash(int aSeed , float aFloat) {
+    return hash(aSeed, Float.floatToIntBits(aFloat));
   }
 
   /** doubles. */
-  public static int hash(int inSeed, double inDouble) {
-    return hash(inSeed, Double.doubleToLongBits(inDouble));
+  public static int hash(int aSeed , double aDouble) {
+    return hash( aSeed, Double.doubleToLongBits(aDouble) );
   }
 
   /**
-   * <tt>aObject</tt> is a possibly-null object field, and possibly an array.
-   *
-   * <p>If <tt>aObject</tt> is an array, then each element may be a primitive
-   * or a possibly-null object.
-   */
-  public static int hash(int inSeed, Object inObject) {
-    int result = inSeed;
-    if (inObject == null) {
+  * <tt>aObject</tt> is a possibly-null object field, and possibly an array.
+  *
+  * If <tt>aObject</tt> is an array, then each element may be a primitive
+  * or a possibly-null object.
+  */
+  public static int hash(int aSeed , Object aObject) {
+    int result = aSeed;
+    if (aObject == null){
       result = hash(result, 0);
-    } else if (!isArray(inObject)) {
-      result = hash(result, inObject.hashCode());
-    } else {
-      int length = Array.getLength(inObject);
+    }
+    else if (!isArray(aObject)){
+      result = hash(result, aObject.hashCode());
+    }
+    else {
+      int length = Array.getLength(aObject);
       for (int idx = 0; idx < length; ++idx) {
-        Object item = Array.get(inObject, idx);
-        // if an item in the array references the array itself, prevent infinite looping
-        if (!(item == inObject)) {
-          // recursive call!
+        Object item = Array.get(aObject, idx);
+        //if an item in the array references the array itself, prevent infinite looping
+        if(! (item == aObject))  
+          //recursive call!
           result = hash(result, item);
         }
-      }
     }
     return result;
-  }
-
-  // PRIVATE
+  }  
+  
+  // PRIVATE 
   private static final int fODD_PRIME_NUMBER = 37;
 
-  private static int firstTerm(int inSeed) {
-    return fODD_PRIME_NUMBER * inSeed;
+  private static int firstTerm(int aSeed){
+    return fODD_PRIME_NUMBER * aSeed;
   }
 
-  private static boolean isArray(Object inObject) {
-    return inObject.getClass().isArray();
+  private static boolean isArray(Object aObject){
+    return aObject.getClass().isArray();
   }
-
-  private static void log(String inMessage) {
-    System.out.println(inMessage);
+  
+  private static void log(String aMessage){
+    System.out.println(aMessage);
   }
-}
+} 

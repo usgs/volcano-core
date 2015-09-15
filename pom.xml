@@ -83,7 +83,7 @@
 						you run out of memory, changes the value of the effort element to 'low'. -->
 					<effort>Max</effort>
 					<!-- Reports all bugs (other values are medium and max) -->
-					<threshold>max</threshold>
+					<threshold>Low</threshold>
 					<!-- Produces XML report -->
 					<xmlOutput>true</xmlOutput>
 				</configuration>
@@ -153,6 +153,15 @@
 
 	<build>
 		<plugins>
+    <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-compiler-plugin</artifactId>
+        <version>3.3</version>
+        <configuration>
+          <source>1.7</source>
+          <target>1.7</target>
+        </configuration>
+      </plugin>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-shade-plugin</artifactId>
@@ -296,7 +305,7 @@
 							<configLocation>checkstyle.xml</configLocation>
 							<encoding>UTF-8</encoding>
 							<consoleOutput>true</consoleOutput>
-							<failOnViolation>false</failOnViolation>
+							<failOnViolation>true</failOnViolation>
 							<linkXRef>false</linkXRef>
 						</configuration>
 						<goals>
