@@ -35,7 +35,7 @@ public class CreateConfigArg extends ArgsDecorator {
    *
    * @param exampleConfigFile String resource of example configfile
    * @param nextArg The next Argument in the list
-   * @throws JSAPException if parameter is already registered or cannot be added.
+   * @throws ArgumentException if parameter is already registered or cannot be added.
    */
   public CreateConfigArg(final String exampleConfigFile, Arguments nextArg)
       throws ArgumentException {
