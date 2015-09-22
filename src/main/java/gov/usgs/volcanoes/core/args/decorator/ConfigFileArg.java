@@ -10,12 +10,13 @@ import com.martiansoftware.jsap.JSAPException;
 import com.martiansoftware.jsap.UnflaggedOption;
 
 import gov.usgs.volcanoes.core.args.ArgsDecorator;
+import gov.usgs.volcanoes.core.args.ArgumentException;
 import gov.usgs.volcanoes.core.args.Arguments;
 
 /**
  * Gather a config filename from the command line.
  *
- * <p>The filename is taken from the first available unflagged option and placed in 
+ * <p>The filename is taken from the first available unflagged option and placed in
  * "config-filename". Be careful of the order that Args are added.
  *
  * @author Tom Parker
@@ -27,9 +28,10 @@ public class ConfigFileArg extends ArgsDecorator {
    *
    * @param defaultFileName The value to assign if the parameter is not given on the command line
    * @param nextArg The next Arguments object in the chain
-   * @throws JSAPException if new Parameter cannot be created. Not sure why this would happen
+   * @throws ArgumentException if new Parameter cannot be created. Not sure why this would happen
    */
-  public ConfigFileArg(final String defaultFileName, final Arguments nextArg) throws JSAPException {
+  public ConfigFileArg(final String defaultFileName, final Arguments nextArg)
+      throws ArgumentException {
     super(nextArg);
 
     registerParameter(new UnflaggedOption("config-filename", JSAP.STRING_PARSER, defaultFileName,

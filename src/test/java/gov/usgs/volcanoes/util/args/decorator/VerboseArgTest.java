@@ -12,6 +12,7 @@ import com.martiansoftware.jsap.Parameter;
 import com.martiansoftware.jsap.ParseException;
 
 import gov.usgs.volcanoes.core.args.Args;
+import gov.usgs.volcanoes.core.args.ArgumentException;
 import gov.usgs.volcanoes.core.args.Arguments;
 import gov.usgs.volcanoes.core.args.decorator.VerboseArg;
 
@@ -27,9 +28,10 @@ public class VerboseArgTest {
   /**
    * 
    * @throws JSAPException when things go wrong
+   * @throws ArgumentException 
    */
   @Before
-  public void setUp() throws JSAPException {
+  public void setUp() throws JSAPException, ArgumentException {
     arg = new VerboseArg(new Args(null, null, new Parameter[0]));
   }
 

@@ -5,7 +5,6 @@
 
 package gov.usgs.volcanoes.core.args;
 
-import com.martiansoftware.jsap.JSAPException;
 import com.martiansoftware.jsap.JSAPResult;
 import com.martiansoftware.jsap.Parameter;
 
@@ -27,19 +26,19 @@ public interface Arguments {
   /**
    * Parse a command line.
    *
-   * @param args The arguments provieded at program launch
+   * @param args The arguments provided at program launch
    * @return The parsed arguments
-   * @throws Exception if anything goes wrong. Yes, pretty much anything.
+   * @throws ArgumentException if anything goes wrong. Yes, pretty much anything.
    */
-  public JSAPResult parse(String[] args) throws Exception;
+  public JSAPResult parse(String[] args) throws ArgumentException;
 
   /**
    * Register a Parameter with JSAP.
    * 
    * @param parameter The Parameter to register
-   * @throws JSAPException if I cannot register the parameter
+   * @throws ArgumentException if I cannot register the parameter
    */
-  public void registerParameter(Parameter parameter) throws JSAPException;
+  public void registerParameter(Parameter parameter) throws ArgumentException;
 
   /**
    * Report whether JSAP displayed a message to the user. Typically means either an error or that

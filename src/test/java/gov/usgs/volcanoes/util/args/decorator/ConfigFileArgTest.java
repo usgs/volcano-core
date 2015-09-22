@@ -2,17 +2,17 @@ package gov.usgs.volcanoes.util.args.decorator;
 
 import static org.junit.Assert.assertEquals;
 
-import org.junit.Before;
-import org.junit.Test;
-
 import com.martiansoftware.jsap.JSAPException;
 import com.martiansoftware.jsap.JSAPResult;
 import com.martiansoftware.jsap.Parameter;
-import com.martiansoftware.jsap.ParseException;
 
 import gov.usgs.volcanoes.core.args.Args;
+import gov.usgs.volcanoes.core.args.ArgumentException;
 import gov.usgs.volcanoes.core.args.Arguments;
 import gov.usgs.volcanoes.core.args.decorator.ConfigFileArg;
+
+import org.junit.Before;
+import org.junit.Test;
 
 /**
  * 
@@ -27,9 +27,10 @@ public class ConfigFileArgTest {
   /**
    * 
    * @throws JSAPException when things go wrong
+   * @throws ArgumentException 
    */
   @Before
-  public void setUp() throws JSAPException {
+  public void setUp() throws JSAPException, ArgumentException {
     arg = new ConfigFileArg(DEFAULT_FILENAME, new Args(null, null, new Parameter[0]));
   }
 
@@ -40,7 +41,7 @@ public class ConfigFileArgTest {
   @Test
   public void when_filenameGiven_then_filenameSet() throws Exception {
     String configFile = "configFile.config";
-    String[] commandLine = {configFile};
+    String[] commandLine = { configFile };
     JSAPResult jsapResult = arg.parse(commandLine);
     assertEquals(jsapResult.getString("config-filename"), configFile);
   }

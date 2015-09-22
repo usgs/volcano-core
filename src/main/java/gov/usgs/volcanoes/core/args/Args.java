@@ -25,10 +25,15 @@ public class Args implements Arguments {
    * @param programName Name of the application use is running
    * @param explanation Brief explanation of application use
    * @param parameters Prepopulated list of JSAP Parameters
-   * @throws JSAPException if SimpleJSAP throws it
+   * @throws ArgumentException if things go wrong
    */
-  public Args(String programName, String explanation, Parameter[] parameters) throws JSAPException {
-    jsap = new SimpleJSAP(programName, explanation, parameters);
+  public Args(String programName, String explanation, Parameter[] parameters)
+      throws ArgumentException {
+    try {
+      jsap = new SimpleJSAP(programName, explanation, parameters);
+    } catch (JSAPException e) {
+      throw new ArgumentException(e);
+    }
   }
 
   public Parameter getById(String id) {
@@ -47,10 +52,14 @@ public class Args implements Arguments {
     return jsapResult;
   }
 
-  public void registerParameter(Parameter parameter) throws JSAPException {
-    jsap.registerParameter(parameter);
+  public void registerParameter(Parameter parameter) throws ArgumentException {
+    try {
+      jsap.registerParameter(parameter);
+    } catch (JSAPException e) {
+      throw new ArgumentException(e);
+    }
   }
-  
+
   public boolean messagePrinted() {
     return jsap.messagePrinted();
   }

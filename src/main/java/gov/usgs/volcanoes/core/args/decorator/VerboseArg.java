@@ -10,6 +10,7 @@ import com.martiansoftware.jsap.JSAPResult;
 import com.martiansoftware.jsap.Switch;
 
 import gov.usgs.volcanoes.core.args.ArgsDecorator;
+import gov.usgs.volcanoes.core.args.ArgumentException;
 import gov.usgs.volcanoes.core.args.Arguments;
 
 import org.apache.log4j.Level;
@@ -25,15 +26,15 @@ public class VerboseArg extends ArgsDecorator {
   /**
    *
    * @param nextArg The Argument object that I'm wrapping
-   * @throws JSAPException if Parameters cannot be registered.
+   * @throws ArgumentException if Parameters cannot be registered.
    */
-  public VerboseArg(Arguments nextArg) throws JSAPException {
+  public VerboseArg(Arguments nextArg) throws ArgumentException {
     super(nextArg);
     nextArg.registerParameter(new Switch("verbose", 'v', "verbose", "Verbose logging."));
   }
 
   @Override
-  public JSAPResult parse(String[] args) throws Exception {
+  public JSAPResult parse(String[] args) throws ArgumentException {
     final JSAPResult jsap = super.parse(args);
 
     if (jsap.getBoolean("verbose")) {

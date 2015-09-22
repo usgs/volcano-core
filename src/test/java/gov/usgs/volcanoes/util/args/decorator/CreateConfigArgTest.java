@@ -14,6 +14,7 @@ import com.martiansoftware.jsap.Parameter;
 import com.martiansoftware.jsap.ParseException;
 
 import gov.usgs.volcanoes.core.args.Args;
+import gov.usgs.volcanoes.core.args.ArgumentException;
 import gov.usgs.volcanoes.core.args.Arguments;
 import gov.usgs.volcanoes.core.args.decorator.ConfigFileArg;
 import gov.usgs.volcanoes.core.args.decorator.CreateConfigArg;
@@ -33,9 +34,10 @@ public class CreateConfigArgTest {
   /**
    * 
    * @throws JSAPException when things go wrong
+   * @throws ArgumentException 
    */
   @Before
-  public void setUp() throws JSAPException {
+  public void setUp() throws JSAPException, ArgumentException {
     arg = new ConfigFileArg(DEFAULT_FILENAME, new Args(null, null, new Parameter[0]));
     arg = new CreateConfigArg(EXAMPLE_FILENAME, arg);
 
@@ -54,9 +56,10 @@ public class CreateConfigArgTest {
   /**
    * 
    * @throws JSAPException when things go wrong
+   * @throws ArgumentException 
    */
   @Test(expected = JSAPException.class)
-  public void when_configFileNotCalled_then_trowHelpfulException() throws JSAPException {
+  public void when_configFileNotCalled_then_trowHelpfulException() throws JSAPException, ArgumentException {
     arg = new CreateConfigArg(EXAMPLE_FILENAME, new Args(null, null, new Parameter[0]));
   }
 

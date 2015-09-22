@@ -13,6 +13,7 @@ import com.martiansoftware.jsap.Parameter;
 import com.martiansoftware.jsap.ParseException;
 
 import gov.usgs.volcanoes.core.args.Args;
+import gov.usgs.volcanoes.core.args.ArgumentException;
 import gov.usgs.volcanoes.core.args.Arguments;
 
 /**
@@ -39,9 +40,10 @@ public class ArgsTest {
   /**
    * 
    * @throws JSAPException when things go wrong
+   * @throws ArgumentException 
    */
   @Test
-  public void when_intializedWithParam_them_paramSet() throws JSAPException {
+  public void when_intializedWithParam_them_paramSet() throws JSAPException, ArgumentException {
     Parameter[] params = new Parameter[] {parameter};
     Arguments args = new Args(null, null, params);
 
@@ -53,9 +55,10 @@ public class ArgsTest {
   /**
    * 
    * @throws JSAPException when things go wrong
+   * @throws ArgumentException 
    */
   @Test
-  public void when_paramRegistered_them_paramSet() throws JSAPException {
+  public void when_paramRegistered_them_paramSet() throws JSAPException, ArgumentException {
     Arguments args = new Args(null, null, new Parameter[0]);
     args.registerParameter(parameter);
 
