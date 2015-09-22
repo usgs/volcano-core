@@ -55,20 +55,20 @@ public class CreateConfigArgTest {
 
   /**
    * 
-   * @throws JSAPException when things go wrong
+   * @throws ArgumentException when things go wrong
    * @throws ArgumentException 
    */
-  @Test(expected = JSAPException.class)
+  @Test(expected = ArgumentException.class)
   public void when_configFileNotCalled_then_trowHelpfulException() throws JSAPException, ArgumentException {
     arg = new CreateConfigArg(EXAMPLE_FILENAME, new Args(null, null, new Parameter[0]));
   }
 
   /**
    * 
-   * @throws Exception when things go wrong
+   * @throws ArgumentException when things go wrong
    */
   @Test
-  public void when_givenFlag_then_fileCreated() throws Exception {
+  public void when_givenFlag_then_fileCreated() throws ArgumentException {
     arg.parse(new String[] {"--create-config"});
 
     assertTrue(file.exists());
@@ -76,10 +76,10 @@ public class CreateConfigArgTest {
 
   /**
    * 
-   * @throws Exception when things go wrong
+   * @throws ArgumentException when things go wrong
    */
   @Test
-  public void when_notGivenFlag_then_noFileCreated() throws Exception {
+  public void when_notGivenFlag_then_noFileCreated() throws ArgumentException {
     arg.parse(new String[0]);
 
     assertFalse(file.exists());
