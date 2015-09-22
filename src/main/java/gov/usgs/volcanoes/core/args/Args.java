@@ -50,4 +50,8 @@ public class Args implements Arguments {
   public void registerParameter(Parameter parameter) throws JSAPException {
     jsap.registerParameter(parameter);
   }
+  
+  public boolean messagePrinted() {
+    return jsap.messagePrinted();
+  }
 }

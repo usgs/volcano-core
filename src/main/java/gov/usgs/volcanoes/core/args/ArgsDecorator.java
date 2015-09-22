@@ -48,4 +48,8 @@ public abstract class ArgsDecorator implements Arguments {
     nextArg.registerParameter(parameter);
   }
 
+  public boolean messagePrinted() {
+    return nextArg.messagePrinted();
+  }
+
 }

@@ -40,4 +40,12 @@ public interface Arguments {
    * @throws JSAPException if I cannot register the parameter
    */
   public void registerParameter(Parameter parameter) throws JSAPException;
+
+  /**
+   * Report whether JSAP displayed a message to the user. Typically means either an error or that
+   * the user requested help.
+   * 
+   * @return True if JSAP printed a message while parsing arguments
+   */
+  public boolean messagePrinted();
 }
