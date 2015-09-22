@@ -8,7 +8,6 @@ package gov.usgs.volcanoes.core.args.decorator;
 
 import com.martiansoftware.jsap.FlaggedOption;
 import com.martiansoftware.jsap.JSAP;
-import com.martiansoftware.jsap.JSAPException;
 import com.martiansoftware.jsap.JSAPResult;
 import com.martiansoftware.jsap.ParseException;
 import com.martiansoftware.jsap.StringParser;

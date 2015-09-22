@@ -13,7 +13,7 @@ package gov.usgs.volcanoes.core.args;
  */
 public class ArgumentException extends Exception {
 
-  /** Maybe I'll be serialized one day? */
+  /** Maybe I'll be serialized one day. */
   private static final long serialVersionUID = -2778645971529842119L;
 
   /**
@@ -30,7 +30,7 @@ public class ArgumentException extends Exception {
    * 
    * @param e exception to wrap
    */
-  public ArgumentException(Exception e) {
-    super(e);
+  public ArgumentException(Exception ex) {
+    super(ex);
   }
 }

@@ -52,6 +52,11 @@ public class Args implements Arguments {
     return jsapResult;
   }
 
+  /**
+   * Register parameter with JSAP.
+   * @param parameter the Parameter to register
+   * @throws ArgumentException when parameter cannot be registered
+   */
   public void registerParameter(Parameter parameter) throws ArgumentException {
     try {
       jsap.registerParameter(parameter);
