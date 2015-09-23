@@ -18,56 +18,63 @@
 <a class="jxr_linenumber" name="L10" href="#L10">10</a>  <strong class="jxr_keyword">import</strong> com.martiansoftware.jsap.Switch;
 <a class="jxr_linenumber" name="L11" href="#L11">11</a>  
 <a class="jxr_linenumber" name="L12" href="#L12">12</a>  <strong class="jxr_keyword">import</strong> gov.usgs.volcanoes.core.args.ArgsDecorator;
-<a class="jxr_linenumber" name="L13" href="#L13">13</a>  <strong class="jxr_keyword">import</strong> gov.usgs.volcanoes.core.args.Arguments;
-<a class="jxr_linenumber" name="L14" href="#L14">14</a>  
-<a class="jxr_linenumber" name="L15" href="#L15">15</a>  <strong class="jxr_keyword">import</strong> java.io.File;
-<a class="jxr_linenumber" name="L16" href="#L16">16</a>  <strong class="jxr_keyword">import</strong> java.io.InputStream;
-<a class="jxr_linenumber" name="L17" href="#L17">17</a>  <strong class="jxr_keyword">import</strong> java.nio.file.Files;
-<a class="jxr_linenumber" name="L18" href="#L18">18</a>  <strong class="jxr_keyword">import</strong> java.nio.file.Path;
-<a class="jxr_linenumber" name="L19" href="#L19">19</a>  
-<a class="jxr_linenumber" name="L20" href="#L20">20</a>  <em class="jxr_javadoccomment">/**</em>
-<a class="jxr_linenumber" name="L21" href="#L21">21</a>  <em class="jxr_javadoccomment"> * Create an example config file.</em>
-<a class="jxr_linenumber" name="L22" href="#L22">22</a>  <em class="jxr_javadoccomment"> *</em>
-<a class="jxr_linenumber" name="L23" href="#L23">23</a>  <em class="jxr_javadoccomment"> * &lt;p&gt;CreateConfigArg implies ConfigFileArg</em>
+<a class="jxr_linenumber" name="L13" href="#L13">13</a>  <strong class="jxr_keyword">import</strong> gov.usgs.volcanoes.core.args.ArgumentException;
+<a class="jxr_linenumber" name="L14" href="#L14">14</a>  <strong class="jxr_keyword">import</strong> gov.usgs.volcanoes.core.args.Arguments;
+<a class="jxr_linenumber" name="L15" href="#L15">15</a>  
+<a class="jxr_linenumber" name="L16" href="#L16">16</a>  <strong class="jxr_keyword">import</strong> java.io.File;
+<a class="jxr_linenumber" name="L17" href="#L17">17</a>  <strong class="jxr_keyword">import</strong> java.io.IOException;
+<a class="jxr_linenumber" name="L18" href="#L18">18</a>  <strong class="jxr_keyword">import</strong> java.io.InputStream;
+<a class="jxr_linenumber" name="L19" href="#L19">19</a>  <strong class="jxr_keyword">import</strong> java.nio.file.Files;
+<a class="jxr_linenumber" name="L20" href="#L20">20</a>  <strong class="jxr_keyword">import</strong> java.nio.file.Path;
+<a class="jxr_linenumber" name="L21" href="#L21">21</a>  
+<a class="jxr_linenumber" name="L22" href="#L22">22</a>  <em class="jxr_javadoccomment">/**</em>
+<a class="jxr_linenumber" name="L23" href="#L23">23</a>  <em class="jxr_javadoccomment"> * Create an example config file.</em>
 <a class="jxr_linenumber" name="L24" href="#L24">24</a>  <em class="jxr_javadoccomment"> *</em>
-<a class="jxr_linenumber" name="L25" href="#L25">25</a>  <em class="jxr_javadoccomment"> * @author Tom Parker</em>
-<a class="jxr_linenumber" name="L26" href="#L26">26</a>  <em class="jxr_javadoccomment"> */</em>
-<a class="jxr_linenumber" name="L27" href="#L27">27</a>  <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">class</strong> <a href="../../../../../../gov/usgs/volcanoes/core/args/decorator/CreateConfigArg.html">CreateConfigArg</a> <strong class="jxr_keyword">extends</strong> <a href="../../../../../../gov/usgs/volcanoes/core/args/ArgsDecorator.html">ArgsDecorator</a> {
-<a class="jxr_linenumber" name="L28" href="#L28">28</a>  
-<a class="jxr_linenumber" name="L29" href="#L29">29</a>    <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">final</strong> String exampleConfigFile;
+<a class="jxr_linenumber" name="L25" href="#L25">25</a>  <em class="jxr_javadoccomment"> * &lt;p&gt;CreateConfigArg implies ConfigFileArg</em>
+<a class="jxr_linenumber" name="L26" href="#L26">26</a>  <em class="jxr_javadoccomment"> *</em>
+<a class="jxr_linenumber" name="L27" href="#L27">27</a>  <em class="jxr_javadoccomment"> * @author Tom Parker</em>
+<a class="jxr_linenumber" name="L28" href="#L28">28</a>  <em class="jxr_javadoccomment"> */</em>
+<a class="jxr_linenumber" name="L29" href="#L29">29</a>  <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">class</strong> <a href="../../../../../../gov/usgs/volcanoes/core/args/decorator/CreateConfigArg.html">CreateConfigArg</a> <strong class="jxr_keyword">extends</strong> <a href="../../../../../../gov/usgs/volcanoes/core/args/ArgsDecorator.html">ArgsDecorator</a> {
 <a class="jxr_linenumber" name="L30" href="#L30">30</a>  
-<a class="jxr_linenumber" name="L31" href="#L31">31</a>    <em class="jxr_javadoccomment">/**</em>
-<a class="jxr_linenumber" name="L32" href="#L32">32</a>  <em class="jxr_javadoccomment">   * Construct a CreateConfigArg adding its Parameter to the list.</em>
-<a class="jxr_linenumber" name="L33" href="#L33">33</a>  <em class="jxr_javadoccomment">   *</em>
-<a class="jxr_linenumber" name="L34" href="#L34">34</a>  <em class="jxr_javadoccomment">   * @param exampleConfigFile String resource of example configfile</em>
-<a class="jxr_linenumber" name="L35" href="#L35">35</a>  <em class="jxr_javadoccomment">   * @param nextArg The next Argument in the list</em>
-<a class="jxr_linenumber" name="L36" href="#L36">36</a>  <em class="jxr_javadoccomment">   * @throws JSAPException if parameter is already registered or cannot be added.</em>
-<a class="jxr_linenumber" name="L37" href="#L37">37</a>  <em class="jxr_javadoccomment">   */</em>
-<a class="jxr_linenumber" name="L38" href="#L38">38</a>    <strong class="jxr_keyword">public</strong> <a href="../../../../../../gov/usgs/volcanoes/core/args/decorator/CreateConfigArg.html">CreateConfigArg</a>(<strong class="jxr_keyword">final</strong> String exampleConfigFile, <a href="../../../../../../gov/usgs/volcanoes/core/args/Arguments.html">Arguments</a> nextArg) <strong class="jxr_keyword">throws</strong> JSAPException {
-<a class="jxr_linenumber" name="L39" href="#L39">39</a>      <strong class="jxr_keyword">super</strong>(nextArg);
-<a class="jxr_linenumber" name="L40" href="#L40">40</a>      <strong class="jxr_keyword">this</strong>.exampleConfigFile = exampleConfigFile;
-<a class="jxr_linenumber" name="L41" href="#L41">41</a>  
-<a class="jxr_linenumber" name="L42" href="#L42">42</a>      nextArg.registerParameter(<strong class="jxr_keyword">new</strong> Switch(<span class="jxr_string">"create-config"</span>, 'c', <span class="jxr_string">"create-config"</span>,
-<a class="jxr_linenumber" name="L43" href="#L43">43</a>          <span class="jxr_string">"Create an example config file in the curent working directory."</span>));
+<a class="jxr_linenumber" name="L31" href="#L31">31</a>    <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">final</strong> String exampleConfigFile;
+<a class="jxr_linenumber" name="L32" href="#L32">32</a>  
+<a class="jxr_linenumber" name="L33" href="#L33">33</a>    <em class="jxr_javadoccomment">/**</em>
+<a class="jxr_linenumber" name="L34" href="#L34">34</a>  <em class="jxr_javadoccomment">   * Construct a CreateConfigArg adding its Parameter to the list.</em>
+<a class="jxr_linenumber" name="L35" href="#L35">35</a>  <em class="jxr_javadoccomment">   *</em>
+<a class="jxr_linenumber" name="L36" href="#L36">36</a>  <em class="jxr_javadoccomment">   * @param exampleConfigFile String resource of example configfile</em>
+<a class="jxr_linenumber" name="L37" href="#L37">37</a>  <em class="jxr_javadoccomment">   * @param nextArg The next Argument in the list</em>
+<a class="jxr_linenumber" name="L38" href="#L38">38</a>  <em class="jxr_javadoccomment">   * @throws ArgumentException if parameter is already registered or cannot be added.</em>
+<a class="jxr_linenumber" name="L39" href="#L39">39</a>  <em class="jxr_javadoccomment">   */</em>
+<a class="jxr_linenumber" name="L40" href="#L40">40</a>    <strong class="jxr_keyword">public</strong> <a href="../../../../../../gov/usgs/volcanoes/core/args/decorator/CreateConfigArg.html">CreateConfigArg</a>(<strong class="jxr_keyword">final</strong> String exampleConfigFile, <a href="../../../../../../gov/usgs/volcanoes/core/args/Arguments.html">Arguments</a> nextArg)
+<a class="jxr_linenumber" name="L41" href="#L41">41</a>        <strong class="jxr_keyword">throws</strong> <a href="../../../../../../gov/usgs/volcanoes/core/args/ArgumentException.html">ArgumentException</a> {
+<a class="jxr_linenumber" name="L42" href="#L42">42</a>      <strong class="jxr_keyword">super</strong>(nextArg);
+<a class="jxr_linenumber" name="L43" href="#L43">43</a>      <strong class="jxr_keyword">this</strong>.exampleConfigFile = exampleConfigFile;
 <a class="jxr_linenumber" name="L44" href="#L44">44</a>  
-<a class="jxr_linenumber" name="L45" href="#L45">45</a>      <strong class="jxr_keyword">if</strong> (nextArg.getById(<span class="jxr_string">"config-filename"</span>) == <strong class="jxr_keyword">null</strong>) {
-<a class="jxr_linenumber" name="L46" href="#L46">46</a>        <strong class="jxr_keyword">throw</strong> <strong class="jxr_keyword">new</strong> JSAPException(<span class="jxr_string">"CreateConfigArg relies on ConfigFileArg. Please wrap it first."</span>);
-<a class="jxr_linenumber" name="L47" href="#L47">47</a>      }
-<a class="jxr_linenumber" name="L48" href="#L48">48</a>    }
-<a class="jxr_linenumber" name="L49" href="#L49">49</a>  
-<a class="jxr_linenumber" name="L50" href="#L50">50</a>    @Override
-<a class="jxr_linenumber" name="L51" href="#L51">51</a>    <strong class="jxr_keyword">public</strong> JSAPResult parse(<strong class="jxr_keyword">final</strong> String[] args) <strong class="jxr_keyword">throws</strong> Exception {
-<a class="jxr_linenumber" name="L52" href="#L52">52</a>      <strong class="jxr_keyword">final</strong> JSAPResult jsap = <strong class="jxr_keyword">super</strong>.parse(args);
-<a class="jxr_linenumber" name="L53" href="#L53">53</a>      <strong class="jxr_keyword">final</strong> String configFileName = jsap.getString(<span class="jxr_string">"config-filename"</span>);
-<a class="jxr_linenumber" name="L54" href="#L54">54</a>      <strong class="jxr_keyword">if</strong> (jsap.getBoolean(<span class="jxr_string">"create-config"</span>)) {
-<a class="jxr_linenumber" name="L55" href="#L55">55</a>        <strong class="jxr_keyword">final</strong> InputStream is =
-<a class="jxr_linenumber" name="L56" href="#L56">56</a>            ClassLoader.getSystemClassLoader().getResourceAsStream(exampleConfigFile);
-<a class="jxr_linenumber" name="L57" href="#L57">57</a>        <strong class="jxr_keyword">final</strong> Path defaultPath = <strong class="jxr_keyword">new</strong> File(configFileName).toPath();
-<a class="jxr_linenumber" name="L58" href="#L58">58</a>        Files.copy(is, defaultPath);
-<a class="jxr_linenumber" name="L59" href="#L59">59</a>      }
-<a class="jxr_linenumber" name="L60" href="#L60">60</a>      <strong class="jxr_keyword">return</strong> jsap;
-<a class="jxr_linenumber" name="L61" href="#L61">61</a>    }
-<a class="jxr_linenumber" name="L62" href="#L62">62</a>  }
+<a class="jxr_linenumber" name="L45" href="#L45">45</a>      nextArg.registerParameter(<strong class="jxr_keyword">new</strong> Switch(<span class="jxr_string">"create-config"</span>, 'c', <span class="jxr_string">"create-config"</span>,
+<a class="jxr_linenumber" name="L46" href="#L46">46</a>          <span class="jxr_string">"Create an example config file in the curent working directory."</span>));
+<a class="jxr_linenumber" name="L47" href="#L47">47</a>  
+<a class="jxr_linenumber" name="L48" href="#L48">48</a>      <strong class="jxr_keyword">if</strong> (nextArg.getById(<span class="jxr_string">"config-filename"</span>) == <strong class="jxr_keyword">null</strong>) {
+<a class="jxr_linenumber" name="L49" href="#L49">49</a>        <strong class="jxr_keyword">throw</strong> <strong class="jxr_keyword">new</strong> <a href="../../../../../../gov/usgs/volcanoes/core/args/ArgumentException.html">ArgumentException</a>(<span class="jxr_string">"CreateConfigArg relies on ConfigFileArg. Please wrap it first."</span>);
+<a class="jxr_linenumber" name="L50" href="#L50">50</a>      }
+<a class="jxr_linenumber" name="L51" href="#L51">51</a>    }
+<a class="jxr_linenumber" name="L52" href="#L52">52</a>  
+<a class="jxr_linenumber" name="L53" href="#L53">53</a>    @Override
+<a class="jxr_linenumber" name="L54" href="#L54">54</a>    <strong class="jxr_keyword">public</strong> JSAPResult parse(<strong class="jxr_keyword">final</strong> String[] args) <strong class="jxr_keyword">throws</strong> ArgumentException {
+<a class="jxr_linenumber" name="L55" href="#L55">55</a>      <strong class="jxr_keyword">final</strong> JSAPResult jsap = <strong class="jxr_keyword">super</strong>.parse(args);
+<a class="jxr_linenumber" name="L56" href="#L56">56</a>      <strong class="jxr_keyword">final</strong> String configFileName = jsap.getString(<span class="jxr_string">"config-filename"</span>);
+<a class="jxr_linenumber" name="L57" href="#L57">57</a>      <strong class="jxr_keyword">if</strong> (jsap.getBoolean(<span class="jxr_string">"create-config"</span>)) {
+<a class="jxr_linenumber" name="L58" href="#L58">58</a>        <strong class="jxr_keyword">final</strong> InputStream is =
+<a class="jxr_linenumber" name="L59" href="#L59">59</a>            ClassLoader.getSystemClassLoader().getResourceAsStream(exampleConfigFile);
+<a class="jxr_linenumber" name="L60" href="#L60">60</a>        <strong class="jxr_keyword">final</strong> Path defaultPath = <strong class="jxr_keyword">new</strong> File(configFileName).toPath();
+<a class="jxr_linenumber" name="L61" href="#L61">61</a>        <strong class="jxr_keyword">try</strong> {
+<a class="jxr_linenumber" name="L62" href="#L62">62</a>          Files.copy(is, defaultPath);
+<a class="jxr_linenumber" name="L63" href="#L63">63</a>        } <strong class="jxr_keyword">catch</strong> (IOException e) {
+<a class="jxr_linenumber" name="L64" href="#L64">64</a>          <strong class="jxr_keyword">throw</strong> <strong class="jxr_keyword">new</strong> <a href="../../../../../../gov/usgs/volcanoes/core/args/ArgumentException.html">ArgumentException</a>(e);
+<a class="jxr_linenumber" name="L65" href="#L65">65</a>        }
+<a class="jxr_linenumber" name="L66" href="#L66">66</a>      }
+<a class="jxr_linenumber" name="L67" href="#L67">67</a>      <strong class="jxr_keyword">return</strong> jsap;
+<a class="jxr_linenumber" name="L68" href="#L68">68</a>    }
+<a class="jxr_linenumber" name="L69" href="#L69">69</a>  }
 </pre>
 <hr/>
 <div id="footer">Copyright &#169; 2015. All rights reserved.</div>

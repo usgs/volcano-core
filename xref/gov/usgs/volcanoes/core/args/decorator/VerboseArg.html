@@ -13,11 +13,11 @@
 <a class="jxr_linenumber" name="L5" href="#L5">5</a>   
 <a class="jxr_linenumber" name="L6" href="#L6">6</a>   <strong class="jxr_keyword">package</strong> gov.usgs.volcanoes.core.args.decorator;
 <a class="jxr_linenumber" name="L7" href="#L7">7</a>   
-<a class="jxr_linenumber" name="L8" href="#L8">8</a>   <strong class="jxr_keyword">import</strong> com.martiansoftware.jsap.JSAPException;
-<a class="jxr_linenumber" name="L9" href="#L9">9</a>   <strong class="jxr_keyword">import</strong> com.martiansoftware.jsap.JSAPResult;
-<a class="jxr_linenumber" name="L10" href="#L10">10</a>  <strong class="jxr_keyword">import</strong> com.martiansoftware.jsap.Switch;
-<a class="jxr_linenumber" name="L11" href="#L11">11</a>  
-<a class="jxr_linenumber" name="L12" href="#L12">12</a>  <strong class="jxr_keyword">import</strong> gov.usgs.volcanoes.core.args.ArgsDecorator;
+<a class="jxr_linenumber" name="L8" href="#L8">8</a>   <strong class="jxr_keyword">import</strong> com.martiansoftware.jsap.JSAPResult;
+<a class="jxr_linenumber" name="L9" href="#L9">9</a>   <strong class="jxr_keyword">import</strong> com.martiansoftware.jsap.Switch;
+<a class="jxr_linenumber" name="L10" href="#L10">10</a>  
+<a class="jxr_linenumber" name="L11" href="#L11">11</a>  <strong class="jxr_keyword">import</strong> gov.usgs.volcanoes.core.args.ArgsDecorator;
+<a class="jxr_linenumber" name="L12" href="#L12">12</a>  <strong class="jxr_keyword">import</strong> gov.usgs.volcanoes.core.args.ArgumentException;
 <a class="jxr_linenumber" name="L13" href="#L13">13</a>  <strong class="jxr_keyword">import</strong> gov.usgs.volcanoes.core.args.Arguments;
 <a class="jxr_linenumber" name="L14" href="#L14">14</a>  
 <a class="jxr_linenumber" name="L15" href="#L15">15</a>  <strong class="jxr_keyword">import</strong> org.apache.log4j.Level;
@@ -33,15 +33,15 @@
 <a class="jxr_linenumber" name="L25" href="#L25">25</a>    <em class="jxr_javadoccomment">/**</em>
 <a class="jxr_linenumber" name="L26" href="#L26">26</a>  <em class="jxr_javadoccomment">   *</em>
 <a class="jxr_linenumber" name="L27" href="#L27">27</a>  <em class="jxr_javadoccomment">   * @param nextArg The Argument object that I'm wrapping</em>
-<a class="jxr_linenumber" name="L28" href="#L28">28</a>  <em class="jxr_javadoccomment">   * @throws JSAPException if Parameters cannot be registered.</em>
+<a class="jxr_linenumber" name="L28" href="#L28">28</a>  <em class="jxr_javadoccomment">   * @throws ArgumentException if Parameters cannot be registered.</em>
 <a class="jxr_linenumber" name="L29" href="#L29">29</a>  <em class="jxr_javadoccomment">   */</em>
-<a class="jxr_linenumber" name="L30" href="#L30">30</a>    <strong class="jxr_keyword">public</strong> <a href="../../../../../../gov/usgs/volcanoes/core/args/decorator/VerboseArg.html">VerboseArg</a>(<a href="../../../../../../gov/usgs/volcanoes/core/args/Arguments.html">Arguments</a> nextArg) <strong class="jxr_keyword">throws</strong> JSAPException {
+<a class="jxr_linenumber" name="L30" href="#L30">30</a>    <strong class="jxr_keyword">public</strong> <a href="../../../../../../gov/usgs/volcanoes/core/args/decorator/VerboseArg.html">VerboseArg</a>(<a href="../../../../../../gov/usgs/volcanoes/core/args/Arguments.html">Arguments</a> nextArg) <strong class="jxr_keyword">throws</strong> ArgumentException {
 <a class="jxr_linenumber" name="L31" href="#L31">31</a>      <strong class="jxr_keyword">super</strong>(nextArg);
 <a class="jxr_linenumber" name="L32" href="#L32">32</a>      nextArg.registerParameter(<strong class="jxr_keyword">new</strong> Switch(<span class="jxr_string">"verbose"</span>, 'v', <span class="jxr_string">"verbose"</span>, <span class="jxr_string">"Verbose logging."</span>));
 <a class="jxr_linenumber" name="L33" href="#L33">33</a>    }
 <a class="jxr_linenumber" name="L34" href="#L34">34</a>  
 <a class="jxr_linenumber" name="L35" href="#L35">35</a>    @Override
-<a class="jxr_linenumber" name="L36" href="#L36">36</a>    <strong class="jxr_keyword">public</strong> JSAPResult parse(String[] args) <strong class="jxr_keyword">throws</strong> Exception {
+<a class="jxr_linenumber" name="L36" href="#L36">36</a>    <strong class="jxr_keyword">public</strong> JSAPResult parse(String[] args) <strong class="jxr_keyword">throws</strong> ArgumentException {
 <a class="jxr_linenumber" name="L37" href="#L37">37</a>      <strong class="jxr_keyword">final</strong> JSAPResult jsap = <strong class="jxr_keyword">super</strong>.parse(args);
 <a class="jxr_linenumber" name="L38" href="#L38">38</a>  
 <a class="jxr_linenumber" name="L39" href="#L39">39</a>      <strong class="jxr_keyword">if</strong> (jsap.getBoolean(<span class="jxr_string">"verbose"</span>)) {

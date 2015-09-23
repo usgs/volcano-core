@@ -14,16 +14,16 @@
 <a class="jxr_linenumber" name="L6" href="#L6">6</a>   <strong class="jxr_keyword">package</strong> gov.usgs.volcanoes.core.args.decorator;
 <a class="jxr_linenumber" name="L7" href="#L7">7</a>   
 <a class="jxr_linenumber" name="L8" href="#L8">8</a>   <strong class="jxr_keyword">import</strong> com.martiansoftware.jsap.JSAP;
-<a class="jxr_linenumber" name="L9" href="#L9">9</a>   <strong class="jxr_keyword">import</strong> com.martiansoftware.jsap.JSAPException;
-<a class="jxr_linenumber" name="L10" href="#L10">10</a>  <strong class="jxr_keyword">import</strong> com.martiansoftware.jsap.UnflaggedOption;
-<a class="jxr_linenumber" name="L11" href="#L11">11</a>  
-<a class="jxr_linenumber" name="L12" href="#L12">12</a>  <strong class="jxr_keyword">import</strong> gov.usgs.volcanoes.core.args.ArgsDecorator;
+<a class="jxr_linenumber" name="L9" href="#L9">9</a>   <strong class="jxr_keyword">import</strong> com.martiansoftware.jsap.UnflaggedOption;
+<a class="jxr_linenumber" name="L10" href="#L10">10</a>  
+<a class="jxr_linenumber" name="L11" href="#L11">11</a>  <strong class="jxr_keyword">import</strong> gov.usgs.volcanoes.core.args.ArgsDecorator;
+<a class="jxr_linenumber" name="L12" href="#L12">12</a>  <strong class="jxr_keyword">import</strong> gov.usgs.volcanoes.core.args.ArgumentException;
 <a class="jxr_linenumber" name="L13" href="#L13">13</a>  <strong class="jxr_keyword">import</strong> gov.usgs.volcanoes.core.args.Arguments;
 <a class="jxr_linenumber" name="L14" href="#L14">14</a>  
 <a class="jxr_linenumber" name="L15" href="#L15">15</a>  <em class="jxr_javadoccomment">/**</em>
 <a class="jxr_linenumber" name="L16" href="#L16">16</a>  <em class="jxr_javadoccomment"> * Gather a config filename from the command line.</em>
 <a class="jxr_linenumber" name="L17" href="#L17">17</a>  <em class="jxr_javadoccomment"> *</em>
-<a class="jxr_linenumber" name="L18" href="#L18">18</a>  <em class="jxr_javadoccomment"> * &lt;p&gt;The filename is taken from the first available unflagged option and placed in </em>
+<a class="jxr_linenumber" name="L18" href="#L18">18</a>  <em class="jxr_javadoccomment"> * &lt;p&gt;The filename is taken from the first available unflagged option and placed in</em>
 <a class="jxr_linenumber" name="L19" href="#L19">19</a>  <em class="jxr_javadoccomment"> * "config-filename". Be careful of the order that Args are added.</em>
 <a class="jxr_linenumber" name="L20" href="#L20">20</a>  <em class="jxr_javadoccomment"> *</em>
 <a class="jxr_linenumber" name="L21" href="#L21">21</a>  <em class="jxr_javadoccomment"> * @author Tom Parker</em>
@@ -35,15 +35,16 @@
 <a class="jxr_linenumber" name="L27" href="#L27">27</a>  <em class="jxr_javadoccomment">   *</em>
 <a class="jxr_linenumber" name="L28" href="#L28">28</a>  <em class="jxr_javadoccomment">   * @param defaultFileName The value to assign if the parameter is not given on the command line</em>
 <a class="jxr_linenumber" name="L29" href="#L29">29</a>  <em class="jxr_javadoccomment">   * @param nextArg The next Arguments object in the chain</em>
-<a class="jxr_linenumber" name="L30" href="#L30">30</a>  <em class="jxr_javadoccomment">   * @throws JSAPException if new Parameter cannot be created. Not sure why this would happen</em>
+<a class="jxr_linenumber" name="L30" href="#L30">30</a>  <em class="jxr_javadoccomment">   * @throws ArgumentException if new Parameter cannot be created. Not sure why this would happen</em>
 <a class="jxr_linenumber" name="L31" href="#L31">31</a>  <em class="jxr_javadoccomment">   */</em>
-<a class="jxr_linenumber" name="L32" href="#L32">32</a>    <strong class="jxr_keyword">public</strong> <a href="../../../../../../gov/usgs/volcanoes/core/args/decorator/ConfigFileArg.html">ConfigFileArg</a>(<strong class="jxr_keyword">final</strong> String defaultFileName, <strong class="jxr_keyword">final</strong> <a href="../../../../../../gov/usgs/volcanoes/core/args/Arguments.html">Arguments</a> nextArg) <strong class="jxr_keyword">throws</strong> JSAPException {
-<a class="jxr_linenumber" name="L33" href="#L33">33</a>      <strong class="jxr_keyword">super</strong>(nextArg);
-<a class="jxr_linenumber" name="L34" href="#L34">34</a>  
-<a class="jxr_linenumber" name="L35" href="#L35">35</a>      registerParameter(<strong class="jxr_keyword">new</strong> UnflaggedOption(<span class="jxr_string">"config-filename"</span>, JSAP.STRING_PARSER, defaultFileName,
-<a class="jxr_linenumber" name="L36" href="#L36">36</a>          JSAP.NOT_REQUIRED, JSAP.NOT_GREEDY, <span class="jxr_string">"The config file name."</span>));
-<a class="jxr_linenumber" name="L37" href="#L37">37</a>    }
-<a class="jxr_linenumber" name="L38" href="#L38">38</a>  }
+<a class="jxr_linenumber" name="L32" href="#L32">32</a>    <strong class="jxr_keyword">public</strong> <a href="../../../../../../gov/usgs/volcanoes/core/args/decorator/ConfigFileArg.html">ConfigFileArg</a>(<strong class="jxr_keyword">final</strong> String defaultFileName, <strong class="jxr_keyword">final</strong> <a href="../../../../../../gov/usgs/volcanoes/core/args/Arguments.html">Arguments</a> nextArg)
+<a class="jxr_linenumber" name="L33" href="#L33">33</a>        <strong class="jxr_keyword">throws</strong> <a href="../../../../../../gov/usgs/volcanoes/core/args/ArgumentException.html">ArgumentException</a> {
+<a class="jxr_linenumber" name="L34" href="#L34">34</a>      <strong class="jxr_keyword">super</strong>(nextArg);
+<a class="jxr_linenumber" name="L35" href="#L35">35</a>  
+<a class="jxr_linenumber" name="L36" href="#L36">36</a>      registerParameter(<strong class="jxr_keyword">new</strong> UnflaggedOption(<span class="jxr_string">"config-filename"</span>, JSAP.STRING_PARSER, defaultFileName,
+<a class="jxr_linenumber" name="L37" href="#L37">37</a>          JSAP.NOT_REQUIRED, JSAP.NOT_GREEDY, <span class="jxr_string">"The config file name."</span>));
+<a class="jxr_linenumber" name="L38" href="#L38">38</a>    }
+<a class="jxr_linenumber" name="L39" href="#L39">39</a>  }
 </pre>
 <hr/>
 <div id="footer">Copyright &#169; 2015. All rights reserved.</div>
