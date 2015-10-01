@@ -67,21 +67,23 @@ public class ConfigFileTest {
     assertEquals(d, 3.14);
   }
 
-  /**
-   * 
-   */
-  @Test(expected = NumberFormatException.class)
-  public void when_askedForDouble_then_returnError() {
-    configFile.getDouble("string");
-  }
 
   /**
    * 
    */
   @Test
   public void when_askedForInt_then_returnInt() {
-    int i = configFile.getInt("int");
-    assertEquals(i, 5);
+    int anInt = configFile.getInt("int");
+    assertEquals(anInt, 5);
+  }
+
+  /**
+   * 
+   */
+  @Test
+  public void when_askedForDouble_then_returnDefault() {
+    double aDouble = configFile.getDouble("absent", 2.1);
+    assertEquals(aDouble, 2.1);
   }
 
   /**
@@ -89,8 +91,36 @@ public class ConfigFileTest {
    */
   @Test(expected = NumberFormatException.class)
   public void when_askedForInt_then_returnError() {
-    configFile.getDouble("string");
+    configFile.getInt("string");    
   }
+  
+
+  /**
+   * 
+   */
+  @Test
+  public void when_askedForInt_then_returnDefault() {
+    int anInt = configFile.getInt("absent", 1);    
+    assertEquals(anInt, 1);
+  }
+  
+  /**
+   * 
+   */
+  @Test
+  public void when_askedForString_then_returnString() {
+    configFile.getString("string");
+  }
+
+  /**
+   * 
+   */
+  @Test
+  public void when_askedForString_then_returnDefault() {
+    String aString = configFile.getString("absent", "default");
+    assertTrue("default".equals(aString));
+  }
+
 
   /**
    * 
@@ -99,6 +129,14 @@ public class ConfigFileTest {
   public void when_askedSubconfig_then_returnSubconfig() {
     ConfigFile config = configFile.getSubConfig("first");
     assertEquals(config.getString("second"), "secondLevelKey");
+  }
+
+  /**
+   * 
+   */
+  @Test
+  public void when_askedForBoolean_then_returnBoolean() {
+    configFile.getBoolean("yes");    
   }
 
   /**

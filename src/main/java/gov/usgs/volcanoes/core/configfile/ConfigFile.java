@@ -26,6 +26,7 @@ import java.nio.file.FileSystems;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.StandardCopyOption;
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -225,6 +226,18 @@ public final class ConfigFile {
     }
 
     return value;
+  }
+
+  /**
+   * Return an object found by the provided parser.
+   * 
+   * @param key config key to search
+   * @param parser parser that will do the parsing
+   * @return object found by parser
+   * @throws ParseException when value is not null and cannon be parsed.
+   */
+  public <T> T getObject(String key, Parser<T> parser) throws ParseException {
+    return parser.parse(getString(key));
   }
 
   /**
@@ -575,17 +588,17 @@ public final class ConfigFile {
         LOGGER.debug("Removing old backup cofig. ({})", bak);
         Files.delete(bak);
       }
-      
+
       if (Files.exists(file)) {
         LOGGER.debug("Making cofig backup. ({})", bak);
         Files.move(file, bak, StandardCopyOption.REPLACE_EXISTING);
       }
-      
+
       LOGGER.debug("Writing cofig. ({})", fn);
       final OutputStream outStream = new FileOutputStream(new File(fn));
       final Writer writer = new OutputStreamWriter(outStream, StandardCharsets.UTF_8);
       final PrintWriter out = new PrintWriter(writer);
-      
+
       for (int i = 0; i < keys.length; i++) {
         final String k = keys[i];
         final Object o = config.get(k);

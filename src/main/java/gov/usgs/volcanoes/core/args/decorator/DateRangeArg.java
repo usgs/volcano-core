@@ -8,12 +8,12 @@ package gov.usgs.volcanoes.core.args.decorator;
 
 import com.martiansoftware.jsap.FlaggedOption;
 import com.martiansoftware.jsap.JSAP;
-import com.martiansoftware.jsap.JSAPException;
 import com.martiansoftware.jsap.JSAPResult;
 import com.martiansoftware.jsap.ParseException;
 import com.martiansoftware.jsap.StringParser;
 
 import gov.usgs.volcanoes.core.args.ArgsDecorator;
+import gov.usgs.volcanoes.core.args.ArgumentException;
 import gov.usgs.volcanoes.core.args.Arguments;
 import gov.usgs.volcanoes.core.args.parser.DateStringParser;
 
@@ -35,9 +35,9 @@ public class DateRangeArg extends ArgsDecorator {
    * 
    * @param dateFormat Format string suitable for feeding to SimpleDateFormat
    * @param nextArg The Argument object I'm wrapping
-   * @throws JSAPException if parameters cannot be registered
+   * @throws ArgumentException if parameters cannot be registered
    */
-  public DateRangeArg(String dateFormat, Arguments nextArg) throws JSAPException {
+  public DateRangeArg(String dateFormat, Arguments nextArg) throws ArgumentException {
     super(nextArg);
 
     final StringParser dateParser = new DateStringParser(dateFormat);
@@ -49,10 +49,14 @@ public class DateRangeArg extends ArgsDecorator {
 
 
   @Override
-  public JSAPResult parse(String[] args) throws Exception {
+  public JSAPResult parse(String[] args) throws ArgumentException {
     final JSAPResult jsap = super.parse(args);
 
-    validateDates(jsap.getDate("startTime"), jsap.getDate("endTime"));
+    try {
+      validateDates(jsap.getDate("startTime"), jsap.getDate("endTime"));
+    } catch (ParseException e) {
+      throw new ArgumentException(e);
+    }
     return jsap;
   }
 
