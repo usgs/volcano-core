@@ -80,8 +80,8 @@ public class ConfigFileTest {
    */
   @Test
   public void when_askedForInt_then_returnInt() {
-    int i = configFile.getInt("int");
-    assertEquals(i, 5);
+    int anInt = configFile.getInt("int");
+    assertEquals(anInt, 5);
   }
 
   /**
@@ -101,6 +101,14 @@ public class ConfigFileTest {
     assertEquals(config.getString("second"), "secondLevelKey");
   }
 
+  /**
+   * 
+   */
+  @Test
+  public void when_askedForBoolean_then_returnBoolean() {
+    configFile.getBoolean("yes");    
+  }
+  
   /**
    * 
    */
