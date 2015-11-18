@@ -30,12 +30,12 @@ import java.util.Date;
  */
 public class DateRangeArg extends ArgsDecorator {
 
-  private String startText = "startTime";
   private String endText = "endTime";
-  
+  private String startText = "startTime";
+
   /**
    * Register arguments that define a date range.
-   * 
+   *
    * @param dateFormat Format string suitable for feeding to SimpleDateFormat
    * @param nextArg The Argument object I'm wrapping
    * @throws ArgumentException if parameters cannot be registered
@@ -51,44 +51,42 @@ public class DateRangeArg extends ArgsDecorator {
   }
 
 
-  @Override
-  public JSAPResult parse(String[] args) throws ArgumentException {
-    final JSAPResult jsap = super.parse(args);
-
-    try {
-      validateDates(jsap.getDate("startTime"), jsap.getDate("endTime"));
-    } catch (ParseException e) {
-      throw new ArgumentException(e);
-    }
-    return jsap;
-  }
-
-  /**
-   * Set the text displayed when --help is given.
-   * 
-   * @param startText
-   * @return this
-   */
-  public DateRangeArg setStartText(String startText) {
-    this.startText= startText;
-    return this;
-  }
-  
-  
   /**
    * Returns the text displayed when --help is given.
-   * 
+   *
+   * @return the end text
+   */
+  public String getEndText() {
+    return endText;
+  }
+
+  /**
+   * Returns the text displayed when --help is given.
+   *
    * @return the start text
    */
   public String getStartText() {
     return startText;
   }
 
-  
+
+  @Override
+  public JSAPResult parse(String[] args) throws ArgumentException {
+    final JSAPResult jsap = super.parse(args);
+
+    try {
+      validateDates(jsap.getDate("startTime"), jsap.getDate("endTime"));
+    } catch (final ParseException e) {
+      throw new ArgumentException(e);
+    }
+    return jsap;
+  }
+
+
   /**
    * Set the text displayed when --help is given.
-   * 
-   * @param endText
+   *
+   * @param endText The end text
    * @return this
    */
   public DateRangeArg setEndText(String endText) {
@@ -97,12 +95,14 @@ public class DateRangeArg extends ArgsDecorator {
   }
 
   /**
-   * Returns the text displayed when --help is given.
-   * 
-   * @return the end text
+   * Set the text displayed when --help is given.
+   *
+   * @param startText The start text
+   * @return this
    */
-  public String getEndText() {
-    return endText;
+  public DateRangeArg setStartText(String startText) {
+    this.startText = startText;
+    return this;
   }
 
   private void validateDates(Date startTime, Date endTime) throws ParseException {
