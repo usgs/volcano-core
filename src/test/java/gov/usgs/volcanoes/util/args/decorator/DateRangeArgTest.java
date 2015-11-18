@@ -1,13 +1,13 @@
 package gov.usgs.volcanoes.util.args.decorator;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 import com.martiansoftware.jsap.JSAPResult;
 import com.martiansoftware.jsap.Parameter;
 
 import gov.usgs.volcanoes.core.args.Args;
 import gov.usgs.volcanoes.core.args.ArgumentException;
-import gov.usgs.volcanoes.core.args.Arguments;
 import gov.usgs.volcanoes.core.args.decorator.DateRangeArg;
 
 import org.junit.Before;
@@ -28,7 +28,7 @@ public class DateRangeArgTest {
   private static final String START_TIME = "201508010000";
   private static final String END_TIME = "201508020000";
 
-  Arguments arg;
+  DateRangeArg arg;
 
   /**
    * 
@@ -85,6 +85,20 @@ public class DateRangeArgTest {
   @Test
   public void when_nothingIn_then_nothingOut() throws ArgumentException {
     arg.parse(new String[0]);
+  }
+
+  @Test
+  public void setStartText() {
+    String testText = "start text";
+    arg.setStartText(testText);
+    assertTrue(testText.equals(arg.getStartText()));
+  }
+  
+  @Test
+  public void setEndText() {
+    String testText = "end text";
+    arg.setEndText(testText);
+    assertTrue(testText.equals(arg.getEndText()));
   }
 
   /**
