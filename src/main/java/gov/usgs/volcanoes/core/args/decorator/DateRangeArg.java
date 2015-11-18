@@ -30,9 +30,6 @@ import java.util.Date;
  */
 public class DateRangeArg extends ArgsDecorator {
 
-  private String endText = "endTime";
-  private String startText = "startTime";
-
   /**
    * Register arguments that define a date range.
    *
@@ -45,28 +42,9 @@ public class DateRangeArg extends ArgsDecorator {
 
     final StringParser dateParser = new DateStringParser(dateFormat);
     nextArg.registerParameter(new FlaggedOption("startTime", dateParser, JSAP.NO_DEFAULT,
-        JSAP.NOT_REQUIRED, 's', "startTime", startText + "\n"));
+        JSAP.NOT_REQUIRED, 's', "startTime", String.format("start time <%s>\n", dateFormat)));
     nextArg.registerParameter(new FlaggedOption("endTime", dateParser, JSAP.NO_DEFAULT,
-        JSAP.NOT_REQUIRED, 'e', "endTime", endText = "\n"));
-  }
-
-
-  /**
-   * Returns the text displayed when --help is given.
-   *
-   * @return the end text
-   */
-  public String getEndText() {
-    return endText;
-  }
-
-  /**
-   * Returns the text displayed when --help is given.
-   *
-   * @return the start text
-   */
-  public String getStartText() {
-    return startText;
+        JSAP.NOT_REQUIRED, 'e', "endTime", String.format("end time <%s>\n", dateFormat)));
   }
 
 
@@ -82,28 +60,6 @@ public class DateRangeArg extends ArgsDecorator {
     return jsap;
   }
 
-
-  /**
-   * Set the text displayed when --help is given.
-   *
-   * @param endText The end text
-   * @return this
-   */
-  public DateRangeArg setEndText(String endText) {
-    this.endText = endText;
-    return this;
-  }
-
-  /**
-   * Set the text displayed when --help is given.
-   *
-   * @param startText The start text
-   * @return this
-   */
-  public DateRangeArg setStartText(String startText) {
-    this.startText = startText;
-    return this;
-  }
 
   private void validateDates(Date startTime, Date endTime) throws ParseException {
     // If one require the other

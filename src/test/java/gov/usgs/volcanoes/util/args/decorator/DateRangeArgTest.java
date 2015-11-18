@@ -87,20 +87,6 @@ public class DateRangeArgTest {
     arg.parse(new String[0]);
   }
 
-  @Test
-  public void setStartText() {
-    String testText = "start text";
-    arg.setStartText(testText);
-    assertTrue(testText.equals(arg.getStartText()));
-  }
-  
-  @Test
-  public void setEndText() {
-    String testText = "end text";
-    arg.setEndText(testText);
-    assertTrue(testText.equals(arg.getEndText()));
-  }
-
   /**
    * 
    * @throws ArgumentException when things go wrong
