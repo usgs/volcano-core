@@ -30,9 +30,12 @@ import java.util.Date;
  */
 public class DateRangeArg extends ArgsDecorator {
 
+  private String endText = "endTime";
+  private String startText = "startTime";
+
   /**
    * Register arguments that define a date range.
-   * 
+   *
    * @param dateFormat Format string suitable for feeding to SimpleDateFormat
    * @param nextArg The Argument object I'm wrapping
    * @throws ArgumentException if parameters cannot be registered
@@ -42,9 +45,28 @@ public class DateRangeArg extends ArgsDecorator {
 
     final StringParser dateParser = new DateStringParser(dateFormat);
     nextArg.registerParameter(new FlaggedOption("startTime", dateParser, JSAP.NO_DEFAULT,
-        JSAP.NOT_REQUIRED, 's', "startTime", "Start of backfill period\n"));
+        JSAP.NOT_REQUIRED, 's', "startTime", startText + "\n"));
     nextArg.registerParameter(new FlaggedOption("endTime", dateParser, JSAP.NO_DEFAULT,
-        JSAP.NOT_REQUIRED, 'e', "endTime", "End of backfill period\n"));
+        JSAP.NOT_REQUIRED, 'e', "endTime", endText = "\n"));
+  }
+
+
+  /**
+   * Returns the text displayed when --help is given.
+   *
+   * @return the end text
+   */
+  public String getEndText() {
+    return endText;
+  }
+
+  /**
+   * Returns the text displayed when --help is given.
+   *
+   * @return the start text
+   */
+  public String getStartText() {
+    return startText;
   }
 
 
@@ -54,10 +76,33 @@ public class DateRangeArg extends ArgsDecorator {
 
     try {
       validateDates(jsap.getDate("startTime"), jsap.getDate("endTime"));
-    } catch (ParseException e) {
+    } catch (final ParseException e) {
       throw new ArgumentException(e);
     }
     return jsap;
+  }
+
+
+  /**
+   * Set the text displayed when --help is given.
+   *
+   * @param endText The end text
+   * @return this
+   */
+  public DateRangeArg setEndText(String endText) {
+    this.endText = endText;
+    return this;
+  }
+
+  /**
+   * Set the text displayed when --help is given.
+   *
+   * @param startText The start text
+   * @return this
+   */
+  public DateRangeArg setStartText(String startText) {
+    this.startText = startText;
+    return this;
   }
 
   private void validateDates(Date startTime, Date endTime) throws ParseException {
