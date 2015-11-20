@@ -1,4 +1,4 @@
-package gov.usgs.volcanoes.util.args.parser;
+package gov.usgs.volcanoes.core.args.parser;
 
 import static org.junit.Assert.assertEquals;
 

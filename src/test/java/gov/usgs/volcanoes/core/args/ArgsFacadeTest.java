@@ -1,4 +1,4 @@
-package gov.usgs.volcanoes.util.args;
+package gov.usgs.volcanoes.core.args;
 
 import static org.junit.Assert.*;
 

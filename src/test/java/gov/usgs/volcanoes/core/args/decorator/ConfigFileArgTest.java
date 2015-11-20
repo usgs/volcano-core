@@ -1,4 +1,4 @@
-package gov.usgs.volcanoes.util.args.decorator;
+package gov.usgs.volcanoes.core.args.decorator;
 
 import static org.junit.Assert.assertEquals;
 

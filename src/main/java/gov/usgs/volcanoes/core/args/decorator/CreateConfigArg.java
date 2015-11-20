@@ -5,7 +5,6 @@
 
 package gov.usgs.volcanoes.core.args.decorator;
 
-import com.martiansoftware.jsap.JSAPException;
 import com.martiansoftware.jsap.JSAPResult;
 import com.martiansoftware.jsap.Switch;
 

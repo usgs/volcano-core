@@ -1,4 +1,4 @@
-package gov.usgs.volcanoes.util.args.parser;
+package gov.usgs.volcanoes.core.args.parser;
 
 import static org.junit.Assert.assertEquals;
 
@@ -8,7 +8,7 @@ import com.martiansoftware.jsap.ParseException;
 
 import gov.usgs.volcanoes.core.args.parser.ScnlParser;
 import gov.usgs.volcanoes.core.data.Scnl;
-import gov.usgs.volcanoes.util.data.ScnlTest;
+import gov.usgs.volcanoes.core.data.ScnlTest;
 
 /**
  * 

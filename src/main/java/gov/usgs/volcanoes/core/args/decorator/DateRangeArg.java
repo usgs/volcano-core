@@ -42,9 +42,9 @@ public class DateRangeArg extends ArgsDecorator {
 
     final StringParser dateParser = new DateStringParser(dateFormat);
     nextArg.registerParameter(new FlaggedOption("startTime", dateParser, JSAP.NO_DEFAULT,
-        JSAP.NOT_REQUIRED, 's', "startTime", String.format("start time <%s>\n", dateFormat)));
+        JSAP.NOT_REQUIRED, 's', "startTime", String.format("start time as %s\n", dateFormat)));
     nextArg.registerParameter(new FlaggedOption("endTime", dateParser, JSAP.NO_DEFAULT,
-        JSAP.NOT_REQUIRED, 'e', "endTime", String.format("end time <%s>\n", dateFormat)));
+        JSAP.NOT_REQUIRED, 'e', "endTime", String.format("end time as %s\n", dateFormat)));
   }
 
 
