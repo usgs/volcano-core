@@ -27,6 +27,12 @@ public class J2kSecTest {
     Double j2ksec = J2kSec.fromDate(new Date(UNIX_TIME));
     assertEquals(j2ksec, J2K_TIME);
   }
+  
+  @Test
+  public void fromEpoch() {
+    Double j2ksec = J2kSec.fromEpoch(UNIX_TIME);
+    assertEquals(j2ksec, J2K_TIME);
+  }
 
   @Test
   public void format() {
