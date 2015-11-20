@@ -1,4 +1,4 @@
-package gov.usgs.volcanoes.util;
+package gov.usgs.volcanoes.core;
 
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
