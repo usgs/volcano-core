@@ -42,6 +42,16 @@ public class J2kSec {
   }
 
   /**
+   * Converts a UNIX epoch ms time to j2ksec
+   * 
+   * @param date the date as provided by Date.getTime()
+   * @return date is j2ksec
+   */
+  public static double fromEpoch(Long date) {
+    return (double) date / 1000 + UNIXZERO;
+  }
+  
+  /**
    * Formats J2K date.
    *
    * @param format Name of format to search
