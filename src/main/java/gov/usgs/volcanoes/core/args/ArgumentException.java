@@ -28,7 +28,7 @@ public class ArgumentException extends Exception {
   /**
    * Exception-wrapping constructor.
    * 
-   * @param e exception to wrap
+   * @param ex exception to wrap
    */
   public ArgumentException(Exception ex) {
     super(ex);

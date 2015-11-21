@@ -17,6 +17,8 @@ import java.util.Date;
  *
  */
 public class J2kSec {
+  
+  /** add to a j2ksec to get a UNIX epoch. */
   public static final double UNIXZERO = -946728000;
 
 

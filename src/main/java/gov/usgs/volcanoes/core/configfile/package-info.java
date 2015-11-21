@@ -1,5 +1,4 @@
 /**
- * 
  * A collection of classes to handle configuration files.
  *
  */
