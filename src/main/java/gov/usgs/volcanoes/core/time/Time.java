@@ -20,14 +20,26 @@ import java.util.TimeZone;
  */
 public final class Time {
   // public static final String ISO_8601_TIME_FORMAT = "yyyyMMdd'T'HHmmss.SSSS'Z'";
-  public static final String FDSN_TIME_FORMAT = "yyyy-MM-dd'T'HH:mm:ss.SSSS";
-  private static Map<String, SimpleDateFormat> formats;
-  public static final String INPUT_TIME_FORMAT = "yyyyMMddHHmmss";
-  public static final double SECONDSPERYEAR = 31557600;
 
+  /**
+   * format used by the FDSNWS standard. Almost, but not quite, ISO. This doesn't really belong
+   * here.
+   */
+  public static final String FDSN_TIME_FORMAT = "yyyy-MM-dd'T'HH:mm:ss.SSSS";
+
+  /** Format used for time input. */
+  public static final String INPUT_TIME_FORMAT = "yyyyMMddHHmmss";
+
+  /** Seconds in a year. */
+  public static final double YEAR_IN_S = 31557600;
+
+  /** standard display format. */
   public static final String STANDARD_TIME_FORMAT = "yyyy-MM-dd HH:mm:ss";
 
+  /** standard display format with ms. */
   public static final String STANDARD_TIME_FORMAT_MS = "yyyy-MM-dd HH:mm:ss.SSS";
+  
+  private static Map<String, SimpleDateFormat> formats;
 
   static {
     formats = new HashMap<String, SimpleDateFormat>();
