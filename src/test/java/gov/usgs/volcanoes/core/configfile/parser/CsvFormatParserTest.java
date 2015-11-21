@@ -2,6 +2,8 @@ package gov.usgs.volcanoes.core.configfile.parser;
 
 import static org.junit.Assert.assertEquals;
 
+import gov.usgs.volcanoes.core.configfile.parser.CsvFormatParser;
+
 import org.apache.commons.csv.CSVFormat;
 import org.junit.Test;
 

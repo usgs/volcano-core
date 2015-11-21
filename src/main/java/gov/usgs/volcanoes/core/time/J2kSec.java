@@ -11,7 +11,7 @@ import java.util.Date;
 
 /**
  * A utility class for working with j2ksecs. J2ksec is a time standard created by Dan Cervelli for
- * use with winston and associated tools. The j2ksec ephoch is 2000-01-01T00:00+12:00. 
+ * use with winston and associated tools. The j2ksec ephoch is 2000-01-01T00:00+12:00.
  * 
  * @author Tom Parker
  *
@@ -27,7 +27,7 @@ public class J2kSec {
    * @return the Date
    */
   public static java.util.Date asDate(double j2k) {
-    return new java.util.Date((long) (1000 * (j2k - UNIXZERO)));
+    return new java.util.Date(asEpoch(j2k));
   }
 
   /**
@@ -37,8 +37,18 @@ public class J2kSec {
    * @return date in j2ksec
    */
   public static double fromDate(Date date) {
-    return ((double) date.getTime() / 1000) + UNIXZERO;
+    return fromEpoch(date.getTime());
 
+  }
+
+  /**
+   * Converts a j2ksec to a UNIX epoch ms.
+   * 
+   * @param j2k the j2ksec
+   * @return date as UNIX epoch
+   */
+  public static long asEpoch(double j2k) {
+    return (long)((j2k - UNIXZERO) * 1000);
   }
 
   /**
@@ -50,7 +60,7 @@ public class J2kSec {
   public static double fromEpoch(Long date) {
     return (double) date / 1000 + UNIXZERO;
   }
-  
+
   /**
    * Formats J2K date.
    *
