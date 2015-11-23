@@ -38,7 +38,7 @@ public final class Time {
 
   /** standard display format with ms. */
   public static final String STANDARD_TIME_FORMAT_MS = "yyyy-MM-dd HH:mm:ss.SSS";
-  
+
   private static Map<String, SimpleDateFormat> formats;
 
   static {
