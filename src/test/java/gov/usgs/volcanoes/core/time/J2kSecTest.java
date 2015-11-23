@@ -57,5 +57,13 @@ public class J2kSecTest {
     double date = J2kSec.parse(Time.STANDARD_TIME_FORMAT, STANDARD_TIME_STRING);
     assertEquals(J2K_TIME, date);
   }
+  
+  @Test
+  public void now() {
+    long nowDate = new Date().getTime();
+    long nowJ2k = J2kSec.asEpoch(J2kSec.now());
+    assertTrue(Math.abs(nowDate - nowJ2k) < 3);
+    
+  }
 
 }

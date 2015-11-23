@@ -97,6 +97,16 @@ public class J2kSec {
   }
 
   /**
+   * Return the current timestamp.
+   * 
+   * @return present time as a j2ksec
+   */
+  public static double now() {
+    return fromDate(new Date());
+  }
+
+
+  /**
    * Uninstantiatable.
    */
   private J2kSec() {}
