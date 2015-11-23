@@ -29,7 +29,7 @@ public class J2kSec {
    * @return the Date
    */
   public static java.util.Date asDate(double j2k) {
-    return new java.util.Date(asEpoch(j2k));
+    return new java.util.Date(asEpochMs(j2k));
   }
 
   /**
@@ -44,12 +44,22 @@ public class J2kSec {
   }
 
   /**
-   * Converts a j2ksec to a UNIX epoch ms.
+   * Converts a j2ksec to a UNIX epoch.
    * 
    * @param j2k the j2ksec
    * @return date as UNIX epoch
    */
-  public static long asEpoch(double j2k) {
+  public static double asEpoch(double j2k) {
+    return (j2k - UNIXZERO);
+  }
+
+  /**
+   * Converts a j2ksec to a UNIX epoch ms.
+   * 
+   * @param j2k the j2ksec
+   * @return date as UNIX epoch ms
+   */
+  public static long asEpochMs(double j2k) {
     return (long)((j2k - UNIXZERO) * 1000);
   }
 
