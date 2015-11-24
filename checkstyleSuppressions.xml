@@ -6,7 +6,5 @@
 
 <suppressions>
 	<!-- Checks suppressed to keep external code intact. -->
-	<suppress files="HashCodeUtil.java" checks="[a-zA-Z0-9]*" />
-	<suppress files="NtpMessage" checks="[a-zA-Z0-9]*" />
-	<suppress files="SntpClient.java" checks="[a-zA-Z0-9]*" />
+	<suppress files="gov/usgs/volcanoes/core/contrib/*" checks="[a-zA-Z0-9]*" />
 </suppressions>
