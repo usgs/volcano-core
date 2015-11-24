@@ -45,17 +45,8 @@ public class ConfigFileTest {
    * @throws FileNotFoundException when things go wrong
    */
   @Before
-  public void setUp() throws FileNotFoundException {
+  public void setUp() {
     configFile = new ConfigFile(CONFIG_FILENAME);
-  }
-
-  /**
-   * 
-   * @throws FileNotFoundException when things go right
-   */
-  @Test(expected = FileNotFoundException.class)
-  public void when_configDoesnNotExist_then_throwHelpfulException() throws FileNotFoundException {
-    configFile = new ConfigFile("does not exist");
   }
 
   /**

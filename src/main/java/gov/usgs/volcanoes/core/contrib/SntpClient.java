@@ -31,6 +31,8 @@ import java.text.DecimalFormat;
  * FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for 
  * more details.
  *  
+ *  http://support.ntp.org/bin/view/Support/JavaSntpClient
+ *  
  * @author Adam Buckley
  */
 public class SntpClient
