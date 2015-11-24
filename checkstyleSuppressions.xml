@@ -5,6 +5,6 @@
     "http://www.puppycrawl.com/dtds/suppressions_1_1.dtd">
 
 <suppressions>
-	<!--  Checks suppressed to keep external code intact. -->
-    <suppress files="HashCodeUtil.java" checks="[a-zA-Z0-9]*"/>
+	<!-- Checks suppressed to keep external code intact. -->
+	<suppress files="gov/usgs/volcanoes/core/contrib/*" checks="[a-zA-Z0-9]*" />
 </suppressions>

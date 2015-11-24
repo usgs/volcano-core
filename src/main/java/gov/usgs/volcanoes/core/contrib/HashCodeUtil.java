@@ -26,7 +26,7 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package gov.usgs.volcanoes.core.util;
+package gov.usgs.volcanoes.core.contrib;
 
 import java.lang.reflect.Array;
 

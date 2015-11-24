@@ -15,8 +15,8 @@ import java.util.TimeZone;
 /**
  * A utility class for dealing with time, especially formatting and J2Ks.
  *
- * @author Tom Parker
  * @author Dan Cervelli
+ * @author Tom Parker
  */
 public final class Time {
   // public static final String ISO_8601_TIME_FORMAT = "yyyyMMdd'T'HHmmss.SSSS'Z'";
@@ -113,6 +113,16 @@ public final class Time {
    */
   public static String toShortString(Date date) {
     return format(INPUT_TIME_FORMAT, date);
+  }
+
+  /**
+   * Converts a long into decimal seconds.
+   * 
+   * @param epoch time in ms
+   * @return time as decimal seconds
+   */
+  public static double epochToEw(long epoch) {
+    return (double) epoch / 1000;
   }
 
   /**
