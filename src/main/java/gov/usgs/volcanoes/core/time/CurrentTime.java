@@ -1,6 +1,7 @@
 package gov.usgs.volcanoes.core.time;
 
 import gov.usgs.volcanoes.core.configfile.ConfigFile;
+import gov.usgs.volcanoes.core.contrib.NtpMessage;
 import gov.usgs.volcanoes.core.util.Retriable;
 import gov.usgs.volcanoes.core.util.StringUtils;
 import gov.usgs.volcanoes.core.util.UtilException;
@@ -9,6 +10,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.InetAddress;
@@ -70,17 +72,22 @@ public class CurrentTime {
     canaditeNames.add(System.getProperty("user.home") + File.separatorChar + CONFIG_FILENAME);
     String configFile = StringUtils.stringToString(ConfigFile.findConfig(canaditeNames), CONFIG_FILENAME);
 
-    ConfigFile cf = new ConfigFile(configFile);
-
-    if (cf.wasSuccessfullyRead()) {
-      String svrs = cf.getString("servers");
-      if (svrs != null)
-        servers = svrs.split(",");
-      timeout = StringUtils.stringToInt(cf.getString("timeout"), DEFAULT_TIMEOUT);
-      synchronizeDisabled = StringUtils.stringToBoolean(cf.getString("synchronizeDisabled"));
-      recalibrationInterval =
-          StringUtils.stringToInt(cf.getString("recalibrationInterval"), DEFAULT_RECALIBRATION_INTERVAL);
+    ConfigFile cf;
+    try {
+      cf = new ConfigFile(configFile);
+      if (cf.wasSuccessfullyRead()) {
+        String svrs = cf.getString("servers");
+        if (svrs != null)
+          servers = svrs.split(",");
+        timeout = StringUtils.stringToInt(cf.getString("timeout"), DEFAULT_TIMEOUT);
+        synchronizeDisabled = StringUtils.stringToBoolean(cf.getString("synchronizeDisabled"));
+        recalibrationInterval =
+            StringUtils.stringToInt(cf.getString("recalibrationInterval"), DEFAULT_RECALIBRATION_INTERVAL);
+      }
+    } catch (FileNotFoundException ignored) {
+      LOGGER.debug("Config file not found, using defaults.");
     }
+
   }
 
   /**

@@ -6,7 +6,7 @@
 
 package gov.usgs.volcanoes.core.data;
 
-import gov.usgs.volcanoes.core.util.HashCodeUtil;
+import gov.usgs.volcanoes.core.contrib.HashCodeUtil;
 
 /**
  * An immutable class for holding SCNL data.

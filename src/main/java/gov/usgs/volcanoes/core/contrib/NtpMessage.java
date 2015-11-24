@@ -1,4 +1,4 @@
-package gov.usgs.volcanoes.core.time;
+package gov.usgs.volcanoes.core.contrib;
 
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;

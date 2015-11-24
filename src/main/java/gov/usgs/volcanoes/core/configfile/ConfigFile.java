@@ -42,9 +42,33 @@ import java.util.Set;
  */
 public final class ConfigFile {
   private static final Logger LOGGER = LoggerFactory.getLogger(ConfigFile.class);
+  private boolean successfullyRead = false;
 
+
+  /**
+   * Find the first readable file in a list of names.
+   *
+   * @param fileNames list of names to search
+   * @return a string suitable to be passed to File()
+   *
+   */
+  public static String findConfig(List<String> fileNames) {
+    String fileName = null;
+    String name;
+
+    final Iterator<String> nameIter = fileNames.iterator();
+    while (fileName == null && nameIter.hasNext()) {
+      name = nameIter.next();
+      if (new File(name).canRead()) {
+        fileName = name;
+      }
+    }
+
+    return fileName;
+  }
 
   private final Map<String, List<String>> config;
+
   private String name;
 
   /**
@@ -78,13 +102,13 @@ public final class ConfigFile {
 
   /**
    * Create a defensive copy of this object.
-   * 
+   *
    * @return A safe copy of this config
    */
   public ConfigFile deepCopy() {
     final ConfigFile copy = new ConfigFile();
 
-    for (Map.Entry<String, List<String>> entry : config.entrySet()) {
+    for (final Map.Entry<String, List<String>> entry : config.entrySet()) {
       final List<String> value = entry.getValue();
       final String key = entry.getKey();
 
@@ -95,6 +119,15 @@ public final class ConfigFile {
     }
 
     return copy;
+  }
+
+  /**
+   * Check reading of file.
+   * 
+   * @return true if configuration file was successfully read
+   */
+  public boolean wasSuccessfullyRead() {
+    return successfullyRead;
   }
 
   /**
@@ -229,18 +262,6 @@ public final class ConfigFile {
   }
 
   /**
-   * Return an object found by the provided parser.
-   * 
-   * @param key config key to search
-   * @param parser parser that will do the parsing
-   * @return object found by parser
-   * @throws ParseException when value is not null and cannon be parsed.
-   */
-  public <T> T getObject(String key, Parser<T> parser) throws ParseException {
-    return parser.parse(getString(key));
-  }
-
-  /**
    * Get value named key as a list of strings.
    *
    * @param key parameter name
@@ -257,6 +278,18 @@ public final class ConfigFile {
    */
   public String getName() {
     return name;
+  }
+
+  /**
+   * Return an object found by the provided parser.
+   *
+   * @param key config key to search
+   * @param parser parser that will do the parsing
+   * @return object found by parser
+   * @throws ParseException when value is not null and cannon be parsed.
+   */
+  public <T> T getObject(String key, Parser<T> parser) throws ParseException {
+    return parser.parse(getString(key));
   }
 
   /**
@@ -336,9 +369,9 @@ public final class ConfigFile {
     newConfig.name = prefix;
     final Map<String, List<String>> configMap = newConfig.getConfig();
 
-    for (Map.Entry<String, List<String>> entry : config.entrySet()) {
-      String key = entry.getKey();
-      List<String> value = entry.getValue();
+    for (final Map.Entry<String, List<String>> entry : config.entrySet()) {
+      final String key = entry.getKey();
+      final List<String> value = entry.getValue();
       if (key.startsWith(prefix) && key.length() > prefix.length()) {
         final String newKey = key.substring(prefix.length() + 1);
         final List<String> newList = new ArrayList<String>(value);
@@ -383,7 +416,7 @@ public final class ConfigFile {
   public void putConfig(ConfigFile cf, boolean preserve) {
     final Map<String, List<String>> configIn = cf.getConfig();
 
-    for (Map.Entry<String, List<String>> entry : configIn.entrySet()) {
+    for (final Map.Entry<String, List<String>> entry : configIn.entrySet()) {
       final String key = entry.getKey();
       final List<String> value = entry.getValue();
 
@@ -425,7 +458,8 @@ public final class ConfigFile {
   public void readConfigFile(File file, boolean replace) throws FileNotFoundException {
     try {
       // File f = new File(fn);
-      Reader reader = new InputStreamReader(new FileInputStream(file), StandardCharsets.UTF_8);
+      final Reader reader =
+          new InputStreamReader(new FileInputStream(file), StandardCharsets.UTF_8);
       final BufferedReader in = new BufferedReader(reader);
       String line;
       while ((line = in.readLine()) != null) {
@@ -465,6 +499,7 @@ public final class ConfigFile {
           readConfigFile(ifn);
         }
       }
+      successfullyRead = true;
       in.close();
     } catch (final FileNotFoundException e) {
       throw e;
@@ -558,6 +593,7 @@ public final class ConfigFile {
     return sb.toString();
   }
 
+
   /**
    * Writes configuration to file.
    *
@@ -615,4 +651,5 @@ public final class ConfigFile {
       e.printStackTrace();
     }
   }
+
 }

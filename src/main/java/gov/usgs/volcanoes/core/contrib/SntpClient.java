@@ -1,4 +1,4 @@
-package gov.usgs.volcanoes.core.time;
+package gov.usgs.volcanoes.core.contrib;
 
 import java.io.IOException;
 import java.net.DatagramPacket;

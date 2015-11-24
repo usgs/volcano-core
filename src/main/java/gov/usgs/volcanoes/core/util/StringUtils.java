@@ -15,6 +15,7 @@ import java.util.Comparator;
  */
 public final class StringUtils {
 
+  /** Noted here to keep things simple. */
   public static final char DEGREE_SYMBOL = (char) 0xb0;
 
   /**
@@ -49,6 +50,7 @@ public final class StringUtils {
    * Converts a string to a boolean. Returns default value on null input.
    *
    * @param val the string that represents the boolean
+   * @param def the default value
    * @return the boolean
    */
   public static boolean stringToBoolean(String val, boolean def) {
