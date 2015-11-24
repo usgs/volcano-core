@@ -10,30 +10,36 @@ import org.slf4j.LoggerFactory;
  * classes that inherit from Retriable.
  *
  * @author Dan Cervelli
+ * 
+ * @param <T> retryable type
  */
 public abstract class Retriable<T> {
+
+  /** default number of attempts to make. */
   public static int defaultMaxAttempts = 3;
+
+  /** if true, print output. */
   public static boolean defaultOutput = true;
 
   private static final Logger LOGGER = LoggerFactory.getLogger(Retriable.class);
 
-  /**
-   * Sets default count of connecting attempts.
-   * 
-   * @param m max attempts
-   */
-//  public static void setDefaultMaxAttempts(int m) {
-//    defaultMaxAttempts = m;
-//  }
+  // /**
+  // * Sets default count of connecting attempts.
+  // *
+  // * @param m max attempts
+  // */
+  // public static void setDefaultMaxAttempts(int m) {
+  // defaultMaxAttempts = m;
+  // }
 
-  /**
-   * Sets default boolean value if we enable logging.
-   * 
-   * @param b default value
-   */
-//  public static void setDefaultOutput(boolean b) {
-//    defaultOutput = b;
-//  }
+  // /**
+  // * Sets default boolean value if we enable logging.
+  // *
+  // * @param b default value
+  // */
+  // public static void setDefaultOutput(boolean b) {
+  // defaultOutput = b;
+  // }
 
   protected int maxAttempts;
   protected String name;
@@ -64,12 +70,12 @@ public abstract class Retriable<T> {
   /**
    * Constructor.
    * 
-   * @param n name
+   * @param name name
    * @param mr Count of attempts to retrieve
    */
-  public Retriable(String n, int mr) {
+  public Retriable(String name, int mr) {
     this(mr);
-    name = n;
+    this.name = name;
     maxAttempts = mr;
   }
 
@@ -78,7 +84,7 @@ public abstract class Retriable<T> {
    * variable.
    * 
    * @return flag if retrieving was successful
-   * @throws initialized UtilException if retrieving itself was successful but result carries error
+   * @throws UtilException if retrieving itself was successful but result carries error
    *           flag
    */
   public abstract boolean attempt() throws UtilException;
@@ -91,7 +97,7 @@ public abstract class Retriable<T> {
   public void attemptFix() {}
 
   /**
-   * Gets count of connecting attempts
+   * Gets count of connecting attempts.
    * 
    * @return max attempts
    */
@@ -100,7 +106,7 @@ public abstract class Retriable<T> {
   }
 
   /**
-   * Getter for name
+   * Getter for name.
    * 
    * @return name
    */
@@ -109,7 +115,7 @@ public abstract class Retriable<T> {
   }
 
   /**
-   * Yield result
+   * Yield result.
    * 
    * @return retrieved result
    */
@@ -125,10 +131,10 @@ public abstract class Retriable<T> {
   public void giveUp() {}
 
   /**
-   * Connects with multiple-attempts logic, gets results
+   * Connects with multiple-attempts logic, gets results.
    * 
    * @return retrieved result
-   * @throws initialized UtilException if retrieving itself was successful but result carries error
+   * @throws UtilException if retrieving itself was successful but result carries error
    *           flag
    */
   public T go() throws UtilException {
@@ -146,7 +152,7 @@ public abstract class Retriable<T> {
     }
     if (!success) {
       // if (isOutput())
-     LOGGER.error("{}: giving up.", getName());;
+      LOGGER.error("{}: giving up.", getName());;
       giveUp();
     }
 
@@ -154,7 +160,7 @@ public abstract class Retriable<T> {
   }
 
   /**
-   * Check for logging
+   * Check for logging.
    * 
    * @return Flag if we enable logging
    */
@@ -162,7 +168,12 @@ public abstract class Retriable<T> {
     return output;
   }
 
-  public void setOutput(boolean b) {
-    output = b;
+  /**
+   * mutator method for output.
+   * 
+   * @param output if true, output.
+   */
+  public void setOutput(boolean output) {
+    this.output = output;
   }
 }
