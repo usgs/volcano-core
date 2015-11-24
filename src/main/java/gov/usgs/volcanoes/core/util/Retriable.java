@@ -1,5 +1,8 @@
 package gov.usgs.volcanoes.core.util;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 /**
  * Basic abstract wildcarded class to retrieve wildcard object
  * with using multiple-attempts logic from remote server.
@@ -12,23 +15,25 @@ public abstract class Retriable<T> {
   public static int defaultMaxAttempts = 3;
   public static boolean defaultOutput = true;
 
+  private static final Logger LOGGER = LoggerFactory.getLogger(Retriable.class);
+
   /**
    * Sets default count of connecting attempts.
    * 
    * @param m max attempts
    */
-  public static void setDefaultMaxAttempts(int m) {
-    defaultMaxAttempts = m;
-  }
+//  public static void setDefaultMaxAttempts(int m) {
+//    defaultMaxAttempts = m;
+//  }
 
   /**
    * Sets default boolean value if we enable logging.
    * 
    * @param b default value
    */
-  public static void setDefaultOutput(boolean b) {
-    defaultOutput = b;
-  }
+//  public static void setDefaultOutput(boolean b) {
+//    defaultOutput = b;
+//  }
 
   protected int maxAttempts;
   protected String name;
@@ -134,14 +139,14 @@ public abstract class Retriable<T> {
       success = attempt();
       if (!success) {
         if (isOutput()) {
-          Log.getLogger("gov.usgs.util").fine(getName() + ": failed on attempt " + attempts + ".");
+          LOGGER.error("{}: failed on attempt {}", getName(), attempts);
         }
         attemptFix();
       }
     }
     if (!success) {
       // if (isOutput())
-      Log.getLogger("gov.usgs.util").warning(getName() + ": giving up.");
+     LOGGER.error("{}: giving up.", getName());;
       giveUp();
     }
 
