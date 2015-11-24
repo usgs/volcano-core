@@ -62,7 +62,7 @@ public class CurrentTime {
   private static CurrentTime currentTime;
 
   /**
-   * Default constructor
+   * Default constructor.
    */
   private CurrentTime() {
     dateFormat.setTimeZone(TimeZone.getTimeZone("GMT"));
@@ -70,35 +70,31 @@ public class CurrentTime {
     List<String> canaditeNames = new LinkedList<String>();
     canaditeNames.add(CONFIG_FILENAME);
     canaditeNames.add(System.getProperty("user.home") + File.separatorChar + CONFIG_FILENAME);
-    String configFile = StringUtils.stringToString(ConfigFile.findConfig(canaditeNames), CONFIG_FILENAME);
+    String configFile =
+        StringUtils.stringToString(ConfigFile.findConfig(canaditeNames), CONFIG_FILENAME);
 
-    ConfigFile cf;
-    try {
-      cf = new ConfigFile(configFile);
-      if (cf.wasSuccessfullyRead()) {
-        String svrs = cf.getString("servers");
-        if (svrs != null)
-          servers = svrs.split(",");
-        timeout = StringUtils.stringToInt(cf.getString("timeout"), DEFAULT_TIMEOUT);
-        synchronizeDisabled = StringUtils.stringToBoolean(cf.getString("synchronizeDisabled"));
-        recalibrationInterval =
-            StringUtils.stringToInt(cf.getString("recalibrationInterval"), DEFAULT_RECALIBRATION_INTERVAL);
-      }
-    } catch (FileNotFoundException ignored) {
-      LOGGER.debug("Config file not found, using defaults.");
+    ConfigFile cf = new ConfigFile(configFile);
+    if (cf.wasSuccessfullyRead()) {
+      String svrs = cf.getString("servers");
+      if (svrs != null)
+        servers = svrs.split(",");
+      timeout = StringUtils.stringToInt(cf.getString("timeout"), DEFAULT_TIMEOUT);
+      synchronizeDisabled = StringUtils.stringToBoolean(cf.getString("synchronizeDisabled"));
+      recalibrationInterval = StringUtils.stringToInt(cf.getString("recalibrationInterval"),
+          DEFAULT_RECALIBRATION_INTERVAL);
     }
 
   }
 
   /**
-   * Realize singleton pattern, permit only 1 instance of class in the application
+   * Realize singleton pattern, permit only 1 instance of class in the application.
    */
   public static CurrentTime getInstance() {
     return CurrentTimeHolder.currentTime;
   }
 
   /**
-   * Sets recalibration interval, in milliseconds
+   * Sets recalibration interval, in milliseconds.
    * 
    * @param ms milliseconds
    */
@@ -107,7 +103,7 @@ public class CurrentTime {
   }
 
   /**
-   * Get current time
+   * Get current time.
    * 
    * @return calibrated time, as formatted string
    */
@@ -116,7 +112,7 @@ public class CurrentTime {
   }
 
   /**
-   * Get current time
+   * Get current time.
    * 
    * @return calibrated time, in seconds since standard java time begin.
    */
@@ -134,7 +130,7 @@ public class CurrentTime {
   }
 
   /**
-   * Get current date
+   * Get current date.
    * 
    * @return calibrated time, as Date
    */
@@ -143,7 +139,7 @@ public class CurrentTime {
   }
 
   /**
-   * Get current time
+   * Get current time.
    * 
    * @return calibrated time, as long
    */
@@ -159,7 +155,7 @@ public class CurrentTime {
   }
 
   /**
-   * Get last offset
+   * Get last offset.
    * 
    * @return current offset between local time and ntp time
    */
@@ -168,7 +164,7 @@ public class CurrentTime {
   }
 
   /**
-   * Query configured ntp servers
+   * Query configured ntp servers.
    * 
    * @return result
    */
@@ -245,7 +241,7 @@ public class CurrentTime {
   }
 
   /**
-   * Main method
+   * Main method.
    * 
    * @param args command line args
    * @throws Exception

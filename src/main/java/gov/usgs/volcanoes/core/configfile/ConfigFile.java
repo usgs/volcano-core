@@ -93,11 +93,15 @@ public final class ConfigFile {
    * @param fn name of file to init class
    * @throws FileNotFoundException thrown when I cannot find the provided file
    */
-  public ConfigFile(String fn) throws FileNotFoundException {
+  public ConfigFile(String fn) {
     setName(fn);
 
     config = new HashMap<String, List<String>>();
-    readConfigFile(fn);
+    try {
+      readConfigFile(fn);
+    } catch (FileNotFoundException ex) {
+      LOGGER.debug("Cannot read config file. ({})", ex);
+    }
   }
 
   /**
