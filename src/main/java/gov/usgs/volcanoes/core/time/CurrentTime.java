@@ -14,7 +14,6 @@ import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.InetAddress;
 import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.TimeZone;
@@ -38,6 +37,7 @@ import java.util.TimeZone;
  * recalibrationInterval=60000
  *
  * @author Dan Cervelli
+ * @author Tom Parker
  */
 public class CurrentTime {
   private static class CurrentTimeHolder {
@@ -45,12 +45,19 @@ public class CurrentTime {
   }
 
   private static final String CONFIG_FILENAME = "NTP.config";
+  private static final SimpleDateFormat DATE_FORMAT;
   private static final String[] DEFAULT_NTP_SERVERS =
-      new String[] { "0.pool.ntp.org", "1.pool.ntp.org", "2.pool.ntp.org", "time.nist.gov" };
-  private static final int DEFAULT_RECALIBRATION_INTERVAL = 10 * 60 * 1000; // 10 minutes
+      new String[] { "0.pool.ntp.org", "1.pool.ntp.org", "time.nist.gov" };
 
+  private static final int DEFAULT_RECALIBRATION_INTERVAL = 10 * 60 * 1000; // 10 minutes
   private static final int DEFAULT_TIMEOUT = 500;
+
   private static final Logger LOGGER = LoggerFactory.getLogger(CurrentTime.class);
+
+  static {
+    DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS");
+    DATE_FORMAT.setTimeZone(TimeZone.getTimeZone("UTC"));
+  }
 
   /**
    * Realize singleton pattern, permit only 1 instance of class in the application.
@@ -65,14 +72,14 @@ public class CurrentTime {
    * @param args command line args
    */
   public static void main(String[] args) {
+    final long now = CurrentTime.getInstance().now();
+
     System.out.printf(
-        "        GMT Time\nMillis: %d\n   J2K: %f\n    EW: %f\n  Date: %s\nOffset: %d\n",
-        CurrentTime.getInstance().now(), CurrentTime.getInstance().nowJ2K(),
-        CurrentTime.getInstance().nowEw(), CurrentTime.getInstance().nowString(),
+        "        GMT Time\nMillis: %d\n   J2K: %f\n    EW: %f\n  Date: %s\nOffset: %d\n", now,
+        J2kSec.fromEpoch(now), Time.epochToEw(now), Time.toDateString(now),
         CurrentTime.getInstance().getLastOffset());
   }
 
-  private final SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS");
   private long lastOffset;
   private long lastOffsetCheck = 0;
 
@@ -90,8 +97,6 @@ public class CurrentTime {
    * Default constructor.
    */
   private CurrentTime() {
-    dateFormat.setTimeZone(TimeZone.getTimeZone("GMT"));
-
     final List<String> canaditeNames = new LinkedList<String>();
     canaditeNames.add(CONFIG_FILENAME);
     canaditeNames.add(System.getProperty("user.home") + File.separatorChar + CONFIG_FILENAME);
@@ -218,42 +223,6 @@ public class CurrentTime {
     }
 
     return System.currentTimeMillis() + lastOffset;
-  }
-
-  /**
-   * Get current date.
-   *
-   * @return calibrated time, as Date
-   */
-  public Date nowDate() {
-    return new Date(now());
-  }
-
-  /**
-   * Get current time.
-   *
-   * @return calibrated time, in seconds since standard java time begin.
-   */
-  public double nowEw() {
-    return ((double) now() / (double) 1000);
-  }
-
-  /**
-   * Get current time
-   *
-   * @return calibrated time, in seconds since ???.
-   */
-  public double nowJ2K() {
-    return (((double) now() / (double) 1000) - 946728000);
-  }
-
-  /**
-   * Get current time.
-   *
-   * @return calibrated time, as formatted string
-   */
-  public String nowString() {
-    return dateFormat.format(nowDate());
   }
 
   /**
