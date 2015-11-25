@@ -226,6 +226,14 @@ public class CurrentTime {
   }
 
   /**
+   * Return the current time as a J2kSec.
+   * @return current time
+   */
+  public double nowJ2k() {
+    return J2kSec.fromEpoch(now());
+  }
+  
+  /**
    * Sets recalibration interval, in milliseconds.
    *
    * @param ms milliseconds
