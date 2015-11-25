@@ -18,6 +18,12 @@ public final class StringUtils {
   /** Noted here to keep things simple. */
   public static final char DEGREE_SYMBOL = (char) 0xb0;
 
+  public static final long ONE_KB = 1024;
+  public static final long ONE_MB = 1024 * ONE_KB;
+  public static final long ONE_GB = 1024 * ONE_MB;
+  public static final long ONE_TB = 1024 * ONE_GB;
+  public static final long ONE_PB = 1024 * ONE_TB;
+
   /**
    * Constructs comparator to compare strings with ignore case mean.
    *
@@ -30,6 +36,28 @@ public final class StringUtils {
         return o1.compareToIgnoreCase(o2);
       }
     };
+  }
+
+  /**
+   * Return a human readable string describing byte length.
+   *
+   * @param bytes bytes quantity
+   * @return String representation of bytes count, in bytes, kilobytes, megabytes etc.
+   */
+  public static String numBytesToString(long bytes) {
+    if (bytes <= 4 * ONE_KB) {
+      return String.format("%d B", bytes);
+    } else if (bytes <= 4 * ONE_MB) {
+      return String.format("%.3f KB", (double) bytes / (double) ONE_KB);
+    } else if (bytes <= 4 * ONE_GB) {
+      return String.format("%.3f MB", (double) bytes / (double) ONE_MB);
+    } else if (bytes <= 4 * ONE_TB) {
+      return String.format("%.3f GB", (double) bytes / (double) ONE_GB);
+    } else if (bytes <= 4 * ONE_PB) {
+      return String.format("%.3f TB", (double) bytes / (double) ONE_TB);
+    } else {
+      return String.format("%.3f PB", (double) bytes / (double) ONE_PB);
+    }
   }
 
   /**
