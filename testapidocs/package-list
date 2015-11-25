@@ -6,3 +6,4 @@ gov.usgs.volcanoes.core.configfile
 gov.usgs.volcanoes.core.configfile.parser
 gov.usgs.volcanoes.core.data
 gov.usgs.volcanoes.core.time
+gov.usgs.volcanoes.core.util

@@ -1,0 +1,456 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head><meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+<title>NtpMessage xref</title>
+<link type="text/css" rel="stylesheet" href="../../../../../stylesheet.css" />
+</head>
+<body>
+<div id="overview"><a href="../../../../../../apidocs/gov/usgs/volcanoes/core/contrib/NtpMessage.html">View Javadoc</a></div><pre>
+<a class="jxr_linenumber" name="L1" href="#L1">1</a>   <strong class="jxr_keyword">package</strong> gov.usgs.volcanoes.core.contrib;
+<a class="jxr_linenumber" name="L2" href="#L2">2</a>   
+<a class="jxr_linenumber" name="L3" href="#L3">3</a>   <strong class="jxr_keyword">import</strong> java.text.DecimalFormat;
+<a class="jxr_linenumber" name="L4" href="#L4">4</a>   <strong class="jxr_keyword">import</strong> java.text.SimpleDateFormat;
+<a class="jxr_linenumber" name="L5" href="#L5">5</a>   <strong class="jxr_keyword">import</strong> java.util.Date;
+<a class="jxr_linenumber" name="L6" href="#L6">6</a>   
+<a class="jxr_linenumber" name="L7" href="#L7">7</a>   
+<a class="jxr_linenumber" name="L8" href="#L8">8</a>   <em class="jxr_javadoccomment">/**</em>
+<a class="jxr_linenumber" name="L9" href="#L9">9</a>   <em class="jxr_javadoccomment"> * This class represents a NTP message, as specified in RFC 2030. The message</em>
+<a class="jxr_linenumber" name="L10" href="#L10">10</a>  <em class="jxr_javadoccomment"> * format is compatible with all versions of NTP and SNTP.</em>
+<a class="jxr_linenumber" name="L11" href="#L11">11</a>  <em class="jxr_javadoccomment"> *</em>
+<a class="jxr_linenumber" name="L12" href="#L12">12</a>  <em class="jxr_javadoccomment"> * This class does not support the optional authentication protocol, and</em>
+<a class="jxr_linenumber" name="L13" href="#L13">13</a>  <em class="jxr_javadoccomment"> * ignores the key ID and message digest fields.</em>
+<a class="jxr_linenumber" name="L14" href="#L14">14</a>  <em class="jxr_javadoccomment"> * </em>
+<a class="jxr_linenumber" name="L15" href="#L15">15</a>  <em class="jxr_javadoccomment"> * For convenience, this class exposes message values as native Java types, not</em>
+<a class="jxr_linenumber" name="L16" href="#L16">16</a>  <em class="jxr_javadoccomment"> * the NTP-specified data formats. For example, timestamps are</em>
+<a class="jxr_linenumber" name="L17" href="#L17">17</a>  <em class="jxr_javadoccomment"> * stored as doubles (as opposed to the NTP unsigned 64-bit fixed point</em>
+<a class="jxr_linenumber" name="L18" href="#L18">18</a>  <em class="jxr_javadoccomment"> * format).</em>
+<a class="jxr_linenumber" name="L19" href="#L19">19</a>  <em class="jxr_javadoccomment"> * </em>
+<a class="jxr_linenumber" name="L20" href="#L20">20</a>  <em class="jxr_javadoccomment"> * However, the contructor NtpMessage(byte[]) and the method toByteArray()</em>
+<a class="jxr_linenumber" name="L21" href="#L21">21</a>  <em class="jxr_javadoccomment"> * allow the import and export of the raw NTP message format.</em>
+<a class="jxr_linenumber" name="L22" href="#L22">22</a>  <em class="jxr_javadoccomment"> * </em>
+<a class="jxr_linenumber" name="L23" href="#L23">23</a>  <em class="jxr_javadoccomment"> * </em>
+<a class="jxr_linenumber" name="L24" href="#L24">24</a>  <em class="jxr_javadoccomment"> * Usage example</em>
+<a class="jxr_linenumber" name="L25" href="#L25">25</a>  <em class="jxr_javadoccomment"> * </em>
+<a class="jxr_linenumber" name="L26" href="#L26">26</a>  <em class="jxr_javadoccomment"> * // Send message</em>
+<a class="jxr_linenumber" name="L27" href="#L27">27</a>  <em class="jxr_javadoccomment"> * DatagramSocket socket = new DatagramSocket();</em>
+<a class="jxr_linenumber" name="L28" href="#L28">28</a>  <em class="jxr_javadoccomment"> * InetAddress address = InetAddress.getByName("ntp.cais.rnp.br");</em>
+<a class="jxr_linenumber" name="L29" href="#L29">29</a>  <em class="jxr_javadoccomment"> * byte[] buf = new NtpMessage().toByteArray();</em>
+<a class="jxr_linenumber" name="L30" href="#L30">30</a>  <em class="jxr_javadoccomment"> * DatagramPacket packet = new DatagramPacket(buf, buf.length, address, 123);</em>
+<a class="jxr_linenumber" name="L31" href="#L31">31</a>  <em class="jxr_javadoccomment"> * socket.send(packet);</em>
+<a class="jxr_linenumber" name="L32" href="#L32">32</a>  <em class="jxr_javadoccomment"> * </em>
+<a class="jxr_linenumber" name="L33" href="#L33">33</a>  <em class="jxr_javadoccomment"> * // Get response</em>
+<a class="jxr_linenumber" name="L34" href="#L34">34</a>  <em class="jxr_javadoccomment"> * socket.receive(packet);</em>
+<a class="jxr_linenumber" name="L35" href="#L35">35</a>  <em class="jxr_javadoccomment"> * System.out.println(msg.toString());</em>
+<a class="jxr_linenumber" name="L36" href="#L36">36</a>  <em class="jxr_javadoccomment"> * </em>
+<a class="jxr_linenumber" name="L37" href="#L37">37</a>  <em class="jxr_javadoccomment"> * </em>
+<a class="jxr_linenumber" name="L38" href="#L38">38</a>  <em class="jxr_javadoccomment"> * This code is copyright (c) Adam Buckley 2004</em>
+<a class="jxr_linenumber" name="L39" href="#L39">39</a>  <em class="jxr_javadoccomment"> *</em>
+<a class="jxr_linenumber" name="L40" href="#L40">40</a>  <em class="jxr_javadoccomment"> * This program is free software; you can redistribute it and/or modify it</em>
+<a class="jxr_linenumber" name="L41" href="#L41">41</a>  <em class="jxr_javadoccomment"> * under the terms of the GNU General Public License as published by the Free</em>
+<a class="jxr_linenumber" name="L42" href="#L42">42</a>  <em class="jxr_javadoccomment"> * Software Foundation; either version 2 of the License, or (at your option)</em>
+<a class="jxr_linenumber" name="L43" href="#L43">43</a>  <em class="jxr_javadoccomment"> * any later version. A HTML version of the GNU General Public License can be</em>
+<a class="jxr_linenumber" name="L44" href="#L44">44</a>  <em class="jxr_javadoccomment"> * seen at <a href="http://www.gnu.org/licenses/gpl.htm" target="alexandria_uri">http://www.gnu.org/licenses/gpl.htm</a>l</em>
+<a class="jxr_linenumber" name="L45" href="#L45">45</a>  <em class="jxr_javadoccomment"> *</em>
+<a class="jxr_linenumber" name="L46" href="#L46">46</a>  <em class="jxr_javadoccomment"> * This program is distributed in the hope that it will be useful, but WITHOUT</em>
+<a class="jxr_linenumber" name="L47" href="#L47">47</a>  <em class="jxr_javadoccomment"> * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or</em>
+<a class="jxr_linenumber" name="L48" href="#L48">48</a>  <em class="jxr_javadoccomment"> * FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for</em>
+<a class="jxr_linenumber" name="L49" href="#L49">49</a>  <em class="jxr_javadoccomment"> * more details.</em>
+<a class="jxr_linenumber" name="L50" href="#L50">50</a>  <em class="jxr_javadoccomment"> * </em>
+<a class="jxr_linenumber" name="L51" href="#L51">51</a>  <em class="jxr_javadoccomment"> * </em>
+<a class="jxr_linenumber" name="L52" href="#L52">52</a>  <em class="jxr_javadoccomment"> * Comments for member variables are taken from RFC2030 by David Mills,</em>
+<a class="jxr_linenumber" name="L53" href="#L53">53</a>  <em class="jxr_javadoccomment"> * University of Delaware.</em>
+<a class="jxr_linenumber" name="L54" href="#L54">54</a>  <em class="jxr_javadoccomment"> * </em>
+<a class="jxr_linenumber" name="L55" href="#L55">55</a>  <em class="jxr_javadoccomment"> * Number format conversion code in NtpMessage(byte[] array) and toByteArray()</em>
+<a class="jxr_linenumber" name="L56" href="#L56">56</a>  <em class="jxr_javadoccomment"> * inspired by <a href="http://www.pps.jussieu.fr/~jch/enseignement/reseaux" target="alexandria_uri">http://www.pps.jussieu.fr/~jch/enseignement/reseaux</a>/</em>
+<a class="jxr_linenumber" name="L57" href="#L57">57</a>  <em class="jxr_javadoccomment"> * NTPMessage.java which is copyright (c) 2003 by Juliusz Chroboczek</em>
+<a class="jxr_linenumber" name="L58" href="#L58">58</a>  <em class="jxr_javadoccomment"> * </em>
+<a class="jxr_linenumber" name="L59" href="#L59">59</a>  <em class="jxr_javadoccomment"> * @author Adam Buckley</em>
+<a class="jxr_linenumber" name="L60" href="#L60">60</a>  <em class="jxr_javadoccomment"> */</em>
+<a class="jxr_linenumber" name="L61" href="#L61">61</a>  <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">class</strong> <a href="../../../../../gov/usgs/volcanoes/core/contrib/NtpMessage.html">NtpMessage</a> {
+<a class="jxr_linenumber" name="L62" href="#L62">62</a>    <em class="jxr_javadoccomment">/**</em>
+<a class="jxr_linenumber" name="L63" href="#L63">63</a>  <em class="jxr_javadoccomment">   * This is a two-bit code warning of an impending leap second to be</em>
+<a class="jxr_linenumber" name="L64" href="#L64">64</a>  <em class="jxr_javadoccomment">   * inserted/deleted in the last minute of the current day. It's values</em>
+<a class="jxr_linenumber" name="L65" href="#L65">65</a>  <em class="jxr_javadoccomment">   * may be as follows:</em>
+<a class="jxr_linenumber" name="L66" href="#L66">66</a>  <em class="jxr_javadoccomment">   * </em>
+<a class="jxr_linenumber" name="L67" href="#L67">67</a>  <em class="jxr_javadoccomment">   * Value Meaning</em>
+<a class="jxr_linenumber" name="L68" href="#L68">68</a>  <em class="jxr_javadoccomment">   * ----- -------</em>
+<a class="jxr_linenumber" name="L69" href="#L69">69</a>  <em class="jxr_javadoccomment">   * 0 no warning</em>
+<a class="jxr_linenumber" name="L70" href="#L70">70</a>  <em class="jxr_javadoccomment">   * 1 last minute has 61 seconds</em>
+<a class="jxr_linenumber" name="L71" href="#L71">71</a>  <em class="jxr_javadoccomment">   * 2 last minute has 59 seconds)</em>
+<a class="jxr_linenumber" name="L72" href="#L72">72</a>  <em class="jxr_javadoccomment">   * 3 alarm condition (clock not synchronized)</em>
+<a class="jxr_linenumber" name="L73" href="#L73">73</a>  <em class="jxr_javadoccomment">   */</em>
+<a class="jxr_linenumber" name="L74" href="#L74">74</a>    <strong class="jxr_keyword">public</strong> byte leapIndicator = 0;
+<a class="jxr_linenumber" name="L75" href="#L75">75</a>  
+<a class="jxr_linenumber" name="L76" href="#L76">76</a>  
+<a class="jxr_linenumber" name="L77" href="#L77">77</a>    <em class="jxr_javadoccomment">/**</em>
+<a class="jxr_linenumber" name="L78" href="#L78">78</a>  <em class="jxr_javadoccomment">   * This value indicates the NTP/SNTP version number. The version number</em>
+<a class="jxr_linenumber" name="L79" href="#L79">79</a>  <em class="jxr_javadoccomment">   * is 3 for Version 3 (IPv4 only) and 4 for Version 4 (IPv4, IPv6 and OSI).</em>
+<a class="jxr_linenumber" name="L80" href="#L80">80</a>  <em class="jxr_javadoccomment">   * If necessary to distinguish between IPv4, IPv6 and OSI, the</em>
+<a class="jxr_linenumber" name="L81" href="#L81">81</a>  <em class="jxr_javadoccomment">   * encapsulating context must be inspected.</em>
+<a class="jxr_linenumber" name="L82" href="#L82">82</a>  <em class="jxr_javadoccomment">   */</em>
+<a class="jxr_linenumber" name="L83" href="#L83">83</a>    <strong class="jxr_keyword">public</strong> byte version = 3;
+<a class="jxr_linenumber" name="L84" href="#L84">84</a>  
+<a class="jxr_linenumber" name="L85" href="#L85">85</a>  
+<a class="jxr_linenumber" name="L86" href="#L86">86</a>    <em class="jxr_javadoccomment">/**</em>
+<a class="jxr_linenumber" name="L87" href="#L87">87</a>  <em class="jxr_javadoccomment">   * This value indicates the mode, with values defined as follows:</em>
+<a class="jxr_linenumber" name="L88" href="#L88">88</a>  <em class="jxr_javadoccomment">   * </em>
+<a class="jxr_linenumber" name="L89" href="#L89">89</a>  <em class="jxr_javadoccomment">   * Mode Meaning</em>
+<a class="jxr_linenumber" name="L90" href="#L90">90</a>  <em class="jxr_javadoccomment">   * ---- -------</em>
+<a class="jxr_linenumber" name="L91" href="#L91">91</a>  <em class="jxr_javadoccomment">   * 0 reserved</em>
+<a class="jxr_linenumber" name="L92" href="#L92">92</a>  <em class="jxr_javadoccomment">   * 1 symmetric active</em>
+<a class="jxr_linenumber" name="L93" href="#L93">93</a>  <em class="jxr_javadoccomment">   * 2 symmetric passive</em>
+<a class="jxr_linenumber" name="L94" href="#L94">94</a>  <em class="jxr_javadoccomment">   * 3 client</em>
+<a class="jxr_linenumber" name="L95" href="#L95">95</a>  <em class="jxr_javadoccomment">   * 4 server</em>
+<a class="jxr_linenumber" name="L96" href="#L96">96</a>  <em class="jxr_javadoccomment">   * 5 broadcast</em>
+<a class="jxr_linenumber" name="L97" href="#L97">97</a>  <em class="jxr_javadoccomment">   * 6 reserved for NTP control message</em>
+<a class="jxr_linenumber" name="L98" href="#L98">98</a>  <em class="jxr_javadoccomment">   * 7 reserved for private use</em>
+<a class="jxr_linenumber" name="L99" href="#L99">99</a>  <em class="jxr_javadoccomment">   * </em>
+<a class="jxr_linenumber" name="L100" href="#L100">100</a> <em class="jxr_javadoccomment">   * In unicast and anycast modes, the client sets this field to 3 (client)</em>
+<a class="jxr_linenumber" name="L101" href="#L101">101</a> <em class="jxr_javadoccomment">   * in the request and the server sets it to 4 (server) in the reply. In</em>
+<a class="jxr_linenumber" name="L102" href="#L102">102</a> <em class="jxr_javadoccomment">   * multicast mode, the server sets this field to 5 (broadcast).</em>
+<a class="jxr_linenumber" name="L103" href="#L103">103</a> <em class="jxr_javadoccomment">   */</em>
+<a class="jxr_linenumber" name="L104" href="#L104">104</a>   <strong class="jxr_keyword">public</strong> byte mode = 0;
+<a class="jxr_linenumber" name="L105" href="#L105">105</a> 
+<a class="jxr_linenumber" name="L106" href="#L106">106</a> 
+<a class="jxr_linenumber" name="L107" href="#L107">107</a>   <em class="jxr_javadoccomment">/**</em>
+<a class="jxr_linenumber" name="L108" href="#L108">108</a> <em class="jxr_javadoccomment">   * This value indicates the stratum level of the local clock, with values</em>
+<a class="jxr_linenumber" name="L109" href="#L109">109</a> <em class="jxr_javadoccomment">   * defined as follows:</em>
+<a class="jxr_linenumber" name="L110" href="#L110">110</a> <em class="jxr_javadoccomment">   * </em>
+<a class="jxr_linenumber" name="L111" href="#L111">111</a> <em class="jxr_javadoccomment">   * Stratum Meaning</em>
+<a class="jxr_linenumber" name="L112" href="#L112">112</a> <em class="jxr_javadoccomment">   * ----------------------------------------------</em>
+<a class="jxr_linenumber" name="L113" href="#L113">113</a> <em class="jxr_javadoccomment">   * 0 unspecified or unavailable</em>
+<a class="jxr_linenumber" name="L114" href="#L114">114</a> <em class="jxr_javadoccomment">   * 1 primary reference (e.g., radio clock)</em>
+<a class="jxr_linenumber" name="L115" href="#L115">115</a> <em class="jxr_javadoccomment">   * 2-15 secondary reference (via NTP or SNTP)</em>
+<a class="jxr_linenumber" name="L116" href="#L116">116</a> <em class="jxr_javadoccomment">   * 16-255 reserved</em>
+<a class="jxr_linenumber" name="L117" href="#L117">117</a> <em class="jxr_javadoccomment">   */</em>
+<a class="jxr_linenumber" name="L118" href="#L118">118</a>   <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">short</strong> stratum = 0;
+<a class="jxr_linenumber" name="L119" href="#L119">119</a> 
+<a class="jxr_linenumber" name="L120" href="#L120">120</a> 
+<a class="jxr_linenumber" name="L121" href="#L121">121</a>   <em class="jxr_javadoccomment">/**</em>
+<a class="jxr_linenumber" name="L122" href="#L122">122</a> <em class="jxr_javadoccomment">   * This value indicates the maximum interval between successive messages,</em>
+<a class="jxr_linenumber" name="L123" href="#L123">123</a> <em class="jxr_javadoccomment">   * in seconds to the nearest power of two. The values that can appear in</em>
+<a class="jxr_linenumber" name="L124" href="#L124">124</a> <em class="jxr_javadoccomment">   * this field presently range from 4 (16 s) to 14 (16284 s); however, most</em>
+<a class="jxr_linenumber" name="L125" href="#L125">125</a> <em class="jxr_javadoccomment">   * applications use only the sub-range 6 (64 s) to 10 (1024 s).</em>
+<a class="jxr_linenumber" name="L126" href="#L126">126</a> <em class="jxr_javadoccomment">   */</em>
+<a class="jxr_linenumber" name="L127" href="#L127">127</a>   <strong class="jxr_keyword">public</strong> byte pollInterval = 0;
+<a class="jxr_linenumber" name="L128" href="#L128">128</a> 
+<a class="jxr_linenumber" name="L129" href="#L129">129</a> 
+<a class="jxr_linenumber" name="L130" href="#L130">130</a>   <em class="jxr_javadoccomment">/**</em>
+<a class="jxr_linenumber" name="L131" href="#L131">131</a> <em class="jxr_javadoccomment">   * This value indicates the precision of the local clock, in seconds to</em>
+<a class="jxr_linenumber" name="L132" href="#L132">132</a> <em class="jxr_javadoccomment">   * the nearest power of two. The values that normally appear in this field</em>
+<a class="jxr_linenumber" name="L133" href="#L133">133</a> <em class="jxr_javadoccomment">   * range from -6 for mains-frequency clocks to -20 for microsecond clocks</em>
+<a class="jxr_linenumber" name="L134" href="#L134">134</a> <em class="jxr_javadoccomment">   * found in some workstations.</em>
+<a class="jxr_linenumber" name="L135" href="#L135">135</a> <em class="jxr_javadoccomment">   */</em>
+<a class="jxr_linenumber" name="L136" href="#L136">136</a>   <strong class="jxr_keyword">public</strong> byte precision = 0;
+<a class="jxr_linenumber" name="L137" href="#L137">137</a> 
+<a class="jxr_linenumber" name="L138" href="#L138">138</a> 
+<a class="jxr_linenumber" name="L139" href="#L139">139</a>   <em class="jxr_javadoccomment">/**</em>
+<a class="jxr_linenumber" name="L140" href="#L140">140</a> <em class="jxr_javadoccomment">   * This value indicates the total roundtrip delay to the primary reference</em>
+<a class="jxr_linenumber" name="L141" href="#L141">141</a> <em class="jxr_javadoccomment">   * source, in seconds. Note that this variable can take on both positive</em>
+<a class="jxr_linenumber" name="L142" href="#L142">142</a> <em class="jxr_javadoccomment">   * and negative values, depending on the relative time and frequency</em>
+<a class="jxr_linenumber" name="L143" href="#L143">143</a> <em class="jxr_javadoccomment">   * offsets. The values that normally appear in this field range from</em>
+<a class="jxr_linenumber" name="L144" href="#L144">144</a> <em class="jxr_javadoccomment">   * negative values of a few milliseconds to positive values of several</em>
+<a class="jxr_linenumber" name="L145" href="#L145">145</a> <em class="jxr_javadoccomment">   * hundred milliseconds.</em>
+<a class="jxr_linenumber" name="L146" href="#L146">146</a> <em class="jxr_javadoccomment">   */</em>
+<a class="jxr_linenumber" name="L147" href="#L147">147</a>   <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">double</strong> rootDelay = 0;
+<a class="jxr_linenumber" name="L148" href="#L148">148</a> 
+<a class="jxr_linenumber" name="L149" href="#L149">149</a> 
+<a class="jxr_linenumber" name="L150" href="#L150">150</a>   <em class="jxr_javadoccomment">/**</em>
+<a class="jxr_linenumber" name="L151" href="#L151">151</a> <em class="jxr_javadoccomment">   * This value indicates the nominal error relative to the primary reference</em>
+<a class="jxr_linenumber" name="L152" href="#L152">152</a> <em class="jxr_javadoccomment">   * source, in seconds. The values that normally appear in this field</em>
+<a class="jxr_linenumber" name="L153" href="#L153">153</a> <em class="jxr_javadoccomment">   * range from 0 to several hundred milliseconds.</em>
+<a class="jxr_linenumber" name="L154" href="#L154">154</a> <em class="jxr_javadoccomment">   */</em>
+<a class="jxr_linenumber" name="L155" href="#L155">155</a>   <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">double</strong> rootDispersion = 0;
+<a class="jxr_linenumber" name="L156" href="#L156">156</a> 
+<a class="jxr_linenumber" name="L157" href="#L157">157</a> 
+<a class="jxr_linenumber" name="L158" href="#L158">158</a>   <em class="jxr_javadoccomment">/**</em>
+<a class="jxr_linenumber" name="L159" href="#L159">159</a> <em class="jxr_javadoccomment">   * This is a 4-byte array identifying the particular reference source.</em>
+<a class="jxr_linenumber" name="L160" href="#L160">160</a> <em class="jxr_javadoccomment">   * In the case of NTP Version 3 or Version 4 stratum-0 (unspecified) or</em>
+<a class="jxr_linenumber" name="L161" href="#L161">161</a> <em class="jxr_javadoccomment">   * stratum-1 (primary) servers, this is a four-character ASCII string, left</em>
+<a class="jxr_linenumber" name="L162" href="#L162">162</a> <em class="jxr_javadoccomment">   * justified and zero padded to 32 bits. In NTP Version 3 secondary</em>
+<a class="jxr_linenumber" name="L163" href="#L163">163</a> <em class="jxr_javadoccomment">   * servers, this is the 32-bit IPv4 address of the reference source. In NTP</em>
+<a class="jxr_linenumber" name="L164" href="#L164">164</a> <em class="jxr_javadoccomment">   * Version 4 secondary servers, this is the low order 32 bits of the latest</em>
+<a class="jxr_linenumber" name="L165" href="#L165">165</a> <em class="jxr_javadoccomment">   * transmit timestamp of the reference source. NTP primary (stratum 1)</em>
+<a class="jxr_linenumber" name="L166" href="#L166">166</a> <em class="jxr_javadoccomment">   * servers should set this field to a code identifying the external</em>
+<a class="jxr_linenumber" name="L167" href="#L167">167</a> <em class="jxr_javadoccomment">   * reference source according to the following list. If the external</em>
+<a class="jxr_linenumber" name="L168" href="#L168">168</a> <em class="jxr_javadoccomment">   * reference is one of those listed, the associated code should be used.</em>
+<a class="jxr_linenumber" name="L169" href="#L169">169</a> <em class="jxr_javadoccomment">   * Codes for sources not listed can be contrived as appropriate.</em>
+<a class="jxr_linenumber" name="L170" href="#L170">170</a> <em class="jxr_javadoccomment">   * </em>
+<a class="jxr_linenumber" name="L171" href="#L171">171</a> <em class="jxr_javadoccomment">   * Code External Reference Source</em>
+<a class="jxr_linenumber" name="L172" href="#L172">172</a> <em class="jxr_javadoccomment">   * ---- -------------------------</em>
+<a class="jxr_linenumber" name="L173" href="#L173">173</a> <em class="jxr_javadoccomment">   * LOCL uncalibrated local clock used as a primary reference for</em>
+<a class="jxr_linenumber" name="L174" href="#L174">174</a> <em class="jxr_javadoccomment">   * a subnet without external means of synchronization</em>
+<a class="jxr_linenumber" name="L175" href="#L175">175</a> <em class="jxr_javadoccomment">   * PPS atomic clock or other pulse-per-second source</em>
+<a class="jxr_linenumber" name="L176" href="#L176">176</a> <em class="jxr_javadoccomment">   * individually calibrated to national standards</em>
+<a class="jxr_linenumber" name="L177" href="#L177">177</a> <em class="jxr_javadoccomment">   * ACTS NIST dialup modem service</em>
+<a class="jxr_linenumber" name="L178" href="#L178">178</a> <em class="jxr_javadoccomment">   * USNO USNO modem service</em>
+<a class="jxr_linenumber" name="L179" href="#L179">179</a> <em class="jxr_javadoccomment">   * PTB PTB (Germany) modem service</em>
+<a class="jxr_linenumber" name="L180" href="#L180">180</a> <em class="jxr_javadoccomment">   * TDF Allouis (France) Radio 164 kHz</em>
+<a class="jxr_linenumber" name="L181" href="#L181">181</a> <em class="jxr_javadoccomment">   * DCF Mainflingen (Germany) Radio 77.5 kHz</em>
+<a class="jxr_linenumber" name="L182" href="#L182">182</a> <em class="jxr_javadoccomment">   * MSF Rugby (UK) Radio 60 kHz</em>
+<a class="jxr_linenumber" name="L183" href="#L183">183</a> <em class="jxr_javadoccomment">   * WWV Ft. Collins (US) Radio 2.5, 5, 10, 15, 20 MHz</em>
+<a class="jxr_linenumber" name="L184" href="#L184">184</a> <em class="jxr_javadoccomment">   * WWVB Boulder (US) Radio 60 kHz</em>
+<a class="jxr_linenumber" name="L185" href="#L185">185</a> <em class="jxr_javadoccomment">   * WWVH Kaui Hawaii (US) Radio 2.5, 5, 10, 15 MHz</em>
+<a class="jxr_linenumber" name="L186" href="#L186">186</a> <em class="jxr_javadoccomment">   * CHU Ottawa (Canada) Radio 3330, 7335, 14670 kHz</em>
+<a class="jxr_linenumber" name="L187" href="#L187">187</a> <em class="jxr_javadoccomment">   * LORC LORAN-C radionavigation system</em>
+<a class="jxr_linenumber" name="L188" href="#L188">188</a> <em class="jxr_javadoccomment">   * OMEG OMEGA radionavigation system</em>
+<a class="jxr_linenumber" name="L189" href="#L189">189</a> <em class="jxr_javadoccomment">   * GPS Global Positioning Service</em>
+<a class="jxr_linenumber" name="L190" href="#L190">190</a> <em class="jxr_javadoccomment">   * GOES Geostationary Orbit Environment Satellite</em>
+<a class="jxr_linenumber" name="L191" href="#L191">191</a> <em class="jxr_javadoccomment">   */</em>
+<a class="jxr_linenumber" name="L192" href="#L192">192</a>   <strong class="jxr_keyword">public</strong> byte[] referenceIdentifier = { 0, 0, 0, 0 };
+<a class="jxr_linenumber" name="L193" href="#L193">193</a> 
+<a class="jxr_linenumber" name="L194" href="#L194">194</a> 
+<a class="jxr_linenumber" name="L195" href="#L195">195</a>   <em class="jxr_javadoccomment">/**</em>
+<a class="jxr_linenumber" name="L196" href="#L196">196</a> <em class="jxr_javadoccomment">   * This is the time at which the local clock was last set or corrected, in</em>
+<a class="jxr_linenumber" name="L197" href="#L197">197</a> <em class="jxr_javadoccomment">   * seconds since 00:00 1-Jan-1900.</em>
+<a class="jxr_linenumber" name="L198" href="#L198">198</a> <em class="jxr_javadoccomment">   */</em>
+<a class="jxr_linenumber" name="L199" href="#L199">199</a>   <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">double</strong> referenceTimestamp = 0;
+<a class="jxr_linenumber" name="L200" href="#L200">200</a> 
+<a class="jxr_linenumber" name="L201" href="#L201">201</a> 
+<a class="jxr_linenumber" name="L202" href="#L202">202</a>   <em class="jxr_javadoccomment">/**</em>
+<a class="jxr_linenumber" name="L203" href="#L203">203</a> <em class="jxr_javadoccomment">   * This is the time at which the request departed the client for the</em>
+<a class="jxr_linenumber" name="L204" href="#L204">204</a> <em class="jxr_javadoccomment">   * server, in seconds since 00:00 1-Jan-1900.</em>
+<a class="jxr_linenumber" name="L205" href="#L205">205</a> <em class="jxr_javadoccomment">   */</em>
+<a class="jxr_linenumber" name="L206" href="#L206">206</a>   <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">double</strong> originateTimestamp = 0;
+<a class="jxr_linenumber" name="L207" href="#L207">207</a> 
+<a class="jxr_linenumber" name="L208" href="#L208">208</a> 
+<a class="jxr_linenumber" name="L209" href="#L209">209</a>   <em class="jxr_javadoccomment">/**</em>
+<a class="jxr_linenumber" name="L210" href="#L210">210</a> <em class="jxr_javadoccomment">   * This is the time at which the request arrived at the server, in seconds</em>
+<a class="jxr_linenumber" name="L211" href="#L211">211</a> <em class="jxr_javadoccomment">   * since 00:00 1-Jan-1900.</em>
+<a class="jxr_linenumber" name="L212" href="#L212">212</a> <em class="jxr_javadoccomment">   */</em>
+<a class="jxr_linenumber" name="L213" href="#L213">213</a>   <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">double</strong> receiveTimestamp = 0;
+<a class="jxr_linenumber" name="L214" href="#L214">214</a> 
+<a class="jxr_linenumber" name="L215" href="#L215">215</a> 
+<a class="jxr_linenumber" name="L216" href="#L216">216</a>   <em class="jxr_javadoccomment">/**</em>
+<a class="jxr_linenumber" name="L217" href="#L217">217</a> <em class="jxr_javadoccomment">   * This is the time at which the reply departed the server for the client,</em>
+<a class="jxr_linenumber" name="L218" href="#L218">218</a> <em class="jxr_javadoccomment">   * in seconds since 00:00 1-Jan-1900.</em>
+<a class="jxr_linenumber" name="L219" href="#L219">219</a> <em class="jxr_javadoccomment">   */</em>
+<a class="jxr_linenumber" name="L220" href="#L220">220</a>   <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">double</strong> transmitTimestamp = 0;
+<a class="jxr_linenumber" name="L221" href="#L221">221</a> 
+<a class="jxr_linenumber" name="L222" href="#L222">222</a> 
+<a class="jxr_linenumber" name="L223" href="#L223">223</a> 
+<a class="jxr_linenumber" name="L224" href="#L224">224</a>   <em class="jxr_javadoccomment">/**</em>
+<a class="jxr_linenumber" name="L225" href="#L225">225</a> <em class="jxr_javadoccomment">   * Constructs a new NtpMessage from an array of bytes.</em>
+<a class="jxr_linenumber" name="L226" href="#L226">226</a> <em class="jxr_javadoccomment">   */</em>
+<a class="jxr_linenumber" name="L227" href="#L227">227</a>   <strong class="jxr_keyword">public</strong> <a href="../../../../../gov/usgs/volcanoes/core/contrib/NtpMessage.html">NtpMessage</a>(byte[] array) {
+<a class="jxr_linenumber" name="L228" href="#L228">228</a>     <em class="jxr_comment">// See the packet format diagram in RFC 2030 for details</em>
+<a class="jxr_linenumber" name="L229" href="#L229">229</a>     leapIndicator = (byte) ((array[0] &gt;&gt; 6) &amp; 0x3);
+<a class="jxr_linenumber" name="L230" href="#L230">230</a>     version = (byte) ((array[0] &gt;&gt; 3) &amp; 0x7);
+<a class="jxr_linenumber" name="L231" href="#L231">231</a>     mode = (byte) (array[0] &amp; 0x7);
+<a class="jxr_linenumber" name="L232" href="#L232">232</a>     stratum = unsignedByteToShort(array[1]);
+<a class="jxr_linenumber" name="L233" href="#L233">233</a>     pollInterval = array[2];
+<a class="jxr_linenumber" name="L234" href="#L234">234</a>     precision = array[3];
+<a class="jxr_linenumber" name="L235" href="#L235">235</a> 
+<a class="jxr_linenumber" name="L236" href="#L236">236</a>     rootDelay = (array[4] * 256.0) + unsignedByteToShort(array[5])
+<a class="jxr_linenumber" name="L237" href="#L237">237</a>         + (unsignedByteToShort(array[6]) / 256.0) + (unsignedByteToShort(array[7]) / 65536.0);
+<a class="jxr_linenumber" name="L238" href="#L238">238</a> 
+<a class="jxr_linenumber" name="L239" href="#L239">239</a>     rootDispersion = (unsignedByteToShort(array[8]) * 256.0) + unsignedByteToShort(array[9])
+<a class="jxr_linenumber" name="L240" href="#L240">240</a>         + (unsignedByteToShort(array[10]) / 256.0) + (unsignedByteToShort(array[11]) / 65536.0);
+<a class="jxr_linenumber" name="L241" href="#L241">241</a> 
+<a class="jxr_linenumber" name="L242" href="#L242">242</a>     referenceIdentifier[0] = array[12];
+<a class="jxr_linenumber" name="L243" href="#L243">243</a>     referenceIdentifier[1] = array[13];
+<a class="jxr_linenumber" name="L244" href="#L244">244</a>     referenceIdentifier[2] = array[14];
+<a class="jxr_linenumber" name="L245" href="#L245">245</a>     referenceIdentifier[3] = array[15];
+<a class="jxr_linenumber" name="L246" href="#L246">246</a> 
+<a class="jxr_linenumber" name="L247" href="#L247">247</a>     referenceTimestamp = decodeTimestamp(array, 16);
+<a class="jxr_linenumber" name="L248" href="#L248">248</a>     originateTimestamp = decodeTimestamp(array, 24);
+<a class="jxr_linenumber" name="L249" href="#L249">249</a>     receiveTimestamp = decodeTimestamp(array, 32);
+<a class="jxr_linenumber" name="L250" href="#L250">250</a>     transmitTimestamp = decodeTimestamp(array, 40);
+<a class="jxr_linenumber" name="L251" href="#L251">251</a>   }
+<a class="jxr_linenumber" name="L252" href="#L252">252</a> 
+<a class="jxr_linenumber" name="L253" href="#L253">253</a> 
+<a class="jxr_linenumber" name="L254" href="#L254">254</a> 
+<a class="jxr_linenumber" name="L255" href="#L255">255</a>   <em class="jxr_javadoccomment">/**</em>
+<a class="jxr_linenumber" name="L256" href="#L256">256</a> <em class="jxr_javadoccomment">   * Constructs a new NtpMessage in client -&gt; server mode, and sets the</em>
+<a class="jxr_linenumber" name="L257" href="#L257">257</a> <em class="jxr_javadoccomment">   * transmit timestamp to the current time.</em>
+<a class="jxr_linenumber" name="L258" href="#L258">258</a> <em class="jxr_javadoccomment">   */</em>
+<a class="jxr_linenumber" name="L259" href="#L259">259</a>   <strong class="jxr_keyword">public</strong> <a href="../../../../../gov/usgs/volcanoes/core/contrib/NtpMessage.html">NtpMessage</a>() {
+<a class="jxr_linenumber" name="L260" href="#L260">260</a>     <em class="jxr_comment">// Note that all the other member variables are already set with</em>
+<a class="jxr_linenumber" name="L261" href="#L261">261</a>     <em class="jxr_comment">// appropriate default values.</em>
+<a class="jxr_linenumber" name="L262" href="#L262">262</a>     <strong class="jxr_keyword">this</strong>.mode = 3;
+<a class="jxr_linenumber" name="L263" href="#L263">263</a>     <strong class="jxr_keyword">this</strong>.transmitTimestamp = (System.currentTimeMillis() / 1000.0) + 2208988800.0;
+<a class="jxr_linenumber" name="L264" href="#L264">264</a>   }
+<a class="jxr_linenumber" name="L265" href="#L265">265</a> 
+<a class="jxr_linenumber" name="L266" href="#L266">266</a> 
+<a class="jxr_linenumber" name="L267" href="#L267">267</a> 
+<a class="jxr_linenumber" name="L268" href="#L268">268</a>   <em class="jxr_javadoccomment">/**</em>
+<a class="jxr_linenumber" name="L269" href="#L269">269</a> <em class="jxr_javadoccomment">   * This method constructs the data bytes of a raw NTP packet.</em>
+<a class="jxr_linenumber" name="L270" href="#L270">270</a> <em class="jxr_javadoccomment">   */</em>
+<a class="jxr_linenumber" name="L271" href="#L271">271</a>   <strong class="jxr_keyword">public</strong> byte[] toByteArray() {
+<a class="jxr_linenumber" name="L272" href="#L272">272</a>     <em class="jxr_comment">// All bytes are automatically set to 0</em>
+<a class="jxr_linenumber" name="L273" href="#L273">273</a>     byte[] p = <strong class="jxr_keyword">new</strong> byte[48];
+<a class="jxr_linenumber" name="L274" href="#L274">274</a> 
+<a class="jxr_linenumber" name="L275" href="#L275">275</a>     p[0] = (byte) (leapIndicator &lt;&lt; 6 | version &lt;&lt; 3 | mode);
+<a class="jxr_linenumber" name="L276" href="#L276">276</a>     p[1] = (byte) stratum;
+<a class="jxr_linenumber" name="L277" href="#L277">277</a>     p[2] = (byte) pollInterval;
+<a class="jxr_linenumber" name="L278" href="#L278">278</a>     p[3] = (byte) precision;
+<a class="jxr_linenumber" name="L279" href="#L279">279</a> 
+<a class="jxr_linenumber" name="L280" href="#L280">280</a>     <em class="jxr_comment">// root delay is a signed 16.16-bit FP, in Java an int is 32-bits</em>
+<a class="jxr_linenumber" name="L281" href="#L281">281</a>     <strong class="jxr_keyword">int</strong> l = (<strong class="jxr_keyword">int</strong>) (rootDelay * 65536.0);
+<a class="jxr_linenumber" name="L282" href="#L282">282</a>     p[4] = (byte) ((l &gt;&gt; 24) &amp; 0xFF);
+<a class="jxr_linenumber" name="L283" href="#L283">283</a>     p[5] = (byte) ((l &gt;&gt; 16) &amp; 0xFF);
+<a class="jxr_linenumber" name="L284" href="#L284">284</a>     p[6] = (byte) ((l &gt;&gt; 8) &amp; 0xFF);
+<a class="jxr_linenumber" name="L285" href="#L285">285</a>     p[7] = (byte) (l &amp; 0xFF);
+<a class="jxr_linenumber" name="L286" href="#L286">286</a> 
+<a class="jxr_linenumber" name="L287" href="#L287">287</a>     <em class="jxr_comment">// root dispersion is an unsigned 16.16-bit FP, in Java there are no</em>
+<a class="jxr_linenumber" name="L288" href="#L288">288</a>     <em class="jxr_comment">// unsigned primitive types, so we use a long which is 64-bits</em>
+<a class="jxr_linenumber" name="L289" href="#L289">289</a>     <strong class="jxr_keyword">long</strong> ul = (<strong class="jxr_keyword">long</strong>) (rootDispersion * 65536.0);
+<a class="jxr_linenumber" name="L290" href="#L290">290</a>     p[8] = (byte) ((ul &gt;&gt; 24) &amp; 0xFF);
+<a class="jxr_linenumber" name="L291" href="#L291">291</a>     p[9] = (byte) ((ul &gt;&gt; 16) &amp; 0xFF);
+<a class="jxr_linenumber" name="L292" href="#L292">292</a>     p[10] = (byte) ((ul &gt;&gt; 8) &amp; 0xFF);
+<a class="jxr_linenumber" name="L293" href="#L293">293</a>     p[11] = (byte) (ul &amp; 0xFF);
+<a class="jxr_linenumber" name="L294" href="#L294">294</a> 
+<a class="jxr_linenumber" name="L295" href="#L295">295</a>     p[12] = referenceIdentifier[0];
+<a class="jxr_linenumber" name="L296" href="#L296">296</a>     p[13] = referenceIdentifier[1];
+<a class="jxr_linenumber" name="L297" href="#L297">297</a>     p[14] = referenceIdentifier[2];
+<a class="jxr_linenumber" name="L298" href="#L298">298</a>     p[15] = referenceIdentifier[3];
+<a class="jxr_linenumber" name="L299" href="#L299">299</a> 
+<a class="jxr_linenumber" name="L300" href="#L300">300</a>     encodeTimestamp(p, 16, referenceTimestamp);
+<a class="jxr_linenumber" name="L301" href="#L301">301</a>     encodeTimestamp(p, 24, originateTimestamp);
+<a class="jxr_linenumber" name="L302" href="#L302">302</a>     encodeTimestamp(p, 32, receiveTimestamp);
+<a class="jxr_linenumber" name="L303" href="#L303">303</a>     encodeTimestamp(p, 40, transmitTimestamp);
+<a class="jxr_linenumber" name="L304" href="#L304">304</a> 
+<a class="jxr_linenumber" name="L305" href="#L305">305</a>     <strong class="jxr_keyword">return</strong> p;
+<a class="jxr_linenumber" name="L306" href="#L306">306</a>   }
+<a class="jxr_linenumber" name="L307" href="#L307">307</a> 
+<a class="jxr_linenumber" name="L308" href="#L308">308</a> 
+<a class="jxr_linenumber" name="L309" href="#L309">309</a> 
+<a class="jxr_linenumber" name="L310" href="#L310">310</a>   <em class="jxr_javadoccomment">/**</em>
+<a class="jxr_linenumber" name="L311" href="#L311">311</a> <em class="jxr_javadoccomment">   * Returns a string representation of a NtpMessage</em>
+<a class="jxr_linenumber" name="L312" href="#L312">312</a> <em class="jxr_javadoccomment">   */</em>
+<a class="jxr_linenumber" name="L313" href="#L313">313</a>   <strong class="jxr_keyword">public</strong> String toString() {
+<a class="jxr_linenumber" name="L314" href="#L314">314</a>     String precisionStr = <strong class="jxr_keyword">new</strong> DecimalFormat(<span class="jxr_string">"0.#E0"</span>).format(Math.pow(2, precision));
+<a class="jxr_linenumber" name="L315" href="#L315">315</a> 
+<a class="jxr_linenumber" name="L316" href="#L316">316</a>     <strong class="jxr_keyword">return</strong> <span class="jxr_string">"Leap indicator: "</span> + leapIndicator + <span class="jxr_string">"\n"</span> + <span class="jxr_string">"Version: "</span> + version + <span class="jxr_string">"\n"</span> + <span class="jxr_string">"Mode: "</span>
+<a class="jxr_linenumber" name="L317" href="#L317">317</a>         + mode + <span class="jxr_string">"\n"</span> + <span class="jxr_string">"Stratum: "</span> + stratum + <span class="jxr_string">"\n"</span> + <span class="jxr_string">"Poll: "</span> + pollInterval + <span class="jxr_string">"\n"</span>
+<a class="jxr_linenumber" name="L318" href="#L318">318</a>         + <span class="jxr_string">"Precision: "</span> + precision + <span class="jxr_string">" ("</span> + precisionStr + <span class="jxr_string">" seconds)\n"</span> + <span class="jxr_string">"Root delay: "</span>
+<a class="jxr_linenumber" name="L319" href="#L319">319</a>         + <strong class="jxr_keyword">new</strong> DecimalFormat(<span class="jxr_string">"0.00"</span>).format(rootDelay * 1000) + <span class="jxr_string">" ms\n"</span> + <span class="jxr_string">"Root dispersion: "</span>
+<a class="jxr_linenumber" name="L320" href="#L320">320</a>         + <strong class="jxr_keyword">new</strong> DecimalFormat(<span class="jxr_string">"0.00"</span>).format(rootDispersion * 1000) + <span class="jxr_string">" ms\n"</span>
+<a class="jxr_linenumber" name="L321" href="#L321">321</a>         + <span class="jxr_string">"Reference identifier: "</span>
+<a class="jxr_linenumber" name="L322" href="#L322">322</a>         + referenceIdentifierToString(referenceIdentifier, stratum, version) + <span class="jxr_string">"\n"</span>
+<a class="jxr_linenumber" name="L323" href="#L323">323</a>         + <span class="jxr_string">"Reference timestamp: "</span> + timestampToString(referenceTimestamp) + <span class="jxr_string">"\n"</span>
+<a class="jxr_linenumber" name="L324" href="#L324">324</a>         + <span class="jxr_string">"Originate timestamp: "</span> + timestampToString(originateTimestamp) + <span class="jxr_string">"\n"</span>
+<a class="jxr_linenumber" name="L325" href="#L325">325</a>         + <span class="jxr_string">"Receive timestamp:   "</span> + timestampToString(receiveTimestamp) + <span class="jxr_string">"\n"</span>
+<a class="jxr_linenumber" name="L326" href="#L326">326</a>         + <span class="jxr_string">"Transmit timestamp:  "</span> + timestampToString(transmitTimestamp);
+<a class="jxr_linenumber" name="L327" href="#L327">327</a>   }
+<a class="jxr_linenumber" name="L328" href="#L328">328</a> 
+<a class="jxr_linenumber" name="L329" href="#L329">329</a> 
+<a class="jxr_linenumber" name="L330" href="#L330">330</a> 
+<a class="jxr_linenumber" name="L331" href="#L331">331</a>   <em class="jxr_javadoccomment">/**</em>
+<a class="jxr_linenumber" name="L332" href="#L332">332</a> <em class="jxr_javadoccomment">   * Converts an unsigned byte to a short. By default, Java assumes that</em>
+<a class="jxr_linenumber" name="L333" href="#L333">333</a> <em class="jxr_javadoccomment">   * a byte is signed.</em>
+<a class="jxr_linenumber" name="L334" href="#L334">334</a> <em class="jxr_javadoccomment">   */</em>
+<a class="jxr_linenumber" name="L335" href="#L335">335</a>   <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">static</strong> <strong class="jxr_keyword">short</strong> unsignedByteToShort(byte b) {
+<a class="jxr_linenumber" name="L336" href="#L336">336</a>     <strong class="jxr_keyword">if</strong> ((b &amp; 0x80) == 0x80)
+<a class="jxr_linenumber" name="L337" href="#L337">337</a>       <strong class="jxr_keyword">return</strong> (<strong class="jxr_keyword">short</strong>) (128 + (b &amp; 0x7f));
+<a class="jxr_linenumber" name="L338" href="#L338">338</a>     <strong class="jxr_keyword">else</strong>
+<a class="jxr_linenumber" name="L339" href="#L339">339</a>       <strong class="jxr_keyword">return</strong> (<strong class="jxr_keyword">short</strong>) b;
+<a class="jxr_linenumber" name="L340" href="#L340">340</a>   }
+<a class="jxr_linenumber" name="L341" href="#L341">341</a> 
+<a class="jxr_linenumber" name="L342" href="#L342">342</a> 
+<a class="jxr_linenumber" name="L343" href="#L343">343</a> 
+<a class="jxr_linenumber" name="L344" href="#L344">344</a>   <em class="jxr_javadoccomment">/**</em>
+<a class="jxr_linenumber" name="L345" href="#L345">345</a> <em class="jxr_javadoccomment">   * Will read 8 bytes of a message beginning at &lt;code&gt;pointer&lt;/code&gt;</em>
+<a class="jxr_linenumber" name="L346" href="#L346">346</a> <em class="jxr_javadoccomment">   * and return it as a double, according to the NTP 64-bit timestamp</em>
+<a class="jxr_linenumber" name="L347" href="#L347">347</a> <em class="jxr_javadoccomment">   * format.</em>
+<a class="jxr_linenumber" name="L348" href="#L348">348</a> <em class="jxr_javadoccomment">   */</em>
+<a class="jxr_linenumber" name="L349" href="#L349">349</a>   <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">static</strong> <strong class="jxr_keyword">double</strong> decodeTimestamp(byte[] array, <strong class="jxr_keyword">int</strong> pointer) {
+<a class="jxr_linenumber" name="L350" href="#L350">350</a>     <strong class="jxr_keyword">double</strong> r = 0.0;
+<a class="jxr_linenumber" name="L351" href="#L351">351</a> 
+<a class="jxr_linenumber" name="L352" href="#L352">352</a>     <strong class="jxr_keyword">for</strong> (<strong class="jxr_keyword">int</strong> i = 0; i &lt; 8; i++) {
+<a class="jxr_linenumber" name="L353" href="#L353">353</a>       r += unsignedByteToShort(array[pointer + i]) * Math.pow(2, (3 - i) * 8);
+<a class="jxr_linenumber" name="L354" href="#L354">354</a>     }
+<a class="jxr_linenumber" name="L355" href="#L355">355</a> 
+<a class="jxr_linenumber" name="L356" href="#L356">356</a>     <strong class="jxr_keyword">return</strong> r;
+<a class="jxr_linenumber" name="L357" href="#L357">357</a>   }
+<a class="jxr_linenumber" name="L358" href="#L358">358</a> 
+<a class="jxr_linenumber" name="L359" href="#L359">359</a> 
+<a class="jxr_linenumber" name="L360" href="#L360">360</a> 
+<a class="jxr_linenumber" name="L361" href="#L361">361</a>   <em class="jxr_javadoccomment">/**</em>
+<a class="jxr_linenumber" name="L362" href="#L362">362</a> <em class="jxr_javadoccomment">   * Encodes a timestamp in the specified position in the message</em>
+<a class="jxr_linenumber" name="L363" href="#L363">363</a> <em class="jxr_javadoccomment">   */</em>
+<a class="jxr_linenumber" name="L364" href="#L364">364</a>   <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">static</strong> <strong class="jxr_keyword">void</strong> encodeTimestamp(byte[] array, <strong class="jxr_keyword">int</strong> pointer, <strong class="jxr_keyword">double</strong> timestamp) {
+<a class="jxr_linenumber" name="L365" href="#L365">365</a>     <em class="jxr_comment">// Converts a double into a 64-bit fixed point</em>
+<a class="jxr_linenumber" name="L366" href="#L366">366</a>     <strong class="jxr_keyword">for</strong> (<strong class="jxr_keyword">int</strong> i = 0; i &lt; 8; i++) {
+<a class="jxr_linenumber" name="L367" href="#L367">367</a>       <em class="jxr_comment">// 2^24, 2^16, 2^8, .. 2^-32</em>
+<a class="jxr_linenumber" name="L368" href="#L368">368</a>       <strong class="jxr_keyword">double</strong> base = Math.pow(2, (3 - i) * 8);
+<a class="jxr_linenumber" name="L369" href="#L369">369</a> 
+<a class="jxr_linenumber" name="L370" href="#L370">370</a>       <em class="jxr_comment">// Capture byte value</em>
+<a class="jxr_linenumber" name="L371" href="#L371">371</a>       array[pointer + i] = (byte) (timestamp / base);
+<a class="jxr_linenumber" name="L372" href="#L372">372</a> 
+<a class="jxr_linenumber" name="L373" href="#L373">373</a>       <em class="jxr_comment">// Subtract captured value from remaining total</em>
+<a class="jxr_linenumber" name="L374" href="#L374">374</a>       timestamp = timestamp - (<strong class="jxr_keyword">double</strong>) (unsignedByteToShort(array[pointer + i]) * base);
+<a class="jxr_linenumber" name="L375" href="#L375">375</a>     }
+<a class="jxr_linenumber" name="L376" href="#L376">376</a> 
+<a class="jxr_linenumber" name="L377" href="#L377">377</a>     <em class="jxr_comment">// From RFC 2030: It is advisable to fill the non-significant</em>
+<a class="jxr_linenumber" name="L378" href="#L378">378</a>     <em class="jxr_comment">// low order bits of the timestamp with a random, unbiased</em>
+<a class="jxr_linenumber" name="L379" href="#L379">379</a>     <em class="jxr_comment">// bitstring, both to avoid systematic roundoff errors and as</em>
+<a class="jxr_linenumber" name="L380" href="#L380">380</a>     <em class="jxr_comment">// a means of loop detection and replay detection.</em>
+<a class="jxr_linenumber" name="L381" href="#L381">381</a>     array[7] = (byte) (Math.random() * 255.0);
+<a class="jxr_linenumber" name="L382" href="#L382">382</a>   }
+<a class="jxr_linenumber" name="L383" href="#L383">383</a> 
+<a class="jxr_linenumber" name="L384" href="#L384">384</a> 
+<a class="jxr_linenumber" name="L385" href="#L385">385</a> 
+<a class="jxr_linenumber" name="L386" href="#L386">386</a>   <em class="jxr_javadoccomment">/**</em>
+<a class="jxr_linenumber" name="L387" href="#L387">387</a> <em class="jxr_javadoccomment">   * Returns a timestamp (number of seconds since 00:00 1-Jan-1900) as a</em>
+<a class="jxr_linenumber" name="L388" href="#L388">388</a> <em class="jxr_javadoccomment">   * formatted date/time string.</em>
+<a class="jxr_linenumber" name="L389" href="#L389">389</a> <em class="jxr_javadoccomment">   */</em>
+<a class="jxr_linenumber" name="L390" href="#L390">390</a>   <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">static</strong> String timestampToString(<strong class="jxr_keyword">double</strong> timestamp) {
+<a class="jxr_linenumber" name="L391" href="#L391">391</a>     <strong class="jxr_keyword">if</strong> (timestamp == 0)
+<a class="jxr_linenumber" name="L392" href="#L392">392</a>       <strong class="jxr_keyword">return</strong> <span class="jxr_string">"0"</span>;
+<a class="jxr_linenumber" name="L393" href="#L393">393</a> 
+<a class="jxr_linenumber" name="L394" href="#L394">394</a>     <em class="jxr_comment">// timestamp is relative to 1900, utc is used by Java and is relative</em>
+<a class="jxr_linenumber" name="L395" href="#L395">395</a>     <em class="jxr_comment">// to 1970</em>
+<a class="jxr_linenumber" name="L396" href="#L396">396</a>     <strong class="jxr_keyword">double</strong> utc = timestamp - (2208988800.0);
+<a class="jxr_linenumber" name="L397" href="#L397">397</a> 
+<a class="jxr_linenumber" name="L398" href="#L398">398</a>     <em class="jxr_comment">// milliseconds</em>
+<a class="jxr_linenumber" name="L399" href="#L399">399</a>     <strong class="jxr_keyword">long</strong> ms = (<strong class="jxr_keyword">long</strong>) (utc * 1000.0);
+<a class="jxr_linenumber" name="L400" href="#L400">400</a> 
+<a class="jxr_linenumber" name="L401" href="#L401">401</a>     <em class="jxr_comment">// date/time</em>
+<a class="jxr_linenumber" name="L402" href="#L402">402</a>     String date = <strong class="jxr_keyword">new</strong> SimpleDateFormat(<span class="jxr_string">"dd-MMM-yyyy HH:mm:ss"</span>).format(<strong class="jxr_keyword">new</strong> Date(ms));
+<a class="jxr_linenumber" name="L403" href="#L403">403</a> 
+<a class="jxr_linenumber" name="L404" href="#L404">404</a>     <em class="jxr_comment">// fraction</em>
+<a class="jxr_linenumber" name="L405" href="#L405">405</a>     <strong class="jxr_keyword">double</strong> fraction = timestamp - ((<strong class="jxr_keyword">long</strong>) timestamp);
+<a class="jxr_linenumber" name="L406" href="#L406">406</a>     String fractionSting = <strong class="jxr_keyword">new</strong> DecimalFormat(<span class="jxr_string">".000000"</span>).format(fraction);
+<a class="jxr_linenumber" name="L407" href="#L407">407</a> 
+<a class="jxr_linenumber" name="L408" href="#L408">408</a>     <strong class="jxr_keyword">return</strong> date + fractionSting;
+<a class="jxr_linenumber" name="L409" href="#L409">409</a>   }
+<a class="jxr_linenumber" name="L410" href="#L410">410</a> 
+<a class="jxr_linenumber" name="L411" href="#L411">411</a> 
+<a class="jxr_linenumber" name="L412" href="#L412">412</a> 
+<a class="jxr_linenumber" name="L413" href="#L413">413</a>   <em class="jxr_javadoccomment">/**</em>
+<a class="jxr_linenumber" name="L414" href="#L414">414</a> <em class="jxr_javadoccomment">   * Returns a string representation of a reference identifier according</em>
+<a class="jxr_linenumber" name="L415" href="#L415">415</a> <em class="jxr_javadoccomment">   * to the rules set out in RFC 2030.</em>
+<a class="jxr_linenumber" name="L416" href="#L416">416</a> <em class="jxr_javadoccomment">   */</em>
+<a class="jxr_linenumber" name="L417" href="#L417">417</a>   <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">static</strong> String referenceIdentifierToString(byte[] ref, <strong class="jxr_keyword">short</strong> stratum, byte version) {
+<a class="jxr_linenumber" name="L418" href="#L418">418</a>     <em class="jxr_comment">// From the RFC 2030:</em>
+<a class="jxr_linenumber" name="L419" href="#L419">419</a>     <em class="jxr_comment">// In the case of NTP Version 3 or Version 4 stratum-0 (unspecified)</em>
+<a class="jxr_linenumber" name="L420" href="#L420">420</a>     <em class="jxr_comment">// or stratum-1 (primary) servers, this is a four-character ASCII</em>
+<a class="jxr_linenumber" name="L421" href="#L421">421</a>     <em class="jxr_comment">// string, left justified and zero padded to 32 bits.</em>
+<a class="jxr_linenumber" name="L422" href="#L422">422</a>     <strong class="jxr_keyword">if</strong> (stratum == 0 || stratum == 1) {
+<a class="jxr_linenumber" name="L423" href="#L423">423</a>       <strong class="jxr_keyword">return</strong> <strong class="jxr_keyword">new</strong> String(ref);
+<a class="jxr_linenumber" name="L424" href="#L424">424</a>     }
+<a class="jxr_linenumber" name="L425" href="#L425">425</a> 
+<a class="jxr_linenumber" name="L426" href="#L426">426</a>     <em class="jxr_comment">// In NTP Version 3 secondary servers, this is the 32-bit IPv4</em>
+<a class="jxr_linenumber" name="L427" href="#L427">427</a>     <em class="jxr_comment">// address of the reference source.</em>
+<a class="jxr_linenumber" name="L428" href="#L428">428</a>     <strong class="jxr_keyword">else</strong> <strong class="jxr_keyword">if</strong> (version == 3) {
+<a class="jxr_linenumber" name="L429" href="#L429">429</a>       <strong class="jxr_keyword">return</strong> unsignedByteToShort(ref[0]) + <span class="jxr_string">"."</span> + unsignedByteToShort(ref[1]) + <span class="jxr_string">"."</span>
+<a class="jxr_linenumber" name="L430" href="#L430">430</a>           + unsignedByteToShort(ref[2]) + <span class="jxr_string">"."</span> + unsignedByteToShort(ref[3]);
+<a class="jxr_linenumber" name="L431" href="#L431">431</a>     }
+<a class="jxr_linenumber" name="L432" href="#L432">432</a> 
+<a class="jxr_linenumber" name="L433" href="#L433">433</a>     <em class="jxr_comment">// In NTP Version 4 secondary servers, this is the low order 32 bits</em>
+<a class="jxr_linenumber" name="L434" href="#L434">434</a>     <em class="jxr_comment">// of the latest transmit timestamp of the reference source.</em>
+<a class="jxr_linenumber" name="L435" href="#L435">435</a>     <strong class="jxr_keyword">else</strong> <strong class="jxr_keyword">if</strong> (version == 4) {
+<a class="jxr_linenumber" name="L436" href="#L436">436</a>       <strong class="jxr_keyword">return</strong> <span class="jxr_string">""</span> + ((unsignedByteToShort(ref[0]) / 256.0) + (unsignedByteToShort(ref[1]) / 65536.0)
+<a class="jxr_linenumber" name="L437" href="#L437">437</a>           + (unsignedByteToShort(ref[2]) / 16777216.0)
+<a class="jxr_linenumber" name="L438" href="#L438">438</a>           + (unsignedByteToShort(ref[3]) / 4294967296.0));
+<a class="jxr_linenumber" name="L439" href="#L439">439</a>     }
+<a class="jxr_linenumber" name="L440" href="#L440">440</a> 
+<a class="jxr_linenumber" name="L441" href="#L441">441</a>     <strong class="jxr_keyword">return</strong> <span class="jxr_string">""</span>;
+<a class="jxr_linenumber" name="L442" href="#L442">442</a>   }
+<a class="jxr_linenumber" name="L443" href="#L443">443</a> }
+</pre>
+<hr/>
+<div id="footer">Copyright &#169; 2015. All rights reserved.</div>
+</body>
+</html>
