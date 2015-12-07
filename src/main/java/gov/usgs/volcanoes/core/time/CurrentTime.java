@@ -76,7 +76,7 @@ public class CurrentTime {
 
     System.out.printf(
         "        GMT Time\nMillis: %d\n   J2K: %f\n    EW: %f\n  Date: %s\nOffset: %d\n", now,
-        J2kSec.fromEpoch(now), Time.epochToEw(now), Time.toDateString(now),
+        J2kSec.fromEpoch(now), Ew.fromEpoch(now), Time.toDateString(now),
         CurrentTime.getInstance().getLastOffset());
   }
 

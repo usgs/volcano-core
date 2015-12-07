@@ -31,13 +31,7 @@ public class J2kSecTest {
   
   @Test
   public void asEpoch() {
-    double epoch = J2kSec.asEpoch(J2K_TIME);
-    assertEquals(epoch, UNIX_TIME);
-  }
-  
-  @Test
-  public void asEpochMs() {
-    long epoch = J2kSec.asEpochMs(J2K_TIME);
+    long epoch = J2kSec.asEpoch(J2K_TIME);
     assertEquals(epoch, UNIX_TIME_MS);
   }
 
@@ -68,7 +62,7 @@ public class J2kSecTest {
   @Test
   public void now() {
     long nowDate = new Date().getTime();
-    long nowJ2k = J2kSec.asEpochMs(J2kSec.now());
+    long nowJ2k = J2kSec.asEpoch(J2kSec.now());
     assertTrue(Math.abs(nowDate - nowJ2k) < 3);
     
   }
