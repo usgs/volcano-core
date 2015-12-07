@@ -116,26 +116,6 @@ public final class Time {
   }
 
   /**
-   * Converts a long into decimal seconds.
-   * 
-   * @param epoch time in ms
-   * @return time as decimal seconds
-   */
-  public static double epochToEw(long epoch) {
-    return (double) epoch / 1000;
-  }
-
-  /**
-   * Converts a long into decimal seconds.
-   * 
-   * @param ew time in decimal seconds
-   * @return time as ms epoch suitable for feeding to Date
-   */
-  public static long ew2Epoch(double ew) {
-    return (long) ew * 1000;
-  }
-
-  /**
    * Uninstantiatable.
    */
   private Time() {}
