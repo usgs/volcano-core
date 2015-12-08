@@ -116,7 +116,7 @@ public final class Time {
   }
 
   /**
-   * Convert a J2kSec to Ew
+   * Convert a J2kSec to Ew.
    * 
    * @param j2k Date as J2kSec
    * @return date as Ew
@@ -126,12 +126,12 @@ public final class Time {
   }
 
   /**
-   * Convert a Ew to J2kSec
+   * Convert a Ew to J2kSec.
    * 
    * @param ew Date as Ew
    * @return date as j2kSec
    */
-  public static double EwToj2k(double ew) {
+  public static double ewToj2k(double ew) {
     return J2kSec.fromEpoch(Ew.asEpoch(ew));
   }
 
