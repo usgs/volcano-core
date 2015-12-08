@@ -116,6 +116,27 @@ public final class Time {
   }
 
   /**
+   * Convert a J2kSec to Ew
+   * 
+   * @param j2k Date as J2kSec
+   * @return date as Ew
+   */
+  public static double j2kToEw(double j2k) {
+    return Ew.fromEpoch(J2kSec.asEpoch(j2k));
+  }
+
+  /**
+   * Convert a Ew to J2kSec
+   * 
+   * @param ew Date as Ew
+   * @return date as j2kSec
+   */
+  public static double EwToj2k(double ew) {
+    return J2kSec.fromEpoch(Ew.asEpoch(ew));
+  }
+
+  
+  /**
    * Uninstantiatable.
    */
   private Time() {}
