@@ -6,6 +6,7 @@
 
 package gov.usgs.volcanoes.core.time;
 
+import java.text.DecimalFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -21,6 +22,11 @@ import java.util.TimeZone;
  */
 public final class Time {
   // public static final String ISO_8601_TIME_FORMAT = "yyyyMMdd'T'HHmmss.SSSS'Z'";
+
+  /** my default time zone. */
+  public static final TimeZone DEFAULT_TIME_ZONE = TimeZone.getTimeZone("UTC");
+
+  private static DecimalFormat diffFormat;
 
   /**
    * format used by the FDSNWS standard. Almost, but not quite, ISO. This doesn't really belong
@@ -38,12 +44,13 @@ public final class Time {
 
   /** standard display format with ms. */
   public static final String STANDARD_TIME_FORMAT_MS = "yyyy-MM-dd HH:mm:ss.SSS";
-
   /** Seconds in a year. */
   public static final double YEAR_IN_S = 31557600;
 
   static {
     formats = new HashMap<String, SimpleDateFormat>();
+    diffFormat = new DecimalFormat("#.##");
+
   }
 
 
@@ -66,7 +73,20 @@ public final class Time {
    * @return Formatted date as string
    */
   public static synchronized String format(String format, Date date) {
-    return getFormat(format).format(date);
+    return format(format, date, DEFAULT_TIME_ZONE);
+  }
+
+  /**
+   * Formats {@link Date} by format name.
+   *
+   * @param format Name of format to search
+   * @param date date to format
+   * @return Formatted date as string
+   */
+  public static synchronized String format(String format, Date date, TimeZone tz) {
+    final SimpleDateFormat dateF = new SimpleDateFormat(format);
+    dateF.setTimeZone(tz);
+    return dateF.format(date);
   }
 
   /**
@@ -159,7 +179,7 @@ public final class Time {
   /**
    * @param timeRange two string dates in "yyyyMMddHHmmss" format or relative time, divided by
    *          comma.
-   * 
+   *
    * @return array of two doubles - start and end J2K dates
    * @throws ParseException when the string looks odd
    */
@@ -198,6 +218,33 @@ public final class Time {
   }
 
   /**
+   * Returns a string of this format: "#d #h #m #s" representing the amount
+   * of time between two dates.
+   * 
+   * @param diff the difference (seconds)
+   * @return the string representing this difference
+   */
+  public static String secondsToString(double diff) {
+    String diffString = "";
+    if (diff < 60) {
+      diffString = diffFormat.format(diff) + "s";
+    } else if (diff < 3600) {
+      diffString = (int) (diff / 60) + "m " + diffFormat.format(diff % 60) + "s";
+    } else if (diff < 86400) {
+      diffString = (int) (diff / 3600) + "h ";
+      diff -= 3600 * (int) (diff / 3600);
+      diffString = diffString + (int) (diff / 60) + "m " + diffFormat.format(diff % 60) + "s";
+    } else {
+      diffString = (int) (diff / 86400) + "d ";
+      diff -= 86400 * (int) (diff / 86400);
+      diffString = diffString + (int) (diff / 3600) + "h ";
+      diff -= 3600 * (int) (diff / 3600);
+      diffString = diffString + (int) (diff / 60) + "m " + diffFormat.format(diff % 60) + "s";
+    }
+    return diffString;
+  }
+
+  /**
    * Formats {@link Date} as "yyyy-MM-dd HH:mm:ss".
    *
    * @param date date
@@ -206,6 +253,7 @@ public final class Time {
   public static String toDateString(Date date) {
     return format(STANDARD_TIME_FORMAT, date);
   }
+
 
   /**
    * Formats long date as "yyyy-MM-dd HH:mm:ss".
@@ -227,8 +275,6 @@ public final class Time {
   public static String toShortString(Date date) {
     return format(INPUT_TIME_FORMAT, date);
   }
-
-
 
   /**
    * Uninstantiatable.
