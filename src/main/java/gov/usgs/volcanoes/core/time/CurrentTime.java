@@ -13,6 +13,7 @@ import java.io.File;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.InetAddress;
+import java.net.SocketException;
 import java.text.SimpleDateFormat;
 import java.util.LinkedList;
 import java.util.List;
@@ -81,7 +82,6 @@ public class CurrentTime {
   }
 
   private long lastOffset;
-  private long lastOffsetCheck = 0;
 
   private boolean netFailed = false;
 
@@ -115,6 +115,25 @@ public class CurrentTime {
           DEFAULT_RECALIBRATION_INTERVAL);
     }
 
+    new Thread(offsetUpdater()).start();
+
+  }
+
+  private Runnable offsetUpdater() {
+    Runnable run = new Runnable() {
+      public void run() {
+        while (true) {
+          getOffset();
+          try {
+            Thread.sleep(recalibrationInterval);
+          } catch (InterruptedException ignore) {
+            LOGGER.debug("offsetUpdater interrupted, I'll recalibrate early.");
+          }
+        }
+      }
+    };
+
+    return run;
   }
 
   /**
@@ -170,7 +189,6 @@ public class CurrentTime {
           final long l = Math.round(localClockOffset * 1000);
           result = new Long(l);
           lastOffset = l;
-          lastOffsetCheck = System.currentTimeMillis();
           LOGGER.debug("Successfully synchronized with NTP server: " + servers[attempt]);
           socket.close();
           return true;
@@ -178,10 +196,8 @@ public class CurrentTime {
           LOGGER.debug("Could not synchronize with NTP server: " + servers[attempt]);
         }
 
-        try {
+        if (socket != null) {
           socket.close();
-        } catch (final Exception ignored) {
-          LOGGER.debug(ignored.getLocalizedMessage());
         }
 
         return false;
@@ -213,26 +229,14 @@ public class CurrentTime {
    * @return calibrated time, as long
    */
   public long now() {
-    if (netFailed) {
-      return System.currentTimeMillis();
+    Long time = System.currentTimeMillis();
+    if (!netFailed) {
+      time += lastOffset;
     }
 
-    if (lastOffsetCheck == 0
-        || System.currentTimeMillis() - lastOffsetCheck > recalibrationInterval) {
-      getOffset();
-    }
-
-    return System.currentTimeMillis() + lastOffset;
+    return time;
   }
 
-  /**
-   * Return the current time as a J2kSec.
-   * @return current time
-   */
-  public double nowJ2k() {
-    return J2kSec.fromEpoch(now());
-  }
-  
   /**
    * Sets recalibration interval, in milliseconds.
    *
