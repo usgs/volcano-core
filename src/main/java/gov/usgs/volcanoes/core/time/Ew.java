@@ -97,7 +97,7 @@ public class Ew {
    * @return present time as a j2ksec
    */
   public static double now() {
-    return fromDate(new Date());
+    return fromEpoch(CurrentTime.getInstance().now());
   }
 
 
