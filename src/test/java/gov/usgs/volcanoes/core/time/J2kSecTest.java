@@ -63,7 +63,7 @@ public class J2kSecTest {
   public void now() {
     long nowDate = new Date().getTime();
     long nowJ2k = J2kSec.asEpoch(J2kSec.now());
-    assertTrue(Math.abs(nowDate - nowJ2k) < 3);
+    assertTrue(Math.abs(nowDate - nowJ2k) < 3000);
     
   }
 
