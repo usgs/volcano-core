@@ -6,6 +6,7 @@
 
 package gov.usgs.volcanoes.core.time;
 
+import java.text.DateFormat;
 import java.text.DecimalFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -274,6 +275,52 @@ public final class Time {
    */
   public static String toShortString(Date date) {
     return format(INPUT_TIME_FORMAT, date);
+  }
+  
+
+  /**
+   * <p>Main class method.</p>
+   * <p>Usage:</p>
+   * <p>without arguments - prints usage message</p>
+   * <p>-j2d [j2k]      j2k to date</p>
+   * <p>-d2j [yyyymmddhhmmss] date to j2k</p>
+   * <p>-e2d [ewtime]         earthworm to date</p>
+   * <p>-md5 [string]     md5 of string</p>
+   * <p>-md5r [resource]      md5 of a resource (filename, url)</p>
+   * 
+   * @param args command line args
+   * @throws Exception when things go wrong
+   */
+  public static void main(String[] args) throws Exception
+  {
+    if (args.length == 0)
+    {
+      System.out.println("-j2d [j2k]        j2k to date");
+      System.out.println("-j2e [j2k]              j2k to earthworm");
+      System.out.println("-d2j [yyyymmddhhmmss] date to j2k");
+      System.out.println("-e2d [ewtime]           earthworm to date");
+      System.exit(1);
+    }
+    DateFormat df1 = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS");
+    DateFormat df2 = new SimpleDateFormat("yyyyMMddHHmmss");
+    df1.setTimeZone(TimeZone.getTimeZone("GMT"));
+    df2.setTimeZone(TimeZone.getTimeZone("GMT"));
+    if (args[0].equals("-j2d"))
+    {
+      System.out.println(df1.format(J2kSec.asDate(Double.parseDouble(args[1]))));
+    }
+    else if (args[0].equals("-j2e"))
+    {
+      System.out.println(Time.j2kToEw(Double.parseDouble(args[1])));
+    }
+    else if (args[0].equals("-d2j"))
+    {
+      System.out.println(J2kSec.fromDate(df2.parse(args[1])));
+    }
+    else if (args[0].equals("-e2d"))
+    {
+      System.out.println(df1.format(Ew.asDate(Double.parseDouble(args[1]))));
+    }
   }
 
   /**
