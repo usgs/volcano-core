@@ -1,0 +1,9 @@
+gov.usgs.volcanoes.core.args
+gov.usgs.volcanoes.core.args.decorator
+gov.usgs.volcanoes.core.args.parser
+gov.usgs.volcanoes.core.configfile
+gov.usgs.volcanoes.core.configfile.parser
+gov.usgs.volcanoes.core.data
+gov.usgs.volcanoes.core.time
+gov.usgs.volcanoes.core.util
+gov.usgs.volcanoes.core
