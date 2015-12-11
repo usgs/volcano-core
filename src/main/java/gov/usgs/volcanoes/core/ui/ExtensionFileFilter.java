@@ -6,63 +6,60 @@ import javax.swing.filechooser.FileFilter;
 
 /**
  * A simple extension file filter for a <code>JFileChooser</code>.
- * 
- * $Log: not supported by cvs2svn $
- * Revision 1.1  2005/08/26 17:05:04  uid879
- * Initial avosouth commit.
  *
  * @author Dan Cervelli
  */
-public class ExtensionFileFilter extends FileFilter
-{
-    protected String extension;
-    protected String description;
- 
-    /**
-     * Constructor
-     * @param e file extension for filtering, in lower-case
-     * @param d filter description string
-     */
-    public ExtensionFileFilter(String e, String d)
-    {
-        extension = e;
-        description = d;
-    }
-    
-    /**
-     * Is file accepted?
-     * @param f File
-     * @return true if accepted, false otherwise
-     */
-    public boolean accept(File f)
-	{
-	    return (!f.isDirectory() && f.getPath().toLowerCase().endsWith(extension));
-	}
-	
-    /**
-     * Get description
-     * @return information string - "description(extension)"
-     */
-	public String getDescription()
-	{
-	    return description + " (" + extension + ")";
-	}
-	
-	/**
-	 * Getter for filter description
-	 * @return filter description
-	 */
-	public String getExtensionDescription()
-	{
-		return description;
-	}
+public class ExtensionFileFilter extends FileFilter {
+  protected String description;
+  protected String extension;
 
-	/**
-	 * Getter for extension
-	 * @return extension
-	 */
-	public String getExtension()
-	{
-		return extension;
-	}
+  /**
+   * Constructor.
+   * 
+   * @param extenstion file extension for filtering, in lower-case
+   * @param description filter description string
+   */
+  public ExtensionFileFilter(String extenstion, String description) {
+    this.extension = extenstion;
+    this.description = description;
+  }
+
+  /**
+   * Decide if file is accepted.
+   * 
+   * @param file File
+   * @return true if accepted, false otherwise
+   */
+  @Override
+  public boolean accept(File file) {
+    return (!file.isDirectory() && file.getPath().toLowerCase().endsWith(extension));
+  }
+
+  /**
+   * Long description.
+   * 
+   * @return information string - "description(extension)"
+   */
+  @Override
+  public String getDescription() {
+    return description + " (" + extension + ")";
+  }
+
+  /**
+   * Extension accessor.
+   * 
+   * @return extension
+   */
+  public String getExtension() {
+    return extension;
+  }
+
+  /**
+   * Description accessor.
+   * 
+   * @return filter description
+   */
+  public String getExtensionDescription() {
+    return description;
+  }
 }

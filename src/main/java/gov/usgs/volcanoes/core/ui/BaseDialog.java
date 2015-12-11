@@ -16,135 +16,127 @@ import javax.swing.JRootPane;
 import javax.swing.SwingUtilities;
 
 /**
- * Dialog of the specified size at the center of parent frame and with OK and CANCEL buttons
- * 
- * $Log: not supported by cvs2svn $
- * Revision 1.2  2005/04/23 15:56:45  cervelli
- * Cleanup.
+ * Dialog of the specified size at the center of parent frame and with OK and CANCEL buttons.
  *
  * @author Dan Cervelli
  */
-public class BaseDialog extends JDialog 
-{
-	private static final long serialVersionUID = -1;
-	protected int height;
-	protected int width;
-	
-	protected JButton okButton;
-	protected JButton cancelButton;
-	protected JPanel mainPanel;
-	
-	protected JFrame parent;
-	
-	private boolean okClicked;
-	
-	/**
-	 * Constructor
-	 * 
-	 * @param parent parent frame
-	 * @param title string for dialog title
-	 * @param modal flag if dialog is modal
-	 * @param w width
-	 * @param h height
-	 */
-	protected BaseDialog(JFrame parent, String title, boolean modal, int w, int h)
-	{
-		super(parent, title, modal);
-		this.parent = parent;
-		width = w;
-		height = h;
-		createUI();	
-	}
+public class BaseDialog extends JDialog {
+  private static final long serialVersionUID = -1;
+  protected JButton cancelButton;
+  protected int height;
 
-	/**
-	 * Initialization procedure
-	 */
-	protected void createUI()
-	{
-		this.setSize(width, height);
-		Dimension parentSize = parent.getSize();
-		Point parentLoc = parent.getLocation();
-		this.setLocation(parentLoc.x + (parentSize.width / 2 - width / 2),
-				parentLoc.y + (parentSize.height / 2 - height / 2));
-		
-		mainPanel = new JPanel(new BorderLayout());
-		JPanel buttonPanel = new JPanel();
-		okButton = new JButton("OK");
-		okButton.setMnemonic('O');
-		okButton.addActionListener(new ActionListener()
-				{
-					public void actionPerformed(ActionEvent e)
-					{
-						if (allowOK())
-						{
-							dispose();
-							okClicked = true;
-							wasOK();
-						}
-					}
-				});
-		cancelButton = new JButton("Cancel");
-		cancelButton.setMnemonic('C');
-		cancelButton.addActionListener(new ActionListener()
-				{
-					public void actionPerformed(ActionEvent e)
-					{
-						if (allowCancel())
-						{
-							dispose();
-							wasCancelled();
-						}
-					}
-				});
-		UiUtils.mapKeyStrokeToButton(mainPanel, "ESCAPE", "cancel1", cancelButton);
-		this.addWindowListener(new WindowAdapter() 
-				{
-		            public void windowOpened(WindowEvent e)
-		            {
-		            	okButton.requestFocus();
-		                JRootPane root = SwingUtilities.getRootPane(okButton);
-		                if (root != null) 
-		                    root.setDefaultButton(okButton);
-		            }
-		            
-		            public void windowClosing(WindowEvent e)
-		            {
-		            	if (!okClicked)
-		            		wasCancelled();
-		            }
-				});
+  protected JPanel mainPanel;
+  protected JButton okButton;
+  private boolean okClicked;
 
-		buttonPanel.add(okButton);
-		buttonPanel.add(cancelButton);
-		mainPanel.add(buttonPanel, BorderLayout.SOUTH);
-		this.setContentPane(mainPanel);
-	}
+  protected JFrame parent;
 
-	/**
-	 * Does nothing
-	 * @return true
-	 */
-	protected boolean allowOK()
-	{
-		return true;
-	}
+  protected int width;
 
-	/**
-	 * Does nothing
-	 * @return true
-	 */
-	protected boolean allowCancel()
-	{
-		return true;
-	}
+  /**
+   * Constructor.
+   * 
+   * @param parent parent frame
+   * @param title string for dialog title
+   * @param modal flag if dialog is modal
+   * @param width width
+   * @param height height
+   */
+  protected BaseDialog(JFrame parent, String title, boolean modal, int width, int height) {
+    super(parent, title, modal);
+    this.parent = parent;
+    this.width = width;
+    this.height = height;
+    createUi();
+  }
 
-	/**
-	 * Does nothing
-	 */
-	protected void wasOK() {}
-	
-	/**
-	 * Does nothing
-	 */
-	protected void wasCancelled() {}
+  /**
+   * Permit or deny cancel. Always permit.
+   * 
+   * @return true
+   */
+  protected boolean allowCancel() {
+    return true;
+  }
+
+  /**
+   * Permit or deny ok. Always permit.
+   * 
+   * @return true
+   */
+  protected boolean allowOk() {
+    return true;
+  }
+
+  /**
+   * Init dialog.
+   * 
+   */
+  protected void createUi() {
+    this.setSize(width, height);
+    final Dimension parentSize = parent.getSize();
+    final Point parentLoc = parent.getLocation();
+    this.setLocation(parentLoc.x + (parentSize.width / 2 - width / 2),
+        parentLoc.y + (parentSize.height / 2 - height / 2));
+
+    mainPanel = new JPanel(new BorderLayout());
+    final JPanel buttonPanel = new JPanel();
+    okButton = new JButton("OK");
+    okButton.setMnemonic('O');
+    okButton.addActionListener(new ActionListener() {
+      @Override
+      public void actionPerformed(ActionEvent evt) {
+        if (allowOk()) {
+          dispose();
+          okClicked = true;
+          wasOk();
+        }
+      }
+    });
+    cancelButton = new JButton("Cancel");
+    cancelButton.setMnemonic('C');
+    cancelButton.addActionListener(new ActionListener() {
+      @Override
+      public void actionPerformed(ActionEvent evt) {
+        if (allowCancel()) {
+          dispose();
+          wasCancelled();
+        }
+      }
+    });
+    UiUtils.mapKeyStrokeToButton(mainPanel, "ESCAPE", "cancel1", cancelButton);
+    addWindowListener(new WindowAdapter() {
+      @Override
+      public void windowClosing(WindowEvent evt) {
+        if (!okClicked) {
+          wasCancelled();
+        }
+      }
+
+      @Override
+      public void windowOpened(WindowEvent evt) {
+        okButton.requestFocus();
+        final JRootPane root = SwingUtilities.getRootPane(okButton);
+        if (root != null) {
+          root.setDefaultButton(okButton);
+        }
+      }
+    });
+
+    buttonPanel.add(okButton);
+    buttonPanel.add(cancelButton);
+    mainPanel.add(buttonPanel, BorderLayout.SOUTH);
+    setContentPane(mainPanel);
+  }
+
+  /**
+   * Act when cancel button is pressed. Do nothing.
+   * 
+   */
+  protected void wasCancelled() {}
+
+  /**
+   * Act when ok button is pressed. Do nothing.
+   */
+  protected void wasOk() {}
 }

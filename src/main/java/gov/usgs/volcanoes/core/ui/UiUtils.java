@@ -22,8 +22,8 @@ import javax.swing.KeyStroke;
  */
 public final class UiUtils {
   /**
-   * Adds to JComponent action and keystroke for it
-   * 
+   * Adds to JComponent action and keystroke for it.
+   *
    * @param comp JComponent
    * @param ks KeyStroke
    * @param name name
@@ -37,8 +37,8 @@ public final class UiUtils {
   }
 
   /**
-   * Adds to JComponent button and keystroke for it
-   * 
+   * Adds to JComponent button and keystroke for it.
+   *
    * @param comp JComponent
    * @param ks KeyStroke
    * @param name name
@@ -52,7 +52,7 @@ public final class UiUtils {
       private static final long serialVersionUID = -1;
 
       @Override
-      public void actionPerformed(ActionEvent e) {
+      public void actionPerformed(ActionEvent evt) {
         button.doClick();
       }
     });

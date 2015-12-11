@@ -16,101 +16,96 @@ import javax.swing.KeyStroke;
  * forum and modified from there.</p>
  * <p>Realize singleton pattern.</p>
  * <p>Integrate itself into system event queue and define global sets of keystrokes and actions.
- * While event propagated, search actions for keystroke in global action map, 
- * if fails, search in local action map and perform found action, then pass event to 
+ * While event propagated, search actions for keystroke in global action map,
+ * if fails, search in local action map and perform found action, then pass event to
  * further propagation.</p>
  *
- * $Log: not supported by cvs2svn $
  * @author Dan Cervelli
  */
-public class GlobalKeyManager extends EventQueue 
-{
-	private static final GlobalKeyManager instance = new GlobalKeyManager();
+public final class GlobalKeyManager extends EventQueue {
+  private static final GlobalKeyManager instance = new GlobalKeyManager();
 
-	private final InputMap keyStrokes = new InputMap();
-	private final ActionMap actions = new ActionMap();
-	
-	private InputMap currentInputMap;
-	
-	static 
-	{
-		Toolkit.getDefaultToolkit().getSystemEventQueue().push(instance);
-	}
+  static {
+    Toolkit.getDefaultToolkit().getSystemEventQueue().push(instance);
+  }
 
-	/**
-	 * Private constructor, we get instance only via <code>getInstance()</code>
-	 */
-	private GlobalKeyManager() 
-	{}
+  /**
+   * Instance accessor.
+   * 
+   * @return singleton
+   */
+  public static GlobalKeyManager getInstance() {
+    return instance;
+  }
 
-	/**
-	 * Getter for only class instance
-	 */
-	public static GlobalKeyManager getInstance() 
-	{
-		return instance;
-	}
+  private final ActionMap actions = new ActionMap();
 
-	/**
-	 * Getter for global <code>InputMap</code>
-	 * @return InputMap
-	 */
-	public InputMap getInputMap() 
-	{
-		return keyStrokes;
-	}
+  private InputMap currentInputMap;
 
-	/**
-	 * Getter for global <code>ActionMap</code>
-	 * @return ActionMap
-	 */
-	public ActionMap getActionMap() 
-	{
-		return actions;
-	}
+  private final InputMap keyStrokes = new InputMap();
 
-	/**
-	 * Setter for local <code>InputMap</code>
-	 * @param imap InputMap
-	 */
-	public void setCurrentMap(InputMap imap)
-	{
-		currentInputMap = imap;
-	}
-	
-	/**
-	 * Recovers {@link EventQueue#dispatchEvent(AWTEvent event) }
-	 * @param event
-	 */
-	protected void dispatchEvent(AWTEvent event) 
-	{
-		if (event instanceof KeyEvent) 
-		{
-			// KeyStroke.getKeyStrokeForEvent converts an ordinary KeyEvent
-			// to a keystroke, as stored in the InputMap. Keep in mind that
-			// Numpad keystrokes are different to ordinary keys, i.e. if you
-			// are listening to
-			KeyStroke ks = KeyStroke.getKeyStrokeForEvent((KeyEvent) event);
-//			if (DEBUG)
-//				System.out.println("KeyStroke=" + ks);
-			String actionKey = (String)keyStrokes.get(ks);
-			Action action = null;
-			if (actionKey != null) // global 
-				action = actions.get(actionKey);
-			else if (currentInputMap != null)
-			{
-				String key = (String)currentInputMap.get(ks);
-				action = actions.get(key);
-			}
-			if (action != null && action.isEnabled()) 
-			{
-				// I'm not sure about the parameters
-				action.actionPerformed(new ActionEvent(event.getSource(),
-						event.getID(), actionKey, ((KeyEvent) event)
-								.getModifiers()));
-				return; // consume event
-			}
-		}
-		super.dispatchEvent(event); // let the next in chain handle event
-	}
+  /**
+   * Private constructor, we get instance only via <code>getInstance()</code>.
+   */
+  private GlobalKeyManager() {}
+
+  /**
+   * Recovers {@link EventQueue#dispatchEvent(AWTEvent event) }.
+   * 
+   * @param event event
+   */
+  @Override
+  protected void dispatchEvent(AWTEvent event) {
+    if (event instanceof KeyEvent) {
+      // KeyStroke.getKeyStrokeForEvent converts an ordinary KeyEvent
+      // to a keystroke, as stored in the InputMap. Keep in mind that
+      // Numpad keystrokes are different to ordinary keys, i.e. if you
+      // are listening to
+      final KeyStroke ks = KeyStroke.getKeyStrokeForEvent((KeyEvent) event);
+      // if (DEBUG)
+      // System.out.println("KeyStroke=" + ks);
+      final String actionKey = (String) keyStrokes.get(ks);
+      Action action = null;
+      if (actionKey != null) {
+        action = actions.get(actionKey);
+      } else if (currentInputMap != null) {
+        final String key = (String) currentInputMap.get(ks);
+        action = actions.get(key);
+      }
+      if (action != null && action.isEnabled()) {
+        // I'm not sure about the parameters
+        action.actionPerformed(new ActionEvent(event.getSource(), event.getID(), actionKey,
+            ((KeyEvent) event).getModifiers()));
+        return; // consume event
+      }
+    }
+    super.dispatchEvent(event); // let the next in chain handle event
+  }
+
+  /**
+   * ActionMap accessor.
+   * 
+   * @return ActionMap
+   */
+  public ActionMap getActionMap() {
+    return actions;
+  }
+
+  /**
+   * InputMap accessor.
+   * 
+   * @return InputMap
+   */
+  public InputMap getInputMap() {
+    return keyStrokes;
+  }
+
+  /**
+   * InputMap mutator.
+   * 
+   * @param imap InputMap
+   */
+  public void setCurrentMap(InputMap imap) {
+    currentInputMap = imap;
+  }
 }
