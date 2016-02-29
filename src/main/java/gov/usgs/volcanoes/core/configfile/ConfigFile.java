@@ -237,7 +237,7 @@ public final class ConfigFile {
   public int getInt(String key) {
     final String value = getString(key);
     if (value == null) {
-      throw new RuntimeException("Illegal " + key + ":null");
+      throw new RuntimeException("Illegal parameter " + key + " = null");
     }
 
     final int i = Integer.parseInt(value);
