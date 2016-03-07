@@ -31,7 +31,7 @@
 //  OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF
 //  ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 //
-package gov.usgs.volcanoes.core.Hypo71;
+package gov.usgs.volcanoes.core.hypo71;
 
 import java.io.IOException;
 import java.io.StringReader;

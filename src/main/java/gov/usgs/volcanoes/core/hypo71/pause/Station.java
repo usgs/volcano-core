@@ -1,4 +1,4 @@
-package gov.usgs.volcanoes.core.Hypo71.pause;
+package gov.usgs.volcanoes.core.hypo71.pause;
 
 /**
  * Represents Hypo71 station card. Format 

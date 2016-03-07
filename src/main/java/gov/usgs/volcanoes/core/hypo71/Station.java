@@ -1,4 +1,4 @@
-package gov.usgs.volcanoes.core.Hypo71;
+package gov.usgs.volcanoes.core.hypo71;
 
 import java.io.Serializable;
 
