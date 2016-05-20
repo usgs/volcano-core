@@ -31,8 +31,8 @@ public class Args implements Arguments {
       throws ArgumentException {
     try {
       jsap = new SimpleJSAP(programName, explanation, parameters);
-    } catch (JSAPException e) {
-      throw new ArgumentException(e);
+    } catch (JSAPException ex) {
+      throw new ArgumentException(ex);
     }
   }
 
@@ -60,8 +60,8 @@ public class Args implements Arguments {
   public void registerParameter(Parameter parameter) throws ArgumentException {
     try {
       jsap.registerParameter(parameter);
-    } catch (JSAPException e) {
-      throw new ArgumentException(e);
+    } catch (JSAPException ex) {
+      throw new ArgumentException(ex);
     }
   }
 

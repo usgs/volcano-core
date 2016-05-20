@@ -38,7 +38,7 @@ public class DateStringParser extends StringParser {
     Date result = null;
     try {
       result = format.parse(arg);
-    } catch (java.text.ParseException e) {
+    } catch (java.text.ParseException ex) {
       throw new ParseException("Unable to convert '" + arg + "' to a Date.");
     }
     return result;

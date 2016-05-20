@@ -12,4 +12,6 @@
 	<suppress files="gov/usgs/volcanoes/core/math/Butterworth.java" checks="ParameterName|LocalVariableName|AbbreviationAsWordInName|VariableDeclarationUsageDistance" />
 	<suppress files="gov/usgs/volcanoes/core/math/Complex.java" checks="ParameterName|LocalVariableName|AbbreviationAsWordInName" />
 	
+	<!-- Checks suppressed to keep contractor code intact. -->
+	<suppress files="gov/usgs/volcanoes/core/hypo71/*" checks="[a-zA-Z0-9]*" />
 </suppressions>
