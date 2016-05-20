@@ -172,7 +172,7 @@ public final class ConfigFile {
     boolean value;
     try {
       value = getBoolean(key);
-    } catch (final RuntimeException e) {
+    } catch (final RuntimeException ex) {
       put(key, String.valueOf(defaultValue));
       value = defaultValue;
     }
@@ -219,7 +219,7 @@ public final class ConfigFile {
     double value;
     try {
       value = getDouble(key);
-    } catch (final Exception e) {
+    } catch (final Exception ex) {
       put(key, String.valueOf(defaultValue));
       value = defaultValue;
     }
@@ -257,7 +257,7 @@ public final class ConfigFile {
     int value;
     try {
       value = getInt(key);
-    } catch (final Exception e) {
+    } catch (final Exception ex) {
       put(key, String.valueOf(defaultValue));
       value = defaultValue;
     }
@@ -505,10 +505,10 @@ public final class ConfigFile {
       }
       successfullyRead = true;
       in.close();
-    } catch (final FileNotFoundException e) {
-      throw e;
-    } catch (final Exception e) {
-      e.printStackTrace();
+    } catch (final FileNotFoundException ex) {
+      LOGGER.debug("Unable to read {}, skipping it.", file);
+    } catch (final Exception ex) {
+      ex.printStackTrace();
     }
   }
 
@@ -651,8 +651,8 @@ public final class ConfigFile {
         out.println();
       }
       out.close();
-    } catch (final IOException e) {
-      e.printStackTrace();
+    } catch (final IOException ex) {
+      ex.printStackTrace();
     }
   }
 

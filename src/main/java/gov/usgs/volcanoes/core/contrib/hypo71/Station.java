@@ -1,66 +1,87 @@
-package gov.usgs.volcanoes.core.hypo71.pause;
+package gov.usgs.volcanoes.core.contrib.hypo71;
+
+import java.io.Serializable;
+
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
 
 /**
- * Represents Hypo71 station card. Format 
+ * Data structure used in Hypo71 algorithm.
  * 
  * @author Oleg Shepelev
  */
-public class Station {
-	/** If IW = *, then this station has zero weight assigned to its P and/or S reading(s). */
+@XmlRootElement
+public class Station  implements Serializable{
+	/**
+	 * If IW = *, then this station has zero weight assigned to its P and/or S reading(s).
+	 */
 	char IW;
-	
-	/** Station name. */
+	/**
+	 * Station name.
+	 */
 	String NSTA;
-	
-	/** Degree portion of latitude. */
+	/**
+	 * Degree portion of latitude.
+	 */
 	int LAT1;
-	
-	/** Minute portion of latitude. */
+	/**
+	 * Minute portion of latitude.
+	 */
 	double LAT2;
-	
-	/** Punch N or leave this column blank for stations in northern hemisphere. Punch S for stations in sourthern hemisphere. */
+	/**
+	 * Punch N or leave this column blank for stations in northern hemisphere. Punch S for stations in sourthern hemisphere.
+	 */
 	char INS;
-	
-	/** Degree portion of longitude. */
+	/**
+	 * Degree portion of longitude.
+	 */
 	int LON1;
-	
-	/** Minute portion of longitude. */
+	/**
+	 * Minute portion of longitude.
+	 */
 	double LON2;
-	
-	/** Punch E for eastern longitude. W or blank for western. */
+	/**
+	 * Punch E for eastern longitude. W or blank for western.
+	 */
 	char IEW;
-	
-	/** Elevation in meters. This data is not used in the program. */
+	/**
+	 * Elevation in meters. This data is not used in the program.
+	 */
 	int IELV;
-	
-	 /** Station delay in seconds. */
 	double dly;
-	
-  /** Station correction for FMAG. */
+	/**
+	 * Station delay in seconds.
+	 */
 	double FMGC;
-
-	/** Station correction for XMAG */
+	/**
+	 * Station correction for FMAG.
+	 */
 	double XMGC;
-	
-	/** System number is assigned for each station so that the frequency response curve of the seismometer and preamp is specified for the amplitude magnitude calculation (XMAG). */
+	/**
+	 * System number is assigned for each station so that the frequency response curve of the seismometer and preamp is specified for the amplitude magnitude calculation (XMAG).
+	 */
 	int KLAS;
-	
-	/** Standard period for XMAG. */
+	/**
+	 * Standard period for XMAG.
+	 */
 	double PRR;
-	
-	/** Standard calibration for XMAG. */
+	/**
+	 * Standard calibration for XMAG.
+	 */
 	double CALR;
-	
-	/** Calibration indicator. */
+	/**
+	 * Calibration indicator.
+	 */
 	int ICAL;
-	
-	/** Year, month and day. */
+	/**
+	 * Year, month and day.
+	 */
 	int NDATE;
-	
-	/** Hour and minute. */
+	/**
+	 * Hour and minute.
+	 */
 	int NHRMN;
 
-	
 	// Missing special fields
 	// NSTA[I] - NSTA, DELI - dly, AZI, EXGAP, RDGAP
 	double AZI;
@@ -69,31 +90,39 @@ public class Station {
 
 	// Station output
 	// String STN - NSTA
-	/** Epicentral distance in km. */
+	/**
+	 * Epicentral distance in km.
+	 */
 	double DIST;
-	
 	// AZM - AZI
-	/** Angle of incidence measured with respect to downward vertical. */
+	/**
+	 * Angle of incidence measured with respect to downward vertical.
+	 */
 	int AIN;
-	
-	/** PRMK from input data. */
+	/**
+	 * PRMK from input data.
+	 */
 	String PRMK;
-	
-	/** Hour of arrival time from input data. */
+	/**
+	 * Hour of arrival time from input data.
+	 */
 	int HR;
-	
-	/** Minute of arraival time from inout data. */
+	/**
+	 * Minute of arraival time from inout data.
+	 */
 	int MN;
-	
-	/** The second's portial of P-arrival time from input data. */
+	/**
+	 * The second's portial of P-arrival time from input data.
+	 */
 	double PSEC;
-	
-	/** Observed P-travet time in sec. */
+	/**
+	 * Observed P-travet time in sec.
+	 */
 	double TPOBS;
-	
-	/** Calculated travel time in sec/ */
+	/**
+	 * Calculated travel time in sec/
+	 */
 	double TPCAL;
-	
 	/**
 	 * If the Station Delay Model is used, then DLY means the station delay in
 	 * sec from the input list. If the Variable First-Layer Model is used, then
@@ -127,12 +156,14 @@ public class Station {
 	double AVFM;
 	double SDFM;
 
-	public static class TravelTimeResiduals {
+	@XmlRootElement
+	public static class TravelTimeResiduals implements Serializable{
 		private int NRES;
 		private double SRWT;
 		private double AVRES;
 		private double SDRES;
 
+		@XmlElement
 		public int getNRES() {
 			return NRES;
 		}
@@ -141,6 +172,7 @@ public class Station {
 			NRES = nRES;
 		}
 
+		@XmlElement
 		public double getSRWT() {
 			return SRWT;
 		}
@@ -149,6 +181,7 @@ public class Station {
 			SRWT = sRWT;
 		}
 
+		@XmlElement
 		public double getAVRES() {
 			return AVRES;
 		}
@@ -157,6 +190,7 @@ public class Station {
 			AVRES = aVRES;
 		}
 
+		@XmlElement		
 		public double getSDRES() {
 			return SDRES;
 		}
@@ -296,6 +330,7 @@ public class Station {
 		ICAL = iCAL;
 	}
 
+	@XmlElement
 	public char getIW() {
 		return IW;
 	}
@@ -304,6 +339,7 @@ public class Station {
 		IW = iW;
 	}
 
+	@XmlElement
 	public String getNSTA() {
 		return NSTA;
 	}
@@ -312,6 +348,7 @@ public class Station {
 		NSTA = nSTA;
 	}
 
+	@XmlElement
 	public int getLAT1() {
 		return LAT1;
 	}
@@ -320,6 +357,7 @@ public class Station {
 		LAT1 = lAT1;
 	}
 
+	@XmlElement
 	public double getLAT2() {
 		return LAT2;
 	}
@@ -328,6 +366,7 @@ public class Station {
 		LAT2 = lAT2;
 	}
 
+	@XmlElement
 	public char getINS() {
 		return INS;
 	}
@@ -336,6 +375,7 @@ public class Station {
 		INS = iNS;
 	}
 
+	@XmlElement
 	public int getLON1() {
 		return LON1;
 	}
@@ -344,6 +384,7 @@ public class Station {
 		LON1 = lON1;
 	}
 
+	@XmlElement
 	public double getLON2() {
 		return LON2;
 	}
@@ -352,6 +393,7 @@ public class Station {
 		LON2 = lON2;
 	}
 
+	@XmlElement
 	public char getIEW() {
 		return IEW;
 	}
@@ -360,6 +402,7 @@ public class Station {
 		IEW = iEW;
 	}
 
+	@XmlElement
 	public int getIELV() {
 		return IELV;
 	}
@@ -368,6 +411,7 @@ public class Station {
 		IELV = iELV;
 	}
 
+	@XmlElement
 	public double getDly() {
 		return dly;
 	}
@@ -376,6 +420,7 @@ public class Station {
 		this.dly = dly;
 	}
 
+	@XmlElement
 	public double getFMGC() {
 		return FMGC;
 	}
@@ -384,6 +429,7 @@ public class Station {
 		FMGC = fMGC;
 	}
 
+	@XmlElement
 	public double getXMGC() {
 		return XMGC;
 	}
@@ -392,6 +438,7 @@ public class Station {
 		XMGC = xMGC;
 	}
 
+	@XmlElement
 	public int getKLAS() {
 		return KLAS;
 	}
@@ -400,6 +447,7 @@ public class Station {
 		KLAS = kLAS;
 	}
 
+	@XmlElement
 	public double getPRR() {
 		return PRR;
 	}
@@ -408,6 +456,7 @@ public class Station {
 		PRR = pRR;
 	}
 
+	@XmlElement
 	public double getCALR() {
 		return CALR;
 	}
@@ -416,6 +465,7 @@ public class Station {
 		CALR = cALR;
 	}
 
+	@XmlElement
 	public int getICAL() {
 		return ICAL;
 	}
@@ -424,6 +474,7 @@ public class Station {
 		ICAL = iCAL;
 	}
 
+	@XmlElement
 	public int getNDATE() {
 		return NDATE;
 	}
@@ -432,6 +483,7 @@ public class Station {
 		NDATE = nDATE;
 	}
 
+	@XmlElement
 	public int getNHRMN() {
 		return NHRMN;
 	}
@@ -440,6 +492,7 @@ public class Station {
 		NHRMN = nHRMN;
 	}
 
+	@XmlElement
 	public double getAZI() {
 		return AZI;
 	}
@@ -448,6 +501,7 @@ public class Station {
 		AZI = aZI;
 	}
 
+	@XmlElement
 	public double getEXGAP() {
 		return EXGAP;
 	}
@@ -456,6 +510,7 @@ public class Station {
 		EXGAP = eXGAP;
 	}
 
+	@XmlElement
 	public double getRDGAP() {
 		return RDGAP;
 	}
@@ -464,6 +519,7 @@ public class Station {
 		RDGAP = rDGAP;
 	}
 
+	@XmlElement
 	public double getDIST() {
 		return DIST;
 	}
@@ -472,6 +528,7 @@ public class Station {
 		DIST = dIST;
 	}
 
+	@XmlElement
 	public int getAIN() {
 		return AIN;
 	}
@@ -480,6 +537,7 @@ public class Station {
 		AIN = aIN;
 	}
 
+	@XmlElement
 	public String getPRMK() {
 		return PRMK;
 	}
@@ -488,6 +546,7 @@ public class Station {
 		PRMK = pRMK;
 	}
 
+	@XmlElement
 	public int getHR() {
 		return HR;
 	}
@@ -496,6 +555,7 @@ public class Station {
 		HR = hR;
 	}
 
+	@XmlElement
 	public int getMN() {
 		return MN;
 	}
@@ -504,6 +564,7 @@ public class Station {
 		MN = mN;
 	}
 
+	@XmlElement
 	public double getPSEC() {
 		return PSEC;
 	}
@@ -512,6 +573,7 @@ public class Station {
 		PSEC = pSEC;
 	}
 
+	@XmlElement
 	public double getTPOBS() {
 		return TPOBS;
 	}
@@ -520,6 +582,7 @@ public class Station {
 		TPOBS = tPOBS;
 	}
 
+	@XmlElement
 	public double getTPCAL() {
 		return TPCAL;
 	}
@@ -528,6 +591,7 @@ public class Station {
 		TPCAL = tPCAL;
 	}
 
+	@XmlElement
 	public double getDLYH1() {
 		return DLYH1;
 	}
@@ -536,6 +600,7 @@ public class Station {
 		DLYH1 = dLYH1;
 	}
 
+	@XmlElement
 	public double getPRES() {
 		return PRES;
 	}
@@ -544,6 +609,7 @@ public class Station {
 		PRES = pRES;
 	}
 
+	@XmlElement
 	public double getPWT() {
 		return PWT;
 	}
@@ -552,6 +618,7 @@ public class Station {
 		PWT = pWT;
 	}
 
+	@XmlElement
 	public double getAMX() {
 		return AMX;
 	}
@@ -560,6 +627,7 @@ public class Station {
 		AMX = aMX;
 	}
 
+	@XmlElement
 	public double getPRX() {
 		return PRX;
 	}
@@ -568,6 +636,7 @@ public class Station {
 		PRX = pRX;
 	}
 
+	@XmlElement
 	public double getCALX() {
 		return CALX;
 	}
@@ -576,6 +645,7 @@ public class Station {
 		CALX = cALX;
 	}
 
+	@XmlElement
 	public int getK() {
 		return K;
 	}
@@ -584,6 +654,7 @@ public class Station {
 		K = k;
 	}
 
+	@XmlElement
 	public double getXMAG() {
 		return XMAG;
 	}
@@ -592,6 +663,7 @@ public class Station {
 		XMAG = xMAG;
 	}
 
+	@XmlElement
 	public double getRMK() {
 		return RMK;
 	}
@@ -600,6 +672,7 @@ public class Station {
 		RMK = rMK;
 	}
 
+	@XmlElement
 	public double getFMP() {
 		return FMP;
 	}
@@ -608,6 +681,7 @@ public class Station {
 		FMP = fMP;
 	}
 
+	@XmlElement
 	public double getFMAG() {
 		return FMAG;
 	}
@@ -616,6 +690,7 @@ public class Station {
 		FMAG = fMAG;
 	}
 
+	@XmlElement
 	public String getSRMK() {
 		return SRMK;
 	}
@@ -624,6 +699,7 @@ public class Station {
 		SRMK = sRMK;
 	}
 
+	@XmlElement
 	public double getSSEC() {
 		return SSEC;
 	}
@@ -632,6 +708,7 @@ public class Station {
 		SSEC = sSEC;
 	}
 
+	@XmlElement
 	public double getTSOBS() {
 		return TSOBS;
 	}
@@ -640,6 +717,7 @@ public class Station {
 		TSOBS = tSOBS;
 	}
 
+	@XmlElement
 	public double getSRES() {
 		return SRES;
 	}
@@ -648,6 +726,7 @@ public class Station {
 		SRES = sRES;
 	}
 
+	@XmlElement
 	public double getSWT() {
 		return SWT;
 	}
@@ -656,6 +735,7 @@ public class Station {
 		SWT = sWT;
 	}
 
+	@XmlElement
 	public String getDT() {
 		return DT;
 	}
@@ -664,6 +744,7 @@ public class Station {
 		DT = dT;
 	}
 
+	@XmlElement
 	public TravelTimeResiduals getModel1() {
 		return model1;
 	}
@@ -672,6 +753,7 @@ public class Station {
 		this.model1 = model1;
 	}
 
+	@XmlElement
 	public TravelTimeResiduals getModel2() {
 		return model2;
 	}
@@ -680,6 +762,7 @@ public class Station {
 		this.model2 = model2;
 	}
 
+	@XmlElement
 	public int getNXM() {
 		return NXM;
 	}
@@ -688,6 +771,7 @@ public class Station {
 		NXM = nXM;
 	}
 
+	@XmlElement
 	public double getAVXM() {
 		return AVXM;
 	}
@@ -696,6 +780,7 @@ public class Station {
 		AVXM = aVXM;
 	}
 
+	@XmlElement
 	public double getSDXM() {
 		return SDXM;
 	}
@@ -704,6 +789,7 @@ public class Station {
 		SDXM = sDXM;
 	}
 
+	@XmlElement
 	public int getNFM() {
 		return NFM;
 	}
@@ -712,6 +798,7 @@ public class Station {
 		NFM = nFM;
 	}
 
+	@XmlElement
 	public double getAVFM() {
 		return AVFM;
 	}
@@ -720,6 +807,7 @@ public class Station {
 		AVFM = aVFM;
 	}
 
+	@XmlElement
 	public double getSDFM() {
 		return SDFM;
 	}

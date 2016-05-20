@@ -4,7 +4,7 @@
  * https://creativecommons.org/publicdomain/zero/1.0/legalcode
  */
 
-package gov.usgs.volcanoes.core.quakeML;
+package gov.usgs.volcanoes.core.quakeml;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -16,23 +16,20 @@ import java.text.ParseException;
 
 /**
  * Holder for QuakeML pick.
- * 
+ *
  * @author Tom Parker
  *
  */
 public class Pick {
-  Logger LOGGER = LoggerFactory.getLogger(Pick.class);
-
-  public final String publicId;
-  private long time;
-  private String channel;
-  private Onset onset;
-  private Polarity polarity;
-
-
   public static enum Onset {
     EMERGENT, IMPULSIVE, QUESTIONABLE;
 
+    /**
+     * Parse an Onset from a String.
+     * @param string onset
+     * @return onset object
+     * @throws ParseException when things go wrong
+     */
     public static Onset parse(String string) throws ParseException {
       if ("emergent".equals(string)) {
         return EMERGENT;
@@ -48,8 +45,15 @@ public class Pick {
   }
 
   public static enum Polarity {
-    POSITIVE, NEGATIVE, UNDECIDABLE;
+    NEGATIVE, POSITIVE, UNDECIDABLE;
 
+    /**
+     * Parse polarity from a String.
+     * 
+     * @param string polarity
+     * @return polarity object
+     * @throws ParseException when things go wrong.
+     */
     public static Polarity parse(String string) throws ParseException {
       if ("positive".equals(string)) {
         return POSITIVE;
@@ -63,51 +67,57 @@ public class Pick {
     }
   }
 
+  private final String channel;
+  private static final Logger LOGGER = LoggerFactory.getLogger(Pick.class);
+  private Onset onset;
+  private Polarity polarity;
+
+
+  public final String publicId;
+
+  private final long time;
+
+  /**
+   * Constructor.
+   * @param pickElement XML pick element
+   */
   public Pick(Element pickElement) {
     publicId = pickElement.getAttribute("publicID");
     LOGGER.debug("new PIck {}", publicId);
 
-    Element timeElement = (Element) pickElement.getElementsByTagName("time").item(0);
+    final Element timeElement = (Element) pickElement.getElementsByTagName("time").item(0);
     time =
         QuakeMlUtils.parseTime(timeElement.getElementsByTagName("value").item(0).getTextContent());
 
-    NodeList onsetList = pickElement.getElementsByTagName("onset");
+    final NodeList onsetList = pickElement.getElementsByTagName("onset");
     if (onsetList != null && onsetList.getLength() > 0) {
       try {
         onset = Onset.parse(onsetList.item(0).getTextContent());
-      } catch (DOMException e) {
-        // TODO Auto-generated catch block
-        e.printStackTrace();
-      } catch (ParseException e) {
-        // TODO Auto-generated catch block
-        e.printStackTrace();
+      } catch (final DOMException ex) {
+        ex.printStackTrace();
+      } catch (final ParseException ex) {
+        ex.printStackTrace();
       }
     }
 
-    NodeList polarityList = pickElement.getElementsByTagName("polarity");
+    final NodeList polarityList = pickElement.getElementsByTagName("polarity");
     if (polarityList != null && polarityList.getLength() > 0) {
       try {
         polarity =
             Polarity.parse(pickElement.getElementsByTagName("polarity").item(0).getTextContent());
-      } catch (DOMException e) {
-        // TODO Auto-generated catch block
-        e.printStackTrace();
-      } catch (ParseException e) {
-        // TODO Auto-generated catch block
-        e.printStackTrace();
+      } catch (final DOMException ex) {
+        ex.printStackTrace();
+      } catch (final ParseException ex) {
+        ex.printStackTrace();
       }
     }
-    Element waveformId = (Element) pickElement.getElementsByTagName("waveformID").item(0);
-    String station = waveformId.getAttribute("stationCode");
-    String chan = waveformId.getAttribute("channelCode");
-    String net = waveformId.getAttribute("networkCode");
-    String loc = waveformId.getAttribute("locationCode");
+    final Element waveformId = (Element) pickElement.getElementsByTagName("waveformID").item(0);
+    final String station = waveformId.getAttribute("stationCode");
+    final String chan = waveformId.getAttribute("channelCode");
+    final String net = waveformId.getAttribute("networkCode");
+    final String loc = waveformId.getAttribute("locationCode");
 
     channel = station + "$" + chan + "$" + net + "$" + loc;
-  }
-
-  public long getTime() {
-    return time;
   }
 
   public String getChannel() {
@@ -120,5 +130,9 @@ public class Pick {
 
   public Polarity getPolarity() {
     return polarity;
+  }
+
+  public long getTime() {
+    return time;
   }
 }

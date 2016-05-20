@@ -4,11 +4,11 @@
  * https://creativecommons.org/publicdomain/zero/1.0/legalcode
  */
 
-package gov.usgs.volcanoes.core.quakeML;
+package gov.usgs.volcanoes.core.quakeml;
 
 /**
  * Observer interface for Event objects.
- * 
+ *
  * @author Tom Parker
  *
  */

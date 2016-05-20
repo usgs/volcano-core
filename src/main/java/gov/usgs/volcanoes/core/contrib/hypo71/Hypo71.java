@@ -1,4 +1,4 @@
-package gov.usgs.volcanoes.core.hypo71;
+package gov.usgs.volcanoes.core.contrib.hypo71;
 
 import static java.lang.Math.abs;
 import static java.lang.Math.cos;

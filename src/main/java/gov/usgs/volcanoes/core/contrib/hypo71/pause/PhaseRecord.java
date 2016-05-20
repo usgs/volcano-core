@@ -1,4 +1,4 @@
-package gov.usgs.volcanoes.core.hypo71;
+package gov.usgs.volcanoes.core.contrib.hypo71.pause;
 
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;

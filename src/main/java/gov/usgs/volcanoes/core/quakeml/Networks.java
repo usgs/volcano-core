@@ -4,7 +4,7 @@
  * https://creativecommons.org/publicdomain/zero/1.0/legalcode
  */
 
-package gov.usgs.volcanoes.core.quakeML;
+package gov.usgs.volcanoes.core.quakeml;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -19,74 +19,39 @@ import java.util.Vector;
 
 /**
  * Translate FDSN network codes into organizational names.
- * 
+ *
  * @author Tom Parker
  *
  */
 public class Networks {
-  private final static Logger LOGGER = LoggerFactory.getLogger(Networks.class);
-
-  private final static String NETWORKS_FILE = "networks.csv";
-  private final Map<String, String> networks;
-
-  public String getName(String code) {
-    return networks.get(code);
+  private static class NetworksHolder {
+    public static Networks networks = new Networks();
   }
 
-  private Networks() {
-    networks = new HashMap<String, String>();
-    Reader reader = null;
-    try {
-      reader = new InputStreamReader(ClassLoader.getSystemResource(NETWORKS_FILE).openStream());
-
-      try {
-        List<String> fields = Networks.parseLine(reader);
-        while (fields != null) {
-          networks.put(fields.get(0), fields.get(2));
-          fields = Networks.parseLine(reader);
-        }
-      } catch (Exception e) {
-        // TODO Auto-generated catch block
-        e.printStackTrace();
-      }
-    } catch (IOException e) {
-      LOGGER.info("Unable to read networks", e);
-    } finally {
-      if (reader != null) {
-        try {
-          reader.close();
-        } catch (IOException ignored) {
-        }
-      }
-    }
-
-  }
+  private static final Logger LOGGER = LoggerFactory.getLogger(Networks.class);
+  private static final String NETWORKS_FILE = "networks.csv";
 
   public static Networks getInstance() {
     return NetworksHolder.networks;
   }
 
-  private static class NetworksHolder {
-    public static Networks networks = new Networks();
-  }
-
   /**
    * Adapted from https://agiletribe.wordpress.com/2012/11/23/the-only-class-you-need-for-csv-files/
-   * 
-   * @param r
-   * @return
-   * @throws Exception
+   *
+   * @param rd reader
+   * @return one row of tokens
+   * @throws Exception when things go wrong
    */
-  public static List<String> parseLine(Reader r) throws Exception {
-    int ch = r.read();
+  public static List<String> parseLine(Reader rd) throws Exception {
+    int ch = rd.read();
     while (ch == '\r') {
       // ignore linefeed chars wherever, particularly just before end of file
-      ch = r.read();
+      ch = rd.read();
     }
     if (ch < 0) {
       return null;
     }
-    Vector<String> store = new Vector<String>();
+    final Vector<String> store = new Vector<String>();
     StringBuffer curVal = new StringBuffer();
     boolean inquotes = false;
     boolean started = false;
@@ -119,9 +84,45 @@ public class Networks {
           curVal.append((char) ch);
         }
       }
-      ch = r.read();
+      ch = rd.read();
     }
     store.add(curVal.toString());
     return store;
+  }
+
+  private final Map<String, String> networks;
+
+  private Networks() {
+    networks = new HashMap<String, String>();
+    Reader reader = null;
+    try {
+      reader = new InputStreamReader(ClassLoader.getSystemResource(NETWORKS_FILE).openStream());
+
+      try {
+        List<String> fields = Networks.parseLine(reader);
+        while (fields != null) {
+          networks.put(fields.get(0), fields.get(2));
+          fields = Networks.parseLine(reader);
+        }
+      } catch (final Exception ex) {
+        // TODO Auto-generated catch block
+        ex.printStackTrace();
+      }
+    } catch (final IOException ex) {
+      LOGGER.info("Unable to read networks", ex);
+    } finally {
+      if (reader != null) {
+        try {
+          reader.close();
+        } catch (final IOException ignored) {
+          // do nothing
+        }
+      }
+    }
+
+  }
+
+  public String getName(String code) {
+    return networks.get(code);
   }
 }

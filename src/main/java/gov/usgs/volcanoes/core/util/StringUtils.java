@@ -100,7 +100,7 @@ public final class StringUtils {
     double ret;
     try {
       ret = Double.parseDouble(val);
-    } catch (final Exception e) {
+    } catch (final Exception ex) {
       ret = def;
     }
     return ret;
@@ -118,7 +118,7 @@ public final class StringUtils {
     int ret;
     try {
       ret = Integer.parseInt(val);
-    } catch (final Exception e) {
+    } catch (final Exception ex) {
       ret = def;
     }
     return ret;

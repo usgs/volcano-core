@@ -4,41 +4,47 @@
  * https://creativecommons.org/publicdomain/zero/1.0/legalcode
  */
 
-package gov.usgs.volcanoes.core.quakeML;
+package gov.usgs.volcanoes.core.quakeml;
 
 import org.w3c.dom.Element;
 
 /**
  * Holder for QuakeML magnitude.
- * 
+ *
  * @author Tom Parker
  *
  */
 public class Magnitude {
 
+  private final double mag;
+
   public final String publicId;
-  
-  private double mag;
-  private String type;
+  private final String type;
   private String uncertainty;
-  
+
+  /**
+   * Constructor.
+   *
+   * @param magnitudeElement XML element
+   */
   public Magnitude(Element magnitudeElement) {
     publicId = magnitudeElement.getAttribute("publicId");
     type = magnitudeElement.getElementsByTagName("type").item(0).getTextContent();
-    
-    Element magElement = (Element) magnitudeElement.getElementsByTagName("mag").item(0);
-    mag = Double.parseDouble(magElement.getElementsByTagName("value").item(0).getTextContent());
-    
-    Element  uncertaintyElement = (Element) magElement.getElementsByTagName("uncertainty").item(0);
-    if (uncertaintyElement != null)
-    uncertainty = "\u00B1" + uncertaintyElement.getTextContent();
 
+    final Element magElement = (Element) magnitudeElement.getElementsByTagName("mag").item(0);
+    mag = Double.parseDouble(magElement.getElementsByTagName("value").item(0).getTextContent());
+
+    final Element uncertaintyElement =
+        (Element) magElement.getElementsByTagName("uncertainty").item(0);
+    if (uncertaintyElement != null) {
+      uncertainty = '±' + uncertaintyElement.getTextContent();
+    }
   }
 
   public double getMag() {
     return mag;
   }
-  
+
   public String getType() {
     return type;
   }

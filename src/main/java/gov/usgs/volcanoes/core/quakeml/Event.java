@@ -4,7 +4,7 @@
  * https://creativecommons.org/publicdomain/zero/1.0/legalcode
  */
 
-package gov.usgs.volcanoes.core.quakeML;
+package gov.usgs.volcanoes.core.quakeml;
 
 import gov.usgs.volcanoes.core.util.StringUtils;
 
@@ -21,27 +21,43 @@ import java.util.Map;
 
 /**
  * Holder for QuakeML Event.
- * 
+ *
  * @author Tom Parker
  *
  */
 public class Event {
   private static final Logger LOGGER = LoggerFactory.getLogger(Event.class);
 
-  public final String publicId;
-
-  private final Map<String, Origin> origins;
-  private final Map<String, Magnitude> magnitudes;
-  private final Map<String, Pick> picks;
-  private final List<EventObserver> observers;
-
-  private Origin preferredOrigin;
-  private Magnitude preferredMagnitude;
   private String description;
+
   private String eventSource;
   private String evid;
+  private final Map<String, Magnitude> magnitudes;
+  private final List<EventObserver> observers;
+
+  private final Map<String, Origin> origins;
+  private final Map<String, Pick> picks;
+  private Magnitude preferredMagnitude;
+  private Origin preferredOrigin;
+  public final String publicId;
   private String type;
 
+  /**
+   * Constructor.
+   *
+   * @param event template event
+   */
+  public Event(Element event) {
+    this(event.getAttribute("publicID"));
+
+    updateEvent(event);
+  }
+
+  /**
+   * Constructor.
+   *
+   * @param publicId event id
+   */
   public Event(String publicId) {
     this.publicId = publicId;
     LOGGER.debug("New event ({}}", publicId);
@@ -52,16 +68,82 @@ public class Event {
     observers = new ArrayList<EventObserver>();
   }
 
-  public Event(Element event) {
-    this(event.getAttribute("publicID"));
-
-    updateEvent(event);
-  }
-
   public void addObserver(EventObserver observer) {
     observers.add(observer);
   }
 
+  public String getDataid() {
+    return null;
+  }
+
+  public String getDescription() {
+    return description;
+  }
+
+  public String getEventSource() {
+    return eventSource;
+  }
+
+
+  public String getEvid() {
+    return evid;
+  }
+
+  public Magnitude getPerferredMagnitude() {
+    return preferredMagnitude;
+  }
+
+  public Origin getPreferredOrigin() {
+
+    return preferredOrigin;
+  }
+
+  public String getType() {
+    return type;
+  }
+
+  private void notifyObservers() {
+    for (final EventObserver observer : observers) {
+      observer.eventUpdated();
+    }
+  }
+
+  private void parseMagnitudes(NodeList magnitudeElements) {
+    magnitudes.clear();
+    final int magnitudeCount = magnitudeElements.getLength();
+    for (int idx = 0; idx < magnitudeCount; idx++) {
+      final Magnitude magnitude = new Magnitude((Element) magnitudeElements.item(idx));
+      magnitudes.put(magnitude.publicId, magnitude);
+    }
+  }
+
+  private void parseOrigins(NodeList originElements) {
+    origins.clear();
+    final int originCount = originElements.getLength();
+    for (int idx = 0; idx < originCount; idx++) {
+      final Origin origin = new Origin((Element) originElements.item(idx), picks);
+      origins.put(origin.publicId, origin);
+    }
+  }
+
+  private void parsePicks(NodeList pickElements) {
+    picks.clear();
+    final int pickCount = pickElements.getLength();
+    for (int idx = 0; idx < pickCount; idx++) {
+      final Pick pick = new Pick((Element) pickElements.item(idx));
+      picks.put(pick.publicId, pick);
+    }
+  }
+
+  public void setDescription(String description) {
+    this.description = description;
+  }
+
+  /**
+   * Set event values using arg as template.
+   *
+   * @param event template event
+   */
   public void updateEvent(Element event) {
 
     // order matters.
@@ -83,96 +165,29 @@ public class Event {
         StringUtils.stringToString(event.getAttribute("catalog:eventsource"), eventSource);
     evid = StringUtils.stringToString(event.getAttribute("catalog:eventid"), evid);
 
-    Element descriptionElement = (Element) event.getElementsByTagName("description").item(0);
+    final Element descriptionElement = (Element) event.getElementsByTagName("description").item(0);
     if (descriptionElement != null) {
       description = StringUtils.stringToString(
           descriptionElement.getElementsByTagName("text").item(0).getTextContent(), description);
     }
 
     // Element typeElement = (Element) event.getElementsByTagName("type").item(0);
-    NodeList childList = event.getChildNodes();
-    String newType = null;
+    final NodeList childList = event.getChildNodes();
+    final String newType = null;
     int idx = 0;
     while (type == null && idx < childList.getLength()) {
-      Node node = childList.item(idx);
+      final Node node = childList.item(idx);
       if (node.getNodeType() == Node.ELEMENT_NODE) {
-        Element element = (Element) node;
+        final Element element = (Element) node;
         if (element.getTagName() == "type") {
           type = element.getTextContent();
         }
         idx++;
       }
     }
-    
+
     type = StringUtils.stringToString(newType, type);
 
     notifyObservers();
-  }
-
-  private void notifyObservers() {
-    for (EventObserver observer : observers) {
-      observer.eventUpdated();
-    }
-  }
-
-  private void parsePicks(NodeList pickElements) {
-    picks.clear();
-    int pickCount = pickElements.getLength();
-    for (int idx = 0; idx < pickCount; idx++) {
-      Pick pick = new Pick((Element) pickElements.item(idx));
-      picks.put(pick.publicId, pick);
-    }
-  }
-
-
-  private void parseOrigins(NodeList originElements) {
-    origins.clear();
-    int originCount = originElements.getLength();
-    for (int idx = 0; idx < originCount; idx++) {
-      Origin origin = new Origin((Element) originElements.item(idx), picks);
-      origins.put(origin.publicId, origin);
-    }
-  }
-
-  public Origin getPreferredOrigin() {
-
-    return preferredOrigin;
-  }
-
-  private void parseMagnitudes(NodeList magnitudeElements) {
-    magnitudes.clear();
-    int magnitudeCount = magnitudeElements.getLength();
-    for (int idx = 0; idx < magnitudeCount; idx++) {
-      Magnitude magnitude = new Magnitude((Element) magnitudeElements.item(idx));
-      magnitudes.put(magnitude.publicId, magnitude);
-    }
-  }
-
-  public Magnitude getPerferredMagnitude() {
-    return preferredMagnitude;
-  }
-
-  public String getEventSource() {
-    return eventSource;
-  }
-
-  public String getEvid() {
-    return evid;
-  }
-
-  public String getDataid() {
-    return null;
-  }
-
-  public String getDescription() {
-    return description;
-  }
-
-  public String getType() {
-    return type;
-  }
-
-  public void setDescription(String description) {
-    this.description = description;
   }
 }

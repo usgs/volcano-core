@@ -1,4 +1,4 @@
-package gov.usgs.volcanoes.core.hypo71.pause;
+package gov.usgs.volcanoes.core.contrib.hypo71.pause;
 
 /**
  * Represents a Hypo71 control card
