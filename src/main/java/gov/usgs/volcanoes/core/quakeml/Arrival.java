@@ -42,6 +42,7 @@ public class Arrival {
   private final double distance;
   private final String phase;
   private final Pick pick;
+  
   public final String publicId;
 
   private final double timeResidual;
@@ -75,7 +76,7 @@ public class Arrival {
 
   /**
    * Return a phase tag.
-   * 
+   *
    * @return phase tag
    */
   public String getTag() {
@@ -102,6 +103,18 @@ public class Arrival {
 
   public double getTimeResidual() {
     return timeResidual;
+  }
+  
+  @Override
+  public String toString() {
+    StringBuffer sb = new StringBuffer();
+
+    sb.append("PublicId: " + publicId + "\n");
+    sb.append("Distance: " + distance + "°\n");
+    sb.append("Phase: " + phase + "\n");
+    sb.append("Pick: " + pick + "\n");
+
+    return sb.toString();
   }
 
 }

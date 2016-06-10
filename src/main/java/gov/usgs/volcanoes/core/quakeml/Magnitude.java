@@ -52,4 +52,13 @@ public class Magnitude {
   public String getUncertainty() {
     return uncertainty;
   }
+  
+  @Override
+  public String toString() {
+    StringBuffer sb = new StringBuffer();
+    sb.append("magnitude: " + mag + " " + type + " " + uncertainty + "\n");
+    sb.append("publicId: " + publicId + "\n");
+    
+    return sb.toString();
+  }
 }

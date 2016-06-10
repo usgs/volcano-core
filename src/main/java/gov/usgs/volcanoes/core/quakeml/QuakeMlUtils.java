@@ -23,8 +23,9 @@ public class QuakeMlUtils {
   private static final Logger LOGGER = LoggerFactory.getLogger(QuakeMlUtils.class);
 
   /**
-   * Parse a QuakeML time string.
-   * 
+   * Parse a QuakeML time string. Similar to ISO 8601, but not quite the same. 
+   * Because yet another time standard is exactly what we need. When will we learn?
+   *
    * @param timeString Time string
    * @return time in typical epoch ms
    */

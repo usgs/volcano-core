@@ -13,6 +13,7 @@ import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 
 import java.util.Collection;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -48,7 +49,7 @@ public class Origin {
 
   /**
    * Constructor.
-   * 
+   *
    * @param originElement XML element
    * @param picks associated picks
    */
@@ -175,5 +176,26 @@ public class Origin {
       final Arrival arrival = new Arrival((Element) arrivalElements.item(idx), picks);
       arrivals.put(arrival.publicId, arrival);
     }
+  }
+  
+  @Override
+  public String toString() {
+    StringBuffer sb = new StringBuffer();
+
+    sb.append("PublicId: " + publicId + "\n");
+    sb.append("Time: " + new Date(time) + "\n");
+    sb.append("Gap: " + azimuthalGap + "°\n");
+    sb.append("Depth: " + depth + "m\n");
+    sb.append("Evaluation mode: " + evaluationMode + "\n");
+    sb.append("Evalutaion status: " + evaluationStatus + "\n");
+    sb.append("Location: " + latitude + "°, " + longitude + "° at " + depth + "m depth\n");
+    sb.append("Minimum distance: " + minimumDistance + "°\n");
+    sb.append("Error: " + standardError + "s\n");
+    sb.append("Phase count: " + phaseCount + "\n");
+    for (Arrival arrival : arrivals.values()) {
+      sb.append("Arrival: " + arrival.toString() + "\n");
+    }
+    
+    return sb.toString();
   }
 }
