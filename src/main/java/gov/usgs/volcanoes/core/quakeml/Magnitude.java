@@ -28,7 +28,7 @@ public class Magnitude {
    * @param magnitudeElement XML element
    */
   public Magnitude(Element magnitudeElement) {
-    publicId = magnitudeElement.getAttribute("publicId");
+    publicId = magnitudeElement.getAttribute("publicID");
     type = magnitudeElement.getElementsByTagName("type").item(0).getTextContent();
 
     final Element magElement = (Element) magnitudeElement.getElementsByTagName("mag").item(0);

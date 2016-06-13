@@ -54,7 +54,7 @@ public class Origin {
    * @param picks associated picks
    */
   public Origin(Element originElement, Map<String, Pick> picks) {
-    publicId = originElement.getAttribute("publicId");
+    publicId = originElement.getAttribute("publicID");
     arrivals = new HashMap<String, Arrival>();
 
     LOGGER.debug("new origin {}", publicId);

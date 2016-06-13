@@ -90,6 +90,7 @@ public class QuakemlSource {
   }
 
   private void notifyObservers() {
+    LOGGER.debug("Notifying {} observers.", observers.size());
     for (QuakemlObserver observer : observers) {
       observer.update(this);
     }
@@ -106,6 +107,7 @@ public class QuakemlSource {
   }
 
   public EventSet getEventSet() {
+    LOGGER.debug("Returning {} events.", eventSet.size());
     return eventSet;
   }
 

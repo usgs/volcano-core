@@ -46,7 +46,7 @@ public class EventSet extends HashMap<String, Event> {
       Event event = new Event((Element) eventElements.item(idx));
       eventSet.put(event.publicId, event);
     }
-
+    LOGGER.debug("Parsed {} events.", eventSet.size());
     return eventSet;
   }
 

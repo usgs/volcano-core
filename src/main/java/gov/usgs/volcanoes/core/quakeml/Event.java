@@ -119,7 +119,8 @@ public class Event {
     magnitudes.clear();
     final int magnitudeCount = magnitudeElements.getLength();
     for (int idx = 0; idx < magnitudeCount; idx++) {
-      final Magnitude magnitude = new Magnitude((Element) magnitudeElements.item(idx));
+      Magnitude magnitude = new Magnitude((Element) magnitudeElements.item(idx));
+      LOGGER.debug("Adding mag {} {}", idx, magnitude.publicId);
       magnitudes.put(magnitude.publicId, magnitude);
     }
   }
@@ -177,7 +178,7 @@ public class Event {
       description = StringUtils.stringToString(
           descriptionElement.getElementsByTagName("text").item(0).getTextContent(), description);
     }
-    LOGGER.debug("here 1\n");
+
     // Element typeElement = (Element) event.getElementsByTagName("type").item(0);
     final NodeList childList = event.getChildNodes();
     int idx = 0;
@@ -195,8 +196,6 @@ public class Event {
       }
       idx++;
     }
-    LOGGER.debug("here 2\n");
-
     notifyObservers();
   }
 

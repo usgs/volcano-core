@@ -42,6 +42,7 @@ public class Arrival {
   private final double distance;
   private final String phase;
   private final Pick pick;
+  private final double timeWeight;
   
   public final String publicId;
 
@@ -64,6 +65,8 @@ public class Arrival {
         .parseDouble(arrivalElement.getElementsByTagName("timeResidual").item(0).getTextContent());
     distance = Double
         .parseDouble(arrivalElement.getElementsByTagName("distance").item(0).getTextContent());
+    timeWeight = Double
+        .parseDouble(arrivalElement.getElementsByTagName("timeWeight").item(0).getTextContent());
   }
 
   public String getPhase() {
@@ -72,6 +75,10 @@ public class Arrival {
 
   public Pick getPick() {
     return pick;
+  }
+  
+  public Double getTimeWeight() {
+    return timeWeight;
   }
 
   /**
@@ -82,6 +89,8 @@ public class Arrival {
   public String getTag() {
     final StringBuilder sb = new StringBuilder();
 
+    sb.append(timeWeight);
+    
     final Onset onset = pick.getOnset();
     if (onset == Pick.Onset.EMERGENT) {
       sb.append("e");
