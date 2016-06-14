@@ -31,22 +31,28 @@ public class EventSet extends HashMap<String, Event> {
    * @throws ParserConfigurationException when things go wrong.
    */
   public static EventSet parseQuakeml(InputStream inStream)
-      throws SAXException, IOException, ParserConfigurationException {
+      throws IOException, ParserConfigurationException, SAXException {
 
     EventSet eventSet = new EventSet();
-    DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
-    DocumentBuilder docBuilder = dbFactory.newDocumentBuilder();
-    Document doc = docBuilder.parse(inStream);
-    doc.getDocumentElement().normalize();
+    if (inStream.available() > 0) {
+      DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
+      DocumentBuilder docBuilder = dbFactory.newDocumentBuilder();
+      LOGGER.debug("Available: {}", inStream.available());
+      Document doc = docBuilder.parse(inStream);
+      doc.getDocumentElement().normalize();
 
-    NodeList eventElements = doc.getElementsByTagName("event");
-    LOGGER.debug("Got {} events.", eventElements.getLength());
-    int eventCount = eventElements.getLength();
-    for (int idx = 0; idx < eventCount; idx++) {
-      Event event = new Event((Element) eventElements.item(idx));
-      eventSet.put(event.publicId, event);
+      NodeList eventElements = doc.getElementsByTagName("event");
+      LOGGER.debug("Got {} events.", eventElements.getLength());
+      int eventCount = eventElements.getLength();
+      for (int idx = 0; idx < eventCount; idx++) {
+        Event event = new Event((Element) eventElements.item(idx));
+        eventSet.put(event.publicId, event);
+      }
+      LOGGER.debug("Parsed {} events.", eventSet.size());
+    } else {
+      LOGGER.debug("Received empty QuakeML.");
     }
-    LOGGER.debug("Parsed {} events.", eventSet.size());
+
     return eventSet;
   }
 

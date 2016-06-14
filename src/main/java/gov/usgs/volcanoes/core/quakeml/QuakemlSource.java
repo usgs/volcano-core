@@ -81,11 +81,11 @@ public class QuakemlSource {
       eventSet = EventSet.parseQuakeml(url.openStream());
       notifyObservers();
     } catch (SAXException ex) {
-      LOGGER.warn("Unable to parse QuakeML. {}", ex);
+      LOGGER.warn("Unable to parse QuakeML.", ex);
     } catch (IOException ex) {
-      LOGGER.warn("Unable to retrieve QuakeML. {}", ex);
+      LOGGER.warn("Unable to retrieve QuakeML.", ex);
     } catch (ParserConfigurationException ex) {
-      LOGGER.warn("Internal QuakeML error. {}", ex);
+      LOGGER.warn("Internal QuakeML error.", ex);
     }
   }
 
