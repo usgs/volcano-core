@@ -13,6 +13,7 @@ import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 
 import java.text.ParseException;
+import java.util.Date;
 
 /**
  * Holder for QuakeML pick.
@@ -26,6 +27,7 @@ public class Pick {
 
     /**
      * Parse an Onset from a String.
+     * 
      * @param string onset
      * @return onset object
      * @throws ParseException when things go wrong
@@ -49,7 +51,7 @@ public class Pick {
 
     /**
      * Parse polarity from a String.
-     * 
+     *
      * @param string polarity
      * @return polarity object
      * @throws ParseException when things go wrong.
@@ -67,8 +69,8 @@ public class Pick {
     }
   }
 
-  private final String channel;
   private static final Logger LOGGER = LoggerFactory.getLogger(Pick.class);
+  private final String channel;
   private Onset onset;
   private Polarity polarity;
 
@@ -79,11 +81,12 @@ public class Pick {
 
   /**
    * Constructor.
+   * 
    * @param pickElement XML pick element
    */
   public Pick(Element pickElement) {
     publicId = pickElement.getAttribute("publicID");
-    LOGGER.debug("new PIck {}", publicId);
+    LOGGER.debug("new Pick {}", publicId);
 
     final Element timeElement = (Element) pickElement.getElementsByTagName("time").item(0);
     time =
@@ -134,5 +137,17 @@ public class Pick {
 
   public long getTime() {
     return time;
+  }
+  
+  @Override
+  public String toString() {
+    StringBuffer sb = new StringBuffer();
+    sb.append("PublicId: " + publicId + "\n");
+    sb.append("Time: " + new Date(time) + "\n");
+    sb.append("Channel: " + channel + "\n");
+    sb.append("Onset: " + onset + "\n");
+    sb.append("Polarity: " + polarity + "\n");
+    
+    return sb.toString();
   }
 }

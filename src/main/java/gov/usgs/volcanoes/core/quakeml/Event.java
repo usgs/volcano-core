@@ -20,7 +20,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Holder for QuakeML Event.
+ * Holder for QuakeML Event. Not all QuakeML elements have been implemented.
  *
  * @author Tom Parker
  *
@@ -28,19 +28,22 @@ import java.util.Map;
 public class Event {
   private static final Logger LOGGER = LoggerFactory.getLogger(Event.class);
 
+  private final Map<String, Magnitude> magnitudes;
+  private final Map<String, Origin> origins;
+  private final Map<String, Pick> picks;
+
+  public final String publicId;
+  private Magnitude preferredMagnitude;
+  private Origin preferredOrigin;
+  private EventType type;
+  private EventTypeCertainty typeCertainty;
   private String description;
 
   private String eventSource;
   private String evid;
-  private final Map<String, Magnitude> magnitudes;
+
   private final List<EventObserver> observers;
 
-  private final Map<String, Origin> origins;
-  private final Map<String, Pick> picks;
-  private Magnitude preferredMagnitude;
-  private Origin preferredOrigin;
-  public final String publicId;
-  private String type;
 
   /**
    * Constructor.
@@ -98,8 +101,12 @@ public class Event {
     return preferredOrigin;
   }
 
-  public String getType() {
-    return type;
+  public String getTypeDescription() {
+    return type.toString();
+  }
+
+  public String getTypeCertaintyDescription() {
+    return typeCertainty.toString();
   }
 
   private void notifyObservers() {
@@ -112,7 +119,8 @@ public class Event {
     magnitudes.clear();
     final int magnitudeCount = magnitudeElements.getLength();
     for (int idx = 0; idx < magnitudeCount; idx++) {
-      final Magnitude magnitude = new Magnitude((Element) magnitudeElements.item(idx));
+      Magnitude magnitude = new Magnitude((Element) magnitudeElements.item(idx));
+      LOGGER.debug("Adding mag {} {}", idx, magnitude.publicId);
       magnitudes.put(magnitude.publicId, magnitude);
     }
   }
@@ -173,21 +181,52 @@ public class Event {
 
     // Element typeElement = (Element) event.getElementsByTagName("type").item(0);
     final NodeList childList = event.getChildNodes();
-    final String newType = null;
     int idx = 0;
-    while (type == null && idx < childList.getLength()) {
+    while ((type == null || typeCertainty == null) && idx < childList.getLength()) {
       final Node node = childList.item(idx);
       if (node.getNodeType() == Node.ELEMENT_NODE) {
         final Element element = (Element) node;
-        if (element.getTagName() == "type") {
-          type = element.getTextContent();
+        if ("type".equals(element.getTagName())) {
+          LOGGER.info("Looking for type {}", element.getTextContent());
+          type = EventType.parse(element.getTextContent());
+        } else if ("typeCertanty".equals(element.getTagName())) {
+          LOGGER.info("Looking for typeCertanty {}", element.getTextContent());
+          typeCertainty = EventTypeCertainty.valueOf(element.getTextContent().toUpperCase());
         }
-        idx++;
       }
+      idx++;
+    }
+    notifyObservers();
+  }
+
+  @Override
+  public String toString() {
+    StringBuffer sb = new StringBuffer();
+
+    sb.append("Public ID: " + publicId + "\n");
+    sb.append("Event type: " + type + "(" + typeCertainty + ")\n");
+    sb.append("Description: " + description + "\n");
+    sb.append("Source: " + eventSource + "\n");
+    sb.append("Evid: " + evid + "\n");
+    sb.append("Preferred magnitude of " + magnitudes.size() + ":\n");
+    sb.append("\t" + preferredMagnitude + "\n");
+    sb.append("All magnitudes: \n");
+    for (Magnitude mag : magnitudes.values()) {
+      sb.append("\t" + mag + "\n");
     }
 
-    type = StringUtils.stringToString(newType, type);
+    sb.append("Preferred origin of " + origins.size() + ":\n");
+    sb.append(preferredOrigin + "\n");
+    sb.append("All origins: ");
+    for (Origin origin : origins.values()) {
+      sb.append(origin + "\n");
+    }
 
-    notifyObservers();
+    sb.append("Pick count: " + picks.size() + "\n");
+    for (Pick pick : picks.values()) {
+      sb.append(pick + "\n");
+    }
+
+    return sb.toString();
   }
 }

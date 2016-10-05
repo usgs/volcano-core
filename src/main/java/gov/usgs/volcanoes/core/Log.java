@@ -7,6 +7,7 @@
 package gov.usgs.volcanoes.core;
 
 
+import org.apache.log4j.AsyncAppender;
 import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
 import org.apache.log4j.PatternLayout;
@@ -36,7 +37,9 @@ public class Log {
     RollingFileAppender fileAppender = new RollingFileAppender(layout, name);
     fileAppender.setMaxFileSize("100MB");
     fileAppender.setMaxBackupIndex(5);
-    Logger.getRootLogger().addAppender(fileAppender);
+    AsyncAppender asyncAppender = new AsyncAppender();
+    asyncAppender.addAppender(fileAppender);
+    Logger.getRootLogger().addAppender(asyncAppender);
   }
 
   /**

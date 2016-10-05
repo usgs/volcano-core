@@ -28,7 +28,7 @@ public class Magnitude {
    * @param magnitudeElement XML element
    */
   public Magnitude(Element magnitudeElement) {
-    publicId = magnitudeElement.getAttribute("publicId");
+    publicId = magnitudeElement.getAttribute("publicID");
     type = magnitudeElement.getElementsByTagName("type").item(0).getTextContent();
 
     final Element magElement = (Element) magnitudeElement.getElementsByTagName("mag").item(0);
@@ -51,5 +51,14 @@ public class Magnitude {
 
   public String getUncertainty() {
     return uncertainty;
+  }
+  
+  @Override
+  public String toString() {
+    StringBuffer sb = new StringBuffer();
+    sb.append("magnitude: " + mag + " " + type + " " + uncertainty + "\n");
+    sb.append("publicId: " + publicId + "\n");
+    
+    return sb.toString();
   }
 }
