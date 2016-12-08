@@ -46,7 +46,6 @@ public class QuakemlSource {
     this.refreshIntervalMs = refreshIntervalMs;
     observers = new ArrayList<QuakemlObserver>();
     eventSet = new EventSet();
-    updateQuakeml();
     if (refreshIntervalMs < Long.MAX_VALUE) {
       doUpdate = true;
       startUpdateThread();
@@ -72,11 +71,12 @@ public class QuakemlSource {
     };
 
     scheduler = Executors.newSingleThreadScheduledExecutor();
-    scheduler.scheduleAtFixedRate(updater, refreshIntervalMs, refreshIntervalMs,
+    scheduler.scheduleAtFixedRate(updater, 0, refreshIntervalMs,
         TimeUnit.MILLISECONDS);
   }
 
   private void updateQuakeml() {
+    LOGGER.info("Retrieving hypocenters");
     try {
       eventSet = EventSet.parseQuakeml(url.openStream());
       notifyObservers();
