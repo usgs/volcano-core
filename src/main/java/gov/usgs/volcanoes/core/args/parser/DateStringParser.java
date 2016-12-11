@@ -30,6 +30,7 @@ public class DateStringParser extends StringParser {
    * 
    * @param inputFormat Format string suitable for feeding to SimpleDataFormat
    */
+  @Deprecated
   public DateStringParser(String inputFormat) {
     format = new SimpleDateFormat(inputFormat, Locale.ENGLISH);
     format.setTimeZone(TimeZone.getTimeZone("UTC"));

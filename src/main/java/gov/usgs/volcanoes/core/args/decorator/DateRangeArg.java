@@ -28,6 +28,7 @@ import java.util.Date;
  *
  * @author Tom Parker
  */
+@Deprecated
 public class DateRangeArg extends ArgsDecorator {
 
   /**
