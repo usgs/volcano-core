@@ -8,17 +8,12 @@ package gov.usgs.volcanoes.core.args.decorator;
 
 import com.martiansoftware.jsap.FlaggedOption;
 import com.martiansoftware.jsap.JSAP;
-import com.martiansoftware.jsap.JSAPResult;
-import com.martiansoftware.jsap.ParseException;
 import com.martiansoftware.jsap.StringParser;
 
 import gov.usgs.volcanoes.core.args.ArgsDecorator;
 import gov.usgs.volcanoes.core.args.ArgumentException;
 import gov.usgs.volcanoes.core.args.Arguments;
 import gov.usgs.volcanoes.core.args.parser.TimeSpanParser;
-import gov.usgs.volcanoes.core.time.TimeSpan;
-
-import java.util.Date;
 
 
 /**
@@ -38,12 +33,14 @@ public class TimeSpanArg extends ArgsDecorator {
    * @param nextArg The Argument object I'm wrapping
    * @throws ArgumentException if parameters cannot be registered
    */
-  public TimeSpanArg(String dateFormat, boolean isRequired, Arguments nextArg) throws ArgumentException {
+  public TimeSpanArg(String dateFormat, boolean isRequired, Arguments nextArg)
+      throws ArgumentException {
     super(nextArg);
 
-    
+
     final StringParser timeSpanParser = new TimeSpanParser(dateFormat);
-    nextArg.registerParameter(new FlaggedOption("timeSpan", timeSpanParser, JSAP.NO_DEFAULT,
-        isRequired, 't', "timeSpan", String.format("Time span as %s-%s\nAll times in UTC.", dateFormat, dateFormat)));
+    nextArg.registerParameter(
+        new FlaggedOption("timeSpan", timeSpanParser, JSAP.NO_DEFAULT, isRequired, 't', "timeSpan",
+            String.format("Time span as %s-%s\nAll times in UTC.", dateFormat, dateFormat)));
   }
 }

@@ -25,7 +25,7 @@ import gov.usgs.volcanoes.core.args.parser.TimeZoneParser;
  * @author Tom Parker
  */
 public class TimeZoneArg extends ArgsDecorator {
-  
+
   public static final String DEFAULT_TIME_ZONE = "Etc/UTC";
 
   /**
@@ -38,9 +38,10 @@ public class TimeZoneArg extends ArgsDecorator {
   public TimeZoneArg(Arguments nextArg) throws ArgumentException {
     super(nextArg);
 
-    
+
     final StringParser timeZoneParser = new TimeZoneParser();
-    nextArg.registerParameter(new FlaggedOption("timeZone", timeZoneParser, DEFAULT_TIME_ZONE,
-        JSAP.NOT_REQUIRED, 'z', "timeZone", "Time zone. Only affects plot. All args must be given in UTC."));
+    nextArg.registerParameter(
+        new FlaggedOption("timeZone", timeZoneParser, DEFAULT_TIME_ZONE, JSAP.NOT_REQUIRED, 'z',
+            "timeZone", "Time zone. Only affects plot. All args must be given in UTC."));
   }
 }

@@ -44,7 +44,7 @@ public class TimeSpanParser extends StringParser {
     String endString;
     if (seperatorIdx > 0) {
       startString = arg.substring(0, seperatorIdx);
-      endString = arg.substring(seperatorIdx + 1, arg.length());      
+      endString = arg.substring(seperatorIdx + 1);      
     } else {
       startString = arg;
       endString = "";
@@ -56,7 +56,11 @@ public class TimeSpanParser extends StringParser {
     if (endString.length() == 0 || "now".equalsIgnoreCase(endString)) {
       endTime = System.currentTimeMillis();
     } else {
-      throw new ParseException("Unable to convert '" + arg + "' to a time span.");
+      try {
+        endTime = format.parse(endString).getTime();
+      } catch (java.text.ParseException e) {
+        throw new ParseException("Unable to convert  end '" + endString + "' to a time.");
+      }
     }
 
     try {

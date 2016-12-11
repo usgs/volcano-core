@@ -26,6 +26,10 @@ import gov.usgs.volcanoes.core.args.parser.DimensionParser;
  */
 public class DimensionArg extends ArgsDecorator {
 
+  public DimensionArg(Arguments nextArg) throws ArgumentException {
+    this("", nextArg);
+  }
+
   /**
    * Register arguments that define a date range.
    *
@@ -37,19 +41,15 @@ public class DimensionArg extends ArgsDecorator {
     super(nextArg);
 
     final StringParser dimensionParser = new DimensionParser();
-    
-    StringBuffer helpStrB = new StringBuffer();
+
+    final StringBuffer helpStrB = new StringBuffer();
     helpStrB.append("dimension as heightxwidth in pixels. (example: 640x480)\n");
-    
+
     if (defaultDimensions.length() > 0) {
       helpStrB.append("Defaults:\n").append(defaultDimensions);
     }
-    
+
     nextArg.registerParameter(new FlaggedOption("dimension", dimensionParser, JSAP.NO_DEFAULT,
         JSAP.NOT_REQUIRED, 'd', "dimension", helpStrB.toString()));
-  }
-
-  public DimensionArg(Arguments nextArg) throws ArgumentException {
-    this("", nextArg);
   }
 }
