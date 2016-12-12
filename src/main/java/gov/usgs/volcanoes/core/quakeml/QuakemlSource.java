@@ -46,11 +46,13 @@ public class QuakemlSource {
     this.refreshIntervalMs = refreshIntervalMs;
     observers = new ArrayList<QuakemlObserver>();
     eventSet = new EventSet();
+
+    doUpdate = false;
     if (refreshIntervalMs < Long.MAX_VALUE) {
-      doUpdate = true;
+//      doUpdate = true;
       startUpdateThread();
-    } else {
-      doUpdate = false;
+//    } else {
+//      doUpdate = false;
     }
 
   }
@@ -76,6 +78,9 @@ public class QuakemlSource {
   }
 
   private void updateQuakeml() {
+    if (!doUpdate) {
+      return;
+    }
     LOGGER.info("Retrieving hypocenters");
     try {
       eventSet = EventSet.parseQuakeml(url.openStream());
@@ -115,6 +120,10 @@ public class QuakemlSource {
     observers.add(observer);
   }
 
+  public void doUpdate(boolean doUpdate) {
+    this.doUpdate = doUpdate;
+  }
+  
   private static QuakemlObserver quakemlDumper() {
     return new QuakemlObserver() {
       @Override
@@ -152,7 +161,7 @@ public class QuakemlSource {
     boolean run = true;
     while (run) {
       String cmd = in.readLine();
-      if (cmd.startsWith("q")) {
+      if (cmd  != null && cmd.startsWith("q")) {
         System.out.println("Exiting...");
         run = false;
         quakemlSource.stop();
