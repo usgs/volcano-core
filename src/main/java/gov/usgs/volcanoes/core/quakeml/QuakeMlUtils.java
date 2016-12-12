@@ -11,6 +11,7 @@ import org.slf4j.LoggerFactory;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.TimeZone;
 
 /**
  * A utility class for working with QuakeML files.
@@ -37,6 +38,7 @@ public class QuakeMlUtils {
 
     long time = Long.MIN_VALUE;
     final SimpleDateFormat dateF = new SimpleDateFormat(DATE_FORMAT);
+    dateF.setTimeZone(TimeZone.getTimeZone("UTC"));
     try {
       time = dateF.parse(timeString).getTime();
     } catch (final ParseException ex) {
