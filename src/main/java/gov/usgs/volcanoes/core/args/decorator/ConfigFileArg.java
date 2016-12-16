@@ -8,6 +8,7 @@ package gov.usgs.volcanoes.core.args.decorator;
 import com.martiansoftware.jsap.JSAP;
 import com.martiansoftware.jsap.UnflaggedOption;
 
+import gov.usgs.volcanoes.core.args.ArgUtil;
 import gov.usgs.volcanoes.core.args.ArgsDecorator;
 import gov.usgs.volcanoes.core.args.ArgumentException;
 import gov.usgs.volcanoes.core.args.Arguments;
@@ -15,7 +16,7 @@ import gov.usgs.volcanoes.core.args.Arguments;
 /**
  * Gather a config filename from the command line.
  *
- * <p>The filename is taken from the first available unflagged option and placed in
+ * <P>The filename is taken from the first available unflagged option and placed in 
  * "config-filename". Be careful of the order that Args are added.
  *
  * @author Tom Parker
@@ -33,7 +34,13 @@ public class ConfigFileArg extends ArgsDecorator {
       throws ArgumentException {
     super(nextArg);
 
+    boolean isRequired = ArgUtil.isRequired(defaultFileName);
+    String helpString = "The config file name.";
+    if (!isRequired) {
+      helpString += " (default: " + defaultFileName + ")";
+    }
+
     registerParameter(new UnflaggedOption("config-filename", JSAP.STRING_PARSER, defaultFileName,
-        JSAP.NOT_REQUIRED, JSAP.NOT_GREEDY, "The config file name."));
+        isRequired, JSAP.NOT_GREEDY, helpString));
   }
 }

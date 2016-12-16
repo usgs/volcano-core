@@ -2,16 +2,11 @@ package gov.usgs.volcanoes.core.quakeml;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
-import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
 import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
@@ -19,8 +14,6 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 
 public class QuakemlSource {
@@ -46,12 +39,13 @@ public class QuakemlSource {
     this.refreshIntervalMs = refreshIntervalMs;
     observers = new ArrayList<QuakemlObserver>();
     eventSet = new EventSet();
-    updateQuakeml();
+
+    doUpdate = false;
     if (refreshIntervalMs < Long.MAX_VALUE) {
-      doUpdate = true;
+      // doUpdate = true;
       startUpdateThread();
-    } else {
-      doUpdate = false;
+      // } else {
+      // doUpdate = false;
     }
 
   }
@@ -72,11 +66,14 @@ public class QuakemlSource {
     };
 
     scheduler = Executors.newSingleThreadScheduledExecutor();
-    scheduler.scheduleAtFixedRate(updater, refreshIntervalMs, refreshIntervalMs,
-        TimeUnit.MILLISECONDS);
+    scheduler.scheduleAtFixedRate(updater, 0, refreshIntervalMs, TimeUnit.MILLISECONDS);
   }
 
   private void updateQuakeml() {
+    if (!doUpdate) {
+      return;
+    }
+    LOGGER.info("Retrieving hypocenters");
     try {
       eventSet = EventSet.parseQuakeml(url.openStream());
       notifyObservers();
@@ -113,6 +110,10 @@ public class QuakemlSource {
 
   public void addObserver(QuakemlObserver observer) {
     observers.add(observer);
+  }
+
+  public void doUpdate(boolean doUpdate) {
+    this.doUpdate = doUpdate;
   }
 
   private static QuakemlObserver quakemlDumper() {
@@ -152,7 +153,7 @@ public class QuakemlSource {
     boolean run = true;
     while (run) {
       String cmd = in.readLine();
-      if (cmd.startsWith("q")) {
+      if (cmd != null && cmd.startsWith("q")) {
         System.out.println("Exiting...");
         run = false;
         quakemlSource.stop();

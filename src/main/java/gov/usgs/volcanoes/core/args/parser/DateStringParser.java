@@ -9,6 +9,8 @@ package gov.usgs.volcanoes.core.args.parser;
 import com.martiansoftware.jsap.ParseException;
 import com.martiansoftware.jsap.StringParser;
 
+import gov.usgs.volcanoes.core.time.Time;
+
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
@@ -28,6 +30,7 @@ public class DateStringParser extends StringParser {
    * 
    * @param inputFormat Format string suitable for feeding to SimpleDataFormat
    */
+  @Deprecated
   public DateStringParser(String inputFormat) {
     format = new SimpleDateFormat(inputFormat, Locale.ENGLISH);
     format.setTimeZone(TimeZone.getTimeZone("UTC"));
@@ -36,10 +39,21 @@ public class DateStringParser extends StringParser {
   @Override
   public Object parse(String arg) throws ParseException {
     Date result = null;
+    
     try {
       result = format.parse(arg);
     } catch (java.text.ParseException ex) {
-      throw new ParseException("Unable to convert '" + arg + "' to a Date.");
+      long time = System.currentTimeMillis();
+
+      double span = Time.getRelativeTime(arg);
+      if (!Double.isNaN(span)) {
+        time -= (long) (span * 1000);
+    
+      } else if (!"now".equalsIgnoreCase(arg)) {
+        throw new ParseException("Unable to convert '" + arg + "' to a Date.");
+      }
+      
+      result = new Date(time);
     }
     return result;
   }
