@@ -31,21 +31,28 @@ public class Args implements Arguments {
       throws ArgumentException {
     try {
       jsap = new SimpleJSAP(programName, explanation, parameters);
-    } catch (JSAPException ex) {
+    } catch (final JSAPException ex) {
       throw new ArgumentException(ex);
     }
   }
 
+  @Override
   public Parameter getById(String id) {
     return jsap.getByID(id);
   }
 
+  @Override
+  public boolean messagePrinted() {
+    return jsap.messagePrinted();
+  }
+
   /**
    * Parse the command line.
-   * 
+   *
    * @param args The command line args
    * @return the parsed command line
    */
+  @Override
   public JSAPResult parse(String[] args) {
     jsapResult = jsap.parse(args);
 
@@ -54,18 +61,16 @@ public class Args implements Arguments {
 
   /**
    * Register parameter with JSAP.
+   * 
    * @param parameter the Parameter to register
    * @throws ArgumentException when parameter cannot be registered
    */
+  @Override
   public void registerParameter(Parameter parameter) throws ArgumentException {
     try {
       jsap.registerParameter(parameter);
-    } catch (JSAPException ex) {
+    } catch (final JSAPException ex) {
       throw new ArgumentException(ex);
     }
-  }
-
-  public boolean messagePrinted() {
-    return jsap.messagePrinted();
   }
 }

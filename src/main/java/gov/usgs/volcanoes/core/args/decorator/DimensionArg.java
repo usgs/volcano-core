@@ -10,6 +10,7 @@ import com.martiansoftware.jsap.FlaggedOption;
 import com.martiansoftware.jsap.JSAP;
 import com.martiansoftware.jsap.StringParser;
 
+import gov.usgs.volcanoes.core.args.ArgUtil;
 import gov.usgs.volcanoes.core.args.ArgsDecorator;
 import gov.usgs.volcanoes.core.args.ArgumentException;
 import gov.usgs.volcanoes.core.args.Arguments;
@@ -17,10 +18,7 @@ import gov.usgs.volcanoes.core.args.parser.DimensionParser;
 
 
 /**
- * Gather a date range from the command line.
- *
- * <p>A startTime and endTime Parameter will be added to the parameter list. Retrieve them with
- * getDate.
+ * Gather a dimension from the command line.
  *
  * @author Tom Parker
  */
@@ -31,25 +29,31 @@ public class DimensionArg extends ArgsDecorator {
   }
 
   /**
-   * Register arguments that define a date range.
+   * Register dimension argument.
    *
-   * @param dateFormat Format string suitable for feeding to SimpleDateFormat
+   * @param defaultDimension Used when argument is not provided on command line. If no default is
+   *        provided, argument is required.
    * @param nextArg The Argument object I'm wrapping
    * @throws ArgumentException if parameters cannot be registered
    */
-  public DimensionArg(String defaultDimensions, Arguments nextArg) throws ArgumentException {
+  public DimensionArg(String defaultDimension, Arguments nextArg) throws ArgumentException {
     super(nextArg);
 
     final StringParser dimensionParser = new DimensionParser();
 
     final StringBuffer helpStrB = new StringBuffer();
-    helpStrB.append("dimension as heightxwidth in pixels. (example: 640x480)\n");
+    helpStrB.append("dimension as heightxwidth in pixels.");
 
-    if (defaultDimensions.length() > 0) {
-      helpStrB.append("Defaults:\n").append(defaultDimensions);
+    boolean isRequired = ArgUtil.isRequired(defaultDimension);
+
+    // optional args have defaults
+    if (isRequired) {
+      helpStrB.append(" (example: 640x480)");
+    } else {
+      helpStrB.append(String.format("default: %s", defaultDimension));
     }
 
     nextArg.registerParameter(new FlaggedOption("dimension", dimensionParser, JSAP.NO_DEFAULT,
-        JSAP.NOT_REQUIRED, 'd', "dimension", helpStrB.toString()));
+        isRequired, 'd', "dimension", helpStrB.toString()));
   }
 }

@@ -31,7 +31,6 @@ public class TimeZoneArg extends ArgsDecorator {
   /**
    * Register arguments that define a date range.
    *
-   * @param dateFormat Format string suitable for feeding to SimpleDateFormat
    * @param nextArg The Argument object I'm wrapping
    * @throws ArgumentException if parameters cannot be registered
    */
@@ -40,8 +39,7 @@ public class TimeZoneArg extends ArgsDecorator {
 
 
     final StringParser timeZoneParser = new TimeZoneParser();
-    nextArg.registerParameter(
-        new FlaggedOption("timeZone", timeZoneParser, DEFAULT_TIME_ZONE, JSAP.NOT_REQUIRED, 'z',
-            "timeZone", "Time zone. Only affects plot. All args must be given in UTC."));
+    nextArg.registerParameter(new FlaggedOption("timeZone", timeZoneParser, DEFAULT_TIME_ZONE,
+        JSAP.NOT_REQUIRED, 'z', "timeZone", "Time zone. (Default = " + DEFAULT_TIME_ZONE));
   }
 }

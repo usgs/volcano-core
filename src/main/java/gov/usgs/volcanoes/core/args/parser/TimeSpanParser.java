@@ -1,7 +1,6 @@
 /**
- * I waive copyright and related rights in the this work worldwide through the CC0 1.0
- * Universal public domain dedication.
- * https://creativecommons.org/publicdomain/zero/1.0/legalcode
+ * I waive copyright and related rights in the this work worldwide through the CC0 1.0 Universal
+ * public domain dedication. https://creativecommons.org/publicdomain/zero/1.0/legalcode
  */
 
 package gov.usgs.volcanoes.core.args.parser;
@@ -17,7 +16,7 @@ import java.util.Locale;
 import java.util.TimeZone;
 
 /**
- * Parse a date from a command line argument.
+ * Parse a time span from a command line argument.
  * 
  * @author Tom Parker
  */
@@ -26,7 +25,7 @@ public class TimeSpanParser extends StringParser {
   private SimpleDateFormat format;
 
   /**
-   * Add my Parameter to the list.
+   * Constructor.
    * 
    * @param inputFormat Format string suitable for feeding to SimpleDataFormat
    */
@@ -36,7 +35,7 @@ public class TimeSpanParser extends StringParser {
   }
 
   @Override
-  public Object parse(String arg) throws ParseException {
+  public TimeSpan parse(String arg) throws ParseException {
 
     int seperatorIdx = arg.lastIndexOf('-');
 
@@ -44,12 +43,12 @@ public class TimeSpanParser extends StringParser {
     String endString;
     if (seperatorIdx > 0) {
       startString = arg.substring(0, seperatorIdx);
-      endString = arg.substring(seperatorIdx + 1);      
+      endString = arg.substring(seperatorIdx + 1);
     } else {
       startString = arg;
       endString = "";
     }
-    
+
     long endTime;
     long startTime;
 
@@ -58,7 +57,7 @@ public class TimeSpanParser extends StringParser {
     } else {
       try {
         endTime = format.parse(endString).getTime();
-      } catch (java.text.ParseException e) {
+      } catch (java.text.ParseException ex) {
         throw new ParseException("Unable to convert  end '" + endString + "' to a time.");
       }
     }
@@ -75,7 +74,7 @@ public class TimeSpanParser extends StringParser {
         throw new ParseException("Unable to convert  start '" + startString + "' to a time.");
       }
     }
-    
+
     return new TimeSpan(startTime, endTime);
   }
 }

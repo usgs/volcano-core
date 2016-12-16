@@ -41,6 +41,6 @@ public class TimeSpanArg extends ArgsDecorator {
     final StringParser timeSpanParser = new TimeSpanParser(dateFormat);
     nextArg.registerParameter(
         new FlaggedOption("timeSpan", timeSpanParser, JSAP.NO_DEFAULT, isRequired, 't', "timeSpan",
-            String.format("Time span as %s-%s\nAll times in UTC.", dateFormat, dateFormat)));
+            String.format("Time span as %s-%s\n", dateFormat, dateFormat)));
   }
 }
