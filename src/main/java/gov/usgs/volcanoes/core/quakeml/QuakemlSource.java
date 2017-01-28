@@ -41,12 +41,7 @@ public class QuakemlSource {
     eventSet = new EventSet();
 
     doUpdate = false;
-    if (refreshIntervalMs < Long.MAX_VALUE) {
-      // doUpdate = true;
-      startUpdateThread();
-      // } else {
-      // doUpdate = false;
-    }
+    // startUpdateThread();
 
   }
 
@@ -55,6 +50,10 @@ public class QuakemlSource {
   }
 
   private void startUpdateThread() {
+    if (refreshIntervalMs == Long.MAX_VALUE) {
+      startUpdateThread();
+    }
+
     final Runnable updater = new Runnable() {
       public void run() {
         try {
@@ -100,6 +99,14 @@ public class QuakemlSource {
     doUpdate = false;
     if (scheduler != null) {
       scheduler.shutdownNow();
+      scheduler = null;
+    }
+  }
+
+  public void start() {
+    doUpdate = true;
+    if (scheduler == null) {
+      startUpdateThread();
     }
   }
 
@@ -113,7 +120,11 @@ public class QuakemlSource {
   }
 
   public void doUpdate(boolean doUpdate) {
-    this.doUpdate = doUpdate;
+    if (doUpdate == false) {
+      stop();
+    } else {
+      start();
+    }
   }
 
   private static QuakemlObserver quakemlDumper() {
