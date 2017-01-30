@@ -187,10 +187,10 @@ public class Event {
       if (node.getNodeType() == Node.ELEMENT_NODE) {
         final Element element = (Element) node;
         if ("type".equals(element.getTagName())) {
-          LOGGER.info("Looking for type {}", element.getTextContent());
+          LOGGER.debug("Looking for type {}", element.getTextContent());
           type = EventType.parse(element.getTextContent());
         } else if ("typeCertanty".equals(element.getTagName())) {
-          LOGGER.info("Looking for typeCertanty {}", element.getTextContent());
+          LOGGER.debug("Looking for typeCertanty {}", element.getTextContent());
           typeCertainty = EventTypeCertainty.valueOf(element.getTextContent().toUpperCase());
         }
       }

@@ -103,6 +103,9 @@ public class QuakemlSource {
     }
   }
 
+  /**
+   * Start update thread.
+   */
   public void start() {
     doUpdate = true;
     if (scheduler == null) {
@@ -119,6 +122,11 @@ public class QuakemlSource {
     observers.add(observer);
   }
 
+  /** 
+   * start or stop update thread.
+   * 
+   * @param doUpdate If true update quakeml
+   */
   public void doUpdate(boolean doUpdate) {
     if (doUpdate == false) {
       stop();
