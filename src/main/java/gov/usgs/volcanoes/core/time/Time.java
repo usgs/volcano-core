@@ -133,7 +133,7 @@ public final class Time {
     int number = Integer.MIN_VALUE;
     try {
       number = Integer.parseInt(timeStr.substring(1, timeStr.length() - 1));
-    } catch (final Exception e) {
+    } catch (final Exception ex) {
       return Double.NaN;
     }
     final char unit = timeStr.charAt(timeStr.length() - 1);

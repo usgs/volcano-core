@@ -28,6 +28,7 @@ import java.util.Date;
  *
  * @author Tom Parker
  */
+@Deprecated
 public class DateRangeArg extends ArgsDecorator {
 
   /**
@@ -54,8 +55,8 @@ public class DateRangeArg extends ArgsDecorator {
 
     try {
       validateDates(jsap.getDate("startTime"), jsap.getDate("endTime"));
-    } catch (final ParseException e) {
-      throw new ArgumentException(e);
+    } catch (final ParseException ex) {
+      throw new ArgumentException(ex);
     }
     return jsap;
   }
