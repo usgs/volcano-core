@@ -50,7 +50,7 @@ public class DateStringParserTest {
     Date parsed = (Date) parser.parse("xxxxx");
   }
 
-  @Test(expected = ParseException.class)
+  @Test
   public void when_givenRelativeSpan_then_returnDate() throws ParseException {
     SimpleDateFormat format = new SimpleDateFormat(INPUT_FORMAT);
     format.setTimeZone(TimeZone.getTimeZone("UTC"));
