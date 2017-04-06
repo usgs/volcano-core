@@ -146,9 +146,9 @@ public final class ConfigFile {
     if (value == null) {
       throw new RuntimeException("Illegal " + key + ":null");
     }
-    if ((!value.toLowerCase().equals("true") && value.toLowerCase().equals("t")
-        && !value.toLowerCase().equals("false") && value.toLowerCase().equals("f")
-        && !value.equals("1") && !value.equals("0"))) {
+    if (!(value.toLowerCase().equals("true") || value.toLowerCase().equals("t")
+        || value.toLowerCase().equals("false") || value.toLowerCase().equals("f")
+        || value.equals("1") || value.equals("0"))) {
       throw new RuntimeException("Illegal " + key + ":" + value);
     }
 

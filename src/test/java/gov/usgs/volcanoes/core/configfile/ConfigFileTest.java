@@ -173,4 +173,24 @@ public class ConfigFileTest {
     ConfigFile config = new ConfigFile("iDontExist");
     assertEquals(config.getConfig().size(), 0);
   }
+
+  /**
+   * 
+   */
+  @Test(expected = RuntimeException.class)
+  public void when_booleanIsNull_then_returnException() {
+    ConfigFile config = new ConfigFile();
+    config.put("null", null);
+    config.getBoolean("null");
+  }
+
+  /**
+   * 
+   */
+  @Test(expected = RuntimeException.class)
+  public void when_booleanIsNotBoolean_then_returnException() {
+    ConfigFile config = new ConfigFile();
+    config.put("notbool", "5");
+    config.getBoolean("notbool");
+  }
 }
