@@ -1,5 +1,6 @@
 package gov.usgs.volcanoes.core.time;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 import org.junit.Test;
@@ -52,6 +53,26 @@ public class TimeTest {
   public void toShortString() {
     final String dateString = Time.toShortString(new Date(UNIX_TIME));
     assertTrue(INPUT_TIME_STRING.equals(dateString));
+
+  }
+
+  @Test
+  public void when_givenBadRelativeTime_then_returnNan() {
+    assertTrue(Double.isNaN(Time.getRelativeTime("notTime")));
+    assertTrue(Double.isNaN(Time.getRelativeTime("-1")));
+    assertTrue(Double.isNaN(Time.getRelativeTime("-1z")));
+  }
+
+
+  @Test
+  public void when_givenRelativeTime_then_returnTime() {
+    assertEquals(1.0, Time.getRelativeTime("-1s"));
+    assertEquals(60.0, Time.getRelativeTime("-1i"));
+    assertEquals(60.0 * 60, Time.getRelativeTime("-1h"));
+    assertEquals(60.0 * 60 * 24, Time.getRelativeTime("-1d"));
+    assertEquals(60.0 * 60 * 24 * 7, Time.getRelativeTime("-1w"));
+    assertEquals(60.0 * 60 * 24 * 30, Time.getRelativeTime("-1m"));
+    assertEquals(60.0 * 60 * 24 * 365, Time.getRelativeTime("-1y"));
 
   }
 }
