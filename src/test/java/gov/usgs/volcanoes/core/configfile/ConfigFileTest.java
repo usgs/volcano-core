@@ -193,4 +193,25 @@ public class ConfigFileTest {
     config.put("notbool", "5");
     config.getBoolean("notbool");
   }
+
+
+  /**
+   * 
+   */
+  @Test
+  public void when_booleanIsBoolean_then_returnBoolean() {
+    ConfigFile config = new ConfigFile();
+    config.put("bool", "t");
+    assertEquals(config.getBoolean("bool", false), true);
+  }
+
+  /**
+   * 
+   */
+  @Test
+  public void when_booleanIsNotBoolean_then_returnDefault() {
+    ConfigFile config = new ConfigFile();
+    config.put("bool", "other");
+    assertEquals(config.getBoolean("bool", false), false);
+  }
 }
