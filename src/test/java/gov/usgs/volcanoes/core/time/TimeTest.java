@@ -3,8 +3,12 @@ package gov.usgs.volcanoes.core.time;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
+import org.junit.After;
+import org.junit.Before;
 import org.junit.Test;
 
+import java.io.ByteArrayOutputStream;
+import java.io.PrintStream;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -15,6 +19,21 @@ public class TimeTest {
   private static final String STANDARD_TIME_STRING = "2015-11-20 21:00:03";
   // test date is 11/20/2015 21:00:03
   private static final long UNIX_TIME = 1448053203000L;
+
+  private final ByteArrayOutputStream outContent = new ByteArrayOutputStream();
+  private final ByteArrayOutputStream errContent = new ByteArrayOutputStream();
+
+  @Before
+  public void setUpStreams() {
+    System.setOut(new PrintStream(outContent));
+    System.setErr(new PrintStream(errContent));
+  }
+
+  @After
+  public void cleanUpStreams() {
+    System.setOut(null);
+    System.setErr(null);
+  }
 
   @Test
   public void formatDate() {
@@ -73,6 +92,34 @@ public class TimeTest {
     assertEquals(60.0 * 60 * 24 * 7, Time.getRelativeTime("-1w"));
     assertEquals(60.0 * 60 * 24 * 30, Time.getRelativeTime("-1m"));
     assertEquals(60.0 * 60 * 24 * 365, Time.getRelativeTime("-1y"));
-
   }
+
+  @Test
+  public void when_mainCalled_then_convertTime() throws Exception {
+    Time.main(new String[0]);
+    assertTrue(outContent.toString().contains("-d2j [yyyymmddhhmmss] date to j2k"));
+
+    String[] args = new String[2];
+
+    args[0] = "-j2d";
+    args[1] = "5.01325203E8";
+    Time.main(args);
+    assertEquals(outContent.toString(), "2015-11-20 21:00:03.000");
+
+    args[0] = "-j2e";
+    args[1] = "5.01325203E8";
+    Time.main(args);
+    assertEquals(outContent.toString(), "1.448053203E9");
+
+    args[0] = "-d2j";
+    args[1] = INPUT_TIME_STRING;
+    Time.main(args);
+    assertEquals(outContent.toString(), "5.01325203E8");
+
+    args[0] = "-e2d";
+    args[1] = "1448053203000";
+    Time.main(args);
+    assertEquals(outContent.toString(), INPUT_TIME_STRING);
+  }
+
 }
