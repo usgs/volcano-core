@@ -4,7 +4,9 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
-import gov.usgs.volcanoes.core.configfile.ConfigFile;
+import org.junit.Before;
+import org.junit.BeforeClass;
+import org.junit.Test;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -13,10 +15,6 @@ import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.StandardCopyOption;
-
-import org.junit.Before;
-import org.junit.BeforeClass;
-import org.junit.Test;
 
 /**
  * 
@@ -82,19 +80,19 @@ public class ConfigFileTest {
    */
   @Test(expected = NumberFormatException.class)
   public void when_askedForInt_then_returnError() {
-    configFile.getInt("string");    
+    configFile.getInt("string");
   }
-  
+
 
   /**
    * 
    */
   @Test
   public void when_askedForInt_then_returnDefault() {
-    int anInt = configFile.getInt("absent", 1);    
+    int anInt = configFile.getInt("absent", 1);
     assertEquals(anInt, 1);
   }
-  
+
   /**
    * 
    */
@@ -127,7 +125,7 @@ public class ConfigFileTest {
    */
   @Test
   public void when_askedForBoolean_then_returnBoolean() {
-    configFile.getBoolean("yes");    
+    configFile.getBoolean("yes");
   }
 
   /**
@@ -165,5 +163,14 @@ public class ConfigFileTest {
   @Test
   public void when_stringRepresentationRequested_then_stringRepresentationReturned() {
     assertNotNull(configFile.toString());
+  }
+
+  /**
+   * 
+   */
+  @Test
+  public void when_givenNonexistantFile_then_returnEmptyObject() {
+    ConfigFile config = new ConfigFile("iDontExist");
+    assertEquals(config.getConfig().size(), 0);
   }
 }
