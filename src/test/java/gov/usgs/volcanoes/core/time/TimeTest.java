@@ -98,28 +98,33 @@ public class TimeTest {
   public void when_mainCalled_then_convertTime() throws Exception {
     Time.main(new String[0]);
     assertTrue(outContent.toString().contains("-d2j [yyyymmddhhmmss] date to j2k"));
+    outContent.reset();
 
     String[] args = new String[2];
 
     args[0] = "-j2d";
     args[1] = "5.01325203E8";
     Time.main(args);
-    assertEquals(outContent.toString(), "2015-11-20 21:00:03.000");
+    assertEquals("2015-11-20 21:00:03.000\n", outContent.toString());
+    outContent.reset();
 
     args[0] = "-j2e";
     args[1] = "5.01325203E8";
     Time.main(args);
-    assertEquals(outContent.toString(), "1.448053203E9");
+    assertEquals("1.448053203E9\n", outContent.toString());
+    outContent.reset();
 
     args[0] = "-d2j";
     args[1] = INPUT_TIME_STRING;
     Time.main(args);
-    assertEquals(outContent.toString(), "5.01325203E8");
+    assertEquals("5.01325203E8\n", outContent.toString());
+    outContent.reset();
 
     args[0] = "-e2d";
-    args[1] = "1448053203000";
+    args[1] = "1448053203";
     Time.main(args);
-    assertEquals(outContent.toString(), INPUT_TIME_STRING);
+    assertEquals("2015-11-20 21:00:03.000\n", outContent.toString());
+    outContent.reset();
   }
 
 }
