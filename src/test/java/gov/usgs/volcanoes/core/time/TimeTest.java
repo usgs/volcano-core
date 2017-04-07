@@ -19,6 +19,8 @@ public class TimeTest {
   private static final String STANDARD_TIME_STRING = "2015-11-20 21:00:03";
   // test date is 11/20/2015 21:00:03
   private static final long UNIX_TIME = 1448053203000L;
+  private static final PrintStream originalOut = System.out;
+  private static final PrintStream originalErr = System.err;
 
   private final ByteArrayOutputStream outContent = new ByteArrayOutputStream();
   private final ByteArrayOutputStream errContent = new ByteArrayOutputStream();
@@ -31,8 +33,8 @@ public class TimeTest {
 
   @After
   public void cleanUpStreams() {
-    System.setOut(null);
-    System.setErr(null);
+    System.setOut(originalOut);
+    System.setErr(originalErr);
   }
 
   @Test
