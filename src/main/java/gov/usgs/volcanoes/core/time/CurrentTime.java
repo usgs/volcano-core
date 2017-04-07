@@ -19,7 +19,6 @@ import java.io.File;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.InetAddress;
-import java.net.SocketException;
 import java.text.SimpleDateFormat;
 import java.util.LinkedList;
 import java.util.List;
@@ -198,7 +197,7 @@ public class CurrentTime {
           LOGGER.debug("Successfully synchronized with NTP server: " + servers[attempt]);
           socket.close();
           return true;
-        } catch (final Exception e) {
+        } catch (final Exception ex) {
           LOGGER.debug("Could not synchronize with NTP server: " + servers[attempt]);
         }
 
@@ -218,7 +217,7 @@ public class CurrentTime {
     try {
       rt.setOutput(false);
       result = rt.go();
-    } catch (final UtilException e) {
+    } catch (final UtilException ex) {
       // Do nothing
     }
     if (result == null) {

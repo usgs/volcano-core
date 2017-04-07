@@ -35,20 +35,24 @@ public abstract class ArgsDecorator implements Arguments {
    * @param id id of Parameter to return
    * @return the requested Parameter
    */
+  @Override
   public Parameter getById(String id) {
     return nextArg.getById(id);
   }
 
+  @Override
+  public boolean messagePrinted() {
+    return nextArg.messagePrinted();
+  }
+
+  @Override
   public JSAPResult parse(String[] args) throws ArgumentException {
     return nextArg.parse(args);
   }
 
+  @Override
   public void registerParameter(Parameter parameter) throws ArgumentException {
     nextArg.registerParameter(parameter);
-  }
-
-  public boolean messagePrinted() {
-    return nextArg.messagePrinted();
   }
 
 }

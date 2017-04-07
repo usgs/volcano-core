@@ -1,5 +1,7 @@
 package gov.usgs.volcanoes.core.ui;
 
+import gov.usgs.volcanoes.core.util.UiUtils;
+
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.Point;

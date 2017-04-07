@@ -7,6 +7,7 @@
 package gov.usgs.volcanoes.core;
 
 
+import org.apache.log4j.AsyncAppender;
 import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
 import org.apache.log4j.PatternLayout;
@@ -23,7 +24,7 @@ import java.io.IOException;
  *
  */
 public class Log {
-  private static String LOG_PATTERN = "%d{yyyy-MM-dd hh:mm:ss} %5p - %m (%F:%L)%n";
+  private static String LOG_PATTERN = "%d{yyyy-MM-dd HH:mm:ss} %5p - %m (%F:%L)%n";
 
   /**
    * Add a rolling file appender to the root logger.
@@ -34,9 +35,11 @@ public class Log {
   public static void addFileAppender(String name) throws IOException {
     PatternLayout layout = new PatternLayout(LOG_PATTERN);
     RollingFileAppender fileAppender = new RollingFileAppender(layout, name);
-    fileAppender.setMaxFileSize("1MB");
-    fileAppender.setMaxBackupIndex(2);
-    Logger.getRootLogger().addAppender(fileAppender);
+    fileAppender.setMaxFileSize("100MB");
+    fileAppender.setMaxBackupIndex(5);
+    AsyncAppender asyncAppender = new AsyncAppender();
+    asyncAppender.addAppender(fileAppender);
+    Logger.getRootLogger().addAppender(asyncAppender);
   }
 
   /**
