@@ -129,4 +129,17 @@ public class TimeTest {
     outContent.reset();
   }
 
+  @Test
+  public void when_givenLength_then_return_string() {
+    assertEquals("5s", Time.secondsToString(5));
+    assertEquals("5m 5s", Time.secondsToString(305));
+    assertEquals("5h 5m 5s", Time.secondsToString(18305));
+    assertEquals("5d 5h 5m 5s", Time.secondsToString(450305));
+  }
+
+  @Test
+  public void when_givenTimeRange_then_returnTimeRange() {
+    
+    
+  }
 }

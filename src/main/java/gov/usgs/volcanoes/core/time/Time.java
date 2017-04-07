@@ -214,6 +214,8 @@ public final class Time {
   }
 
   /**
+   * TODO: convert to TimeSpan class
+   * 
    * @param timeRange two string dates in "yyyyMMddHHmmss" format or relative time, divided by
    *          comma.
    *
