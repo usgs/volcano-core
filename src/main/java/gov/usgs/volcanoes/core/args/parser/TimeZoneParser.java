@@ -22,6 +22,10 @@ public class TimeZoneParser extends StringParser {
 
     TimeZone timeZone = TimeZone.getTimeZone(arg);
 
+    if ("GMT".equals(timeZone.getID()) && !"GMT".equals(arg)) {
+      throw new ParseException("Cannot parse time zone " + arg);
+    }
+
     return timeZone;
   }
 }
