@@ -7,7 +7,7 @@ package gov.usgs.volcanoes.core.args;
 
 /**
  * Signals a fatal error creating an argument processor or parsing an argument..
- * 
+ *
  * @author Tom Parker
  *
  */
@@ -17,20 +17,20 @@ public class ArgumentException extends Exception {
   private static final long serialVersionUID = -2778645971529842119L;
 
   /**
-   * Constructor.
-   * 
-   * @param message Helpful information on cause of trouble
-   */
-  public ArgumentException(String message) {
-    super(message);
-  }
-
-  /**
    * Exception-wrapping constructor.
-   * 
+   *
    * @param ex exception to wrap
    */
   public ArgumentException(Exception ex) {
     super(ex);
+  }
+
+  /**
+   * Constructor.
+   *
+   * @param message Helpful information on cause of trouble
+   */
+  public ArgumentException(String message) {
+    super(message);
   }
 }
