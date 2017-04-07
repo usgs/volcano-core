@@ -59,8 +59,8 @@ public class CreateConfigArg extends ArgsDecorator {
       final Path defaultPath = new File(configFileName).toPath();
       try {
         Files.copy(is, defaultPath);
-      } catch (IOException e) {
-        throw new ArgumentException(e);
+      } catch (IOException ex) {
+        throw new ArgumentException(ex);
       }
     }
     return jsap;

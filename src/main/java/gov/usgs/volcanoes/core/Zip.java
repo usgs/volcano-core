@@ -127,8 +127,8 @@ public class Zip {
       }
       System.arraycopy(list.get(list.size() - 1), 0, finalBuf, totalLen, numBytes);
       return finalBuf;
-    } catch (final Exception e) {
-      e.printStackTrace();
+    } catch (final Exception ex) {
+      ex.printStackTrace();
     }
     return null;
   }
