@@ -10,7 +10,6 @@ import com.martiansoftware.jsap.FlaggedOption;
 import com.martiansoftware.jsap.JSAP;
 import com.martiansoftware.jsap.StringParser;
 
-import gov.usgs.volcanoes.core.args.ArgUtil;
 import gov.usgs.volcanoes.core.args.ArgsDecorator;
 import gov.usgs.volcanoes.core.args.ArgumentException;
 import gov.usgs.volcanoes.core.args.Arguments;
@@ -23,9 +22,24 @@ import gov.usgs.volcanoes.core.args.parser.DimensionParser;
  * @author Tom Parker
  */
 public class DimensionArg extends ArgsDecorator {
+  private static final StringParser dimensionParser = new DimensionParser();
+  private static final StringBuffer helpStrB = new StringBuffer();
 
+  static {
+    helpStrB.append("dimension as heightxwidth in pixels.  (example: 640x480)");
+  }
+
+  /**
+   * Register dimension argument.
+   * 
+   * @param nextArg The Argument object I'm wrapping
+   * @throws ArgumentException if parameters cannot be registered
+   */
   public DimensionArg(Arguments nextArg) throws ArgumentException {
-    this("", nextArg);
+    super(nextArg);
+
+    nextArg.registerParameter(new FlaggedOption("dimension", dimensionParser, JSAP.NO_DEFAULT,
+        JSAP.REQUIRED, 'd', "dimension", helpStrB.toString()));
   }
 
   /**
@@ -39,21 +53,9 @@ public class DimensionArg extends ArgsDecorator {
   public DimensionArg(String defaultDimension, Arguments nextArg) throws ArgumentException {
     super(nextArg);
 
-    final StringParser dimensionParser = new DimensionParser();
+    helpStrB.append(String.format("default: %s", defaultDimension));
 
-    final StringBuffer helpStrB = new StringBuffer();
-    helpStrB.append("dimension as heightxwidth in pixels.");
-
-    boolean isRequired = ArgUtil.isRequired(defaultDimension);
-
-    // optional args have defaults
-    if (isRequired) {
-      helpStrB.append(" (example: 640x480)");
-    } else {
-      helpStrB.append(String.format("default: %s", defaultDimension));
-    }
-
-    nextArg.registerParameter(new FlaggedOption("dimension", dimensionParser, JSAP.NO_DEFAULT,
-        isRequired, 'd', "dimension", helpStrB.toString()));
+    nextArg.registerParameter(new FlaggedOption("dimension", dimensionParser, defaultDimension,
+        JSAP.NOT_REQUIRED, 'd', "dimension", helpStrB.toString()));
   }
 }
