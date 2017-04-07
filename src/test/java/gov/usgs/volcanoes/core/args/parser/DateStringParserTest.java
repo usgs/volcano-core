@@ -1,6 +1,7 @@
 package gov.usgs.volcanoes.core.args.parser;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 import com.martiansoftware.jsap.ParseException;
 import com.martiansoftware.jsap.StringParser;
@@ -59,7 +60,8 @@ public class DateStringParserTest {
     Date parsed = (Date) parser.parse("-1h");
     Date generated =
         new Date(System.currentTimeMillis() - (long) ((Time.getRelativeTime("-1h") * 1000)));
-    assertEquals(parsed, generated);
+    long offset = generated.getTime() - parsed.getTime();
+    assertTrue(offset < 1000);
   }
 
 }
