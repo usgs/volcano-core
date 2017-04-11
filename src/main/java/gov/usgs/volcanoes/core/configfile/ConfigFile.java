@@ -621,8 +621,8 @@ public final class ConfigFile {
     Arrays.sort(keys);
 
     try {
-      final Path file = FileSystems.getDefault().getPath(".", fn);
-      final Path bak = FileSystems.getDefault().getPath(".", fn + ".bak");
+      final Path file = FileSystems.getDefault().getPath(fn);
+      final Path bak = FileSystems.getDefault().getPath(fn + ".bak");
 
       if (Files.exists(bak)) {
         LOGGER.debug("Removing old backup cofig. ({})", bak);
