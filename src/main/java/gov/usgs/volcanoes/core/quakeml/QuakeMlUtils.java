@@ -1,7 +1,6 @@
 /**
- * I waive copyright and related rights in the this work worldwide
- * through the CC0 1.0 Universal public domain dedication.
- * https://creativecommons.org/publicdomain/zero/1.0/legalcode
+ * I waive copyright and related rights in the this work worldwide through the CC0 1.0 Universal
+ * public domain dedication. https://creativecommons.org/publicdomain/zero/1.0/legalcode
  */
 
 package gov.usgs.volcanoes.core.quakeml;
@@ -24,8 +23,8 @@ public class QuakeMlUtils {
   private static final Logger LOGGER = LoggerFactory.getLogger(QuakeMlUtils.class);
 
   /**
-   * Parse a QuakeML time string. Similar to ISO 8601, but not quite the same. 
-   * Because yet another time standard is exactly what we need. When will we learn?
+   * Parse a QuakeML time string. Similar to ISO 8601, but not quite the same. Because yet another
+   * time standard is exactly what we need. When will we learn?
    *
    * @param timeString Time string
    * @return time in typical epoch ms

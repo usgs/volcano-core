@@ -1,7 +1,6 @@
 /**
- * I waive copyright and related rights in the this work worldwide
- * through the CC0 1.0 Universal public domain dedication.
- * https://creativecommons.org/publicdomain/zero/1.0/legalcode
+ * I waive copyright and related rights in the this work worldwide through the CC0 1.0 Universal
+ * public domain dedication. https://creativecommons.org/publicdomain/zero/1.0/legalcode
  */
 
 package gov.usgs.volcanoes.core.quakeml;
@@ -22,6 +21,9 @@ import java.util.Date;
  *
  */
 public class Pick {
+  /**
+   * Flag that roughly characterizes the sharpness of the onset.
+   */
   public static enum Onset {
     EMERGENT, IMPULSIVE, QUESTIONABLE;
 
@@ -46,6 +48,9 @@ public class Pick {
     }
   }
 
+  /**
+   * Polarity of first motion, usually from impulsive onsets.
+   */
   public static enum Polarity {
     NEGATIVE, POSITIVE, UNDECIDABLE;
 
@@ -70,17 +75,29 @@ public class Pick {
   }
 
   private static final Logger LOGGER = LoggerFactory.getLogger(Pick.class);
-  private final String channel;
+
+  public String publicId;
+  private long time;
+  private String channel;
   private Onset onset;
   private Polarity polarity;
-
-
-  public final String publicId;
-
-  private final long time;
+  private String phaseHint = "";
 
   /**
-   * Constructor.
+   * Constructor from manually created pick.
+   * 
+   * @param publicId public id
+   * @param time pick time
+   * @param channel waveform identifier
+   */
+  public Pick(String publicId, long time, String channel) {
+    this.publicId = publicId;
+    this.time = time;
+    this.channel = channel;
+  }
+
+  /**
+   * Constructor from XML pick element.
    * 
    * @param pickElement XML pick element
    */
@@ -138,7 +155,7 @@ public class Pick {
   public long getTime() {
     return time;
   }
-  
+
   @Override
   public String toString() {
     StringBuffer sb = new StringBuffer();
@@ -147,7 +164,65 @@ public class Pick {
     sb.append("Channel: " + channel + "\n");
     sb.append("Onset: " + onset + "\n");
     sb.append("Polarity: " + polarity + "\n");
-    
+
     return sb.toString();
   }
+
+  /**
+   * Get label to display in pick marker.
+   * 
+   * @return text
+   */
+  public String getTag() {
+    String label = "";
+    if (onset != null) {
+      label += onset.toString().toLowerCase().substring(0, 1);
+    }
+    label += phaseHint;
+    if (polarity != null) {
+      switch (polarity) {
+        case NEGATIVE:
+          label += "-";
+          break;
+        case POSITIVE:
+          label += "+";
+          break;
+        default:
+      }
+    }
+    return label;
+  }
+
+  public String getPublicId() {
+    return publicId;
+  }
+
+  public void setPublicId(String publicId) {
+    this.publicId = publicId;
+  }
+
+  public String getPhaseHint() {
+    return phaseHint;
+  }
+
+  public void setPhaseHint(String phaseHint) {
+    this.phaseHint = phaseHint;
+  }
+
+  public void setTime(long time) {
+    this.time = time;
+  }
+
+  public void setChannel(String channel) {
+    this.channel = channel;
+  }
+
+  public void setOnset(Onset onset) {
+    this.onset = onset;
+  }
+
+  public void setPolarity(Polarity polarity) {
+    this.polarity = polarity;
+  }
+
 }
