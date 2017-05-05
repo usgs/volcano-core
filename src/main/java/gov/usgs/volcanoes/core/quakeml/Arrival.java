@@ -1,7 +1,6 @@
 /**
- * I waive copyright and related rights in the this work worldwide
- * through the CC0 1.0 Universal public domain dedication.
- * https://creativecommons.org/publicdomain/zero/1.0/legalcode
+ * I waive copyright and related rights in the this work worldwide through the CC0 1.0 Universal
+ * public domain dedication. https://creativecommons.org/publicdomain/zero/1.0/legalcode
  */
 
 package gov.usgs.volcanoes.core.quakeml;
@@ -12,6 +11,7 @@ import gov.usgs.volcanoes.core.quakeml.Pick.Polarity;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.w3c.dom.Element;
+import org.w3c.dom.NodeList;
 
 import java.util.Comparator;
 import java.util.Map;
@@ -39,11 +39,11 @@ public class Arrival {
     };
   }
 
-  private final double distance;
+  private double distance;
   private final String phase;
   private final Pick pick;
-  private final double timeWeight;
-  
+  private double timeWeight;
+
   public final String publicId;
 
   private final double timeResidual;
@@ -63,10 +63,14 @@ public class Arrival {
     phase = arrivalElement.getElementsByTagName("phase").item(0).getTextContent();
     timeResidual = Double
         .parseDouble(arrivalElement.getElementsByTagName("timeResidual").item(0).getTextContent());
-    distance = Double
-        .parseDouble(arrivalElement.getElementsByTagName("distance").item(0).getTextContent());
-    timeWeight = Double
-        .parseDouble(arrivalElement.getElementsByTagName("timeWeight").item(0).getTextContent());
+    NodeList distanceElement = arrivalElement.getElementsByTagName("distance");
+    if (distanceElement.getLength() > 0) {
+      distance = Double.parseDouble(distanceElement.item(0).getTextContent());
+    }
+    NodeList timeWeightElement = arrivalElement.getElementsByTagName("timeWeight");
+    if (timeWeightElement.getLength() > 0) {
+      timeWeight = Double.parseDouble(timeWeightElement.item(0).getTextContent());
+    }
   }
 
   public String getPhase() {
@@ -76,7 +80,7 @@ public class Arrival {
   public Pick getPick() {
     return pick;
   }
-  
+
   public Double getTimeWeight() {
     return timeWeight;
   }
@@ -90,7 +94,7 @@ public class Arrival {
     final StringBuilder sb = new StringBuilder();
 
     sb.append(timeWeight);
-    
+
     final Onset onset = pick.getOnset();
     if (onset == Pick.Onset.EMERGENT) {
       sb.append("e");
@@ -113,7 +117,7 @@ public class Arrival {
   public double getTimeResidual() {
     return timeResidual;
   }
-  
+
   @Override
   public String toString() {
     StringBuffer sb = new StringBuffer();
