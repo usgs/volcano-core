@@ -12,7 +12,6 @@ import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 
 import java.text.ParseException;
-import java.util.Date;
 
 /**
  * Holder for QuakeML pick.
@@ -77,7 +76,7 @@ public class Pick {
   private static final Logger LOGGER = LoggerFactory.getLogger(Pick.class);
 
   public String publicId;
-  private long time;
+  private TimeQuantity timeQuantity;
   private String channel;
   private Onset onset;
   private Polarity polarity;
@@ -87,13 +86,24 @@ public class Pick {
    * Constructor from manually created pick.
    * 
    * @param publicId public id
-   * @param time pick time
+   * @param timeQuantity pick time quantity
+   * @param channel waveform identifier
+   */
+  public Pick(String publicId, TimeQuantity timeQuantity, String channel) {
+    this.publicId = publicId;
+    this.timeQuantity = timeQuantity;
+    this.channel = channel;
+  }
+
+  /**
+   * Constructor from manually created pick.
+   * 
+   * @param publicId public id
+   * @param time time in millis from 1970
    * @param channel waveform identifier
    */
   public Pick(String publicId, long time, String channel) {
-    this.publicId = publicId;
-    this.time = time;
-    this.channel = channel;
+    this(publicId, new TimeQuantity(time), channel);
   }
 
   /**
@@ -106,8 +116,7 @@ public class Pick {
     LOGGER.debug("new Pick {}", publicId);
 
     final Element timeElement = (Element) pickElement.getElementsByTagName("time").item(0);
-    time =
-        QuakeMlUtils.parseTime(timeElement.getElementsByTagName("value").item(0).getTextContent());
+    timeQuantity = new TimeQuantity(timeElement);
 
     final NodeList onsetList = pickElement.getElementsByTagName("onset");
     if (onsetList != null && onsetList.getLength() > 0) {
@@ -152,15 +161,11 @@ public class Pick {
     return polarity;
   }
 
-  public long getTime() {
-    return time;
-  }
-
   @Override
   public String toString() {
     StringBuffer sb = new StringBuffer();
     sb.append("PublicId: " + publicId + "\n");
-    sb.append("Time: " + new Date(time) + "\n");
+    sb.append("Time: " + timeQuantity.getValue() + "\n");
     sb.append("Channel: " + channel + "\n");
     sb.append("Onset: " + onset + "\n");
     sb.append("Polarity: " + polarity + "\n");
@@ -209,10 +214,6 @@ public class Pick {
     this.phaseHint = phaseHint;
   }
 
-  public void setTime(long time) {
-    this.time = time;
-  }
-
   public void setChannel(String channel) {
     this.channel = channel;
   }
@@ -223,6 +224,18 @@ public class Pick {
 
   public void setPolarity(Polarity polarity) {
     this.polarity = polarity;
+  }
+
+  public TimeQuantity getTimeQuantity() {
+    return timeQuantity;
+  }
+
+  public void setTimeQuantity(TimeQuantity time) {
+    this.timeQuantity = time;
+  }
+
+  public long getTime() {
+    return timeQuantity.getValue().getTime();
   }
 
 }

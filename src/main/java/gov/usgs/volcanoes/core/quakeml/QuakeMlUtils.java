@@ -10,6 +10,7 @@ import org.slf4j.LoggerFactory;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.TimeZone;
 
 /**
@@ -30,20 +31,41 @@ public class QuakeMlUtils {
    * @return time in typical epoch ms
    */
   public static long parseTime(String timeString) {
+    /*
+     * final String inString = timeString; timeString = timeString.replaceFirst("\\.(\\d)Z?",
+     * ".$100Z"); timeString = timeString.replaceFirst("\\.(\\d{2})Z?$", ".$10Z"); timeString =
+     * timeString.replaceFirst(":(\\d{2})Z?$", ":$1.000Z");
+     * 
+     * long time = Long.MIN_VALUE; final SimpleDateFormat dateF = new SimpleDateFormat(DATE_FORMAT);
+     * dateF.setTimeZone(TimeZone.getTimeZone("UTC")); try { time =
+     * dateF.parse(timeString).getTime(); } catch (final ParseException ex) {
+     * LOGGER.error("Cannot parse time String {}", inString); throw new
+     * RuntimeException("Cannot parse time string " + inString); } return time;
+     */
+    return parseDate(timeString).getTime();
+  }
+
+  /**
+   * Parse a QuakeML time string. Similar to ISO 8601, but not quite the same. Because yet another
+   * time standard is exactly what we need. When will we learn?
+   * 
+   * @param timeString Time string
+   * @return date object
+   */
+  public static Date parseDate(String timeString) {
     final String inString = timeString;
     timeString = timeString.replaceFirst("\\.(\\d)Z?", ".$100Z");
     timeString = timeString.replaceFirst("\\.(\\d{2})Z?$", ".$10Z");
     timeString = timeString.replaceFirst(":(\\d{2})Z?$", ":$1.000Z");
 
-    long time = Long.MIN_VALUE;
     final SimpleDateFormat dateF = new SimpleDateFormat(DATE_FORMAT);
     dateF.setTimeZone(TimeZone.getTimeZone("UTC"));
     try {
-      time = dateF.parse(timeString).getTime();
+      Date dt = dateF.parse(timeString);
+      return dt;
     } catch (final ParseException ex) {
       LOGGER.error("Cannot parse time String {}", inString);
       throw new RuntimeException("Cannot parse time string " + inString);
     }
-    return time;
   }
 }
