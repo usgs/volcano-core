@@ -8,6 +8,7 @@ package gov.usgs.volcanoes.core.quakeml;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.w3c.dom.DOMException;
+import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 
@@ -92,7 +93,7 @@ public class Pick {
   public Pick(String publicId, TimeQuantity timeQuantity, String channel) {
     this.publicId = publicId;
     this.timeQuantity = timeQuantity;
-    this.channel = channel;
+    this.channel = channel.replaceAll("\\s", "\\$");
   }
 
   /**
@@ -149,16 +150,45 @@ public class Pick {
     channel = station + "$" + chan + "$" + net + "$" + loc;
   }
 
-  public String getChannel() {
-    return channel;
-  }
+  /**
+   * To XML element.
+   * 
+   * @param doc xml document
+   * @return xml element
+   */
+  public Element toElement(Document doc) {
+    Element pick = doc.createElement("pick");
+    pick.setAttribute("publicID", publicId);
 
-  public Onset getOnset() {
-    return onset;
-  }
+    pick.appendChild(timeQuantity.toElement(doc));
 
-  public Polarity getPolarity() {
-    return polarity;
+    Element waveformId = doc.createElement("waveformID");
+    String[] scnl = channel.split("\\$");
+    waveformId.setAttribute("stationCode", scnl[0]);
+    waveformId.setAttribute("channelCode", scnl[1]);
+    waveformId.setAttribute("networkCode", scnl[2]);
+    if (scnl.length >= 4) {
+      waveformId.setAttribute("locationCode", scnl[3]);
+    }
+    pick.appendChild(waveformId);
+
+    Element onsetElement = doc.createElement("onset");
+    onsetElement.appendChild(doc.createTextNode(onset.toString().toLowerCase()));
+    pick.appendChild(onsetElement);
+
+    Element polarityElement = doc.createElement("polarity");
+    polarityElement.appendChild(doc.createTextNode(polarity.toString().toLowerCase()));
+    pick.appendChild(polarityElement);
+
+    Element phaseElement = doc.createElement("phaseHint");
+    phaseElement.appendChild(doc.createTextNode(phaseHint.toString()));
+    pick.appendChild(phaseElement);
+
+    Element evalModeElement = doc.createElement("evaluationMode");
+    evalModeElement.appendChild(doc.createTextNode("manual"));
+    pick.appendChild(evalModeElement);
+
+    return pick;
   }
 
   @Override
@@ -198,12 +228,45 @@ public class Pick {
     return label;
   }
 
-  public String getPublicId() {
-    return publicId;
+  /**
+   * Get pick time.
+   * 
+   * @return milliseconds
+   */
+  public long getTime() {
+    return timeQuantity.getValue().getTime();
   }
 
-  public void setPublicId(String publicId) {
-    this.publicId = publicId;
+  public TimeQuantity getTimeQuantity() {
+    return timeQuantity;
+  }
+
+  public void setTimeQuantity(TimeQuantity timeQuantity) {
+    this.timeQuantity = timeQuantity;
+  }
+
+  public String getChannel() {
+    return channel;
+  }
+
+  public void setChannel(String channel) {
+    this.channel = channel;
+  }
+
+  public Onset getOnset() {
+    return onset;
+  }
+
+  public void setOnset(Onset onset) {
+    this.onset = onset;
+  }
+
+  public Polarity getPolarity() {
+    return polarity;
+  }
+
+  public void setPolarity(Polarity polarity) {
+    this.polarity = polarity;
   }
 
   public String getPhaseHint() {
@@ -212,30 +275,6 @@ public class Pick {
 
   public void setPhaseHint(String phaseHint) {
     this.phaseHint = phaseHint;
-  }
-
-  public void setChannel(String channel) {
-    this.channel = channel;
-  }
-
-  public void setOnset(Onset onset) {
-    this.onset = onset;
-  }
-
-  public void setPolarity(Polarity polarity) {
-    this.polarity = polarity;
-  }
-
-  public TimeQuantity getTimeQuantity() {
-    return timeQuantity;
-  }
-
-  public void setTimeQuantity(TimeQuantity time) {
-    this.timeQuantity = time;
-  }
-
-  public long getTime() {
-    return timeQuantity.getValue().getTime();
   }
 
 }

@@ -1,5 +1,6 @@
 package gov.usgs.volcanoes.core.quakeml;
 
+import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 
@@ -8,6 +9,7 @@ import java.util.Date;
 /**
  * This class represents a point in time, with optional symmetric or asymmetric uncertainties given
  * in seconds.
+ * 
  * <p>
  * Modeled after QuakeML TimeQuanity element.
  * 
@@ -17,7 +19,7 @@ import java.util.Date;
 public class TimeQuantity {
 
   private Date value; // UTC
-  private double uncertainty;
+  private double uncertainty; // in seconds
 
   /**
    * TimeQuantity from date.
@@ -52,18 +54,57 @@ public class TimeQuantity {
     }
   }
 
+  /**
+   * To XML element.
+   * 
+   * @param doc xml document
+   * @return xml element
+   */
+  public Element toElement(Document doc) {
+    Element timeElement = doc.createElement("time");
+    Element valueElement = doc.createElement("value");
+    timeElement.appendChild(valueElement);
+    valueElement.appendChild(doc.createTextNode(QuakeMlUtils.formatDate(value.getTime())));
+    if (!Double.isNaN(uncertainty)) {
+      Element uncertaintyElement = doc.createElement("uncertainty");
+      timeElement.appendChild(uncertaintyElement);
+      uncertaintyElement.appendChild(doc.createTextNode(Double.toString(uncertainty)));
+    }
+    return timeElement;
+  }
+
+  /**
+   * Get value.
+   * 
+   * @return date
+   */
   public Date getValue() {
     return value;
   }
 
+  /**
+   * Set value.
+   * 
+   * @param value date
+   */
   public void setValue(Date value) {
     this.value = value;
   }
 
+  /**
+   * Get uncertainty.
+   * 
+   * @return seconds
+   */
   public double getUncertainty() {
     return uncertainty;
   }
 
+  /**
+   * Set uncertainty.
+   * 
+   * @param uncertainty seconds
+   */
   public void setUncertainty(double uncertainty) {
     this.uncertainty = uncertainty;
   }

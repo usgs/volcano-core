@@ -68,4 +68,16 @@ public class QuakeMlUtils {
       throw new RuntimeException("Cannot parse time string " + inString);
     }
   }
+
+  /**
+   * Format date for QuakeML
+   * 
+   * @param millis milliseconds since 1/1/1970 00:00:00 GMT
+   * @return time string in yyyy-MM-dd'T'HH:mm:ss.SSSX format
+   */
+  public static String formatDate(long millis) {
+    SimpleDateFormat dateF = new SimpleDateFormat(DATE_FORMAT);
+    Date date = new Date(millis);
+    return dateF.format(date);
+  }
 }
