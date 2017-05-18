@@ -78,7 +78,7 @@ public class Event {
    */
   public Element toElement(Document doc) {
 
-    Element event = doc.createElement("Event");
+    Element event = doc.createElement("event");
     event.setAttribute("publicID", publicId);
 
     if (preferredOrigin != null) {
