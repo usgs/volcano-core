@@ -222,7 +222,7 @@ public class Event {
         if ("type".equals(element.getTagName())) {
           LOGGER.debug("Looking for type {}", element.getTextContent());
           type = EventType.parse(element.getTextContent());
-        } else if ("typeCertanty".equals(element.getTagName())) {
+        } else if ("typeCertainty".equals(element.getTagName())) {
           LOGGER.debug("Looking for typeCertanty {}", element.getTextContent());
           typeCertainty = EventTypeCertainty.valueOf(element.getTextContent().toUpperCase());
         }
