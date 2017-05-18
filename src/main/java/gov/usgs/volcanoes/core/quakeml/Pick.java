@@ -141,6 +141,12 @@ public class Pick {
         ex.printStackTrace();
       }
     }
+
+    final NodeList phaseHintList = pickElement.getElementsByTagName("phaseHint");
+    if (phaseHintList.getLength() > 0) {
+      phaseHint = phaseHintList.item(0).getTextContent();
+    }
+
     final Element waveformId = (Element) pickElement.getElementsByTagName("waveformID").item(0);
     final String station = waveformId.getAttribute("stationCode");
     final String chan = waveformId.getAttribute("channelCode");
