@@ -8,10 +8,7 @@ import java.util.Date;
 
 /**
  * This class represents a point in time, with optional symmetric or asymmetric uncertainties given
- * in seconds.
- * 
- * <p>
- * Modeled after QuakeML TimeQuanity element.
+ * in seconds. Modeled after QuakeML TimeQuanity element.
  * 
  * @author Diana Norgaard
  *
