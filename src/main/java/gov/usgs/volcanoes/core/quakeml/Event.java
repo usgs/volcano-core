@@ -1,7 +1,6 @@
 /**
- * I waive copyright and related rights in the this work worldwide
- * through the CC0 1.0 Universal public domain dedication.
- * https://creativecommons.org/publicdomain/zero/1.0/legalcode
+ * I waive copyright and related rights in the this work worldwide through the CC0 1.0 Universal
+ * public domain dedication. https://creativecommons.org/publicdomain/zero/1.0/legalcode
  */
 
 package gov.usgs.volcanoes.core.quakeml;
@@ -10,6 +9,7 @@ import gov.usgs.volcanoes.core.util.StringUtils;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
@@ -26,24 +26,24 @@ import java.util.Map;
  *
  */
 public class Event {
+
   private static final Logger LOGGER = LoggerFactory.getLogger(Event.class);
 
-  private final Map<String, Magnitude> magnitudes;
-  private final Map<String, Origin> origins;
-  private final Map<String, Pick> picks;
+  private Map<String, Magnitude> magnitudes;
+  private Map<String, Origin> origins;
+  private Map<String, Pick> picks;
 
-  public final String publicId;
+  public String publicId;
+  private String eventSource;
+  private String eventId;
+
   private Magnitude preferredMagnitude;
   private Origin preferredOrigin;
   private EventType type;
   private EventTypeCertainty typeCertainty;
   private String description;
 
-  private String eventSource;
-  private String evid;
-
   private final List<EventObserver> observers;
-
 
   /**
    * Constructor.
@@ -52,7 +52,6 @@ public class Event {
    */
   public Event(Element event) {
     this(event.getAttribute("publicID"));
-
     updateEvent(event);
   }
 
@@ -71,42 +70,76 @@ public class Event {
     observers = new ArrayList<EventObserver>();
   }
 
+  /**
+   * To XML element.
+   * 
+   * @param doc xml document
+   * @return xml element
+   */
+  public Element toElement(Document doc) {
+
+    Element event = doc.createElement("event");
+    event.setAttribute("publicID", publicId);
+
+    if (preferredOrigin != null) {
+      Element prefOriginId = doc.createElement("preferredOriginID");
+      prefOriginId.appendChild(doc.createTextNode(preferredOrigin.publicId));
+      event.appendChild(prefOriginId);
+    }
+
+    if (preferredMagnitude != null) {
+      Element prefMagId = doc.createElement("preferredMagnitudeID");
+      prefMagId.appendChild(doc.createTextNode(preferredMagnitude.publicId));
+      event.appendChild(prefMagId);
+    }
+
+    if (type != null) {
+      Element typeElement = doc.createElement("type");
+      typeElement.appendChild(doc.createTextNode(type.toString()));
+      event.appendChild(typeElement);
+    }
+
+    if (typeCertainty != null) {
+      Element typeCertaintyElement = doc.createElement("typeCertainty");
+      typeCertaintyElement.appendChild(doc.createTextNode(typeCertainty.toString()));
+      event.appendChild(typeCertaintyElement);
+    }
+
+    if (description != null) {
+      Element descriptionElement = doc.createElement("description");
+      Element text = doc.createElement("text");
+      descriptionElement.appendChild(text);
+      text.appendChild(doc.createTextNode(this.description));
+      event.appendChild(descriptionElement);
+    }
+
+    // TODO: Origins not yet supported
+    /*
+     * for (Origin origin : origins.values()) { event.appendChild(origin.toElement(doc)); }
+     */
+
+    // TODO: Magnitudes not yet supported
+    /*
+     * for (Magnitude magnitude : magnitudes) { event.appendChild(magnitude.toElement(doc)); }
+     */
+
+    for (Pick pick : picks.values()) {
+      event.appendChild(pick.toElement(doc));
+    }
+    return event;
+  }
+
   public void addObserver(EventObserver observer) {
     observers.add(observer);
   }
 
-  public String getDataid() {
-    return null;
-  }
+  /*
+   * public String getDataid() { return null; }
+   */
 
-  public String getDescription() {
-    return description;
-  }
-
-  public String getEventSource() {
-    return eventSource;
-  }
-
-
+  @Deprecated
   public String getEvid() {
-    return evid;
-  }
-
-  public Magnitude getPerferredMagnitude() {
-    return preferredMagnitude;
-  }
-
-  public Origin getPreferredOrigin() {
-
-    return preferredOrigin;
-  }
-
-  public String getTypeDescription() {
-    return type.toString();
-  }
-
-  public String getTypeCertaintyDescription() {
-    return typeCertainty.toString();
+    return eventId;
   }
 
   private void notifyObservers() {
@@ -171,7 +204,7 @@ public class Event {
 
     eventSource =
         StringUtils.stringToString(event.getAttribute("catalog:eventsource"), eventSource);
-    evid = StringUtils.stringToString(event.getAttribute("catalog:eventid"), evid);
+    eventId = StringUtils.stringToString(event.getAttribute("catalog:eventid"), eventId);
 
     final Element descriptionElement = (Element) event.getElementsByTagName("description").item(0);
     if (descriptionElement != null) {
@@ -189,7 +222,7 @@ public class Event {
         if ("type".equals(element.getTagName())) {
           LOGGER.debug("Looking for type {}", element.getTextContent());
           type = EventType.parse(element.getTextContent());
-        } else if ("typeCertanty".equals(element.getTagName())) {
+        } else if ("typeCertainty".equals(element.getTagName())) {
           LOGGER.debug("Looking for typeCertanty {}", element.getTextContent());
           typeCertainty = EventTypeCertainty.valueOf(element.getTextContent().toUpperCase());
         }
@@ -207,7 +240,7 @@ public class Event {
     sb.append("Event type: " + type + "(" + typeCertainty + ")\n");
     sb.append("Description: " + description + "\n");
     sb.append("Source: " + eventSource + "\n");
-    sb.append("Evid: " + evid + "\n");
+    sb.append("Evid: " + eventId + "\n");
     sb.append("Preferred magnitude of " + magnitudes.size() + ":\n");
     sb.append("\t" + preferredMagnitude + "\n");
     sb.append("All magnitudes: \n");
@@ -229,4 +262,90 @@ public class Event {
 
     return sb.toString();
   }
+
+  public Map<String, Magnitude> getMagnitudes() {
+    return magnitudes;
+  }
+
+  public void setMagnitudes(Map<String, Magnitude> magnitudes) {
+    this.magnitudes = magnitudes;
+  }
+
+  public Map<String, Origin> getOrigins() {
+    return origins;
+  }
+
+  public void setOrigins(Map<String, Origin> origins) {
+    this.origins = origins;
+  }
+
+  public Map<String, Pick> getPicks() {
+    return picks;
+  }
+
+  public void setPicks(Map<String, Pick> picks) {
+    this.picks = picks;
+  }
+
+  public String getPublicId() {
+    return publicId;
+  }
+
+  public void setPublicId(String publicId) {
+    this.publicId = publicId;
+  }
+
+  public String getEventSource() {
+    return eventSource;
+  }
+
+  public void setEventSource(String eventSource) {
+    this.eventSource = eventSource;
+  }
+
+  public String getEventId() {
+    return eventId;
+  }
+
+  public void setEventId(String eventId) {
+    this.eventId = eventId;
+  }
+
+  public Magnitude getPreferredMagnitude() {
+    return preferredMagnitude;
+  }
+
+  public void setPreferredMagnitude(Magnitude preferredMagnitude) {
+    this.preferredMagnitude = preferredMagnitude;
+  }
+
+  public Origin getPreferredOrigin() {
+    return preferredOrigin;
+  }
+
+  public void setPreferredOrigin(Origin preferredOrigin) {
+    this.preferredOrigin = preferredOrigin;
+  }
+
+  public EventType getType() {
+    return type;
+  }
+
+  public void setType(EventType type) {
+    this.type = type;
+  }
+
+  public EventTypeCertainty getTypeCertainty() {
+    return typeCertainty;
+  }
+
+  public void setTypeCertainty(EventTypeCertainty typeCertainty) {
+    this.typeCertainty = typeCertainty;
+  }
+
+  public String getDescription() {
+    return description;
+  }
+
+
 }
