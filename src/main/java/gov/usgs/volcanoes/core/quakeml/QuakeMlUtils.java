@@ -77,6 +77,7 @@ public class QuakeMlUtils {
    */
   public static String formatDate(long millis) {
     SimpleDateFormat dateF = new SimpleDateFormat(DATE_FORMAT);
+    dateF.setTimeZone(TimeZone.getTimeZone("UTC"));
     Date date = new Date(millis);
     return dateF.format(date);
   }
