@@ -81,7 +81,8 @@ public class Pick {
   private String channel;
   private Onset onset;
   private Polarity polarity;
-  private String phaseHint = "";
+  private String phaseHint;
+  private EvaluationMode evaluationMode;
 
   /**
    * Constructor from manually created pick.
@@ -94,6 +95,7 @@ public class Pick {
     this.publicId = publicId;
     this.timeQuantity = timeQuantity;
     this.channel = channel.replaceAll("\\s", "\\$");
+    evaluationMode = EvaluationMode.MANUAL;
   }
 
   /**
@@ -178,21 +180,29 @@ public class Pick {
     }
     pick.appendChild(waveformId);
 
-    Element onsetElement = doc.createElement("onset");
-    onsetElement.appendChild(doc.createTextNode(onset.toString().toLowerCase()));
-    pick.appendChild(onsetElement);
+    if (onset != null) {
+      Element onsetElement = doc.createElement("onset");
+      onsetElement.appendChild(doc.createTextNode(onset.toString().toLowerCase()));
+      pick.appendChild(onsetElement);
+    }
 
-    Element polarityElement = doc.createElement("polarity");
-    polarityElement.appendChild(doc.createTextNode(polarity.toString().toLowerCase()));
-    pick.appendChild(polarityElement);
+    if (polarity != null) {
+      Element polarityElement = doc.createElement("polarity");
+      polarityElement.appendChild(doc.createTextNode(polarity.toString().toLowerCase()));
+      pick.appendChild(polarityElement);
+    }
 
-    Element phaseElement = doc.createElement("phaseHint");
-    phaseElement.appendChild(doc.createTextNode(phaseHint.toString()));
-    pick.appendChild(phaseElement);
+    if (phaseHint != null) {
+      Element phaseElement = doc.createElement("phaseHint");
+      phaseElement.appendChild(doc.createTextNode(phaseHint.toString()));
+      pick.appendChild(phaseElement);
+    }
 
-    Element evalModeElement = doc.createElement("evaluationMode");
-    evalModeElement.appendChild(doc.createTextNode("manual"));
-    pick.appendChild(evalModeElement);
+    if (evaluationMode != null) {
+      Element evalModeElement = doc.createElement("evaluationMode");
+      evalModeElement.appendChild(doc.createTextNode(evaluationMode.toString().toLowerCase()));
+      pick.appendChild(evalModeElement);
+    }
 
     return pick;
   }
@@ -281,6 +291,14 @@ public class Pick {
 
   public void setPhaseHint(String phaseHint) {
     this.phaseHint = phaseHint;
+  }
+
+  public EvaluationMode getEvaluationMode() {
+    return evaluationMode;
+  }
+
+  public void setEvaluationMode(EvaluationMode evaluationMode) {
+    this.evaluationMode = evaluationMode;
   }
 
 }
