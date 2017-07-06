@@ -71,6 +71,17 @@ public class TimeQuantity {
   }
 
   /**
+   * @see java.lang.Object#toString()
+   */
+  public String toString() {
+    String text = value.toString();
+    if (!Double.isNaN(uncertainty)) {
+      text += " (" + uncertainty + ")";
+    }
+    return text;
+  }
+
+  /**
    * Get value.
    * 
    * @return date

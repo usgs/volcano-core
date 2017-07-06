@@ -16,7 +16,6 @@ import org.w3c.dom.NodeList;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 /**
@@ -29,9 +28,9 @@ public class Event {
 
   private static final Logger LOGGER = LoggerFactory.getLogger(Event.class);
 
-  private Map<String, Magnitude> magnitudes;
-  private Map<String, Origin> origins;
-  private Map<String, Pick> picks;
+  private Map<String, Magnitude> magnitudes = new HashMap<String, Magnitude>();
+  private Map<String, Origin> origins = new HashMap<String, Origin>();
+  private Map<String, Pick> picks = new HashMap<String, Pick>();
 
   public String publicId;
   private String eventSource;
@@ -42,8 +41,9 @@ public class Event {
   private EventType type;
   private EventTypeCertainty typeCertainty;
   private String description;
+  private String comment;
 
-  private final List<EventObserver> observers;
+  private final ArrayList<EventObserver> observers = new ArrayList<EventObserver>();
 
   /**
    * Constructor.
@@ -52,7 +52,7 @@ public class Event {
    */
   public Event(Element event) {
     this(event.getAttribute("publicID"));
-    updateEvent(event);
+    parseEvent(event);
   }
 
   /**
@@ -63,11 +63,6 @@ public class Event {
   public Event(String publicId) {
     this.publicId = publicId;
     LOGGER.debug("New event ({}}", publicId);
-
-    origins = new HashMap<String, Origin>();
-    magnitudes = new HashMap<String, Magnitude>();
-    picks = new HashMap<String, Pick>();
-    observers = new ArrayList<EventObserver>();
   }
 
   /**
@@ -113,6 +108,14 @@ public class Event {
       event.appendChild(descriptionElement);
     }
 
+    if (comment != null) {
+      Element commentElement = doc.createElement("comment");
+      Element text = doc.createElement("text");
+      commentElement.appendChild(text);
+      text.appendChild(doc.createTextNode(this.comment));
+      event.appendChild(commentElement);
+    }
+
     // TODO: Origins not yet supported
     /*
      * for (Origin origin : origins.values()) { event.appendChild(origin.toElement(doc)); }
@@ -131,15 +134,6 @@ public class Event {
 
   public void addObserver(EventObserver observer) {
     observers.add(observer);
-  }
-
-  /*
-   * public String getDataid() { return null; }
-   */
-
-  @Deprecated
-  public String getEvid() {
-    return eventId;
   }
 
   private void notifyObservers() {
@@ -185,7 +179,7 @@ public class Event {
    *
    * @param event template event
    */
-  public void updateEvent(Element event) {
+  public void parseEvent(Element event) {
 
     // order matters.
     parsePicks(event.getElementsByTagName("pick"));
@@ -210,6 +204,12 @@ public class Event {
     if (descriptionElement != null) {
       description = StringUtils.stringToString(
           descriptionElement.getElementsByTagName("text").item(0).getTextContent(), description);
+    }
+
+    final Element commentElement = (Element) event.getElementsByTagName("comment").item(0);
+    if (commentElement != null) {
+      comment = StringUtils.stringToString(
+          commentElement.getElementsByTagName("text").item(0).getTextContent(), comment);
     }
 
     // Element typeElement = (Element) event.getElementsByTagName("type").item(0);
@@ -303,6 +303,11 @@ public class Event {
     this.eventSource = eventSource;
   }
 
+  @Deprecated
+  public String getEvid() {
+    return eventId;
+  }
+
   public String getEventId() {
     return eventId;
   }
@@ -345,6 +350,14 @@ public class Event {
 
   public String getDescription() {
     return description;
+  }
+
+  public String getComment() {
+    return comment;
+  }
+
+  public void setComment(String comment) {
+    this.comment = comment;
   }
 
 
