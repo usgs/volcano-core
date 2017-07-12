@@ -26,9 +26,9 @@ public class J2kSecTest {
   @Test
   public void fromDate() {
     Double j2ksec = J2kSec.fromDate(new Date(UNIX_TIME_MS));
-    assertEquals(j2ksec, J2K_TIME);
+    assertEquals(j2ksec, J2K_TIME, 0);
   }
-  
+
   @Test
   public void asEpoch() {
     long epoch = J2kSec.asEpoch(J2K_TIME);
@@ -38,7 +38,7 @@ public class J2kSecTest {
   @Test
   public void fromEpoch() {
     Double j2ksec = J2kSec.fromEpoch(UNIX_TIME_MS);
-    assertEquals(j2ksec, J2K_TIME);
+    assertEquals(j2ksec, J2K_TIME, 0);
   }
 
   @Test
@@ -56,15 +56,15 @@ public class J2kSecTest {
   @Test
   public void parse() throws ParseException {
     double date = J2kSec.parse(Time.STANDARD_TIME_FORMAT, STANDARD_TIME_STRING);
-    assertEquals(J2K_TIME, date);
+    assertEquals(J2K_TIME, date, 0);
   }
-  
+
   @Test
   public void now() {
     long nowDate = new Date().getTime();
     long nowJ2k = J2kSec.asEpoch(J2kSec.now());
     assertTrue(Math.abs(nowDate - nowJ2k) < 3000);
-    
+
   }
 
 }
