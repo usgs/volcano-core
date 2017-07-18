@@ -1,7 +1,5 @@
 package gov.usgs.volcanoes.core.time;
 
-import java.text.DateFormat;
-
 public class TimeSpan {
   public final long startTime;
   public final long endTime;
