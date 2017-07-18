@@ -19,9 +19,6 @@ import gov.usgs.volcanoes.core.args.parser.TimeSpanParser;
 /**
  * Gather a date range from the command line.
  *
- * <p>A startTime and endTime Parameter will be added to the parameter list. Retrieve them with
- * getDate.
- *
  * @author Tom Parker
  */
 public class TimeSpanArg extends ArgsDecorator {

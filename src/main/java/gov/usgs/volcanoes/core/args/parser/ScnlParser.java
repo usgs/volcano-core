@@ -1,7 +1,6 @@
 /**
- * I waive copyright and related rights in the this work worldwide through the CC0 1.0
- * Universal public domain dedication.
- * https://creativecommons.org/publicdomain/zero/1.0/legalcode
+ * I waive copyright and related rights in the this work worldwide through the CC0 1.0 Universal
+ * public domain dedication. https://creativecommons.org/publicdomain/zero/1.0/legalcode
  */
 
 package gov.usgs.volcanoes.core.args.parser;
@@ -10,29 +9,30 @@ import com.martiansoftware.jsap.ParseException;
 import com.martiansoftware.jsap.StringParser;
 
 import gov.usgs.volcanoes.core.data.Scnl;
-
-import java.util.regex.Pattern;
+import gov.usgs.volcanoes.core.util.UtilException;
 
 /**
  * Parse a SCNL from a command line argument.
- *
+ * 
  * @author Tom Parker
  */
 public class ScnlParser extends StringParser {
 
+  public static final char DELIMITER = '$';
+
+  /**
+   * Constructor.
+   * 
+   */
+  public ScnlParser() {}
+
   @Override
-  public Object parse(String arg) throws ParseException {
-    final String[] comps = arg.split(Pattern.quote(Scnl.DELIMITER));
+  public Scnl parse(String arg) throws ParseException {
 
-    Scnl result = null;
-    if (comps.length == 4) {
-      result = new Scnl(comps[0], comps[1], comps[2], comps[3]);
-    } else if (comps.length == 3) {
-      result = new Scnl(comps[0], comps[1], comps[2]);
-    } else {
-      throw new ParseException("Can't parse SCNL: " + arg + " : " + comps.length);
+    try {
+      return Scnl.parse(arg);
+    } catch (UtilException ex) {
+      throw new ParseException(ex);
     }
-
-    return result;
   }
 }
