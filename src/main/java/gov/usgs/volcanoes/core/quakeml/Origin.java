@@ -24,14 +24,6 @@ import java.util.Map;
  *
  */
 public class Origin {
-  public static enum EvaluationMode {
-    AUTOMATIC, MANUAL;
-  }
-
-  public static enum EvaluationStatus {
-    CONFIRMED, FINAL, PRELIMINARY, REJECTED, REVIEWED
-  }
-
   private static final Logger LOGGER = LoggerFactory.getLogger(Origin.class);
 
   private final Map<String, Arrival> arrivals;
@@ -177,7 +169,7 @@ public class Origin {
       arrivals.put(arrival.publicId, arrival);
     }
   }
-  
+
   @Override
   public String toString() {
     StringBuffer sb = new StringBuffer();
@@ -195,7 +187,7 @@ public class Origin {
     for (Arrival arrival : arrivals.values()) {
       sb.append("Arrival: " + arrival.toString() + "\n");
     }
-    
+
     return sb.toString();
   }
 }

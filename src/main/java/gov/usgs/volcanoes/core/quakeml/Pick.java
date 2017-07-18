@@ -8,11 +8,11 @@ package gov.usgs.volcanoes.core.quakeml;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.w3c.dom.DOMException;
+import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 
 import java.text.ParseException;
-import java.util.Date;
 
 /**
  * Holder for QuakeML pick.
@@ -77,23 +77,36 @@ public class Pick {
   private static final Logger LOGGER = LoggerFactory.getLogger(Pick.class);
 
   public String publicId;
-  private long time;
+  private TimeQuantity timeQuantity;
   private String channel;
   private Onset onset;
   private Polarity polarity;
-  private String phaseHint = "";
+  private String phaseHint;
+  private EvaluationMode evaluationMode;
 
   /**
    * Constructor from manually created pick.
    * 
    * @param publicId public id
-   * @param time pick time
+   * @param timeQuantity pick time quantity
+   * @param channel waveform identifier
+   */
+  public Pick(String publicId, TimeQuantity timeQuantity, String channel) {
+    this.publicId = publicId;
+    this.timeQuantity = timeQuantity;
+    this.channel = channel.replaceAll("\\s", "\\$");
+    evaluationMode = EvaluationMode.MANUAL;
+  }
+
+  /**
+   * Constructor from manually created pick.
+   * 
+   * @param publicId public id
+   * @param time time in millis from 1970
    * @param channel waveform identifier
    */
   public Pick(String publicId, long time, String channel) {
-    this.publicId = publicId;
-    this.time = time;
-    this.channel = channel;
+    this(publicId, new TimeQuantity(time), channel);
   }
 
   /**
@@ -106,8 +119,7 @@ public class Pick {
     LOGGER.debug("new Pick {}", publicId);
 
     final Element timeElement = (Element) pickElement.getElementsByTagName("time").item(0);
-    time =
-        QuakeMlUtils.parseTime(timeElement.getElementsByTagName("value").item(0).getTextContent());
+    timeQuantity = new TimeQuantity(timeElement);
 
     final NodeList onsetList = pickElement.getElementsByTagName("onset");
     if (onsetList != null && onsetList.getLength() > 0) {
@@ -131,6 +143,12 @@ public class Pick {
         ex.printStackTrace();
       }
     }
+
+    final NodeList phaseHintList = pickElement.getElementsByTagName("phaseHint");
+    if (phaseHintList.getLength() > 0) {
+      phaseHint = phaseHintList.item(0).getTextContent();
+    }
+
     final Element waveformId = (Element) pickElement.getElementsByTagName("waveformID").item(0);
     final String station = waveformId.getAttribute("stationCode");
     final String chan = waveformId.getAttribute("channelCode");
@@ -140,27 +158,60 @@ public class Pick {
     channel = station + "$" + chan + "$" + net + "$" + loc;
   }
 
-  public String getChannel() {
-    return channel;
-  }
+  /**
+   * To XML element.
+   * 
+   * @param doc xml document
+   * @return xml element
+   */
+  public Element toElement(Document doc) {
+    Element pick = doc.createElement("pick");
+    pick.setAttribute("publicID", publicId);
 
-  public Onset getOnset() {
-    return onset;
-  }
+    pick.appendChild(timeQuantity.toElement(doc));
 
-  public Polarity getPolarity() {
-    return polarity;
-  }
+    Element waveformId = doc.createElement("waveformID");
+    String[] scnl = channel.split("\\$");
+    waveformId.setAttribute("stationCode", scnl[0]);
+    waveformId.setAttribute("channelCode", scnl[1]);
+    waveformId.setAttribute("networkCode", scnl[2]);
+    if (scnl.length >= 4) {
+      waveformId.setAttribute("locationCode", scnl[3]);
+    }
+    pick.appendChild(waveformId);
 
-  public long getTime() {
-    return time;
+    if (onset != null) {
+      Element onsetElement = doc.createElement("onset");
+      onsetElement.appendChild(doc.createTextNode(onset.toString().toLowerCase()));
+      pick.appendChild(onsetElement);
+    }
+
+    if (polarity != null) {
+      Element polarityElement = doc.createElement("polarity");
+      polarityElement.appendChild(doc.createTextNode(polarity.toString().toLowerCase()));
+      pick.appendChild(polarityElement);
+    }
+
+    if (phaseHint != null) {
+      Element phaseElement = doc.createElement("phaseHint");
+      phaseElement.appendChild(doc.createTextNode(phaseHint.toString()));
+      pick.appendChild(phaseElement);
+    }
+
+    if (evaluationMode != null) {
+      Element evalModeElement = doc.createElement("evaluationMode");
+      evalModeElement.appendChild(doc.createTextNode(evaluationMode.toString().toLowerCase()));
+      pick.appendChild(evalModeElement);
+    }
+
+    return pick;
   }
 
   @Override
   public String toString() {
     StringBuffer sb = new StringBuffer();
     sb.append("PublicId: " + publicId + "\n");
-    sb.append("Time: " + new Date(time) + "\n");
+    sb.append("Time: " + timeQuantity.getValue() + "\n");
     sb.append("Channel: " + channel + "\n");
     sb.append("Onset: " + onset + "\n");
     sb.append("Polarity: " + polarity + "\n");
@@ -193,12 +244,45 @@ public class Pick {
     return label;
   }
 
-  public String getPublicId() {
-    return publicId;
+  /**
+   * Get pick time.
+   * 
+   * @return milliseconds
+   */
+  public long getTime() {
+    return timeQuantity.getValue().getTime();
   }
 
-  public void setPublicId(String publicId) {
-    this.publicId = publicId;
+  public TimeQuantity getTimeQuantity() {
+    return timeQuantity;
+  }
+
+  public void setTimeQuantity(TimeQuantity timeQuantity) {
+    this.timeQuantity = timeQuantity;
+  }
+
+  public String getChannel() {
+    return channel;
+  }
+
+  public void setChannel(String channel) {
+    this.channel = channel;
+  }
+
+  public Onset getOnset() {
+    return onset;
+  }
+
+  public void setOnset(Onset onset) {
+    this.onset = onset;
+  }
+
+  public Polarity getPolarity() {
+    return polarity;
+  }
+
+  public void setPolarity(Polarity polarity) {
+    this.polarity = polarity;
   }
 
   public String getPhaseHint() {
@@ -209,20 +293,12 @@ public class Pick {
     this.phaseHint = phaseHint;
   }
 
-  public void setTime(long time) {
-    this.time = time;
+  public EvaluationMode getEvaluationMode() {
+    return evaluationMode;
   }
 
-  public void setChannel(String channel) {
-    this.channel = channel;
-  }
-
-  public void setOnset(Onset onset) {
-    this.onset = onset;
-  }
-
-  public void setPolarity(Polarity polarity) {
-    this.polarity = polarity;
+  public void setEvaluationMode(EvaluationMode evaluationMode) {
+    this.evaluationMode = evaluationMode;
   }
 
 }
