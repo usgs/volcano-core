@@ -8,12 +8,12 @@ package gov.usgs.volcanoes.core.args.decorator;
 import com.martiansoftware.jsap.JSAPResult;
 import com.martiansoftware.jsap.Switch;
 
+import gov.usgs.volcanoes.core.Log;
 import gov.usgs.volcanoes.core.args.ArgsDecorator;
 import gov.usgs.volcanoes.core.args.ArgumentException;
 import gov.usgs.volcanoes.core.args.Arguments;
 
 import org.apache.log4j.Level;
-import org.apache.log4j.Logger;
 
 /**
  * Gather a verbose flag from the command line.
@@ -37,7 +37,7 @@ public class VerboseArg extends ArgsDecorator {
     final JSAPResult jsap = super.parse(args);
 
     if (jsap.getBoolean("verbose")) {
-      Logger.getRootLogger().setLevel(Level.ALL);
+      Log.setLevel(Level.ALL);
     }
     return jsap;
   }
