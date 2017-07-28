@@ -10,6 +10,7 @@ import gov.usgs.volcanoes.core.quakeml.Pick.Polarity;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 
@@ -39,17 +40,29 @@ public class Arrival {
     };
   }
 
+
+  public String publicId;
+  private Pick pick;
+  private String phase;
   private double distance;
-  private final String phase;
-  private final Pick pick;
+  private double timeResidual;
   private double timeWeight;
 
-  public final String publicId;
-
-  private final double timeResidual;
+  /**
+   * Constructor for newly created Arrival.
+   * 
+   * @param publicId resource identifier of the arrival
+   * @param pick associated pick
+   * @param phase phase identification 
+   */
+  public Arrival(String publicId, Pick pick, String phase) {
+    this.publicId = publicId;
+    this.pick = pick;
+    this.phase = phase;
+  }
 
   /**
-   * Constructor.
+   * Constructor from XML.
    *
    * @param arrivalElement XML element representing arrival
    * @param picks picks associated with event
@@ -83,6 +96,43 @@ public class Arrival {
 
   public Double getTimeWeight() {
     return timeWeight;
+  }
+
+  /**
+   * To XML Element.
+   * @param doc xml document
+   * @return xml element
+   */
+  public Element toElement(Document doc) {
+
+    Element arrival = doc.createElement("arrival");
+    arrival.setAttribute("publicID", publicId);
+    arrival.setAttribute("pickID", pick.publicId);
+
+
+    Element phaseElement = doc.createElement("phase");
+    phaseElement.appendChild(doc.createTextNode(phase));
+    arrival.appendChild(phaseElement);
+
+    if (!Double.isNaN(distance)) {
+      Element element = doc.createElement("distance");
+      element.appendChild(doc.createTextNode(Double.toString(distance)));
+      arrival.appendChild(element);
+    }
+
+    if (!Double.isNaN(timeResidual)) {
+      Element element = doc.createElement("timeResidual");
+      element.appendChild(doc.createTextNode(Double.toString(timeResidual)));
+      arrival.appendChild(element);
+    }
+
+    if (!Double.isNaN(timeWeight)) {
+      Element element = doc.createElement("timeWeight");
+      element.appendChild(doc.createTextNode(Double.toString(timeWeight)));
+      arrival.appendChild(element);
+    }
+
+    return arrival;
   }
 
   /**

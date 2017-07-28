@@ -16,7 +16,7 @@ import java.util.Date;
 public class TimeQuantity {
 
   private Date value; // UTC
-  private double uncertainty; // in seconds
+  private double uncertainty = Double.NaN; // in seconds
 
   /**
    * TimeQuantity from date.

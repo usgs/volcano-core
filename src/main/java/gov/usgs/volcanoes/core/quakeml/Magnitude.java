@@ -6,6 +6,7 @@
 
 package gov.usgs.volcanoes.core.quakeml;
 
+import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
 /**
@@ -16,49 +17,88 @@ import org.w3c.dom.Element;
  */
 public class Magnitude {
 
-  private final double mag;
-
   public final String publicId;
-  private final String type;
-  private String uncertainty;
+  private RealQuantity magnitude;
+  private String type = "M";
+  private int stationCount = -1;
 
   /**
-   * Constructor.
+   * Default constructor.
+   * @param publicId public id
+   * @param magnitude magnitude value 
+   */
+  public Magnitude(String publicId, double magnitude) {
+    this.publicId = publicId;
+    this.magnitude = new RealQuantity(magnitude);
+  }
+
+  /**
+   * Constructor from XML.
    *
    * @param magnitudeElement XML element
    */
   public Magnitude(Element magnitudeElement) {
     publicId = magnitudeElement.getAttribute("publicID");
-    type = magnitudeElement.getElementsByTagName("type").item(0).getTextContent();
 
     final Element magElement = (Element) magnitudeElement.getElementsByTagName("mag").item(0);
-    mag = Double.parseDouble(magElement.getElementsByTagName("value").item(0).getTextContent());
+    magnitude = new RealQuantity(magElement);
 
-    final Element uncertaintyElement =
-        (Element) magElement.getElementsByTagName("uncertainty").item(0);
-    if (uncertaintyElement != null) {
-      uncertainty = '±' + uncertaintyElement.getTextContent();
-    }
+    type = magnitudeElement.getElementsByTagName("type").item(0).getTextContent();
   }
 
-  public double getMag() {
-    return mag;
+  /**
+   * To XML element.
+   * @param doc XML document
+   * @return XML element
+   */
+  public Element toElement(Document doc) {
+    Element element = doc.createElement("magnitude");
+    element.setAttribute("publicID", publicId);
+    element.appendChild(magnitude.toElement(doc, "mag"));
+
+    Element typeElement = doc.createElement("type");
+    element.appendChild(typeElement);
+    typeElement.appendChild(doc.createTextNode(type));
+
+    Element scElement = doc.createElement("stationCount");
+    element.appendChild(scElement);
+    scElement.appendChild(doc.createTextNode(Integer.toString(stationCount)));
+
+    return element;
+  }
+
+  @Override
+  public String toString() {
+    StringBuffer sb = new StringBuffer();
+    sb.append("PublicId: " + publicId + "\n");
+    sb.append("Magnitude: " + magnitude.toString() + "\n");
+    sb.append("Type: " + type + "\n");
+    sb.append("Station count: " + stationCount + "\n");
+    return sb.toString();
+  }
+
+  public RealQuantity getMagnitude() {
+    return magnitude;
+  }
+
+  public void setMagnitude(RealQuantity magnitude) {
+    this.magnitude = magnitude;
   }
 
   public String getType() {
     return type;
   }
 
-  public String getUncertainty() {
-    return uncertainty;
+  public void setType(String type) {
+    this.type = type;
   }
-  
-  @Override
-  public String toString() {
-    StringBuffer sb = new StringBuffer();
-    sb.append("magnitude: " + mag + " " + type + " " + uncertainty + "\n");
-    sb.append("publicId: " + publicId + "\n");
-    
-    return sb.toString();
+
+  public int getStationCount() {
+    return stationCount;
   }
+
+  public void setStationCount(int stationCount) {
+    this.stationCount = stationCount;
+  }
+
 }

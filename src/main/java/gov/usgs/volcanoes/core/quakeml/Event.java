@@ -116,10 +116,9 @@ public class Event {
       event.appendChild(commentElement);
     }
 
-    // TODO: Origins not yet supported
-    /*
-     * for (Origin origin : origins.values()) { event.appendChild(origin.toElement(doc)); }
-     */
+    for (Origin origin : origins.values()) {
+      event.appendChild(origin.toElement(doc));
+    }
 
     // TODO: Magnitudes not yet supported
     /*
