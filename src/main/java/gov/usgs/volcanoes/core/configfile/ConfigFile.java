@@ -100,7 +100,7 @@ public final class ConfigFile {
     try {
       readConfigFile(fn);
     } catch (FileNotFoundException ex) {
-      LOGGER.debug("Cannot read config file. ({})", ex);
+      LOGGER.debug("Cannot read config file. ({})", ex.getLocalizedMessage());
     }
   }
 

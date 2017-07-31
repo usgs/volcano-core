@@ -7,6 +7,9 @@
 package gov.usgs.volcanoes.core.data;
 
 import gov.usgs.volcanoes.core.contrib.HashCodeUtil;
+import gov.usgs.volcanoes.core.util.UtilException;
+
+import java.util.regex.Pattern;
 
 /**
  * An immutable class for holding SCNL data.
@@ -129,4 +132,35 @@ public class Scnl implements Comparable<Scnl> {
         .append(delimiter).append(location);
     return sb.toString();
   }
+
+  /**
+   * Parse a Scnl string.
+   * 
+   * @param scnlString standard delimited string
+   * @return Scnl object
+   * @throws UtilException when string cannot be parsed
+   */
+  public static Scnl parse(String scnlString) throws UtilException {
+    return Scnl.parse(scnlString, DELIMITER);
+  }
+
+  /**
+   * Parse a Scnl string.
+   * 
+   * @param scnlString delimited string
+   * @param delimiter String passed to String.split()
+   * @return Scnl object
+   * @throws UtilException when string cannot be parsed
+   */
+  public static Scnl parse(String scnlString, String delimiter) throws UtilException {
+    String[] parts = scnlString.split(Pattern.quote(delimiter));
+    if (parts.length > 3) {
+      return new Scnl(parts[0], parts[1], parts[2], parts[3]);
+    } else if (parts.length > 2) {
+      return new Scnl(parts[0], parts[1], parts[2]);
+    } else {
+      throw new UtilException("Cannot parse '" + scnlString + "'");
+    }
+  }
+
 }
