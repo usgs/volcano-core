@@ -8,41 +8,43 @@ import java.io.Serializable;
  * @author Oleg Shepelev
  */
 public class Hypocenter implements Serializable {
-  private int KDATE;
+  private int KDATE; // Year, month, and day of new calibration
   private char RMKO;
-  private int KHR;
-  private int KMIN;
+  private int KHR; // Hour of new calibration
+  private int KMIN; // Minute of new calibration
   private double SEC;
-  private int LAT1;
-  private double LAT2;
-  private int LON1;
-  private double LON2;
-  private double Z;
+  private int LAT1; // Degree portion of hypocenter latitude.
+  private double LAT2; // Minute portion of hypocenter latitude.
+  private int LON1; // Degree portion of hypocenter longitude.
+  private double LON2; // Minute portion of hypocenter longitude.
+  private double Z; // Focal depth of hypocenter in km.
   private char RMK2;
-  private String MAGOUT;
-  private int NO;
+  private String MAGOUT; // Magnitude of the earthquake.
+  private int NO; // Number of station readings used in locating the earthquake.
   private int IDMIN;
   private int IGAP;
   private int KNO;
-  private double RMS;
-  private String ERHOUT;
+  private double RMS; // Root mean square of time residuals in seconds.
+  private String ERHOUT; // Standard error of the epicenter in km.
   private String SE3OUT;
-  private char Q;
-  private char QS;
-  private char QD;
-  private double ADJ;
-  private int JNST;
-  private int NR;
-  private double AVR;
-  private double AAR;
-  private int NM;
-  private double AVXM;
-  private double SDXM;
-  private int NF;
-  private double AVFM;
-  private double SDFM;
-  private int NI;
-  private double DMIN;
+  private char Q; // Solution quality of the hypocenter.
+  private char QS; // QS rating
+  private char QD; // QD rating
+  private double ADJ; // Last adjustment of hypocenter in km. Normally 0 or less than 0.05.
+  private int JNST; // Instruction code?
+  private int NR; // Number of station readings available. This includes readings which are not used
+                  // in determining hypocenter.
+  private double AVR; // Average of time residuals in seconds. Normally 0.
+  private double AAR; // Average of the absolute time residuals in sec.
+  private int NM; // Number of station readings available for computing maximum amplitude magnitude
+                  // (XMAG).
+  private double AVXM; // Average of XMAG of available stations.
+  private double SDXM; // Standard deviation of XMAG of available stations.
+  private int NF; // Number of station readings available for computing F-P magnitude (FMAG).
+  private double AVFM; // Average of FMAG of available stations.
+  private double SDFM; // Standard deviation of FMAG of available stations.
+  private int NI; // Number of iterations to reach the final hypocenter.
+  private double DMIN; // Epicentral distance in km to the nearest station
 
   public int getLON1() {
     return LON1;
@@ -401,4 +403,11 @@ public class Hypocenter implements Serializable {
     QQS = qQS;
   }
 
+  public double getLatitude() {
+    return LAT1 + (LAT2 / 60d);
+  }
+
+  public double getLongitude() {
+    return LON1 + (LON2 / 60d);
+  }
 }

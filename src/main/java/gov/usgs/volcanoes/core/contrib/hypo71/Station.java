@@ -129,21 +129,72 @@ public class Station implements Serializable {
    * H1 means the thickness of the first layer in km at this station.
    */
   double DLYH1;
+  /**
+   * Residual of P-arrival in seconds.  Or, if S-P interval data is used, then
+   * S-P residual in seconds.
+   */
   double PRES;
+  /**
+   * Weight used in hypocenter solution for P-arrival (or S-P interval data).
+   */
   double PWT;
+  /**
+   * Maximum amplitude in mm from input data.
+   */
   double AMX;
+  /**
+   * Period of maximum amplitude in seconds from imput data.
+   */
   double PRX;
+  /**
+   * Calibration in mm used in computing XMAG.
+   */
   double CALX;
+  /**
+   * System number for the station from input data.
+   */
   int K;
+  /**
+   * Maximum amplitude magnitude computed from AMX, PRX, CALX, and K.
+   */
   double XMAG;
+  /**
+   * Remark from input data.
+   */
   double RMK;
+  /**
+   * F-P in seconds from input data.
+   */
   double FMP;
+  /**
+   * F-P magnitude computed from F-P and DIST.
+   */
   double FMAG;
+  /**
+   * SRMK from input data.
+   */
   String SRMK;
+  /**
+   * The second's portion of S-arrival time from input data.
+   */
   double SSEC;
+  /**
+   * Observed S-travel time (or S-P interval) in sec.
+   */
   double TSOBS;
+  /**
+   * Residual of S-arrival in sec. Same as PRES if S-P interval
+   * data are used.
+   */
   double SRES;
+  /**
+   * Weight used in hypocenter solution for S-arrival.
+   * N/A if S-P itnerval data is used.
+   */
   double SWT;
+  /**
+   * Station time correction in seconds from input data.
+   */
   String DT;
 
   // Field for summary
@@ -809,5 +860,16 @@ public class Station implements Serializable {
     SDFM = sDFM;
   }
 
-
+  /**
+   * @see java.lang.Object#equals(java.lang.Object)
+   */
+  /*
+   * public boolean equals(Object o) {
+   * if (o instanceof Station) {
+   * Station station = (Station) o;
+   * return NSTA.equals(station.NSTA);
+   * }
+   * return false;
+   * }
+   */
 }

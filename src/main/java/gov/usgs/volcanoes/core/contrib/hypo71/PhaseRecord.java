@@ -14,22 +14,37 @@ public class PhaseRecord {
    * Station name.
    */
   private String MSTA;
+  /**
+   * P Remark. 
+   */
   private String PRMK;
   /**
-   * Year, month and day of P-arrival
+   * Year, month and day of P-arrival.
    */
   private float W;
   /**
-   * Time.
+   * Year, month, day, and hour of P-arrival.
    */
   private int JTIME;
   /**
-   * 
+   * Minute of the P-arrival.
    */
   private int JMIN;
+  /**
+   * Second of P-arrival.
+   */
   private float P;
+  /**
+   * Second of S-arrival.
+   */
   private float S;
+  /**
+   * S Remark.
+   */
   private String SRMK;
+  /**
+   * 
+   */
   private float WS;
   /** 
    * Maximum peak-to-peak amplitude in mm.

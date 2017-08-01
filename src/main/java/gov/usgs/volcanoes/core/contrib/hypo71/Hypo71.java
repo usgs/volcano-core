@@ -20,6 +20,7 @@ import java.util.Queue;
  * 
  * @author Oleg Shepelev
  */
+
 public class Hypo71 {
 
   public static class Results {
@@ -324,8 +325,8 @@ public class Hypo71 {
   // COMMON/O2/ AVRPS,DMIN,RMSSQ,ADJSQ,LATEP,LONEP,Z,ZSQ,AVR,AAR,ORG
   public static class COMMON_O2 {
 
-    double AVRPS;
-    double DMIN;
+    double AVRPS; // Average residual of P and S arrivals.
+    double DMIN; // Epicentral distance in km to the nearest station
     double RMSSQ;
     double ADJSQ;
     double LATEP;
@@ -572,7 +573,7 @@ public class Hypo71 {
       final boolean goto505 = C1.KSEL > 0;
       boolean goto535 = false;
       if (!goto505) {
-        writeln("FPRINT_WRITER", "\n\n\n");
+        writeln("FPRINT_WRITER", "\r\n\r\n\r\n");
         goto535 = true;
       }
       if (!goto535) {
@@ -695,7 +696,7 @@ public class Hypo71 {
     }
 
     writeln("FPRINT_WRITER",
-        "\n  STN  DIST AZM AIN PRMK HRMN P-SEC TPOBS TPCAL DLY/H1 P-RES P-WT AMX PRX CALX K XMAG RMK FMP FMAG SRMK S-SEC TSOBS S-RES  S-WT    DT");
+        "\r\n  STN  DIST AZM AIN PRMK HRMN P-SEC TPOBS TPCAL DLY/H1 P-RES P-WT AMX PRX CALX K XMAG RMK FMP FMAG SRMK S-SEC TSOBS S-RES  S-WT    DT");
 
     for (I = 0; I < O1.NRP; I++) {// DO 200 I=1,NRP
 
@@ -834,6 +835,8 @@ public class Hypo71 {
   /*
    * SUBROUTINE TRVDRV(ISW,V,D,DEPTH,VSQ,NL,THK,H,G,F,TID,DID,FLT, &
    * DELTA,DX,DY,NR,KDX,KNO,FLTEP,Z,ZSQ,X,T,ANIN)
+   * 
+   * Computes travel time and derivatives for a horizontal-layer model.
    */
   @SuppressWarnings("boxing")
   public void TRVDRV(final String ISW, final double[] V, final double[] D, final double[] DEPTH,
@@ -1147,6 +1150,10 @@ public class Hypo71 {
 
   /*
    * SUBROUTINE AZWTOS(DX,DY,NR,WT,KDX,AZ,TEMP,KEY,INS,IEW)
+   * 
+   * Performs the azimuthal weighting of stations by quadrants. Each occupied quadrant is given
+   * equal weight. The quadrants are set up so as to minimize the number of quadrants without
+   * stations.
    */
   public void AZWTOS(final double[] DX, final double[] DY, final double[] WT, final int[] KDX,
       final double[] AZ, final double[] TEMP, final int[] KEY, final char[] INS, final char[] IEW)
@@ -1267,6 +1274,9 @@ public class Hypo71 {
   /*
    * SUBROUTINE MISING(NSTA,LAT,LON,NS,MAG,TEMP,DMIN,JDX,
    * JMAX,O2.LATEP,LONEP,INS,IEW)
+   * 
+   * Checks if any station in the station list which should record the earthquake is
+   * missing from the input data.
    */
   public void MISING(final double MAG, final double[] TEMP) throws IOException, ParseException {
 
@@ -1339,6 +1349,10 @@ public class Hypo71 {
    * SUBROUTINE SUMOUT(ISW,NSTA,INS,IEW,IELV,DLY,FMGC,XMGC,KLAS,PRR, &
    * CALR,ICAL,NDATE,NHRMN,LAT,LON,MDATE,MHRMN,KLSS,CALS,NS,QNO,IPUN, &
    * MNO,NRES,NXM,NFM,SR,SRSQ,SRWT,SXM,SXMSQ,SFM,SFMSQ)
+   * 
+   * This subroutine prints a table of the number and percentage of earthquakes
+   * in each quality class, Q. It also prints a summary of travel time,
+   * X-magnitude, and F-magnitude residuals by station.
    */
   public void SUMOUT() throws IOException, ParseException {
 
@@ -1558,6 +1572,8 @@ public class Hypo71 {
 
   /*
    * SUBROUTINE FMPLOT(KPAPER,KFM,FNO,NRP,AZ,AIN,SYM,SUCARD)
+   * 
+   * Plot first-motion pattern of the lower focal hemisphere in an equal area projection.
    */
   public void FMPLOT(final int KPAPER, final int KFM, final double FNO, final double[] AZ,
       final double[] AIN, final char[] SYM, final String SUCARD)
@@ -1760,6 +1776,13 @@ public class Hypo71 {
    * TID,DID,FLT,QSPA,MSTA,PRMK,W,JMIN,P,S,SRMK,WS,AMX,PRX,CALX,RMK, &
    * DT,FMP,AZRES,SYM,QRMK,KDX,LDX,JDX,TP,WRK,KSMP,TS,TIME1,TIME2, &
    * AVXM,AVFM,XMAG,FMAG,NRES,SR,SRSQ,SRWT,QNO,MNO)
+   * 
+   * Processes one earthquake at a time, and involves following steps:
+   * <ol>
+   * <li> Set up a trial hypocenter
+   * <li> Geiger's adjustments
+   * <li> Compute error estimates
+   * </ol>
    */
   public void SINGLE(boolean singmd) throws IOException, ParseException {
 
@@ -2731,6 +2754,10 @@ public class Hypo71 {
   /*
    * SUBROUTINE SWMREG(TEST,IPRN,NR,KSMP,FNO,X,W,ISKP,KF,KZ,XMEAN, &
    * B,Y,BSE,AF,ONF,FLIM)
+   * 
+   * This subroutine computes the Geiger adjustment vector (and its
+   * standard errors) by a step-wise multiple regression of travel time
+   * residuals.
    */
 
   public void SWMREG(final double FNO, final double[][] X, final double[] W, final int[] ISKP,
@@ -3040,6 +3067,9 @@ public class Hypo71 {
    * SUBROUTINE XFMAGS(TEST,FMGC,XMGC,KLAS,PRR,CALR,ICAL,IMAG,IR,QSPA, &
    * AMX,PRX,CALX,FMP,KDX,DELTA,ZSQ,NRP,CAL,NM,AVXM,SDXM,XMAG,NF, &
    * AVFM,SDFM,FMAG,MAG)
+   * 
+   * Computes maximum amplitude magnitude (XMAG) and F-P magnitude (FMAG)
+   * for each station.
    */
   @SuppressWarnings("boxing")
   public void XFMAGS(final double[] FMGC, final double[] XMGC, final int[] KLAS, final double[] PRR,
@@ -3258,6 +3288,12 @@ public class Hypo71 {
     // END
   }
 
+  /**
+   * Read in phase list and instruction card. 
+   * @param phaseRecordsList
+   * @throws IOException
+   * @throws ParseException
+   */
   @SuppressWarnings("boxing")
   public void INPUT2(Queue<PhaseRecord> phaseRecordsList) throws IOException, ParseException {
 
@@ -3588,7 +3624,13 @@ public class Hypo71 {
     }
   }
 
-  // SUBROUTINE ANSWER(A,S,XMEAN,SIGMA,IDX,PHI,L,M,MM,PF,NDX,ADX)
+  /*
+   * SUBROUTINE ANSWER(A,S,XMEAN,SIGMA,IDX,PHI,L,M,MM,PF,NDX,ADX)
+   * 
+   * Prints the itnermediate results of the regression analysis (SWMREG), and is
+   * used only for tracing the computation of a given earthquake.
+   * 
+   */
   @SuppressWarnings("boxing")
   public void ANSWER(final double[][] A, final double[][] S, final double[] XMEAN,
       final double[] SIGMA, final int[] IDX, final double PHI, final int L, final int M,
@@ -3664,6 +3706,14 @@ public class Hypo71 {
     return FortranFormat.read(readline, format);
   }
 
+  /**
+   * Read in heading card, reset test-variable list, station list, crustal model, and control card.
+   * @param stationsList
+   * @param crustalModelList
+   * @param controlCard
+   * @throws IOException
+   * @throws ParseException
+   */
   @SuppressWarnings("boxing")
   public void INPUT1(Queue<Station> stationsList, Queue<CrustalModel> crustalModelList,
       ControlCard controlCard) throws IOException, ParseException {
@@ -4089,31 +4139,33 @@ public class Hypo71 {
     return new ArrayList<Object>(Arrays.asList(data));
   }
 
+
+
   private void writeln(final String filePrefix, final List<Object> data, final String format)
       throws IOException, ParseException {
     final String writeline = getFormattedString(data, format);
     writeln(filePrefix, writeline);
   }
 
+  private void writeln(final String filePrefix, final String data)
+      throws IOException, ParseException {
+    if (filePrefix.equals("FPRINT_WRITER")) {
+      results.setPrintOutput(results.getPrintOutput() + "\r\n"/*
+                                                               * + filePrefix
+                                                               * + ":"
+                                                               */ + data);
+    } else {
+      results.setPunchOutput(results.getPrintOutput() + "\r\n"/*
+                                                               * + filePrefix
+                                                               * + ":"
+                                                               */ + data);
+    }
+  }
+
   private void write(final String filePrefix, final List<Object> data, final String format)
       throws IOException, ParseException {
     final String writeline = getFormattedString(data, format);
     write(filePrefix, writeline);
-  }
-
-  private void writeln(final String filePrefix, final String data)
-      throws IOException, ParseException {
-    if (filePrefix.equals("FPRINT_WRITER")) {
-      results.setPrintOutput(results.getPrintOutput() + "\n"/*
-                                                             * + filePrefix
-                                                             * + ":"
-                                                             */ + data);
-    } else {
-      results.setPunchOutput(results.getPrintOutput() + "\n"/*
-                                                             * + filePrefix
-                                                             * + ":"
-                                                             */ + data);
-    }
   }
 
   private void write(final String filePrefix, final String data)
@@ -4237,7 +4289,7 @@ public class Hypo71 {
               break g900;
             }
             if (O1.NR < 1) {
-              writeln("FPRINT_WRITER", "\n\n\n ***** EXTRA BLANK CARD ENCOUNTERED *****");
+              writeln("FPRINT_WRITER", "\r\n\r\n\r\n ***** EXTRA BLANK CARD ENCOUNTERED *****");
             } else {
               break;
             }
@@ -4491,5 +4543,21 @@ public class Hypo71 {
       }
     }
     return null;
+  }
+
+  /**
+   * Get East/West indicator.
+   * @return E if Eastern, W if Western
+   */
+  public char getIEW() {
+    return IEW[0];
+  }
+
+  /**
+   * Get North/South indicator.
+   * @return N if North, S if South
+   */
+  public char getINS() {
+    return INS[0];
   }
 }

@@ -31,6 +31,7 @@
 // OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF
 // ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 //
+
 package gov.usgs.volcanoes.core.contrib.hypo71;
 
 import java.io.IOException;
@@ -39,7 +40,12 @@ import java.math.RoundingMode;
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
 import java.text.ParseException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Locale;
+import java.util.Stack;
+import java.util.StringTokenizer;
 
 /**
  * Handles the way fortran formats data.
@@ -52,7 +58,7 @@ public class FortranFormat {
   /**
    * A hash of the descriptors for easy access.
    */
-  private final static HashMap<String, EditDescriptor> DESCRIPTOR_HASH =
+  private static final HashMap<String, EditDescriptor> DESCRIPTOR_HASH =
       new HashMap<String, EditDescriptor>(EditDescriptor.values().length);
 
   static {
@@ -606,44 +612,33 @@ public class FortranFormat {
     }
 
     /**
-     * Formats the object.
-     * 
-     * @param u
-     *            the parent unit
-     * @param o
-     *            the object to be formatted
-     * @param options
-     *            the options
-     * @return the formatted string
-     * @throws IOException
-     *             Signals that an I/O exception has occurred.
-     */
-    public abstract String format(Unit u, Object o, Options options) throws IOException;
-
-    /**
      * Parses the object.
      * 
-     * @param u
-     *            the parent unit
-     * @param s
-     *            the String to be parsed
-     * @param options
-     *            the options
+     * @param u the parent unit
+     * @param s the String to be parsed
+     * @param options the options
      * @return the parsed object
-     * @throws IOException
-     *             Signals that an I/O exception has occurred.
+     * @throws IOException Signals that an I/O exception has occurred.
      */
     public abstract Object parse(Unit u, String s, Options options) throws IOException;
 
     /**
+     * Formats the object.
+     * 
+     * @param u the parent unit
+     * @param o the object to be formatted
+     * @param options the options
+     * @return the formatted string
+     * @throws IOException Signals that an I/O exception has occurred.
+     */
+    public abstract String format(Unit u, Object o, Options options) throws IOException;
+
+    /**
      * Helper method to add spaces and right align content.
      * 
-     * @param s
-     *            is the String to append
-     * @param length
-     *            is the desired length
-     * @param rightAligned
-     *            specifies if the content should be right-aligned
+     * @param s is the String to append
+     * @param length is the desired length
+     * @param rightAligned specifies if the content should be right-aligned
      * @return the formatted string
      */
     protected String format(final String s, final int length, final boolean rightAligned) {
@@ -904,6 +899,8 @@ public class FortranFormat {
             break;
           case '(':
             s.push(i);
+            break;
+          default:
             break;
         }
       }
@@ -1200,15 +1197,11 @@ public class FortranFormat {
   /**
    * Static read function similar to Fortran implementation.
    * 
-   * @param data
-   *            is the data to be parsed
-   * @param format
-   *            is the format specification
+   * @param data is the data to be parsed
+   * @param format is the format specification
    * @return a ArrayList<object> of all the parsed data as Java objects
-   * @throws ParseException
-   *             the parse exception
-   * @throws IOException
-   *             Signals that an I/O exception has occurred.
+   * @throws ParseException the parse exception
+   * @throws IOException Signals that an I/O exception has occurred.
    */
   public static ArrayList<Object> read(final String data, final String format)
       throws ParseException, IOException {
@@ -1219,15 +1212,11 @@ public class FortranFormat {
   /**
    * Static write function similar to the Fortran implementation.
    * 
-   * @param objects
-   *            is the vector of objects to be formatted
-   * @param format
-   *            is the format specification
+   * @param objects is the vector of objects to be formatted
+   * @param format is the format specification
    * @return the formatted string
-   * @throws ParseException
-   *             the parse exception
-   * @throws IOException
-   *             Signals that an I/O exception has occurred.
+   * @throws ParseException the parse exception
+   * @throws IOException Signals that an I/O exception has occurred.
    */
   public static String write(final List<Object> objects, final String format)
       throws ParseException, IOException {
@@ -1260,11 +1249,9 @@ public class FortranFormat {
   /**
    * Parses the input.
    * 
-   * @param s
-   *            is the input string
+   * @param s is the input string
    * @return a ArrayList<Object> of all the parsed data as Java Objects
-   * @throws IOException
-   *             Signals that an I/O exception has occurred.
+   * @throws IOException Signals that an I/O exception has occurred.
    */
   public ArrayList<Object> parse(final String s) throws IOException {
     final StringTokenizer st = new StringTokenizer(s, "\n");
@@ -1372,6 +1359,8 @@ public class FortranFormat {
           case POSITIONING_TAB_RIGHT:
             place += u.length + sb.length();
             break;
+          default:
+            break;
         }
         sb = new StringBuilder();
       } else {
@@ -1391,7 +1380,7 @@ public class FortranFormat {
       place = -1;
     }
     if (options.isAddReturn()) {
-      sb.append("\n");
+      sb.append("\r\n");
     }
     return sb.toString();
   }
