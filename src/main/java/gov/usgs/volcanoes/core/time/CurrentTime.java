@@ -53,7 +53,7 @@ public class CurrentTime {
   private static final String CONFIG_FILENAME = "NTP.config";
   private static final SimpleDateFormat DATE_FORMAT;
   private static final String[] DEFAULT_NTP_SERVERS =
-      new String[] { "0.pool.ntp.org", "1.pool.ntp.org", "time.nist.gov" };
+      new String[] {"0.pool.ntp.org", "1.pool.ntp.org", "time.nist.gov"};
 
   private static final int DEFAULT_RECALIBRATION_INTERVAL = 10 * 60 * 1000; // 10 minutes
   private static final int DEFAULT_TIMEOUT = 500;
