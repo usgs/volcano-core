@@ -280,12 +280,40 @@ public class Station implements Serializable {
     this.SDFM = SDFM;
   }
 
-  public Station(String string, double d, int iAZ, int iAIN, String string2, int jHR, int i,
-      double e, double tPK, double f, double dLYK, String x4kout, String string3, double g,
-      int iAMX, int iPRX, double h, int j, String xMAGOU, char rMK3, String string4, String fMPOUT,
-      String fMAGOU, char rMK4, String string5, String sKOUT, String tSKOUT, String sRESOU,
-      String rMK5, String sWTOUT, String dTKOUT, char c) {
-    // TODO Auto-generated constructor stub
+  public Station(String name, double dmin, int iAZ, int iAIN, String pRemark, int jHR, int min,
+      double psec, double tPK, double f, double dLYK, double pres, String string3, double pwt,
+      int iAMX, int iPRX, double h, int j, double xmag, char rMK3, String string4, double fmp,
+      double fmag, char rMK4, String sRemark, double ssec, double tsk, String sresout, String rMK5,
+      double swt, String dTKOUT, char c, char ins, char iew) {
+    NSTA = name;
+    DIST = dmin;
+    AZI = iAZ;
+    AIN = iAIN;
+    PRMK = pRemark;
+    HR = jHR;
+    MN = min;
+    PSEC = psec;
+    TPOBS = tPK;
+    TPCAL = f;
+    DLYH1 = dLYK;
+    PRES = pres;
+    PWT = pwt;
+    AMX = iAMX;
+    PRX = iPRX;
+    XMAG = xmag;
+    RMK = rMK3;
+    FMP = fmp;
+    FMAG = fmag;
+    SRMK = sRemark;
+    SSEC = ssec;
+    TSOBS = tsk;
+    if (sresout.trim().length() > 0) {
+      SRES = Double.valueOf(sresout);
+    }
+    SWT = swt;
+    DT = dTKOUT;
+    INS = ins;
+    IEW = iew;
   }
 
   public Station(String nSTA, double dIST, int aIN, String pRMK, int hR, int mN, double pSEC,
@@ -860,16 +888,12 @@ public class Station implements Serializable {
     SDFM = sDFM;
   }
 
-  /**
-   * @see java.lang.Object#equals(java.lang.Object)
-   */
   /*
-   * public boolean equals(Object o) {
-   * if (o instanceof Station) {
-   * Station station = (Station) o;
-   * return NSTA.equals(station.NSTA);
-   * }
-   * return false;
-   * }
+   * (non-Javadoc)
+   * 
+   * @see java.lang.Object#toString()
    */
+  public String toString() {
+    return NSTA;
+  }
 }
