@@ -31,6 +31,7 @@ public class Event {
   private Map<String, Magnitude> magnitudes = new HashMap<String, Magnitude>();
   private Map<String, Origin> origins = new HashMap<String, Origin>();
   private Map<String, Pick> picks = new HashMap<String, Pick>();
+  private Map<String, StationMagnitude> stationMagnitudes = new HashMap<String, StationMagnitude>();
 
   public String publicId;
   private String eventSource;
@@ -120,14 +121,18 @@ public class Event {
       event.appendChild(origin.toElement(doc));
     }
 
-    // TODO: Magnitudes not yet supported
-    /*
-     * for (Magnitude magnitude : magnitudes) { event.appendChild(magnitude.toElement(doc)); }
-     */
+    for (Magnitude magnitude : magnitudes.values()) {
+      event.appendChild(magnitude.toElement(doc));
+    }
 
     for (Pick pick : picks.values()) {
       event.appendChild(pick.toElement(doc));
     }
+
+    for (StationMagnitude magnitude : stationMagnitudes.values()) {
+      event.appendChild(magnitude.toElement(doc));
+    }
+
     return event;
   }
 
@@ -169,6 +174,16 @@ public class Event {
     }
   }
 
+  private void parseStationMagnitudes(NodeList magnitudeElements) {
+    stationMagnitudes.clear();
+    final int magnitudeCount = magnitudeElements.getLength();
+    for (int idx = 0; idx < magnitudeCount; idx++) {
+      StationMagnitude magnitude = new StationMagnitude((Element) magnitudeElements.item(idx));
+      LOGGER.debug("Adding station mag {} {}", idx, magnitude.publicId);
+      stationMagnitudes.put(magnitude.publicId, magnitude);
+    }
+  }
+
   public void setDescription(String description) {
     this.description = description;
   }
@@ -194,6 +209,8 @@ public class Event {
     if (preferredMagnitude == null && magnitudes.size() > 0) {
       preferredMagnitude = (Magnitude) magnitudes.values().toArray()[0];
     }
+
+    parseStationMagnitudes(event.getElementsByTagName("stationMagnitude"));
 
     eventSource =
         StringUtils.stringToString(event.getAttribute("catalog:eventsource"), eventSource);
@@ -234,7 +251,6 @@ public class Event {
   @Override
   public String toString() {
     StringBuffer sb = new StringBuffer();
-
     sb.append("Public ID: " + publicId + "\n");
     sb.append("Event type: " + type + "(" + typeCertainty + ")\n");
     sb.append("Description: " + description + "\n");
@@ -246,19 +262,16 @@ public class Event {
     for (Magnitude mag : magnitudes.values()) {
       sb.append("\t" + mag + "\n");
     }
-
     sb.append("Preferred origin of " + origins.size() + ":\n");
     sb.append(preferredOrigin + "\n");
     sb.append("All origins: ");
     for (Origin origin : origins.values()) {
       sb.append(origin + "\n");
     }
-
     sb.append("Pick count: " + picks.size() + "\n");
     for (Pick pick : picks.values()) {
       sb.append(pick + "\n");
     }
-
     return sb.toString();
   }
 
@@ -357,6 +370,20 @@ public class Event {
 
   public void setComment(String comment) {
     this.comment = comment;
+  }
+
+  /**
+   * @return the stationMagnitudes
+   */
+  public Map<String, StationMagnitude> getStationMagnitudes() {
+    return stationMagnitudes;
+  }
+
+  /**
+   * @param stationMagnitudes the stationMagnitudes to set
+   */
+  public void setStationMagnitudes(Map<String, StationMagnitude> stationMagnitudes) {
+    this.stationMagnitudes = stationMagnitudes;
   }
 
 
