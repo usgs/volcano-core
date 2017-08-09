@@ -653,8 +653,8 @@ public class Hypo71 {
       // Integration code goes here
       results.addHypocenterOutput(
           new Hypocenter(C4.KDATE, RMKO, C4.KHR, (int) KMIN, SEC, (int) LAT1, LAT2, (int) LON1,
-              LON2, O2.Z, RMK2, MAGOUT, (int) NO, (int) IDMIN, (int) IGAP, KNO, RMS, ERHOUT, SE3OUT,
-              Q, QS, QD, ADJ, JNST, O1.NR, O2.AVR, O2.AAR, NM, AVXM, SDXM, NF, AVFM, SDFM, O1.NI));
+              LON2, O2.Z, RMK2, MAGOUT, (int) NO, O2.DMIN, (int) IGAP, KNO, RMS, ERHOUT, SE3OUT, Q,
+              QS, QD, ADJ, JNST, O1.NR, O2.AVR, O2.AAR, NM, AVXM, SDXM, NF, AVFM, SDFM, O1.NI));
 
       writeln("FPRINT_WRITER",
           data(C4.KDATE, RMKO, C4.KHR, (int) KMIN, SEC, (int) LAT1, '-', LAT2, (int) LON1, '-',
@@ -810,14 +810,15 @@ public class Hypo71 {
           "(1X,A4,F6.1,2I4,1X,A4,1X,2I2,4F6.2,A6,A2,F4.2,I4,I3,F6.2,I2,A4,A1,1X,A3,A4,A4,A1,1X,A4,3A6,A2,A4,A6,T6,A1)");
 
       results.addStationToTheResultList(new Station(MSTA[K], DELTA[K], (int) IAZ, (int) IAIN,
-          PRMK[K], JHR, JMIN[K], P[K], TPK, T[K], DLYK, X4KOUT, WRK[K], WT[K], (int) IAMX,
-          (int) IPRX, CAL[K], KLAS[KJI - 1], XMAGOU, RMK3, RMK[K], FMPOUT, FMAGOU, RMK4, SRMK[K],
-          SKOUT, TSKOUT, SRESOU, RMK5, SWTOUT, DTKOUT, IW[KJI - 1]));
+          PRMK[K], JHR, JMIN[K], P[K], TPK, T[K], DLYK, X[3][K], WRK[K], WT[K], (int) IAMX,
+          (int) IPRX, CAL[K], KLAS[KJI - 1], XMAG[K], RMK3, RMK[K], IFMPK, FMAG[K], RMK4, SRMK[K],
+          S[K], TSK, SRESOU, RMK5, SWT, DTKOUT, IW[KJI - 1], INS[K], IEW[K]));
 
       if (C1.IPUN != 2) {
         continue;
       }
-      final double ISEC = 100 * SEC;
+      // final double ISEC = 100 * SEC;
+      final int ISEC = (int) (100 * SEC);
       writeln("FPUNCH_WRITER",
           data(MSTA[K], DELTA[K], AZ[K], AIN[K], PRMK[K], TPK, X4KOUT, WT[K], XMAGOU, RMK[K],
               FMAGOU, C4.KDATE, C4.KHR, KMIN, ISEC, KJI, SYM3),
@@ -4545,19 +4546,4 @@ public class Hypo71 {
     return null;
   }
 
-  /**
-   * Get East/West indicator.
-   * @return E if Eastern, W if Western
-   */
-  public char getIEW() {
-    return IEW[0];
-  }
-
-  /**
-   * Get North/South indicator.
-   * @return N if North, S if South
-   */
-  public char getINS() {
-    return INS[0];
-  }
 }

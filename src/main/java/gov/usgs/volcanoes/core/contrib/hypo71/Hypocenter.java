@@ -68,7 +68,7 @@ public class Hypocenter implements Serializable {
   private String QQS;
 
   public Hypocenter(int kDATE, char rMKO, int kHR, int kMIN, double sEC, int lAT1, double lAT2,
-      int lON1, double lON2, double z, char rMK2, String mAGOUT, int nO, int iDMIN, int iGAP,
+      int lON1, double lON2, double z, char rMK2, String mAGOUT, int nO, double dmin, int iGAP,
       int kNO, double rMS, String eRHOUT, String sE3OUT, char q, char qS, char qD, double aDJ,
       int jNST, int nR, double aVR, double aAR, int nM, double aVXM, double sDXM, int nF,
       double aVFM, double sDFM, int nI) {
@@ -85,7 +85,7 @@ public class Hypocenter implements Serializable {
     RMK2 = rMK2;
     MAGOUT = mAGOUT;
     NO = nO;
-    IDMIN = iDMIN;
+    DMIN = dmin;
     IGAP = iGAP;
     KNO = kNO;
     RMS = rMS;
@@ -409,5 +409,18 @@ public class Hypocenter implements Serializable {
 
   public double getLongitude() {
     return LON1 + (LON2 / 60d);
+  }
+
+  /*
+   * (non-Javadoc)
+   * 
+   * @see java.lang.Object#toString()
+   */
+  public String toString() {
+    StringBuffer sb = new StringBuffer();
+    sb.append(String.format("%.2f", getLatitude()));
+    sb.append(" " + String.format("%.2f", getLongitude()));
+    sb.append(" " + String.format("%.2f", Z) + "km");
+    return sb.toString();
   }
 }
