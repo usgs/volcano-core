@@ -5,6 +5,7 @@ package gov.usgs.volcanoes.core.contrib.hypo71.pause;
  * 
  * @author Tom Parker
  */
+@Deprecated
 public class ControlCard {
 
   private final int ksing;
@@ -122,17 +123,17 @@ public class ControlCard {
     public Builder ztr(double ztr) {
       this.ztr = ztr;
       return this;
- }
+    }
 
     public Builder xnear(double xnear) {
       this.xnear = xnear;
       return this;
- }
+    }
 
     public Builder xfar(double xfar) {
       this.xfar = xfar;
       return this;
-   }
+    }
 
     public Builder pos(double pos) {
       this.pos = pos;
@@ -142,7 +143,7 @@ public class ControlCard {
     public Builder iq(int iq) {
       this.iq = iq;
       return this;
-   }
+    }
 
     public Builder kms(int kms) {
       this.kms = kms;
@@ -152,22 +153,22 @@ public class ControlCard {
     public Builder kfm(int kfm) {
       this.kfm = kfm;
       return this;
-  }
+    }
 
     public Builder ipun(int ipun) {
       this.ipun = ipun;
       return this;
-   }
+    }
 
     public Builder imag(int imag) {
       this.imag = imag;
       return this;
-   }
+    }
 
     public Builder ir(int ir) {
       this.ir = ir;
       return this;
- }
+    }
 
     public Builder iprn(int iprn) {
       this.iprn = iprn;
@@ -182,7 +183,7 @@ public class ControlCard {
     public Builder ktest(int ktest) {
       this.ktest = ktest;
       return this;
-   }
+    }
 
     public Builder setKAZ(int kaz) {
       this.kaz = kaz;
@@ -202,22 +203,22 @@ public class ControlCard {
     public Builder lat1(int lat1) {
       this.lat1 = lat1;
       return this;
-  }
+    }
 
     public Builder lat2(int lat2) {
       this.lat2 = lat2;
       return this;
- }
+    }
 
     public Builder lon1(double lon1) {
       this.lon1 = lon1;
       return this;
-  }
+    }
 
     public Builder lon2(double lon2) {
       this.lon2 = lon2;
       return this;
-   }
+    }
 
     public ControlCard build() {
       return new ControlCard(this);
