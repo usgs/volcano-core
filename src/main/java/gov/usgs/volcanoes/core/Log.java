@@ -6,7 +6,6 @@
 
 package gov.usgs.volcanoes.core;
 
-
 import org.apache.log4j.AsyncAppender;
 import org.apache.log4j.Level;
 import org.apache.log4j.Logger;

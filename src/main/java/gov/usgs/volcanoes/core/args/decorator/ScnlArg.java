@@ -5,7 +5,6 @@
 
 package gov.usgs.volcanoes.core.args.decorator;
 
-
 import com.martiansoftware.jsap.FlaggedOption;
 import com.martiansoftware.jsap.JSAP;
 
@@ -14,8 +13,6 @@ import gov.usgs.volcanoes.core.args.ArgumentException;
 import gov.usgs.volcanoes.core.args.Arguments;
 import gov.usgs.volcanoes.core.args.parser.ScnlParser;
 import gov.usgs.volcanoes.core.data.Scnl;
-
-import java.util.regex.Pattern;
 
 
 /**
@@ -36,9 +33,9 @@ public class ScnlArg extends ArgsDecorator {
   public ScnlArg(boolean isRequired, Arguments nextArg) throws ArgumentException {
     super(nextArg);
 
-    String delimiter = Pattern.quote(Scnl.DELIMITER);
-    nextArg.registerParameter(new FlaggedOption("channel", new ScnlParser(), JSAP.NO_DEFAULT,
-        isRequired, 'c', "channel",
-        String.format("Channel as 'S%sC%sN%sL'\n", delimiter, delimiter, delimiter)));
+    String delimiter = Scnl.DELIMITER;
+    nextArg.registerParameter(
+        new FlaggedOption("channel", new ScnlParser(), JSAP.NO_DEFAULT, isRequired, 'c', "channel",
+            String.format("Channel as 'S%sC%sN%sL'\n", delimiter, delimiter, delimiter)));
   }
 }

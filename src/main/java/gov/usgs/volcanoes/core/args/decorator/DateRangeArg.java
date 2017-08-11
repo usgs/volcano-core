@@ -5,7 +5,6 @@
 
 package gov.usgs.volcanoes.core.args.decorator;
 
-
 import com.martiansoftware.jsap.FlaggedOption;
 import com.martiansoftware.jsap.JSAP;
 import com.martiansoftware.jsap.JSAPResult;
