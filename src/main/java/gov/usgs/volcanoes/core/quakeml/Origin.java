@@ -148,6 +148,16 @@ public class Origin {
     for (Arrival arrival : arrivals.values()) {
       origin.appendChild(arrival.toElement(doc));
     }
+    if (evaluationMode != null) {
+      Element evalModeElement = doc.createElement("evaluationMode");
+      evalModeElement.appendChild(doc.createTextNode(evaluationMode.toString().toLowerCase()));
+      origin.appendChild(evalModeElement);
+    }
+    if (evaluationStatus != null) {
+      Element evalStatusElement = doc.createElement("evaluationStatus");
+      evalStatusElement.appendChild(doc.createTextNode(evaluationStatus.toString().toLowerCase()));
+      origin.appendChild(evalStatusElement);
+    }
     return origin;
   }
 

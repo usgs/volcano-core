@@ -76,6 +76,8 @@ public class Event {
 
     Element event = doc.createElement("event");
     event.setAttribute("publicID", publicId);
+    event.setAttribute("catalog:eventid", eventId);
+    event.setAttribute("catalog:eventsource", eventSource);
 
     if (preferredOrigin != null) {
       Element prefOriginId = doc.createElement("preferredOriginID");

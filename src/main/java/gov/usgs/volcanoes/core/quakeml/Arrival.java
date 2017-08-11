@@ -174,7 +174,7 @@ public class Arrival {
   public String getTag() {
     final StringBuilder sb = new StringBuilder();
 
-    sb.append(timeWeight);
+    sb.append(String.format("%.2f", timeWeight));
 
     final Onset onset = pick.getOnset();
     if (onset == Pick.Onset.EMERGENT) {
