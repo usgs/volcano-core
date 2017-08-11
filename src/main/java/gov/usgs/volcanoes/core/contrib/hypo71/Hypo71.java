@@ -4264,6 +4264,7 @@ public class Hypo71 {
   public String calculateHypo71(String BHEAD, double[] ATEST, Queue<Station> stationsList,
       Queue<CrustalModel> crustalModelList, ControlCard controlCard,
       Queue<PhaseRecord> phaseRecordsList, String fileName) throws IOException, ParseException {
+    AHEAD = BHEAD;
     this.readFromFile = fileName != null;
     if (readFromFile) {
       FINPUT_READER = new BufferedReader(new FileReader(fileName));
