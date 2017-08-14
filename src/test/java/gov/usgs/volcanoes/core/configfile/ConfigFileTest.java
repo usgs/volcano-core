@@ -53,7 +53,7 @@ public class ConfigFileTest {
   @Test
   public void when_askedForDouble_then_returnDouble() {
     double d = configFile.getDouble("double");
-    assertEquals(d, 3.14);
+    assertEquals(d, 3.14, 0);
   }
 
 
@@ -72,7 +72,7 @@ public class ConfigFileTest {
   @Test
   public void when_askedForDouble_then_returnDefault() {
     double aDouble = configFile.getDouble("absent", 2.1);
-    assertEquals(aDouble, 2.1);
+    assertEquals(aDouble, 2.1, 0);
   }
 
   /**
