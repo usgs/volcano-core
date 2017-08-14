@@ -212,20 +212,23 @@ public class Arrival {
   }
 
   /**
-   * @return the distance
+   * Get epicentral distance.
+   * @return the distance in degrees
    */
   public double getDistance() {
     return distance;
   }
 
   /**
-   * @param distance the distance to set
+   * Set epicentral distance.
+   * @param distance the distance to set in degrees
    */
   public void setDistance(double distance) {
     this.distance = distance;
   }
 
   /**
+   * Set pick.
    * @param pick the pick to set
    */
   public void setPick(Pick pick) {
@@ -233,6 +236,7 @@ public class Arrival {
   }
 
   /**
+   * Set phase identification.
    * @param phase the phase to set
    */
   public void setPhase(String phase) {
@@ -240,13 +244,15 @@ public class Arrival {
   }
 
   /**
-   * @param timeResidual the timeResidual to set
+   * Set the time residual between observed and expected arrival time.
+   * @param timeResidual the timeResidual to set in seconds
    */
   public void setTimeResidual(double timeResidual) {
     this.timeResidual = timeResidual;
   }
 
   /**
+   * Set the time weight of the arrival.
    * @param timeWeight the timeWeight to set
    */
   public void setTimeWeight(double timeWeight) {
@@ -254,28 +260,34 @@ public class Arrival {
   }
 
   /**
-   * @return the azimuth
+   * Get azimuth of station as seen from the epicenter.
+   * @return the azimuth in degrees
    */
   public double getAzimuth() {
     return azimuth;
   }
 
   /**
-   * @param azimuth the azimuth to set
+   * Set azimuth of station as seen from the epicenter.
+   * @param azimuth the azimuth to set in degrees
    */
   public void setAzimuth(double azimuth) {
     this.azimuth = azimuth;
   }
 
   /**
-   * @return the takeoffAngle
+   * Get the angle of emerging ray at the source, 
+   * measured against the downward normal direction.
+   * @return the takeoffAngle in degrees
    */
   public double getTakeoffAngle() {
     return takeoffAngle;
   }
 
   /**
-   * @param takeoffAngle the takeoffAngle to set
+   * Set the angle of emerging ray at the source, 
+   * measured against the downward normal direction.
+   * @param takeoffAngle the takeoffAngle to set in degrees
    */
   public void setTakeoffAngle(double takeoffAngle) {
     this.takeoffAngle = takeoffAngle;

@@ -375,6 +375,7 @@ public class Event {
   }
 
   /**
+   * Get station magnitudes.
    * @return the stationMagnitudes
    */
   public Map<String, StationMagnitude> getStationMagnitudes() {
@@ -382,6 +383,7 @@ public class Event {
   }
 
   /**
+   * Set station magnitudes.
    * @param stationMagnitudes the stationMagnitudes to set
    */
   public void setStationMagnitudes(Map<String, StationMagnitude> stationMagnitudes) {
