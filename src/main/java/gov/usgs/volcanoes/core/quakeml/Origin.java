@@ -6,14 +6,13 @@
 
 package gov.usgs.volcanoes.core.quakeml;
 
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 
 import java.util.Collection;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -26,18 +25,29 @@ import java.util.Map;
 public class Origin {
   private static final Logger LOGGER = LoggerFactory.getLogger(Origin.class);
 
-  private final Map<String, Arrival> arrivals;
-  private double azimuthalGap;
-  private final double depth;
+  public String publicId;
+  private TimeQuantity time;
+  private RealQuantity latitude;
+  private RealQuantity longitude;
+  private RealQuantity depth;
+  private OriginQuality quality;
   private EvaluationMode evaluationMode;
   private EvaluationStatus evaluationStatus;
-  private final double latitude;
-  private final double longitude;
-  private double minimumDistance;
-  private int phaseCount;
-  public final String publicId;
-  private double standardError;
-  private long time;
+  private Map<String, Arrival> arrivals = new HashMap<String, Arrival>();
+
+  /**
+   * Constructor for newly created origin.
+   * @param publicId resource identifier of origin
+   * @param time focal time
+   * @param longitude hypocenter longitude (WGS84)
+   * @param latitude hypocenter latitude (WGS84)
+   */
+  public Origin(String publicId, long time, double longitude, double latitude) {
+    this.publicId = publicId;
+    this.time = new TimeQuantity(time);
+    this.longitude = new RealQuantity(longitude);
+    this.latitude = new RealQuantity(latitude);
+  }
 
   /**
    * Constructor.
@@ -52,20 +62,16 @@ public class Origin {
     LOGGER.debug("new origin {}", publicId);
 
     final Element lonElement = (Element) originElement.getElementsByTagName("longitude").item(0);
-    longitude =
-        Double.parseDouble(lonElement.getElementsByTagName("value").item(0).getTextContent());
+    longitude = new RealQuantity(lonElement);
 
     final Element latElement = (Element) originElement.getElementsByTagName("latitude").item(0);
-    latitude =
-        Double.parseDouble(latElement.getElementsByTagName("value").item(0).getTextContent());
+    latitude = new RealQuantity(latElement);
 
     final Element depthElement = (Element) originElement.getElementsByTagName("depth").item(0);
-    depth = Double.parseDouble(depthElement.getElementsByTagName("value").item(0).getTextContent());
+    depth = new RealQuantity(depthElement);
 
     final Element timeElement = (Element) originElement.getElementsByTagName("time").item(0);
-    time = 0;
-    time =
-        QuakeMlUtils.parseTime(timeElement.getElementsByTagName("value").item(0).getTextContent());
+    time = new TimeQuantity(timeElement);
 
     Element evaluationElement =
         (Element) originElement.getElementsByTagName("evaluationStatus").item(0);
@@ -80,39 +86,7 @@ public class Origin {
 
     final Element qualityElement = (Element) originElement.getElementsByTagName("quality").item(0);
     if (qualityElement != null) {
-      final Element errorElement =
-          (Element) qualityElement.getElementsByTagName("standardError").item(0);
-      if (errorElement != null) {
-        standardError = Double.parseDouble(errorElement.getTextContent());
-      } else {
-        standardError = Double.NaN;
-      }
-
-      final Element gapElement =
-          (Element) qualityElement.getElementsByTagName("azimuthalGap").item(0);
-      if (gapElement != null) {
-        LOGGER.debug("GAP: {}", gapElement.getTextContent());
-        azimuthalGap = Double.parseDouble(gapElement.getTextContent());
-      } else {
-        azimuthalGap = Double.NaN;
-      }
-
-      final Element phaseCountElement =
-          (Element) qualityElement.getElementsByTagName("usedPhaseCount").item(0);
-      if (gapElement != null) {
-        phaseCount = Integer.parseInt(phaseCountElement.getTextContent());
-      } else {
-        phaseCount = -1;
-      }
-
-      final Element distanceElement =
-          (Element) qualityElement.getElementsByTagName("minimumDistance").item(0);
-      if (distanceElement != null) {
-        minimumDistance = Double.parseDouble(distanceElement.getTextContent());
-      } else {
-        minimumDistance = Double.NaN;
-      }
-
+      quality = new OriginQuality(qualityElement);
     }
 
     parseArrivals(originElement.getElementsByTagName("arrival"), picks);
@@ -122,12 +96,8 @@ public class Origin {
     return arrivals.values();
   }
 
-  public double getAzimuthalGap() {
-    return azimuthalGap;
-  }
-
   public double getDepth() {
-    return depth;
+    return depth.getValue();
   }
 
   public EvaluationMode getEvaluationMode() {
@@ -139,27 +109,15 @@ public class Origin {
   }
 
   public double getLatitude() {
-    return latitude;
+    return latitude.getValue();
   }
 
   public double getLongitude() {
-    return longitude;
-  }
-
-  public double getMinimumDistance() {
-    return minimumDistance;
-  }
-
-  public int getPhaseCount() {
-    return phaseCount;
-  }
-
-  public double getStandardError() {
-    return standardError;
+    return longitude.getValue();
   }
 
   public long getTime() {
-    return time;
+    return time.getValue().getTime();
   }
 
   private void parseArrivals(NodeList arrivalElements, Map<String, Pick> picks) {
@@ -170,24 +128,107 @@ public class Origin {
     }
   }
 
+  /**
+   * To XML Element.
+   * @param doc xml document
+   * @return xml element
+   */
+  public Element toElement(Document doc) {
+    Element origin = doc.createElement("origin");
+    origin.setAttribute("publicID", publicId);
+    origin.appendChild(time.toElement(doc));
+    origin.appendChild(longitude.toElement(doc, "longitude"));
+    origin.appendChild(latitude.toElement(doc, "latitude"));
+    if (depth != null) {
+      origin.appendChild(depth.toElement(doc, "depth"));
+    }
+    if (quality != null) {
+      origin.appendChild(quality.toElement(doc));
+    }
+    for (Arrival arrival : arrivals.values()) {
+      origin.appendChild(arrival.toElement(doc));
+    }
+    if (evaluationMode != null) {
+      Element evalModeElement = doc.createElement("evaluationMode");
+      evalModeElement.appendChild(doc.createTextNode(evaluationMode.toString().toLowerCase()));
+      origin.appendChild(evalModeElement);
+    }
+    if (evaluationStatus != null) {
+      Element evalStatusElement = doc.createElement("evaluationStatus");
+      evalStatusElement.appendChild(doc.createTextNode(evaluationStatus.toString().toLowerCase()));
+      origin.appendChild(evalStatusElement);
+    }
+    return origin;
+  }
+
   @Override
   public String toString() {
     StringBuffer sb = new StringBuffer();
-
     sb.append("PublicId: " + publicId + "\n");
-    sb.append("Time: " + new Date(time) + "\n");
-    sb.append("Gap: " + azimuthalGap + "°\n");
+    sb.append("Time: " + time.toString() + "\n");
+    sb.append("Location: " + latitude + "°, " + longitude + "°\n");
     sb.append("Depth: " + depth + "m\n");
-    sb.append("Evaluation mode: " + evaluationMode + "\n");
-    sb.append("Evalutaion status: " + evaluationStatus + "\n");
-    sb.append("Location: " + latitude + "°, " + longitude + "° at " + depth + "m depth\n");
-    sb.append("Minimum distance: " + minimumDistance + "°\n");
-    sb.append("Error: " + standardError + "s\n");
-    sb.append("Phase count: " + phaseCount + "\n");
-    for (Arrival arrival : arrivals.values()) {
-      sb.append("Arrival: " + arrival.toString() + "\n");
-    }
-
+    sb.append(quality);
     return sb.toString();
+  }
+
+  public String getPublicId() {
+    return publicId;
+  }
+
+  public void setPublicId(String publicId) {
+    this.publicId = publicId;
+  }
+
+  public void setArrivals(Map<String, Arrival> arrivals) {
+    this.arrivals = arrivals;
+  }
+
+  public void setEvaluationMode(EvaluationMode evaluationMode) {
+    this.evaluationMode = evaluationMode;
+  }
+
+  public void setEvaluationStatus(EvaluationStatus evaluationStatus) {
+    this.evaluationStatus = evaluationStatus;
+  }
+
+  public void setDepth(double depth) {
+    this.depth = new RealQuantity(depth);
+  }
+
+  public void setDepth(RealQuantity depth) {
+    this.depth = depth;
+  }
+
+  public void setLatitude(double latitude) {
+    this.latitude = new RealQuantity(latitude);
+  }
+
+  public void setLatitude(RealQuantity latitude) {
+    this.latitude = latitude;
+  }
+
+  public void setLongitude(double longitude) {
+    this.longitude = new RealQuantity(longitude);
+  }
+
+  public void setLongitude(RealQuantity longitude) {
+    this.longitude = longitude;
+  }
+
+  public void setTime(long time) {
+    this.time = new TimeQuantity(time);
+  }
+
+  public void setTime(TimeQuantity time) {
+    this.time = time;
+  }
+
+  public OriginQuality getQuality() {
+    return quality;
+  }
+
+  public void setQuality(OriginQuality quality) {
+    this.quality = quality;
   }
 }

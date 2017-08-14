@@ -6,12 +6,13 @@ package gov.usgs.volcanoes.core.contrib.hypo71.pause;
  * @author Oleg Shepelev
  * @author Tom Parker
  */
+@Deprecated
 public class CrustalModel {
-	public final double v;
-	public final double d;
+  public final double v;
+  public final double d;
 
-	public CrustalModel(double v, double d) {
-		this.v = v;
-		this.d = d;
-	}
+  public CrustalModel(double v, double d) {
+    this.v = v;
+    this.d = d;
+  }
 }

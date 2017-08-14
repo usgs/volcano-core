@@ -87,13 +87,13 @@ public class TimeTest {
 
   @Test
   public void when_givenRelativeTime_then_returnTime() {
-    assertEquals(1.0, Time.getRelativeTime("-1s"));
-    assertEquals(60.0, Time.getRelativeTime("-1i"));
-    assertEquals(60.0 * 60, Time.getRelativeTime("-1h"));
-    assertEquals(60.0 * 60 * 24, Time.getRelativeTime("-1d"));
-    assertEquals(60.0 * 60 * 24 * 7, Time.getRelativeTime("-1w"));
-    assertEquals(60.0 * 60 * 24 * 30, Time.getRelativeTime("-1m"));
-    assertEquals(60.0 * 60 * 24 * 365, Time.getRelativeTime("-1y"));
+    assertEquals(1.0, Time.getRelativeTime("-1s"), 0);
+    assertEquals(60.0, Time.getRelativeTime("-1i"), 0);
+    assertEquals(60.0 * 60, Time.getRelativeTime("-1h"), 0);
+    assertEquals(60.0 * 60 * 24, Time.getRelativeTime("-1d"), 0);
+    assertEquals(60.0 * 60 * 24 * 7, Time.getRelativeTime("-1w"), 0);
+    assertEquals(60.0 * 60 * 24 * 30, Time.getRelativeTime("-1m"), 0);
+    assertEquals(60.0 * 60 * 24 * 365, Time.getRelativeTime("-1y"), 0);
   }
 
   @Test
@@ -139,7 +139,7 @@ public class TimeTest {
 
   @Test
   public void when_givenTimeRange_then_returnTimeRange() {
-    
-    
+
+
   }
 }

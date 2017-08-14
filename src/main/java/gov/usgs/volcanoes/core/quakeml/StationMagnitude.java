@@ -10,25 +10,24 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
 /**
- * Holder for QuakeML magnitude.
- *
- * @author Tom Parker
+ * Holder for QuakeML station magnitude.
  *
  */
-public class Magnitude {
+public class StationMagnitude {
 
   public final String publicId;
+  private String originId;
   private RealQuantity magnitude;
   private String type = "M";
-  private int stationCount = -1;
 
   /**
    * Default constructor.
    * @param publicId public id
    * @param magnitude magnitude value 
    */
-  public Magnitude(String publicId, double magnitude) {
+  public StationMagnitude(String publicId, String originId, double magnitude) {
     this.publicId = publicId;
+    this.originId = originId;
     this.magnitude = new RealQuantity(magnitude);
   }
 
@@ -37,8 +36,10 @@ public class Magnitude {
    *
    * @param magnitudeElement XML element
    */
-  public Magnitude(Element magnitudeElement) {
+  public StationMagnitude(Element magnitudeElement) {
     publicId = magnitudeElement.getAttribute("publicID");
+
+    originId = magnitudeElement.getElementsByTagName("originID").item(0).getTextContent();
 
     final Element magElement = (Element) magnitudeElement.getElementsByTagName("mag").item(0);
     magnitude = new RealQuantity(magElement);
@@ -52,17 +53,17 @@ public class Magnitude {
    * @return XML element
    */
   public Element toElement(Document doc) {
-    Element element = doc.createElement("magnitude");
+    Element element = doc.createElement("stationMagnitude");
     element.setAttribute("publicID", publicId);
+    Element originElement = doc.createElement("originID");
+    element.appendChild(originElement);
+    originElement.appendChild(doc.createTextNode(originId));
+
     element.appendChild(magnitude.toElement(doc, "mag"));
 
     Element typeElement = doc.createElement("type");
     element.appendChild(typeElement);
     typeElement.appendChild(doc.createTextNode(type));
-
-    Element scElement = doc.createElement("stationCount");
-    element.appendChild(scElement);
-    scElement.appendChild(doc.createTextNode(Integer.toString(stationCount)));
 
     return element;
   }
@@ -71,9 +72,9 @@ public class Magnitude {
   public String toString() {
     StringBuffer sb = new StringBuffer();
     sb.append("PublicId: " + publicId + "\n");
+    sb.append("Origin: " + originId + "\n");
     sb.append("Magnitude: " + magnitude.toString() + "\n");
     sb.append("Type: " + type + "\n");
-    sb.append("Station count: " + stationCount + "\n");
     return sb.toString();
   }
 
@@ -91,14 +92,6 @@ public class Magnitude {
 
   public void setType(String type) {
     this.type = type;
-  }
-
-  public int getStationCount() {
-    return stationCount;
-  }
-
-  public void setStationCount(int stationCount) {
-    this.stationCount = stationCount;
   }
 
 }

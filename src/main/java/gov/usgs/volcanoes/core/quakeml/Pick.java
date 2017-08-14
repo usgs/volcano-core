@@ -77,7 +77,7 @@ public class Pick {
   private static final Logger LOGGER = LoggerFactory.getLogger(Pick.class);
 
   public String publicId;
-  private TimeQuantity timeQuantity;
+  private TimeQuantity time;
   private String channel;
   private Onset onset;
   private Polarity polarity;
@@ -88,12 +88,12 @@ public class Pick {
    * Constructor from manually created pick.
    * 
    * @param publicId public id
-   * @param timeQuantity pick time quantity
+   * @param time pick time quantity
    * @param channel waveform identifier
    */
-  public Pick(String publicId, TimeQuantity timeQuantity, String channel) {
+  public Pick(String publicId, TimeQuantity time, String channel) {
     this.publicId = publicId;
-    this.timeQuantity = timeQuantity;
+    this.time = time;
     this.channel = channel.replaceAll("\\s", "\\$");
     evaluationMode = EvaluationMode.MANUAL;
   }
@@ -119,7 +119,7 @@ public class Pick {
     LOGGER.debug("new Pick {}", publicId);
 
     final Element timeElement = (Element) pickElement.getElementsByTagName("time").item(0);
-    timeQuantity = new TimeQuantity(timeElement);
+    time = new TimeQuantity(timeElement);
 
     final NodeList onsetList = pickElement.getElementsByTagName("onset");
     if (onsetList != null && onsetList.getLength() > 0) {
@@ -168,7 +168,7 @@ public class Pick {
     Element pick = doc.createElement("pick");
     pick.setAttribute("publicID", publicId);
 
-    pick.appendChild(timeQuantity.toElement(doc));
+    pick.appendChild(time.toElement(doc));
 
     Element waveformId = doc.createElement("waveformID");
     String[] scnl = channel.split("\\$");
@@ -211,7 +211,7 @@ public class Pick {
   public String toString() {
     StringBuffer sb = new StringBuffer();
     sb.append("PublicId: " + publicId + "\n");
-    sb.append("Time: " + timeQuantity.getValue() + "\n");
+    sb.append("Time: " + time.getValue() + "\n");
     sb.append("Channel: " + channel + "\n");
     sb.append("Onset: " + onset + "\n");
     sb.append("Polarity: " + polarity + "\n");
@@ -250,15 +250,15 @@ public class Pick {
    * @return milliseconds
    */
   public long getTime() {
-    return timeQuantity.getValue().getTime();
+    return time.getValue().getTime();
   }
 
   public TimeQuantity getTimeQuantity() {
-    return timeQuantity;
+    return time;
   }
 
   public void setTimeQuantity(TimeQuantity timeQuantity) {
-    this.timeQuantity = timeQuantity;
+    this.time = timeQuantity;
   }
 
   public String getChannel() {
