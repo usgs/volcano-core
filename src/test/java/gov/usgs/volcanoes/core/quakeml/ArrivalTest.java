@@ -58,10 +58,10 @@ public class ArrivalTest {
 
       Arrival arrival2 = new Arrival(element, picks);
       assertEquals(100.0, arrival2.getAzimuth(), 0.01);
-      assertEquals(150.0, arrival2.getAzimuth(), 0.01);
-      assertEquals(100.0, arrival2.getAzimuth(), 0.01);
-      assertEquals(100.0, arrival2.getAzimuth(), 0.01);
-      assertEquals(100.0, arrival2.getAzimuth(), 0.01);
+      assertEquals(150.0, arrival2.getDistance(), 0.01);
+      assertEquals(45.0, arrival2.getTakeoffAngle(), 0.01);
+      assertEquals(0.2, arrival2.getTimeResidual(), 0.01);
+      assertEquals(1.5, arrival2.getTimeWeight(), 0.01);
     } catch (Exception e) {
       fail("Exception: " + e.getMessage()); // TODO
     }
