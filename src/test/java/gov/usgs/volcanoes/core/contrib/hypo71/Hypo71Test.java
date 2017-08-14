@@ -38,11 +38,9 @@ public class Hypo71Test {
   public final void testCalculateHypo71() {
     ControlCard controlCard =
         new ControlCard(0, 5.0, 50.0, 100.0, 1.78, 4, 0, 0, 0, 1, 0, 1, 0, 0, 0, 1, 1, 0, 0, 0, 0);
-    Queue<CrustalModel> crustalModelList = new LinkedList<CrustalModel>();
-    Queue<Station> stationList = new LinkedList<Station>();
-    Queue<PhaseRecord> phaseRecordList = new LinkedList<PhaseRecord>();
 
     // Crustal Model
+    Queue<CrustalModel> crustalModelList = new LinkedList<CrustalModel>();
     crustalModelList.add(new CrustalModel(3.3, 0.0));
     crustalModelList.add(new CrustalModel(5.0, 1.0));
     crustalModelList.add(new CrustalModel(5.7, 4.0));
@@ -50,6 +48,7 @@ public class Hypo71Test {
     crustalModelList.add(new CrustalModel(8.0, 25.0));
 
     // Station
+    Queue<Station> stationList = new LinkedList<Station>();
     stationList.add(
         new Station(' ', "TDH", 45, 17.38, 'N', 121, 47.49, 'W', 0, 0, 0, 0, 1, 0, 0, 0, 0, 0));
     stationList.add(
@@ -64,6 +63,7 @@ public class Hypo71Test {
         new Station(' ', "TIMB", 45, 20.14, 'N', 121, 42.62, 'W', 0, 0, 0, 0, 1, 0, 0, 0, 0, 0));
 
     // Phase Records
+    Queue<PhaseRecord> phaseRecordList = new LinkedList<PhaseRecord>();
     phaseRecordList.add(new PhaseRecord("PALM", "EDP1", 0.0, 1, 12, 23.10, 0.0, "EUS1", 0.0, 0.0,
         0.0, 0.0, 0.0, "", 0.0, 16.0, "", 'D', "", "", ' ', "EDP1"));
     phaseRecordList.add(new PhaseRecord("TIMB", "EUP1", 0.0, 1, 12, 23.30, 0.0, "EUS1", 0.0, 0.0,
@@ -78,7 +78,6 @@ public class Hypo71Test {
         0.0, 0.0, 0.0, "", 0.0, 5.0, "", 'D', "", "", ' ', "EDP1"));
     phaseRecordList.add(new PhaseRecord(" ", " ", 0.0, 0, 0, 0, 0.0, " ", 0.0, 0.0, 0.0, 0.0, 0.0,
         "", 0.0, 0.0, "", ' ', "", "", ' ', " "));
-
 
     Hypo71 hypo71 = new Hypo71();
     try {
