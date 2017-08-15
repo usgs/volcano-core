@@ -35,7 +35,12 @@ public class Arrival {
     return new Comparator<Arrival>() {
       @Override
       public int compare(final Arrival e1, final Arrival e2) {
-        return Double.compare(e1.distance, e2.distance);
+        int result = Double.compare(e1.distance, e2.distance);
+        if (result == 0) {
+          return e1.phase.compareTo(e2.phase);
+        } else {
+          return result;
+        }
       }
     };
   }
@@ -195,20 +200,40 @@ public class Arrival {
     return sb.toString();
   }
 
-  public double getTimeResidual() {
-    return timeResidual;
-  }
-
   @Override
   public String toString() {
     StringBuffer sb = new StringBuffer();
-
     sb.append("PublicId: " + publicId + "\n");
     sb.append("Distance: " + distance + "°\n");
     sb.append("Phase: " + phase + "\n");
-    sb.append("Pick: " + pick + "\n");
-
+    sb.append("Pick: " + pick);
     return sb.toString();
+  }
+
+  /**
+   * @see java.lang.Object#equals(java.lang.Object)
+   */
+  /*
+   * public boolean equals(Object o) {
+   * if (!(o instanceof Arrival)) {
+   * return false;
+   * }
+   * Arrival other = (Arrival) o;
+   * if (!other.publicId.equals(publicId)) {
+   * return false;
+   * }
+   * if (!other.pick.publicId.equals(pick.publicId)) {
+   * return false;
+   * }
+   * if (!other.phase.equals(phase)) {
+   * return false;
+   * }
+   * return true;
+   * }
+   */
+
+  public double getTimeResidual() {
+    return timeResidual;
   }
 
   /**

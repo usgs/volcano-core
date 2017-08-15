@@ -214,8 +214,7 @@ public class Pick {
     sb.append("Time: " + time.getValue() + "\n");
     sb.append("Channel: " + channel + "\n");
     sb.append("Onset: " + onset + "\n");
-    sb.append("Polarity: " + polarity + "\n");
-
+    sb.append("Polarity: " + polarity);
     return sb.toString();
   }
 
