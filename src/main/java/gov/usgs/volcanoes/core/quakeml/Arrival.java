@@ -210,28 +210,6 @@ public class Arrival {
     return sb.toString();
   }
 
-  /**
-   * @see java.lang.Object#equals(java.lang.Object)
-   */
-  /*
-   * public boolean equals(Object o) {
-   * if (!(o instanceof Arrival)) {
-   * return false;
-   * }
-   * Arrival other = (Arrival) o;
-   * if (!other.publicId.equals(publicId)) {
-   * return false;
-   * }
-   * if (!other.pick.publicId.equals(pick.publicId)) {
-   * return false;
-   * }
-   * if (!other.phase.equals(phase)) {
-   * return false;
-   * }
-   * return true;
-   * }
-   */
-
   public double getTimeResidual() {
     return timeResidual;
   }
