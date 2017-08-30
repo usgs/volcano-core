@@ -65,7 +65,9 @@ public class Zip {
     while (!done) {
       final byte[] compBuf = new byte[bytes.length];
       compSize = deflater.deflate(compBuf);
-      if (deflater.finished()) {
+
+      // needsInput check added to allow for empty input buffer
+      if (deflater.finished() || deflater.needsInput()) {
         done = true;
       }
       list.add(compBuf);
@@ -112,7 +114,9 @@ public class Zip {
       while (!done) {
         final byte[] buffer = new byte[bufferSize];
         numBytes = inflater.inflate(buffer);
-        if (inflater.finished()) {
+
+        // needsInput check added to allow for empty input buffer
+        if (inflater.finished() || inflater.needsInput()) {
           done = true;
         }
         list.add(buffer);
