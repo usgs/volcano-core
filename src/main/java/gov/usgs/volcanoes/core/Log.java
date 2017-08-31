@@ -23,7 +23,7 @@ import java.io.IOException;
  *
  */
 public class Log {
-  private static String LOG_PATTERN = "%d{yyyy-MM-dd HH:mm:ss} %5p - %m (%F:%L)%n";
+  private static String LOG_PATTERN = "%d{yyyy-MM-dd HH:mm:ss} %5p - %m%n";
 
   /**
    * Add a rolling file appender to the root logger.
