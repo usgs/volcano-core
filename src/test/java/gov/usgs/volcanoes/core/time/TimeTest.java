@@ -138,8 +138,7 @@ public class TimeTest {
   }
 
   @Test
-  public void when_givenTimeRange_then_returnTimeRange() {
-
-
+  public void when_askedSecondsInYear_then_provideAnswer() {
+    assertEquals(31557600.0, Time.YEAR_IN_S);
   }
 }

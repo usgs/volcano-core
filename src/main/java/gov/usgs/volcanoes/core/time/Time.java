@@ -47,7 +47,7 @@ public final class Time {
   public static final String STANDARD_TIME_FORMAT_MS = "yyyy-MM-dd HH:mm:ss.SSS";
 
   /** Seconds in a day. */
-  public static final double DAY_IN_S = 60 * 60 * 24;
+  public static final int DAY_IN_S = 60 * 60 * 24;
 
   /** Seconds in a year. */
   public static final double YEAR_IN_S = DAY_IN_S * 365.25;
