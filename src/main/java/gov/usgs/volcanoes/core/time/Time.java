@@ -50,7 +50,7 @@ public final class Time {
   public static final double DAY_IN_S = 60 * 60 * 24;
 
   /** Seconds in a year. */
-  public static final double YEAR_IN_S = 60 * 60 * 24 * 365.25;
+  public static final double YEAR_IN_S = DAY_IN_S * 365.25;
 
   static {
     formats = new HashMap<String, SimpleDateFormat>();
