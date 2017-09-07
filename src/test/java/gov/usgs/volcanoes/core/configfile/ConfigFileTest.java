@@ -6,9 +6,7 @@ import static org.junit.Assert.assertTrue;
 
 import org.junit.Before;
 import org.junit.BeforeClass;
-import org.junit.Rule;
 import org.junit.Test;
-import org.junit.rules.ExpectedException;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -24,9 +22,6 @@ import java.nio.file.StandardCopyOption;
  *
  */
 public class ConfigFileTest {
-  @Rule
-  public final ExpectedException exception = ExpectedException.none();
-
   private static final String CONFIG_FILENAME = "config.config";
 
   private ConfigFile configFile;
