@@ -56,7 +56,7 @@ public class TimeSpan {
     if (minutes > 0) {
       sb.append(minutes).append("m ");
     }
-    if (seconds > 0) {
+    if (seconds > 0 || sb.length() == 0) {
       sb.append(secFormatter.format(seconds)).append("s ");
     }
     sb.deleteCharAt(sb.length() - 1);
