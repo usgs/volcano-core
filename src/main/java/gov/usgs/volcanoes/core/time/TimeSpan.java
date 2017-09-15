@@ -18,6 +18,10 @@ public class TimeSpan {
     this.endTime = endTime;
   }
 
+  public static TimeSpan fromJ2kSec(double start, double end) {
+    return new TimeSpan(J2kSec.asEpoch(start), J2kSec.asEpoch(end));
+  }
+
   @Override
   public String toString() {
     return String.format("%s to %s", Time.toDateString(startTime), Time.toDateString(endTime));
