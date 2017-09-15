@@ -20,11 +20,11 @@ public class TimeSpan {
 
   @Override
   public String toString() {
-    return String.format("{} to {}", Time.toDateString(startTime), Time.toDateString(endTime));
+    return String.format("%s to %s", Time.toDateString(startTime), Time.toDateString(endTime));
   }
 
   public String toShortString() {
-    return String.format("{} to {}", Time.toDateString(startTime), Time.toDateString(endTime));
+    return String.format("%s to %s", Time.toDateString(startTime), Time.toDateString(endTime));
   }
 
   /**
