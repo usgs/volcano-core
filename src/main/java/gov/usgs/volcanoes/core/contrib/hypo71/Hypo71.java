@@ -3717,13 +3717,16 @@ public class Hypo71 {
    */
   @SuppressWarnings("boxing")
   public void INPUT1(Queue<Station> stationsList, Queue<CrustalModel> crustalModelList,
-      ControlCard controlCard) throws IOException, ParseException {
+      ControlCard controlCard, double[] ATEST) throws IOException, ParseException {
     int IFLAG = 0;
 
     writeln("FPRINT_WRITER", data("1"), "(A)");// line 211
 
     double[] testDefault =
         {0.10f, 10.0f, 2.0f, 0.05f, 5.0f, 4.0f, -0.87f, 2.00f, 0.0035f, 100.0f, 8.0f, 0.5f, 1.0f};
+    if (ATEST != null) {
+      testDefault = ATEST;
+    }
 
     if (MJUMP < 1) {
       TEST[0] = testDefault[0];
@@ -4276,7 +4279,7 @@ public class Hypo71 {
           MJUMP = 0;
         }
         goto40 = false;
-        INPUT1(stationsList, crustalModelList, controlCard);
+        INPUT1(stationsList, crustalModelList, controlCard, ATEST);
         if (C1.IPUN != 0) {
           writeln("FPUNCH_WRITER", data(" DATE    ORIGIN    LAT ", INS[0], "    LONG ", IEW[0],
               "    DEPTH    MAG NO GAP DMIN  RMS  ERH  ERZ QM"), "(A,A1,A,A1,A)");
