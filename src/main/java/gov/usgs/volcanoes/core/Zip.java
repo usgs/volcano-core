@@ -61,10 +61,10 @@ public class Zip {
     final ArrayList<byte[]> list = new ArrayList<byte[]>(2);
     boolean done = false;
     int compSize = 0;
-    // must allow for the compressed size to be larger than the original size
     while (!done) {
-      final byte[] compBuf = new byte[bytes.length];
+      final byte[] compBuf = new byte[bytes.length + 8];
       compSize = deflater.deflate(compBuf);
+
       if (deflater.finished()) {
         done = true;
       }
@@ -112,6 +112,7 @@ public class Zip {
       while (!done) {
         final byte[] buffer = new byte[bufferSize];
         numBytes = inflater.inflate(buffer);
+
         if (inflater.finished()) {
           done = true;
         }

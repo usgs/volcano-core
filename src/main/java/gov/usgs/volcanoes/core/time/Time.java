@@ -45,8 +45,12 @@ public final class Time {
 
   /** standard display format with ms. */
   public static final String STANDARD_TIME_FORMAT_MS = "yyyy-MM-dd HH:mm:ss.SSS";
+
+  /** Seconds in a day. */
+  public static final int DAY_IN_S = 60 * 60 * 24;
+
   /** Seconds in a year. */
-  public static final double YEAR_IN_S = 31557600;
+  public static final double YEAR_IN_S = DAY_IN_S * 365.25;
 
   static {
     formats = new HashMap<String, SimpleDateFormat>();

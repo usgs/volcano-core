@@ -18,13 +18,17 @@ public class TimeSpan {
     this.endTime = endTime;
   }
 
+  public static TimeSpan fromJ2kSec(double start, double end) {
+    return new TimeSpan(J2kSec.asEpoch(start), J2kSec.asEpoch(end));
+  }
+
   @Override
   public String toString() {
-    return String.format("{} to {}", Time.toDateString(startTime), Time.toDateString(endTime));
+    return String.format("%s to %s", Time.toDateString(startTime), Time.toDateString(endTime));
   }
 
   public String toShortString() {
-    return String.format("{} to {}", Time.toDateString(startTime), Time.toDateString(endTime));
+    return String.format("%s to %s", Time.toDateString(startTime), Time.toDateString(endTime));
   }
 
   /**
@@ -56,7 +60,7 @@ public class TimeSpan {
     if (minutes > 0) {
       sb.append(minutes).append("m ");
     }
-    if (seconds > 0) {
+    if (seconds > 0 || sb.length() == 0) {
       sb.append(secFormatter.format(seconds)).append("s ");
     }
     sb.deleteCharAt(sb.length() - 1);

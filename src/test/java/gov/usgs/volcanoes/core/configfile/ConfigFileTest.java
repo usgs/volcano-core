@@ -22,7 +22,6 @@ import java.nio.file.StandardCopyOption;
  *
  */
 public class ConfigFileTest {
-
   private static final String CONFIG_FILENAME = "config.config";
 
   private ConfigFile configFile;
@@ -47,33 +46,41 @@ public class ConfigFileTest {
     configFile = new ConfigFile(CONFIG_FILENAME);
   }
 
-  /**
-   * 
-   */
+
   @Test
-  public void when_askedForDouble_then_returnDouble() {
+  public void when_askedForValue_then_returnValue() {
     double d = configFile.getDouble("double");
-    assertEquals(d, 3.14, 0);
-  }
+    assertEquals(d, 3.14);
 
-
-  /**
-   * 
-   */
-  @Test
-  public void when_askedForInt_then_returnInt() {
     int anInt = configFile.getInt("int");
     assertEquals(anInt, 5);
+
+    long aLong = configFile.getLong("long");
+    assertEquals(aLong, 6L);
   }
+
 
   /**
    * 
    */
   @Test
-  public void when_askedForDouble_then_returnDefault() {
+  public void when_askedForValue_then_returnDefault() {
     double aDouble = configFile.getDouble("absent", 2.1);
-    assertEquals(aDouble, 2.1, 0);
+    assertEquals(aDouble, 2.1);
+
+    int anInt = configFile.getInt("absent", 1);
+    assertEquals(anInt, 1);
+
+    long aLong = configFile.getLong("absent", 4L);
+    assertEquals(aLong, 4L);
   }
+
+
+  @Test(expected = NumberFormatException.class)
+  public void when_askedForDouble_then_returnError() {
+    configFile.getDouble("string");
+  }
+
 
   /**
    * 
@@ -83,15 +90,15 @@ public class ConfigFileTest {
     configFile.getInt("string");
   }
 
-
   /**
    * 
    */
-  @Test
-  public void when_askedForInt_then_returnDefault() {
-    int anInt = configFile.getInt("absent", 1);
-    assertEquals(anInt, 1);
+  @Test(expected = NumberFormatException.class)
+  public void when_askedForLong_then_returnError() {
+    configFile.getLong("string");
   }
+
+
 
   /**
    * 

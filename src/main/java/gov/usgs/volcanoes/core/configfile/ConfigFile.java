@@ -219,7 +219,45 @@ public final class ConfigFile {
     double value;
     try {
       value = getDouble(key);
-    } catch (final Exception ex) {
+    } catch (final RuntimeException ex) {
+      put(key, String.valueOf(defaultValue));
+      value = defaultValue;
+    }
+
+    return value;
+  }
+
+  /**
+   * Get parameter value as boolean
+   *
+   * @param key parameter name
+   * @return value of given parameter
+   * @throws RuntimeException if parameter absent or can't be parsed.
+   */
+  public long getLong(String key) {
+    final String value = getString(key);
+    if (value == null) {
+      throw new RuntimeException("Illegal parameter " + key + " = null");
+    }
+
+    final long i = Long.parseLong(value);
+
+    return i;
+  }
+
+  /**
+   * Get parameter value as long
+   *
+   * @param key parameter name
+   * @param defaultValue defaultValue
+   * @return value of given parameter
+   * @throws RuntimeException if parameter absent or can't be parsed.
+   */
+  public long getLong(String key, long defaultValue) {
+    long value;
+    try {
+      value = getLong(key);
+    } catch (final RuntimeException ex) {
       put(key, String.valueOf(defaultValue));
       value = defaultValue;
     }
