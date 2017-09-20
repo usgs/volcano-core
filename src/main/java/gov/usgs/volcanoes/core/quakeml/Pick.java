@@ -52,7 +52,7 @@ public class Pick {
    * Polarity of first motion, usually from impulsive onsets.
    */
   public static enum Polarity {
-    NEGATIVE, POSITIVE, UNDECIDABLE;
+    UNDECIDABLE, NEGATIVE, POSITIVE;
 
     /**
      * Parse polarity from a String.
