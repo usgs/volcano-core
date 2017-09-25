@@ -151,8 +151,7 @@ public abstract class Retriable<T> {
       }
     }
     if (!success) {
-      // if (isOutput())
-      LOGGER.error("{}: giving up.", getName());;
+      LOGGER.error("{}: unsuccessful after {} attempts.", getName(), attempts);
       giveUp();
     }
 
