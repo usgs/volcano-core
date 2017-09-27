@@ -194,7 +194,8 @@ public class CurrentTime {
           final long l = Math.round(localClockOffset * 1000);
           result = new Long(l);
           lastOffset = l;
-          LOGGER.debug("Successfully synchronized with NTP server: " + servers[attempt]);
+          LOGGER.debug("Successfully synchronized with NTP server: {}, offset: {}",
+              servers[attempt], lastOffset);
           socket.close();
           return true;
         } catch (final Exception ex) {
