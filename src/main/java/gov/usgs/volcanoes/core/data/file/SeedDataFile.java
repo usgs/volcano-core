@@ -1,18 +1,7 @@
-package gov.usgs.plot.data.file;
+package gov.usgs.volcanoes.core.data.file;
 
-import edu.iris.dmc.seedcodec.B1000Types;
-import edu.iris.dmc.seedcodec.CodecException;
-import edu.iris.dmc.seedcodec.DecompressedData;
-import edu.iris.dmc.seedcodec.Steim2;
-import edu.iris.dmc.seedcodec.SteimException;
-import edu.iris.dmc.seedcodec.SteimFrameBlock;
-import edu.iris.dmc.seedcodec.UnsupportedCompressionType;
-import edu.sc.seis.seisFile.mseed.Blockette1000;
-import edu.sc.seis.seisFile.mseed.Btime;
-import edu.sc.seis.seisFile.mseed.DataHeader;
-import edu.sc.seis.seisFile.mseed.DataRecord;
-import edu.sc.seis.seisFile.mseed.SeedFormatException;
-import edu.sc.seis.seisFile.mseed.SeedRecord;
+import gov.usgs.volcanoes.core.data.Wave;
+import gov.usgs.volcanoes.core.time.J2kSec;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
@@ -32,8 +21,19 @@ import java.util.Map;
 import java.util.Set;
 import java.util.TimeZone;
 
-import gov.usgs.plot.data.Wave;
-import gov.usgs.util.Util;
+import edu.iris.dmc.seedcodec.B1000Types;
+import edu.iris.dmc.seedcodec.CodecException;
+import edu.iris.dmc.seedcodec.DecompressedData;
+import edu.iris.dmc.seedcodec.Steim2;
+import edu.iris.dmc.seedcodec.SteimException;
+import edu.iris.dmc.seedcodec.SteimFrameBlock;
+import edu.iris.dmc.seedcodec.UnsupportedCompressionType;
+import edu.sc.seis.seisFile.mseed.Blockette1000;
+import edu.sc.seis.seisFile.mseed.Btime;
+import edu.sc.seis.seisFile.mseed.DataHeader;
+import edu.sc.seis.seisFile.mseed.DataRecord;
+import edu.sc.seis.seisFile.mseed.SeedFormatException;
+import edu.sc.seis.seisFile.mseed.SeedRecord;
 
 /**
  * A concrete SeismicDataFile class for SEED and miniSEED files.
@@ -157,7 +157,7 @@ public class SeedDataFile extends SeismicDataFile {
       System.arraycopy(buf, 0, allSamples, idx, buf.length);
     }
 
-    wave = new Wave(allSamples, Util.dateToJ2K(new Date(firstTime)), 1000 / samplePeriodMs);
+    wave = new Wave(allSamples, J2kSec.fromDate(new Date(firstTime)), 1000 / samplePeriodMs);
     return wave;
   }
 
@@ -218,7 +218,7 @@ public class SeedDataFile extends SeismicDataFile {
 
         header.setNumSamples((short) wave.numSamples());
         header.setSampleRate(wave.getSamplingRate());
-        Btime btime = new Btime(Util.j2KToDate(wave.getStartTime()));
+        Btime btime = new Btime(J2kSec.asDate(wave.getStartTime()));
         header.setStartBtime(btime);
 
         DataRecord record = new DataRecord(header);

@@ -1,7 +1,8 @@
-package gov.usgs.plot.data.file;
+package gov.usgs.volcanoes.core.data.file;
 
-import gov.usgs.plot.data.Wave;
-import gov.usgs.util.Util;
+import gov.usgs.volcanoes.core.data.Wave;
+import gov.usgs.volcanoes.core.time.J2kSec;
+import gov.usgs.volcanoes.core.time.Time;
 
 import java.io.BufferedInputStream;
 import java.io.File;
@@ -70,7 +71,8 @@ public class SeisanDataFile extends SeismicDataFile {
   private void readEventFileHeader(BufferedInputStream bis) throws IOException {
     String headerLine = new String(readRecord(bis));
     channelCount = Integer.parseInt(headerLine.substring(30, 33).trim());
-    //System.out.println("CHANNEL COUNT " + channelCount + " :" + headerLine.substring(30, 33) + ":");
+    // System.out.println("CHANNEL COUNT " + channelCount + " :" + headerLine.substring(30, 33) +
+    // ":");
 
     // skip the rest of the header lines. We don't need them.
     int numHeaderLines = 2 + ((channelCount + 2) / 3);
@@ -84,7 +86,7 @@ public class SeisanDataFile extends SeismicDataFile {
 
     String code = extractCode(channelHeader);
 
-    double start = Util.ewToJ2K(extractStartTime(channelHeader) / 1000d);
+    double start = Time.ewToj2k(extractStartTime(channelHeader) / 1000d);
     double samplingRate = Double.parseDouble(new String(channelHeader, 36, 7).trim());
     int sampleCount = Integer.parseInt(new String(channelHeader, 43, 7).trim());
 
@@ -163,9 +165,9 @@ public class SeisanDataFile extends SeismicDataFile {
     if (location == null) {
       location = loc;
     }
-    
+
     if (network == null) {
-      network = new String(header, 16, 1) + new String(header, 19, 1);   
+      network = new String(header, 16, 1) + new String(header, 19, 1);
     }
 
     String station = new String(header, 0, 5).trim();
@@ -173,7 +175,7 @@ public class SeisanDataFile extends SeismicDataFile {
     if (!"--".equals(location) && !"  ".equals(location)) {
       code += readSeparator + location.trim();
     }
-    
+
     return code;
   }
 
@@ -213,7 +215,7 @@ public class SeisanDataFile extends SeismicDataFile {
       fileEnd = Math.max(fileEnd, waves.get(code).getEndTime());
     }
     Calendar c = Calendar.getInstance(TimeZone.getTimeZone("GMT"));
-    c.setTime(Util.j2KToDate(fileStart));
+    c.setTime(J2kSec.asDate(fileStart));
 
     b = ("" + (c.get(Calendar.YEAR) - 1900)).getBytes();
     System.arraycopy(b, 0, header, 33, Math.min(b.length, 3));
@@ -333,7 +335,7 @@ public class SeisanDataFile extends SeismicDataFile {
 
     Calendar c = Calendar.getInstance(TimeZone.getTimeZone("GMT"));
     Wave wave = waves.get(code);
-    Date da = Util.j2KToDate(wave.getStartTime());
+    Date da = J2kSec.asDate(wave.getStartTime());
     c.setTime(da);
 
     b = String.format("%3d", c.get(Calendar.YEAR) - 1900).getBytes();

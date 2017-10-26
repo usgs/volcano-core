@@ -1,7 +1,7 @@
-package gov.usgs.plot.data.file;
+package gov.usgs.volcanoes.core.data.file;
 
-import gov.usgs.plot.data.Wave;
-import gov.usgs.util.Util;
+import gov.usgs.volcanoes.core.data.Wave;
+import gov.usgs.volcanoes.core.time.J2kSec;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -35,7 +35,7 @@ public class SacDataFile extends SeismicDataFile {
     sac = new SacTimeSeries(fileName);
     header = sac.getHeader();
     Wave sw = new Wave();
-    sw.setStartTime(Util.dateToJ2K(getStartTime()));
+    sw.setStartTime(J2kSec.fromDate(getStartTime()));
     sw.setSamplingRate(getSamplingRate());
     sw.buffer = new int[sac.getY().length];
     for (int i = 0; i < sac.getY().length; i++) {
@@ -100,7 +100,7 @@ public class SacDataFile extends SeismicDataFile {
     Calendar cal = Calendar.getInstance();
     cal.setTimeZone(TimeZone.getTimeZone("UTC"));
     Wave wave = waves.get(channel);
-    cal.setTime(Util.j2KToDate(wave.getStartTime()));
+    cal.setTime(J2kSec.asDate(wave.getStartTime()));
     header.setNzyear(cal.get(Calendar.YEAR));
     header.setNzjday(cal.get(Calendar.DAY_OF_YEAR));
     header.setNzhour(cal.get(Calendar.HOUR_OF_DAY));

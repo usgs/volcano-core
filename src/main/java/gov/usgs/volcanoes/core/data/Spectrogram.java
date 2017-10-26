@@ -1,4 +1,4 @@
-package gov.usgs.plot.data;
+package gov.usgs.volcanoes.core.data;
 
 import gov.usgs.volcanoes.core.math.Util;
 

@@ -1,6 +1,7 @@
-package gov.usgs.plot.data.file;
+package gov.usgs.volcanoes.core.data.file;
 
-import gov.usgs.plot.data.Wave;
+
+import gov.usgs.volcanoes.core.data.Wave;
 
 import java.io.File;
 import java.io.IOException;

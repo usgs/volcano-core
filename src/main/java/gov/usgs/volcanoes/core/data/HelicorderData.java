@@ -1,15 +1,17 @@
-package gov.usgs.plot.data;
+package gov.usgs.volcanoes.core.data;
+
+import gov.usgs.volcanoes.core.time.J2kSec;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.nio.ByteBuffer;
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
-import java.util.logging.Logger;
 
 import cern.colt.matrix.DoubleFactory2D;
 import cern.colt.matrix.DoubleMatrix2D;
-import gov.usgs.util.Log;
-import gov.usgs.util.Util;
 
 /**
  *
@@ -17,7 +19,7 @@ import gov.usgs.util.Util;
  */
 public class HelicorderData extends GenericDataMatrix {
   // private DoubleMatrix2D data;
-  protected final static Logger logger = Log.getLogger("gov.usgs.vdx.data.heli.HelicorderData");
+  protected final static Logger LOGGER = LoggerFactory.getLogger(HelicorderData.class);
   private transient double bias = -1E300;
   private transient double meanMax = -1E300;
 
@@ -184,7 +186,7 @@ public class HelicorderData extends GenericDataMatrix {
       d2 = data.getQuick(i, 2);
       if (t > rowStartTime + timeChunk) {
         biases[row] /= samples;
-        logger.fine(row + " " + biases[row]);
+        LOGGER.debug(row + " " + biases[row]);
         row++;
         samples = 0;
         rowStartTime += timeChunk;
@@ -366,10 +368,10 @@ public class HelicorderData extends GenericDataMatrix {
     if (myStart >= otherStart && myEnd <= otherEnd) {
       // other wave dominates this wave
       newHeli = otherHeli;
-      
+
     } else if (myStart <= otherStart && myEnd >= otherEnd) {
       // this wave dominates other wave
-      
+
     } else if (myStart <= otherStart) {
       // this wave is left of other wave
       DoubleMatrix2D[][] ms = new DoubleMatrix2D[2][1];
@@ -432,7 +434,7 @@ public class HelicorderData extends GenericDataMatrix {
   public String toCSV() {
     StringBuffer sb = new StringBuffer();
     for (int i = 0; i < rows(); i++) {
-      sb.append(Util.j2KToDateString(data.getQuick(i, 0)) + ",");
+      sb.append(J2kSec.toDateString(data.getQuick(i, 0)) + ",");
       sb.append(data.getQuick(i, 1) + ",");
       sb.append(data.getQuick(i, 2) + "\n");
     }

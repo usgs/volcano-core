@@ -1,7 +1,7 @@
-package gov.usgs.plot.data.file;
+package gov.usgs.volcanoes.core.data.file;
 
-import gov.usgs.plot.data.Wave;
-import gov.usgs.util.Util;
+import gov.usgs.volcanoes.core.data.Wave;
+import gov.usgs.volcanoes.core.time.J2kSec;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedReader;
@@ -29,7 +29,7 @@ import java.util.TreeMap;
  * @author Diana Norgaard
  */
 public class WinDataFile extends SeismicDataFile {
-  
+
   public static File configFile = null;
   private String timeZone = "UTC";
   private HashMap<Integer, String> channelInfo = new HashMap<Integer, String>();
@@ -40,7 +40,7 @@ public class WinDataFile extends SeismicDataFile {
   public WinDataFile(String filename) {
     super(filename, "WIN^");
   }
-  
+
   static int intFromSingleByte(byte b) {
     return b;
   }
@@ -55,7 +55,7 @@ public class WinDataFile extends SeismicDataFile {
 
   private int intFromThreeBytes(byte[] bites) {
     byte pad = (byte) ((bites[0] < 0) ? -1 : 0);
-    byte[] padded = new byte[] { pad, bites[0], bites[1], bites[2] };
+    byte[] padded = new byte[] {pad, bites[0], bites[1], bites[2]};
     return intFromFourBytes(padded);
   }
 
@@ -219,7 +219,7 @@ public class WinDataFile extends SeismicDataFile {
       reader.close();
       fileReader.close();
     }
-    
+
     // Read WIN file
     FileInputStream fis = new FileInputStream(fileName);
     BufferedInputStream buf = new BufferedInputStream(fis);
@@ -229,8 +229,8 @@ public class WinDataFile extends SeismicDataFile {
       readHeader(cur, dis);
       readData(cur, dis);
     }
-    dis.close();    
-    
+    dis.close();
+
     // create wave objects
     for (List<ChannelData> channels : channelMap.values()) {
       List<Wave> subParts = new ArrayList<Wave>(channels.size());
@@ -251,7 +251,7 @@ public class WinDataFile extends SeismicDataFile {
 
   private Wave toWave(ChannelData c) {
     Wave sw = new Wave();
-    sw.setStartTime(Util.dateToJ2K(getStartTime(c)));
+    sw.setStartTime(J2kSec.fromDate(getStartTime(c)));
     sw.setSamplingRate(c.samplingRate);
     sw.buffer = new int[c.inBuf.size()];
     for (int j = 0; j < c.inBuf.size(); j++) {
@@ -277,7 +277,7 @@ public class WinDataFile extends SeismicDataFile {
     cal.setTimeZone(TimeZone.getTimeZone("UTC"));
     return cal.getTime();
   }
-  
+
   /**
    * Write function is not supported for WIN.
    * 
@@ -287,9 +287,9 @@ public class WinDataFile extends SeismicDataFile {
   public void write() throws IOException {
     // Not supported
   }
-  
+
   public static class ChannelData {
-    
+
     public int packetSize;
     public int year;
     public int month;
@@ -320,13 +320,13 @@ public class WinDataFile extends SeismicDataFile {
       this.dataSize = copy.dataSize;
       this.samplingRate = copy.samplingRate;
     }
-    
+
     /**
      * @see java.lang.Object#toString()
      */
     public String toString() {
-      String text = String.format("Channel: %s, Sample Rate: %s, Data Size: %s",
-          channelNumber, samplingRate, dataSize);
+      String text = String.format("Channel: %s, Sample Rate: %s, Data Size: %s", channelNumber,
+          samplingRate, dataSize);
       return text;
     }
   }

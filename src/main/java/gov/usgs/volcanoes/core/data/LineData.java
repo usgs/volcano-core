@@ -1,13 +1,10 @@
 package gov.usgs.volcanoes.core.data;
 
-import gov.usgs.plot.decorate.SmartTick;
-import gov.usgs.proj.GeoRange;
-import gov.usgs.proj.Projection;
+import gov.usgs.volcanoes.core.math.proj.Projection;
 
 import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Stroke;
-import java.awt.geom.GeneralPath;
 import java.awt.geom.Point2D;
 import java.io.BufferedReader;
 import java.io.File;
@@ -16,8 +13,6 @@ import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.StringTokenizer;
-
-import javax.xml.transform.Transformer;
 
 /**
  * <p>LineData is a class that represents a collection of lines.  This is used
@@ -107,18 +102,6 @@ public class LineData {
 
   }
 
-  /**
-   * Creates a grid over a GeoRange 
-   * @param range GeoRange grid is to cover
-   * @param pts Count of grid lines
-   */
-  public static LineData createLonLatGrid(GeoRange range, int pts) {
-    double[] x = SmartTick.autoTick(range.getWest(), range.getEast(), pts, false);
-    double[] y = SmartTick.autoTick(range.getSouth(), range.getNorth(), pts, false);
-
-    return new LineData(x, y);
-  }
-
   /** Writes the line information to a file in a format that Mathematica
    * can read.  This is used for creating a file that LiveGraphics3D 
    * can use.
@@ -203,29 +186,6 @@ public class LineData {
     }
   }
 
-  /**
-   * Get transformed form of data
-   * @param xform Transformer
-   * @return transformed data
-   */
-  public GeneralPath getPolygon(Transformer xform) {
-    GeneralPath gp = new GeneralPath();
-    boolean first = true;
-    for (Point2D.Double pt : points) {
-      if (Double.isNaN(pt.x) || Double.isNaN(pt.y)) {
-        first = true;
-        gp.closePath();
-        continue;
-      }
-      if (first) {
-        first = false;
-        gp.moveTo((float) xform.getXPixel(pt.x) + 1, (float) xform.getYPixel(pt.y) + 1);
-      } else {
-        gp.lineTo((float) xform.getXPixel(pt.x) + 1, (float) xform.getYPixel(pt.y) + 1);
-      }
-    }
-    return gp;
-  }
 
   /** Applies a projection to the points.
    * @param proj the projection

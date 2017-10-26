@@ -1,4 +1,4 @@
-package gov.usgs.plot.data.file;
+package gov.usgs.volcanoes.core.data.file;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -10,12 +10,10 @@ import java.util.ArrayList;
  * @author Tom Parker
  */
 public enum FileType {
-  SAC(".sac", ".*[_\\.](sac|SAC)", "SAC file", false), 
-  SEED(".mseed", ".*\\.m?seed", "SEED/miniSEED file", true), 
-  TEXT(".txt", ".*\\.(txt|mat)", "Matlab-readable text file", false), 
-  SEISAN(".MAN", ".*\\.(MAN).*", "Seisan file", true), 
-  WIN(".win",".*\\.(win|WIN)","WIN file", true),
-  UNKNOWN(".unknown", ".ukn", "Unknown file type", false);
+  SAC(".sac", ".*[_\\.](sac|SAC)", "SAC file", false), SEED(".mseed", ".*\\.m?seed",
+      "SEED/miniSEED file", true), TEXT(".txt", ".*\\.(txt|mat)", "Matlab-readable text file",
+          false), SEISAN(".MAN", ".*\\.(MAN).*", "Seisan file", true), WIN(".win", ".*\\.(win|WIN)",
+              "WIN file", true), UNKNOWN(".unknown", ".ukn", "Unknown file type", false);
 
   public final String extensionRe;
   public final String extension;
