@@ -8,6 +8,10 @@
 	<!-- Checks suppressed to keep external code intact. -->
 	<suppress files="gov/usgs/volcanoes/core/contrib/*" checks="[a-zA-Z0-9]*" />
 	
+	<!-- Checks suppressed during plot.data migration. This should not be here in 2018 - TJP-->
+	<suppress files="gov/usgs/volcanoes/core/data/*" checks="[a-zA-Z0-9]*" />
+	<suppress files="gov/usgs/volcanoes/core/math/*" checks="[a-zA-Z0-9]*" />
+	
 	<!--  Checks suppressed to avoid changing well-tested code. -->
 	<suppress files="gov/usgs/volcanoes/core/math/Butterworth.java" checks="ParameterName|LocalVariableName|AbbreviationAsWordInName|VariableDeclarationUsageDistance" />
 	<suppress files="gov/usgs/volcanoes/core/math/Complex.java" checks="ParameterName|LocalVariableName|AbbreviationAsWordInName" />
