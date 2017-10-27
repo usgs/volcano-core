@@ -342,14 +342,15 @@ public final class Time {
     return months;
   }
 
-  /** Gets the year from a <CODE>Date</CODE> object
-   * @param d the date
+  /** Gets the year from a <CODE>Date</CODE> object.
+   * 
+   * @param date the date
    * @return the year
    */
-  public static int getYear(java.util.Date d) {
+  public static int getYear(java.util.Date date) {
     Calendar cal = Calendar.getInstance();
 
-    cal.setTime(d);
+    cal.setTime(date);
     return cal.get(Calendar.YEAR);
   }
 
