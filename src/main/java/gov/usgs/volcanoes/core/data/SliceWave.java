@@ -262,7 +262,6 @@ public class SliceWave {
   public double[] getSignal() {
 
     double[] signal;
-    double mu = mean();
 
     int nsamples = samples();
 

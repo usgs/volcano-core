@@ -1227,11 +1227,6 @@ public class Wave implements BinaryDataSet, Comparable<Wave>, Cloneable {
         put(key, val);
       }
 
-      @Deprecated
-      public boolean indexIsMember(Integer val) {
-        return unmm.containsKey(val);
-      }
-
       public boolean removeIndex(Integer val) {
         Double key = unmm.remove(val);
         if (key == null) {
@@ -1244,20 +1239,6 @@ public class Wave implements BinaryDataSet, Comparable<Wave>, Cloneable {
           entry.remove(val);
         }
         return true;
-      }
-
-      public void dump() {
-        for (Double d : mm.keySet()) {
-          List<Integer> dids = mm.get(d);
-          if (dids == null || dids.size() == 0) {
-            continue;
-          }
-          System.out.print(d);
-          if (dids.size() > 1) {
-            System.out.print("x" + mm.get(d).size());
-          }
-          System.out.print(" ");
-        }
       }
     }
 
@@ -1287,15 +1268,6 @@ public class Wave implements BinaryDataSet, Comparable<Wave>, Cloneable {
       } else {
         hiHalf.addHi(val, idx2, loHalf);
       }
-    }
-
-    @Deprecated
-    public void dump() {
-      System.out.print("[");
-      loHalf.dump();
-      System.out.print("]:[");
-      hiHalf.dump();
-      System.out.println("]");
     }
 
     /**

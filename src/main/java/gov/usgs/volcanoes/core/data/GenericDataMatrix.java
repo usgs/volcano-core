@@ -576,10 +576,6 @@ public class GenericDataMatrix implements BinaryDataSet {
         put(key, val);
       }
 
-      public boolean indexIsMember(Integer val) {
-        return unmm.containsKey(val);
-      }
-
       public boolean removeIndex(Integer val) {
         Double key = unmm.remove(val);
         if (key == null)
@@ -590,18 +586,6 @@ public class GenericDataMatrix implements BinaryDataSet {
         else
           entry.remove(val);
         return true;
-      }
-
-      public void dump() {
-        for (Double d : mm.keySet()) {
-          List<Integer> d_ids = mm.get(d);
-          if (d_ids == null || d_ids.size() == 0)
-            continue;
-          System.out.print(d);
-          if (d_ids.size() > 1)
-            System.out.print("x" + mm.get(d).size());
-          System.out.print(" ");
-        }
       }
     }
 
@@ -628,17 +612,6 @@ public class GenericDataMatrix implements BinaryDataSet {
         loHalf.addLo(val, idx2, hiHalf);
       else
         hiHalf.addHi(val, idx2, loHalf);
-    }
-
-    /**
-     * Dumps median data to stdout
-     */
-    public void dump() {
-      System.out.print("[");
-      loHalf.dump();
-      System.out.print("]:[");
-      hiHalf.dump();
-      System.out.println("]");
     }
 
     /** Remove the oldest value from the queue
