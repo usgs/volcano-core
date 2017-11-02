@@ -2,8 +2,9 @@ package gov.usgs.volcanoes.core.time;
 
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
+import java.text.ParseException;
 
-public class TimeSpan {
+public class TimeSpan implements Comparable<TimeSpan> {
   public final long startTime;
   public final long endTime;
 
@@ -66,5 +67,55 @@ public class TimeSpan {
     sb.deleteCharAt(sb.length() - 1);
 
     return sb.toString();
+  }
+
+
+  /**
+   * Parse a TimeSpan from a string, maybe containing relative times.
+   * 
+   * @param timeRange "yyyyMMddHHmmss" format or relative time, divided by
+   *          comma.
+   *
+   * @return array of two doubles - start and end J2K dates
+   * @throws ParseException when the string looks odd
+   */
+  public static TimeSpan parse(String timeRange) throws ParseException {
+    if (timeRange == null || timeRange.equals("")) {
+      throw new ParseException("Time range is null.", -1);
+    }
+
+    final String[] ss = timeRange.split(",");
+    long endTime = TimeSpan.parseTime(ss[1], CurrentTime.getInstance().now());
+    long startTime = TimeSpan.parseTime(ss[0], endTime);
+
+    return new TimeSpan(startTime, endTime);
+  }
+
+
+  private static long parseTime(String timeStr, long base) throws ParseException {
+    double offset = Time.getRelativeTime(timeStr);
+    if (Double.isNaN(offset)) {
+      return Time.getFormat(Time.INPUT_TIME_FORMAT).parse(timeStr).getTime();
+    } else {
+      return base - (long) (offset * 1000);
+    }
+  }
+
+
+  /**
+   * Compare this TimeSpan to another based on startTime, or endTime if startTimes match.
+   * 
+   * @param other Object to compare to
+   * @return compare result
+   */
+  @Override
+  public int compareTo(TimeSpan other) {
+    "test".compareTo("test");
+    int start = Long.compare(startTime, other.startTime);
+    if (start != 0) {
+      return start;
+    } else {
+      return Long.compare(endTime, other.endTime);
+    }
   }
 }
