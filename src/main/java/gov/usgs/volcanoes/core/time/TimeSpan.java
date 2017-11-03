@@ -85,7 +85,12 @@ public class TimeSpan implements Comparable<TimeSpan> {
     }
 
     final String[] ss = timeRange.split(",");
-    long endTime = TimeSpan.parseTime(ss[1], CurrentTime.getInstance().now());
+    long endTime;
+    if (ss.length > 1) {
+      endTime = TimeSpan.parseTime(ss[1], CurrentTime.getInstance().now());
+    } else {
+      endTime = CurrentTime.getInstance().now();
+    }
     long startTime = TimeSpan.parseTime(ss[0], endTime);
 
     return new TimeSpan(startTime, endTime);
