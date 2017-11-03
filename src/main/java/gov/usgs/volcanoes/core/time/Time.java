@@ -52,6 +52,9 @@ public final class Time {
   /** Seconds in a year. */
   public static final double YEAR_IN_S = DAY_IN_S * 365.25;
 
+  /** miliseconds in a day. */
+  public static final long DAY_IN_MS = DAY_IN_S * 1000;
+
   static {
     formats = new HashMap<String, SimpleDateFormat>();
     diffFormat = new DecimalFormat("#.##");
