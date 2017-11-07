@@ -1,8 +1,11 @@
 package gov.usgs.volcanoes.core.time;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 import org.junit.Test;
+
+import java.text.ParseException;
 
 public class TimeSpanTest {
 
@@ -24,6 +27,16 @@ public class TimeSpanTest {
   public void zeroSpan() {
     TimeSpan ts = new TimeSpan(10, 10);
     assertTrue("0s".equals(ts.span()));
+  }
+
+  @Test
+  public void parse() throws ParseException {
+    long startTime = Time.getFormat(Time.INPUT_TIME_FORMAT).parse("20171101000000").getTime();
+    long endTime = Time.getFormat(Time.INPUT_TIME_FORMAT).parse("20171102000000").getTime();
+    TimeSpan ts1 = new TimeSpan(startTime, endTime);
+    TimeSpan ts = TimeSpan.parse("-24h,20171102000000");
+    System.out.println(ts1 + " == " + ts);
+    assertEquals(ts.compareTo(ts1), 0);
   }
 
 }

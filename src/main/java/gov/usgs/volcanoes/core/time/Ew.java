@@ -16,7 +16,7 @@ import java.util.Date;
  *
  */
 public class Ew {
-  
+
   /**
    * Converts ew time to a <CODE>Date</CODE> object.
    *
@@ -45,7 +45,7 @@ public class Ew {
    * @return date as UNIX epoch
    */
   public static long asEpoch(double ew) {
-    return ((long)ew * 1000);
+    return (long) (ew * 1000);
   }
 
   /**
@@ -55,7 +55,7 @@ public class Ew {
    * @return date as ew time
    */
   public static double fromEpoch(Long date) {
-    return (double) date / 1000;
+    return date / 1000d;
   }
 
   /**
