@@ -18,4 +18,7 @@
 	
 	<!-- Checks suppressed to keep contractor code intact. -->
 	<suppress files="gov/usgs/volcanoes/core/hypo71/*" checks="[a-zA-Z0-9]*" />
+
+	<!-- Checks suppressed on legacy code. -->
+	<suppress files="gov/usgs/volcanoes/core/legacy/*" checks="[a-zA-Z0-9]*" />
 </suppressions>
