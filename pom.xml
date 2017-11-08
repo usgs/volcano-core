@@ -388,7 +388,7 @@
 			<releases>
 				<checksumPolicy>true</checksumPolicy>
 			</releases>
-			<url>http://volcanoes.usgs.gov/software/maven2/</url>
+			<url>https://volcanoes.usgs.gov/software/maven2/</url>
 		</repository>
 	</repositories>
 
