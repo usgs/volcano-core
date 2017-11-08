@@ -1877,7 +1877,8 @@ public class Hypo71 {
     C4.IEXIT = 0;
     LATRT = 0;
     double ZRES = P[O1.NR + 1 - 1];
-    O1.KNST = JMIN[O1.NR + 1 - 1] / 10;
+    // O1.KNST = JMIN[O1.NR + 1 - 1] / 10;
+    O1.KNST = 1; // use S picks
     O1.INST = JMIN[O1.NR + 1 - 1] - O1.KNST * 10;
 
     // Here
