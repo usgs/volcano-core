@@ -27,7 +27,7 @@ public class Pair<O1, O2> {
    * @return result of comparison
    */
   public boolean equals(Pair<O1, O2> otherPair) {
-    return item1.equals(otherPair.item2) && item2.equals(otherPair.item2);
+    return item1.equals(otherPair.item1) && item2.equals(otherPair.item2);
   }
 
   /**
