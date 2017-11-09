@@ -172,7 +172,7 @@ public class Butterworth {
 
   private void computeS() {
     for (int i = 0; i < 2 * order; i++) {
-      double theta = (order % 2 == 1) ? (i * Math.PI) / order : ((i + 0.5) * Math.PI) / order;
+      double theta = (order % 2 != 0) ? (i * Math.PI) / order : ((i + 0.5) * Math.PI) / order;
       choosePole(Complex.expj(theta));
     }
   }
