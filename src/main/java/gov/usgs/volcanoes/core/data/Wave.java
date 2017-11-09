@@ -973,10 +973,10 @@ public class Wave implements BinaryDataSet, Comparable<Wave>, Cloneable {
       numSamples = buffer.length;
     }
 
-    String msg = String.format(
-        "Wave: startTime=%f, endTime=%f, samplingRate=%f, samples=%d\nstartDate=%f\nendDate=%f",
-        startTime, getEndTime(), samplingRate, numSamples, J2kSec.toDateString(startTime),
-        J2kSec.toDateString(getEndTime()));
+    String tmpl =
+        "Wave: startTime=%f, endTime=%f, samplingRate=%f, samples=%d\nstartDate=%s\nendDate=%s";
+    String msg = String.format(tmpl, startTime, getEndTime(), samplingRate, numSamples,
+        J2kSec.toDateString(startTime), J2kSec.toDateString(getEndTime()));
 
     if (dataType != null) {
       msg += String.format("\ndataType=%s", dataType);
