@@ -8,14 +8,14 @@ package gov.usgs.volcanoes.core.quakeml;
 import gov.usgs.volcanoes.core.quakeml.Pick.Onset;
 import gov.usgs.volcanoes.core.quakeml.Pick.Polarity;
 
+import java.util.Comparator;
+import java.util.Map;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
-
-import java.util.Comparator;
-import java.util.Map;
 
 /**
  * Holder for QuakeML arrival.

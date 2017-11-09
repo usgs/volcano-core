@@ -4,9 +4,7 @@ import gov.usgs.volcanoes.core.math.Butterworth;
 import gov.usgs.volcanoes.core.math.FFT;
 import gov.usgs.volcanoes.core.math.Filter;
 import gov.usgs.volcanoes.core.time.J2kSec;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import gov.usgs.volcanoes.core.time.Time;
 
 import java.nio.ByteBuffer;
 import java.util.ArrayList;
@@ -14,6 +12,9 @@ import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.TreeMap;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * A<code>Wave</code> is a class that handles regularly sampled time-series data like a seismic
@@ -1004,6 +1005,14 @@ public class Wave implements BinaryDataSet, Comparable<Wave>, Cloneable {
     Wave w = new Wave(this);
 
     return w;
+  }
+
+
+  /**
+   * Converts the starttime from Earthworm time to J2K.
+   */
+  public void convertToJ2K() {
+    startTime = Time.ewToj2k(startTime);
   }
 
   /**
