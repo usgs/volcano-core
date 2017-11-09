@@ -44,7 +44,7 @@ public class SacDataFile extends SeismicDataFile {
     String channel = header.getKstnm().trim() + "$" + header.getKcmpnm().trim() + "$"
         + header.getKnetwk().trim();
 
-    String loc = header.getKhole();
+    String loc = header.getKhole().trim();
     if (!(loc == null || loc.equals("  ") || loc.equals("--"))) {
       channel += "$" + loc;
     }
