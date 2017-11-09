@@ -115,7 +115,6 @@ public class TimeSpan implements Comparable<TimeSpan> {
    */
   @Override
   public int compareTo(TimeSpan other) {
-    "test".compareTo("test");
     int start = Long.compare(startTime, other.startTime);
     if (start != 0) {
       return start;
