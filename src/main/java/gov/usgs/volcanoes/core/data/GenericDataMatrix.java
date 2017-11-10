@@ -1,5 +1,8 @@
 package gov.usgs.volcanoes.core.data;
 
+import cern.colt.matrix.DoubleFactory2D;
+import cern.colt.matrix.DoubleMatrix2D;
+
 import gov.usgs.volcanoes.core.math.Butterworth;
 import gov.usgs.volcanoes.core.math.Filter;
 import gov.usgs.volcanoes.core.time.J2kSec;
@@ -15,21 +18,18 @@ import java.util.TreeMap;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import cern.colt.matrix.DoubleFactory2D;
-import cern.colt.matrix.DoubleMatrix2D;
-
 /**
- * BinaryDataSet to store cern's DoubleMatrix2D and meta information about matrix column's names
+ * BinaryDataSet to store cern's DoubleMatrix2D and meta information about matrix column's names.
  *
  * @author Dan Cervelli
  */
 public class GenericDataMatrix implements BinaryDataSet {
-  protected final static Logger LOGGER = LoggerFactory.getLogger(GenericDataMatrix.class);
+  protected static final Logger LOGGER = LoggerFactory.getLogger(GenericDataMatrix.class);
   protected DoubleMatrix2D data;
   protected HashMap<String, Integer> columnMap;
 
   /**
-   * Default constructor
+   * Default constructor.
    */
   public GenericDataMatrix() {
     data = null;
@@ -38,7 +38,7 @@ public class GenericDataMatrix implements BinaryDataSet {
   }
 
   /**
-   * Construct GenericDataMatrix from given 2d matrix
+   * Construct GenericDataMatrix from given 2d matrix.
    * @param d 2d matrix
    */
   public GenericDataMatrix(DoubleMatrix2D d) {
@@ -61,22 +61,23 @@ public class GenericDataMatrix implements BinaryDataSet {
    */
   public GenericDataMatrix(List<double[]> list) {
     this();
-    if (list == null || list.size() == 0)
+    if (list == null || list.size() == 0) {
       return;
-
+    }
     int rows = list.size();
     int cols = list.get(0).length;
 
     data = DoubleFactory2D.dense.make(rows, cols);
     for (int i = 0; i < rows; i++) {
       double[] d = list.get(i);
-      for (int j = 0; j < cols; j++)
+      for (int j = 0; j < cols; j++) {
         data.setQuick(i, j, d[j]);
+      }
     }
   }
 
   /**
-   * Returns content as ByteBuffer
+   * Returns content as ByteBuffer.
    * @return content as ByteBuffer
    */
   public ByteBuffer toBinary() {
@@ -85,14 +86,15 @@ public class GenericDataMatrix implements BinaryDataSet {
     ByteBuffer bb = ByteBuffer.allocate(4 + (rows * cols) * 8);
     bb.putInt(rows);
     for (int i = 0; i < rows; i++) {
-      for (int j = 0; j < cols; j++)
+      for (int j = 0; j < cols; j++) {
         bb.putDouble(data.getQuick(i, j));
+      }
     }
     return bb;
   }
 
   /**
-   * Init content from ByteBuffer
+   * Init content from ByteBuffer.
    * @param bb content
    */
   public void fromBinary(ByteBuffer bb) {
@@ -100,13 +102,14 @@ public class GenericDataMatrix implements BinaryDataSet {
     int cols = ((bb.limit() - 4) / rows) / 8;
     data = DoubleFactory2D.dense.make(rows, cols);
     for (int i = 0; i < rows; i++) {
-      for (int j = 0; j < cols; j++)
+      for (int j = 0; j < cols; j++) {
         data.setQuick(i, j, bb.getDouble());
+      }
     }
   }
 
   /**
-   * Dumps content as CSV
+   * Dumps content as CSV.
    * @return string w/ content in CSV format
    */
   public String toCSV() {
@@ -130,30 +133,31 @@ public class GenericDataMatrix implements BinaryDataSet {
   }
 
   /**
-   * Sets names of matrix columns
+   * Sets names of matrix columns.
    */
   public void setColumnNames() {}
 
 
   /**
-   * Sets names of matrix conumns
+   * Sets names of matrix conumns.
    * @param s Array of strings - column names
    */
   public void setColumnNames(String[] s) {
     int i = 0;
-    for (String name : s)
+    for (String name : s) {
       columnMap.put(name, i++);
+    }
   }
 
   /**
-   * Gets names of matrix conumns
+   * Gets names of matrix columns.
    * @return Array of strings - column names
    */
   public String[] getColumnNames() {
     String[] c = new String[columnMap.size()];
-    for (String s : columnMap.keySet())
+    for (String s : columnMap.keySet()) {
       c[columnMap.get(s)] = s;
-
+    }
     return c;
   }
 
@@ -162,10 +166,11 @@ public class GenericDataMatrix implements BinaryDataSet {
    * @return the row count
    */
   public int rows() {
-    if (data != null)
+    if (data != null) {
       return data.rows();
-    else
+    } else {
       return 0;
+    }
   }
 
   /** 
@@ -173,26 +178,28 @@ public class GenericDataMatrix implements BinaryDataSet {
    * @return the column count
    */
   public int columns() {
-    if (data != null)
+    if (data != null) {
       return data.columns();
-    else
+    } else {
       return 0;
+    }
   }
 
   /**
-   * Perform user-defined arithmetic on a column
+   * Perform user-defined arithmetic on a column.
    * @param c column name to perform operation on
    * @param o operation to perform
    * @param v value to add/subtract/multiply/divide
    */
   public void doArithmetic(String c, String o, double v) {
     Integer i = columnMap.get(c);
-    if (i != null)
+    if (i != null) {
       doArithmetic(i, o, v);
+    }
   }
 
   /**
-   * Perform user-defined arithmetic on a column
+   * Perform user-defined arithmetic on a column.
    * @param c column to perform operation on
    * @param o operation to perform
    * @param v value to add/subtract/multiply/divide
@@ -206,18 +213,19 @@ public class GenericDataMatrix implements BinaryDataSet {
   }
 
   /**
-   * Add double value to one column
+   * Add double value to one column.
    * @param c column name to add
    * @param v value to add
    */
   public void add(String c, double v) {
     Integer i = columnMap.get(c);
-    if (i != null)
+    if (i != null) {
       add(i, v);
+    }
   }
 
   /**
-   * Add double value to one column
+   * Add double value to one column.
    * @param c column number to add
    * @param v value to add
    */
@@ -230,18 +238,19 @@ public class GenericDataMatrix implements BinaryDataSet {
   }
 
   /**
-   * Multiply one column to double value
+   * Multiply one column to double value.
    * @param c name of column to multiply
    * @param v value to multiply
    */
   public void mult(String c, double v) {
     Integer i = columnMap.get(c);
-    if (i != null)
+    if (i != null) {
       mult(i, v);
+    }
   }
 
   /**
-   * Multiply one column to double value
+   * Multiply one column to double value.
    * @param c number of column to multiply
    * @param v value to multiply
    */
@@ -298,7 +307,7 @@ public class GenericDataMatrix implements BinaryDataSet {
   }
 
   /**
-   * Performs data detrending
+   * Performs data detrending.
    * @param c number of column to detrend
    */
   public void detrend(int c) {
@@ -324,7 +333,7 @@ public class GenericDataMatrix implements BinaryDataSet {
   }
 
   /**
-   * Despike data from column c using period p
+   * Despike data from column c using period p.
    * @param c column to despike
    * @param p period used for despiking
    */
@@ -333,7 +342,7 @@ public class GenericDataMatrix implements BinaryDataSet {
   }
 
   /**
-   * Filter data
+   * Filter data.
    * 
    * @param bw
    *            Butterworth filter to apply
@@ -348,8 +357,9 @@ public class GenericDataMatrix implements BinaryDataSet {
     Arrays.fill(dBuf, mean);
     int trueStart = (int) (data.rows() * 0.25);
     for (int i = 0; i < data.rows(); i++) {
-      if (data.getQuick(i, columnIndex) != Double.NaN)
+      if (!Double.isNaN(data.getQuick(i, columnIndex))) {
         dBuf[i + trueStart] = data.getQuick(i, columnIndex);
+      }
     }
 
     // bw.setSamplingRate(getSamplingRate());
@@ -357,22 +367,24 @@ public class GenericDataMatrix implements BinaryDataSet {
     Filter.filter(dBuf, bw.getSize(), bw.getXCoeffs(), bw.getYCoeffs(), bw.getGain(), 0, 0);
     if (zeroPhaseShift) {
       double[] dBuf2 = new double[dBuf.length];
-      for (int i = 0, j = dBuf.length - 1; i < dBuf.length; i++, j--)
+      for (int i = 0, j = dBuf.length - 1; i < dBuf.length; i++, j--) {
         dBuf2[j] = dBuf[i];
-
+      }
       Filter.filter(dBuf2, bw.getSize(), bw.getXCoeffs(), bw.getYCoeffs(), bw.getGain(), 0, 0);
 
-      for (int i = 0, j = dBuf2.length - 1 - trueStart; i < data.rows(); i++, j--)
+      for (int i = 0, j = dBuf2.length - 1 - trueStart; i < data.rows(); i++, j--) {
         data.setQuick(i, columnIndex, dBuf2[j]);
+      }
     } else {
-      for (int i = 0; i < data.rows(); i++)
+      for (int i = 0; i < data.rows(); i++) {
         data.setQuick(i, columnIndex, dBuf[i + trueStart]);
+      }
     }
     // invalidateStatistics();
   }
 
   /**
-   * Replace data in column c with rolling mean of period p
+   * Replace data in column c with rolling mean of period p.
    * @param c column to change
    * @param p period used for rolling mean
    */
@@ -387,8 +399,9 @@ public class GenericDataMatrix implements BinaryDataSet {
       double itime = data.getQuick(i, 0);
       double ival = data.getQuick(i, c);
       if (Double.isNaN(ival)) {
-        if (nans == null)
+        if (nans == null) {
           nans = new ArrayList<Integer>();
+        }
         nans.add(i);
         continue;
       }
@@ -413,7 +426,7 @@ public class GenericDataMatrix implements BinaryDataSet {
   }
 
   /**
-   * Replace data in column c with rolling median of period p
+   * Replace data in column c with rolling median of period p.
    * @param c column to change
    * @param p period used for rolling median
    */
@@ -428,8 +441,9 @@ public class GenericDataMatrix implements BinaryDataSet {
       double itime = data.getQuick(i, 0);
       double ival = data.getQuick(i, c);
       if (Double.isNaN(ival)) {
-        if (nans == null)
+        if (nans == null) {
           nans = new ArrayList<Integer>();
+        }
         nans.add(i);
         continue;
       }
@@ -453,7 +467,8 @@ public class GenericDataMatrix implements BinaryDataSet {
     }
   }
 
-  /** Class to maintain a FIFO of doubles & report its mean 
+  /** 
+   * Class to maintain a FIFO of doubles & report its mean.
    */
   private class Meaner {
     private LinkedList<Double> data; // the values
@@ -464,7 +479,8 @@ public class GenericDataMatrix implements BinaryDataSet {
       sum = 0;
     }
 
-    /** Add val to the queue 
+    /** 
+     * Add val to the queue. 
      * 
      * @param val value to add
      */
@@ -473,7 +489,8 @@ public class GenericDataMatrix implements BinaryDataSet {
       sum += val;
     }
 
-    /** Remove the oldest value from the queue
+    /** 
+     * Remove the oldest value from the queue.
      * 
      * @return value removed
      */
@@ -482,11 +499,13 @@ public class GenericDataMatrix implements BinaryDataSet {
         Double datum = data.removeFirst();
         sum -= datum;
         return datum;
-      } else
+      } else {
         return Double.NaN;
+      }
     }
 
-    /** Mean of values in queue
+    /** 
+     * Mean of values in queue.
      * 
      * @return the mean
      */
@@ -496,7 +515,8 @@ public class GenericDataMatrix implements BinaryDataSet {
   }
 
 
-  /** Class to maintain a FIFO of doubles & report its median 
+  /** 
+   * Class to maintain a FIFO of doubles & report its median.
    */
   private class Medianer {
 
@@ -520,10 +540,11 @@ public class GenericDataMatrix implements BinaryDataSet {
           mm.put(key, entry);
           return;
         }
-        if (val < entry.getFirst())
+        if (val < entry.getFirst()) {
           entry.addFirst(val);
-        else
+        } else {
           entry.addLast(val);
+        }
       }
 
       protected Double lastKey() {
@@ -534,8 +555,9 @@ public class GenericDataMatrix implements BinaryDataSet {
         LinkedList<Integer> entry = mm.get(key);
         // entry should not be null!
         Integer index = entry.removeLast();
-        if (entry.size() == 0)
+        if (entry.size() == 0) {
           mm.remove(key);
+        }
         unmm.remove(index);
         return index;
       }
@@ -548,8 +570,9 @@ public class GenericDataMatrix implements BinaryDataSet {
         LinkedList<Integer> entry = mm.get(key);
         // entry should not be null!
         Integer index = entry.removeFirst();
-        if (entry.size() == 0)
+        if (entry.size() == 0) {
           mm.remove(key);
+        }
         unmm.remove(index);
         return index;
       }
@@ -578,20 +601,23 @@ public class GenericDataMatrix implements BinaryDataSet {
 
       public boolean removeIndex(Integer val) {
         Double key = unmm.remove(val);
-        if (key == null)
+        if (key == null) {
           return false;
+        }
         List<Integer> entry = mm.get(key);
-        if (entry.size() == 1)
+        if (entry.size() == 1) {
           mm.remove(key);
-        else
+        } else {
           entry.remove(val);
+        }
         return true;
       }
     }
 
     private MultiMap loHalf; // values in lower half
     private MultiMap hiHalf; // values in upper half
-    private int idx1, idx2; // values window have indices idx1..idx2
+    private int idx1;
+    private int idx2; // values window have indices idx1..idx2
 
     Medianer() {
       // Invariant: |loHalf| - |hiHalf| = 0 or 1
@@ -602,19 +628,22 @@ public class GenericDataMatrix implements BinaryDataSet {
       idx2 = -1;
     }
 
-    /** Add val to the queue 
+    /** 
+     * Add val to the queue. 
      * 
      * @param val value to add
      */
     public void add(double val) {
       idx2++;
-      if (loHalf.size() == hiHalf.size())
+      if (loHalf.size() == hiHalf.size()) {
         loHalf.addLo(val, idx2, hiHalf);
-      else
+      } else {
         hiHalf.addHi(val, idx2, loHalf);
+      }
     }
 
-    /** Remove the oldest value from the queue
+    /** 
+     * Remove the oldest value from the queue.
      * 
      * @return value removed
      */
@@ -638,30 +667,32 @@ public class GenericDataMatrix implements BinaryDataSet {
       }
     }
 
-    /** Median of values in queue
+    /** Median of values in queue.
      * 
      * @return the median
      */
     public double avg() {
-      if (loHalf.size() == hiHalf.size())
+      if (loHalf.size() == hiHalf.size()) {
         return (loHalf.lastKey() + hiHalf.firstKey()) / 2;
+      }
       return loHalf.lastKey();
     }
   }
 
   /**
-   * Get first value in column
+   * Get first value in column.
    * @param c column number
    */
   public double first(int c) {
-    if (rows() == 0)
+    if (rows() == 0) {
       return Double.NaN;
+    }
     return data.getQuick(0, c);
   }
 
 
   /**
-   * Get maximum value in column
+   * Get maximum value in column.
    * @param c column number
    * @return maximum of column
    */
@@ -672,13 +703,14 @@ public class GenericDataMatrix implements BinaryDataSet {
         m = Math.max(m, data.getQuick(i, c));
       }
     }
-    if (m == -1E300)
+    if (m == -1E300) {
       m = 0;
+    }
     return m;
   }
 
   /**
-   * Get minimum value in column
+   * Get minimum value in column.
    * @param c column number
    * @return minimum of column
    */
@@ -689,13 +721,14 @@ public class GenericDataMatrix implements BinaryDataSet {
         m = Math.min(m, data.getQuick(i, c));
       }
     }
-    if (m == 1E300)
+    if (m == 1E300) {
       m = 0;
+    }
     return m;
   }
 
   /**
-   * Get mean value in column
+   * Get mean value in column.
    * @param c column number
    * @return mean of column
    */
@@ -742,27 +775,29 @@ public class GenericDataMatrix implements BinaryDataSet {
   }
 
   /**
-   * @return (0,0) value of matrix
+   * @return (0,0) value of matrix.
    */
   public double getStartTime() {
-    if (data == null || data.size() == 0)
+    if (data == null || data.size() == 0) {
       return Double.NaN;
-    else if (data.rows() == 1 && Double.isNaN(data.get(0, 0)))
+    } else if (data.rows() == 1 && Double.isNaN(data.get(0, 0))) {
       return 0;
-    else
+    } else {
       return data.get(0, 0);
+    }
   }
 
   /**
-   * @return (rows()-1,0) value of matrix
+   * @return (rows()-1,0) value of matrix.
    */
   public double getEndTime() {
-    if (data == null || data.size() == 0)
+    if (data == null || data.size() == 0) {
       return Double.NaN;
-    else if (data.rows() == 1 && Double.isNaN(data.get(0, 0)))
+    } else if (data.rows() == 1 && Double.isNaN(data.get(0, 0))) {
       return 0;
-    else
+    } else {
       return data.get(rows() - 1, 0);
+    }
   }
 
   /**
@@ -795,10 +830,11 @@ public class GenericDataMatrix implements BinaryDataSet {
    */
   public DoubleMatrix2D getColumn(String c) {
     Integer i = columnMap.get(c);
-    if (i != null)
+    if (i != null) {
       return getColumn(i);
-    else
+    } else {
       return null;
+    }
   }
 
   /** Gets the data matrix.
@@ -809,7 +845,7 @@ public class GenericDataMatrix implements BinaryDataSet {
   }
 
   /**
-   * Contatenate two matrix
+   * Contatenate two matrix.
    * @param dm matrix to concatenate with this one
    */
   public void concatenate(GenericDataMatrix dm) {
@@ -820,7 +856,7 @@ public class GenericDataMatrix implements BinaryDataSet {
   }
 
   /**
-   * @return size of memory occuped by data matrix, in bytes
+   * @return size of memory occuped by data matrix, in bytes.
    */
   public int getMemorySize() {
     return (data.rows() * data.columns() * 8);

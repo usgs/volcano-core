@@ -46,6 +46,9 @@ public class SeedDataFile extends SeismicDataFile {
     super(fileName, "SEED^");
   }
 
+  /**
+   * Read.
+   */
   public void read() throws IOException {
     Map<String, Map<Long, int[]>> samples = new HashMap<String, Map<Long, int[]>>();
     Map<String, Float> sampleRates = new HashMap<String, Float>();
@@ -75,9 +78,9 @@ public class SeedDataFile extends SeismicDataFile {
           System.err.println(e.getMessage());
           e.printStackTrace();
         }
-        if (!(sr instanceof DataRecord))
+        if (!(sr instanceof DataRecord)) {
           continue;
-
+        }
         DataRecord dr = (DataRecord) sr;
         DataHeader dh = dr.getHeader();
 
@@ -127,14 +130,13 @@ public class SeedDataFile extends SeismicDataFile {
       return;
     }
     dis.mark(Integer.MAX_VALUE);
-    while (dis.readByte() == 0)
+    while (dis.readByte() == 0) {
       dis.mark(Integer.MAX_VALUE);
+    }
     dis.reset();
   }
 
   private Wave join(String code, long samplePeriodMs, Map<Long, int[]> samples) {
-    Wave wave = null;
-
     Set<Long> times = samples.keySet();
     long firstTime = Long.MAX_VALUE;
     long lastTime = Long.MIN_VALUE;
@@ -157,7 +159,7 @@ public class SeedDataFile extends SeismicDataFile {
       System.arraycopy(buf, 0, allSamples, idx, buf.length);
     }
 
-    wave = new Wave(allSamples, J2kSec.fromDate(new Date(firstTime)), 1000 / samplePeriodMs);
+    Wave wave = new Wave(allSamples, J2kSec.fromDate(new Date(firstTime)), 1000 / samplePeriodMs);
     return wave;
   }
 
@@ -184,6 +186,9 @@ public class SeedDataFile extends SeismicDataFile {
     return cal.getTime();
   }
 
+  /**
+   * write.
+   */
   public synchronized void write() throws IOException {
     DataOutputStream dos = null;
     try {
@@ -248,7 +253,9 @@ public class SeedDataFile extends SeismicDataFile {
 
       }
     }
-    dos.close();
+    if (dos != null) {
+      dos.close();
+    }
   }
 
 }
