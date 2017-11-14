@@ -1,0 +1,108 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head><meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+<title>WMSImageGrabber xref</title>
+<link type="text/css" rel="stylesheet" href="../../../../../../../stylesheet.css" />
+</head>
+<body>
+<div id="overview"><a href="../../../../../../../../apidocs/gov/usgs/volcanoes/core/legacy/plot/map/WMSImageGrabber.html">View Javadoc</a></div><pre>
+<a class="jxr_linenumber" name="L1" href="#L1">1</a>   <strong class="jxr_keyword">package</strong> gov.usgs.volcanoes.core.legacy.plot.map;
+<a class="jxr_linenumber" name="L2" href="#L2">2</a>   
+<a class="jxr_linenumber" name="L3" href="#L3">3</a>   <strong class="jxr_keyword">import</strong> org.slf4j.Logger;
+<a class="jxr_linenumber" name="L4" href="#L4">4</a>   <strong class="jxr_keyword">import</strong> org.slf4j.LoggerFactory;
+<a class="jxr_linenumber" name="L5" href="#L5">5</a>   
+<a class="jxr_linenumber" name="L6" href="#L6">6</a>   <strong class="jxr_keyword">import</strong> java.awt.image.BufferedImage;
+<a class="jxr_linenumber" name="L7" href="#L7">7</a>   <strong class="jxr_keyword">import</strong> java.io.BufferedReader;
+<a class="jxr_linenumber" name="L8" href="#L8">8</a>   <strong class="jxr_keyword">import</strong> java.io.FileReader;
+<a class="jxr_linenumber" name="L9" href="#L9">9</a>   <strong class="jxr_keyword">import</strong> java.io.IOException;
+<a class="jxr_linenumber" name="L10" href="#L10">10</a>  <strong class="jxr_keyword">import</strong> java.io.InputStream;
+<a class="jxr_linenumber" name="L11" href="#L11">11</a>  <strong class="jxr_keyword">import</strong> java.io.InputStreamReader;
+<a class="jxr_linenumber" name="L12" href="#L12">12</a>  <strong class="jxr_keyword">import</strong> java.net.MalformedURLException;
+<a class="jxr_linenumber" name="L13" href="#L13">13</a>  <strong class="jxr_keyword">import</strong> java.net.URL;
+<a class="jxr_linenumber" name="L14" href="#L14">14</a>  
+<a class="jxr_linenumber" name="L15" href="#L15">15</a>  <strong class="jxr_keyword">import</strong> javax.imageio.ImageIO;
+<a class="jxr_linenumber" name="L16" href="#L16">16</a>  <strong class="jxr_keyword">import</strong> javax.swing.ImageIcon;
+<a class="jxr_linenumber" name="L17" href="#L17">17</a>  <strong class="jxr_keyword">import</strong> javax.swing.JButton;
+<a class="jxr_linenumber" name="L18" href="#L18">18</a>  <strong class="jxr_keyword">import</strong> javax.swing.JFrame;
+<a class="jxr_linenumber" name="L19" href="#L19">19</a>  
+<a class="jxr_linenumber" name="L20" href="#L20">20</a>  <em class="jxr_comment">// import com.sun.image.codec.jpeg.JPEGCodec;</em>
+<a class="jxr_linenumber" name="L21" href="#L21">21</a>  <em class="jxr_comment">// import com.sun.image.codec.jpeg.JPEGImageDecoder;</em>
+<a class="jxr_linenumber" name="L22" href="#L22">22</a>  
+<a class="jxr_linenumber" name="L23" href="#L23">23</a>  <em class="jxr_javadoccomment">/**</em>
+<a class="jxr_linenumber" name="L24" href="#L24">24</a>  <em class="jxr_javadoccomment"> * &lt;p&gt;</em>
+<a class="jxr_linenumber" name="L25" href="#L25">25</a>  <em class="jxr_javadoccomment"> * Request whole earth image from Web Map Service Server 1000x800 size in jpeg</em>
+<a class="jxr_linenumber" name="L26" href="#L26">26</a>  <em class="jxr_javadoccomment"> * format</em>
+<a class="jxr_linenumber" name="L27" href="#L27">27</a>  <em class="jxr_javadoccomment"> * &lt;/p&gt;</em>
+<a class="jxr_linenumber" name="L28" href="#L28">28</a>  <em class="jxr_javadoccomment"> * </em>
+<a class="jxr_linenumber" name="L29" href="#L29">29</a>  <em class="jxr_javadoccomment"> * @author Dan Cervelli</em>
+<a class="jxr_linenumber" name="L30" href="#L30">30</a>  <em class="jxr_javadoccomment"> */</em>
+<a class="jxr_linenumber" name="L31" href="#L31">31</a>  <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">class</strong> <a href="../../../../../../../gov/usgs/volcanoes/core/legacy/plot/map/WMSImageGrabber.html">WMSImageGrabber</a> {
+<a class="jxr_linenumber" name="L32" href="#L32">32</a>    <strong class="jxr_keyword">protected</strong> String server = <span class="jxr_string">"http://wms.jpl.nasa.gov/wms.cgi"</span>;
+<a class="jxr_linenumber" name="L33" href="#L33">33</a>    <strong class="jxr_keyword">protected</strong> <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">static</strong> Logger LOGGER = LoggerFactory.getLogger(WMSImageGrabber.<strong class="jxr_keyword">class</strong>);
+<a class="jxr_linenumber" name="L34" href="#L34">34</a>    <strong class="jxr_keyword">protected</strong> BufferedReader in;
+<a class="jxr_linenumber" name="L35" href="#L35">35</a>    <strong class="jxr_keyword">protected</strong> InputStream inputStream;
+<a class="jxr_linenumber" name="L36" href="#L36">36</a>  
+<a class="jxr_linenumber" name="L37" href="#L37">37</a>    <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">void</strong> getReader(String resource) <strong class="jxr_keyword">throws</strong> MalformedURLException, IOException {
+<a class="jxr_linenumber" name="L38" href="#L38">38</a>      <strong class="jxr_keyword">if</strong> (resource.indexOf(<span class="jxr_string">"://"</span>) != -1) {
+<a class="jxr_linenumber" name="L39" href="#L39">39</a>        URL url = <strong class="jxr_keyword">new</strong> URL(resource);
+<a class="jxr_linenumber" name="L40" href="#L40">40</a>        inputStream = url.openStream();
+<a class="jxr_linenumber" name="L41" href="#L41">41</a>        in = <strong class="jxr_keyword">new</strong> BufferedReader(<strong class="jxr_keyword">new</strong> InputStreamReader(inputStream));
+<a class="jxr_linenumber" name="L42" href="#L42">42</a>      } <strong class="jxr_keyword">else</strong> {
+<a class="jxr_linenumber" name="L43" href="#L43">43</a>        in = <strong class="jxr_keyword">new</strong> BufferedReader(<strong class="jxr_keyword">new</strong> FileReader(resource));
+<a class="jxr_linenumber" name="L44" href="#L44">44</a>      }
+<a class="jxr_linenumber" name="L45" href="#L45">45</a>    }
+<a class="jxr_linenumber" name="L46" href="#L46">46</a>  
+<a class="jxr_linenumber" name="L47" href="#L47">47</a>    <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> getCapabilities() {
+<a class="jxr_linenumber" name="L48" href="#L48">48</a>      String request = server + <span class="jxr_string">"?REQUEST=GetCapabilities"</span>;
+<a class="jxr_linenumber" name="L49" href="#L49">49</a>      <strong class="jxr_keyword">try</strong> {
+<a class="jxr_linenumber" name="L50" href="#L50">50</a>        getReader(request);
+<a class="jxr_linenumber" name="L51" href="#L51">51</a>        String s;
+<a class="jxr_linenumber" name="L52" href="#L52">52</a>        <strong class="jxr_keyword">while</strong> ((s = in.readLine()) != <strong class="jxr_keyword">null</strong>)
+<a class="jxr_linenumber" name="L53" href="#L53">53</a>          LOGGER.info(s);
+<a class="jxr_linenumber" name="L54" href="#L54">54</a>      } <strong class="jxr_keyword">catch</strong> (Exception e) {
+<a class="jxr_linenumber" name="L55" href="#L55">55</a>        e.printStackTrace();
+<a class="jxr_linenumber" name="L56" href="#L56">56</a>      }
+<a class="jxr_linenumber" name="L57" href="#L57">57</a>    }
+<a class="jxr_linenumber" name="L58" href="#L58">58</a>  
+<a class="jxr_linenumber" name="L59" href="#L59">59</a>    <strong class="jxr_keyword">public</strong> BufferedImage getImage() {
+<a class="jxr_linenumber" name="L60" href="#L60">60</a>      BufferedImage image = <strong class="jxr_keyword">null</strong>;
+<a class="jxr_linenumber" name="L61" href="#L61">61</a>      String request = server + <span class="jxr_string">"?REQUEST=GetMap&amp;LAYERS=BMNG&amp;STYLES=Sep&amp;WIDTH=1000&amp;HEIGHT=800"</span>
+<a class="jxr_linenumber" name="L62" href="#L62">62</a>          + <span class="jxr_string">"&amp;EXCEPTIONS=application/vnd.ogc.se_inimage&amp;SRS=EPSG%3A4326&amp;BBOX=-180,-90,180,90&amp;FORMAT=image/jpeg"</span>;
+<a class="jxr_linenumber" name="L63" href="#L63">63</a>      <strong class="jxr_keyword">try</strong> {
+<a class="jxr_linenumber" name="L64" href="#L64">64</a>        getReader(request);
+<a class="jxr_linenumber" name="L65" href="#L65">65</a>        <em class="jxr_comment">// JPEGImageDecoder codec =</em>
+<a class="jxr_linenumber" name="L66" href="#L66">66</a>        <em class="jxr_comment">// JPEGCodec.createJPEGDecoder(inputStream);</em>
+<a class="jxr_linenumber" name="L67" href="#L67">67</a>        <em class="jxr_comment">// image = codec.decodeAsBufferedImage();</em>
+<a class="jxr_linenumber" name="L68" href="#L68">68</a>  
+<a class="jxr_linenumber" name="L69" href="#L69">69</a>        <em class="jxr_comment">// TODO: make sure this works</em>
+<a class="jxr_linenumber" name="L70" href="#L70">70</a>        image = ImageIO.read(inputStream);
+<a class="jxr_linenumber" name="L71" href="#L71">71</a>      } <strong class="jxr_keyword">catch</strong> (Exception e) {
+<a class="jxr_linenumber" name="L72" href="#L72">72</a>        e.printStackTrace();
+<a class="jxr_linenumber" name="L73" href="#L73">73</a>      }
+<a class="jxr_linenumber" name="L74" href="#L74">74</a>      <strong class="jxr_keyword">return</strong> image;
+<a class="jxr_linenumber" name="L75" href="#L75">75</a>    }
+<a class="jxr_linenumber" name="L76" href="#L76">76</a>  
+<a class="jxr_linenumber" name="L77" href="#L77">77</a>    <em class="jxr_javadoccomment">/**</em>
+<a class="jxr_linenumber" name="L78" href="#L78">78</a>  <em class="jxr_javadoccomment">   * Main method. Open screen frame with generated image.</em>
+<a class="jxr_linenumber" name="L79" href="#L79">79</a>  <em class="jxr_javadoccomment">   * </em>
+<a class="jxr_linenumber" name="L80" href="#L80">80</a>  <em class="jxr_javadoccomment">   * @param args</em>
+<a class="jxr_linenumber" name="L81" href="#L81">81</a>  <em class="jxr_javadoccomment">   *            none</em>
+<a class="jxr_linenumber" name="L82" href="#L82">82</a>  <em class="jxr_javadoccomment">   */</em>
+<a class="jxr_linenumber" name="L83" href="#L83">83</a>    <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">static</strong> <strong class="jxr_keyword">void</strong> main(String[] args) {
+<a class="jxr_linenumber" name="L84" href="#L84">84</a>      <a href="../../../../../../../gov/usgs/volcanoes/core/legacy/plot/map/WMSImageGrabber.html">WMSImageGrabber</a> w = <strong class="jxr_keyword">new</strong> <a href="../../../../../../../gov/usgs/volcanoes/core/legacy/plot/map/WMSImageGrabber.html">WMSImageGrabber</a>();
+<a class="jxr_linenumber" name="L85" href="#L85">85</a>      <em class="jxr_comment">// w.getCapabilities();</em>
+<a class="jxr_linenumber" name="L86" href="#L86">86</a>      <strong class="jxr_keyword">final</strong> BufferedImage bi = w.getImage();
+<a class="jxr_linenumber" name="L87" href="#L87">87</a>  
+<a class="jxr_linenumber" name="L88" href="#L88">88</a>      JFrame f = <strong class="jxr_keyword">new</strong> JFrame(<span class="jxr_string">"Test"</span>);
+<a class="jxr_linenumber" name="L89" href="#L89">89</a>      f.setSize(1200, 1000);
+<a class="jxr_linenumber" name="L90" href="#L90">90</a>      f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+<a class="jxr_linenumber" name="L91" href="#L91">91</a>      f.setLocationRelativeTo(<strong class="jxr_keyword">null</strong>);
+<a class="jxr_linenumber" name="L92" href="#L92">92</a>      f.setContentPane(<strong class="jxr_keyword">new</strong> JButton(<strong class="jxr_keyword">new</strong> ImageIcon(bi)));
+<a class="jxr_linenumber" name="L93" href="#L93">93</a>      f.setVisible(<strong class="jxr_keyword">true</strong>);
+<a class="jxr_linenumber" name="L94" href="#L94">94</a>    }
+<a class="jxr_linenumber" name="L95" href="#L95">95</a>  }
+</pre>
+<hr/>
+<div id="footer">Copyright &#169; 2017. All rights reserved.</div>
+</body>
+</html>

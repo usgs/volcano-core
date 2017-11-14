@@ -1,0 +1,208 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head><meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+<title>Jet xref</title>
+<link type="text/css" rel="stylesheet" href="../../../../../../../stylesheet.css" />
+</head>
+<body>
+<div id="overview"><a href="../../../../../../../../apidocs/gov/usgs/volcanoes/core/legacy/plot/color/Jet.html">View Javadoc</a></div><pre>
+<a class="jxr_linenumber" name="L1" href="#L1">1</a>   <strong class="jxr_keyword">package</strong> gov.usgs.volcanoes.core.legacy.plot.color;
+<a class="jxr_linenumber" name="L2" href="#L2">2</a>   
+<a class="jxr_linenumber" name="L3" href="#L3">3</a>   <strong class="jxr_keyword">import</strong> java.awt.Color;
+<a class="jxr_linenumber" name="L4" href="#L4">4</a>   <strong class="jxr_keyword">import</strong> java.awt.image.IndexColorModel;
+<a class="jxr_linenumber" name="L5" href="#L5">5</a>   
+<a class="jxr_linenumber" name="L6" href="#L6">6</a>   <em class="jxr_javadoccomment">/**</em>
+<a class="jxr_linenumber" name="L7" href="#L7">7</a>   <em class="jxr_javadoccomment"> * &lt;p&gt;Jet is a color spectrum taken directly for Jim Luetgert's sgram earthworm</em>
+<a class="jxr_linenumber" name="L8" href="#L8">8</a>   <em class="jxr_javadoccomment"> * module.&lt;/p&gt;</em>
+<a class="jxr_linenumber" name="L9" href="#L9">9</a>   <em class="jxr_javadoccomment"> *</em>
+<a class="jxr_linenumber" name="L10" href="#L10">10</a>  <em class="jxr_javadoccomment"> * &lt;p&gt;There are no threading issues because all of this data is read only.&lt;/p&gt;</em>
+<a class="jxr_linenumber" name="L11" href="#L11">11</a>  <em class="jxr_javadoccomment"> *</em>
+<a class="jxr_linenumber" name="L12" href="#L12">12</a>  <em class="jxr_javadoccomment"> * $Log: not supported by cvs2svn $ </em>
+<a class="jxr_linenumber" name="L13" href="#L13">13</a>  <em class="jxr_javadoccomment"> * @author Dan Cervelli</em>
+<a class="jxr_linenumber" name="L14" href="#L14">14</a>  <em class="jxr_javadoccomment"> */</em>
+<a class="jxr_linenumber" name="L15" href="#L15">15</a>  <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">class</strong> <a href="../../../../../../../gov/usgs/volcanoes/core/legacy/plot/color/Jet.html">Jet</a> <strong class="jxr_keyword">extends</strong> <a href="../../../../../../../gov/usgs/volcanoes/core/legacy/plot/color/Spectrum.html">Spectrum</a> {
+<a class="jxr_linenumber" name="L16" href="#L16">16</a>    <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">static</strong> <a href="../../../../../../../gov/usgs/volcanoes/core/legacy/plot/color/Jet.html">Jet</a> self;
+<a class="jxr_linenumber" name="L17" href="#L17">17</a>  
+<a class="jxr_linenumber" name="L18" href="#L18">18</a>    <strong class="jxr_keyword">private</strong> <a href="../../../../../../../gov/usgs/volcanoes/core/legacy/plot/color/Jet.html">Jet</a>() {
+<a class="jxr_linenumber" name="L19" href="#L19">19</a>      buildColors();
+<a class="jxr_linenumber" name="L20" href="#L20">20</a>    }
+<a class="jxr_linenumber" name="L21" href="#L21">21</a>  
+<a class="jxr_linenumber" name="L22" href="#L22">22</a>    <em class="jxr_javadoccomment">/** Gets the singleton instance of Jet.</em>
+<a class="jxr_linenumber" name="L23" href="#L23">23</a>  <em class="jxr_javadoccomment">   * @return the Jet instance</em>
+<a class="jxr_linenumber" name="L24" href="#L24">24</a>  <em class="jxr_javadoccomment">   */</em>
+<a class="jxr_linenumber" name="L25" href="#L25">25</a>    <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">static</strong> <a href="../../../../../../../gov/usgs/volcanoes/core/legacy/plot/color/Spectrum.html">Spectrum</a> getInstance() {
+<a class="jxr_linenumber" name="L26" href="#L26">26</a>      <strong class="jxr_keyword">if</strong> (self == <strong class="jxr_keyword">null</strong>)
+<a class="jxr_linenumber" name="L27" href="#L27">27</a>        self = <strong class="jxr_keyword">new</strong> <a href="../../../../../../../gov/usgs/volcanoes/core/legacy/plot/color/Jet.html">Jet</a>();
+<a class="jxr_linenumber" name="L28" href="#L28">28</a>  
+<a class="jxr_linenumber" name="L29" href="#L29">29</a>      <strong class="jxr_keyword">return</strong> self;
+<a class="jxr_linenumber" name="L30" href="#L30">30</a>    }
+<a class="jxr_linenumber" name="L31" href="#L31">31</a>  
+<a class="jxr_linenumber" name="L32" href="#L32">32</a>    <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">void</strong> buildColors() {
+<a class="jxr_linenumber" name="L33" href="#L33">33</a>      colors = <strong class="jxr_keyword">new</strong> Color[] {<strong class="jxr_keyword">new</strong> Color(0, 0, 159), <strong class="jxr_keyword">new</strong> Color(0, 0, 132), <strong class="jxr_keyword">new</strong> Color(0, 0, 137),
+<a class="jxr_linenumber" name="L34" href="#L34">34</a>          <strong class="jxr_keyword">new</strong> Color(0, 0, 142), <strong class="jxr_keyword">new</strong> Color(0, 0, 147), <strong class="jxr_keyword">new</strong> Color(0, 0, 153), <strong class="jxr_keyword">new</strong> Color(0, 0, 158),
+<a class="jxr_linenumber" name="L35" href="#L35">35</a>          <strong class="jxr_keyword">new</strong> Color(0, 0, 163), <strong class="jxr_keyword">new</strong> Color(0, 0, 168), <strong class="jxr_keyword">new</strong> Color(0, 0, 173), <strong class="jxr_keyword">new</strong> Color(0, 0, 178),
+<a class="jxr_linenumber" name="L36" href="#L36">36</a>          <strong class="jxr_keyword">new</strong> Color(0, 0, 183), <strong class="jxr_keyword">new</strong> Color(0, 0, 188), <strong class="jxr_keyword">new</strong> Color(0, 0, 193), <strong class="jxr_keyword">new</strong> Color(0, 0, 198),
+<a class="jxr_linenumber" name="L37" href="#L37">37</a>          <strong class="jxr_keyword">new</strong> Color(0, 0, 203), <strong class="jxr_keyword">new</strong> Color(0, 0, 209), <strong class="jxr_keyword">new</strong> Color(0, 0, 214), <strong class="jxr_keyword">new</strong> Color(0, 0, 219),
+<a class="jxr_linenumber" name="L38" href="#L38">38</a>          <strong class="jxr_keyword">new</strong> Color(0, 0, 224), <strong class="jxr_keyword">new</strong> Color(0, 0, 229), <strong class="jxr_keyword">new</strong> Color(0, 0, 234), <strong class="jxr_keyword">new</strong> Color(0, 0, 239),
+<a class="jxr_linenumber" name="L39" href="#L39">39</a>          <strong class="jxr_keyword">new</strong> Color(0, 0, 244), <strong class="jxr_keyword">new</strong> Color(0, 0, 249), <strong class="jxr_keyword">new</strong> Color(0, 0, 255), <strong class="jxr_keyword">new</strong> Color(0, 5, 255),
+<a class="jxr_linenumber" name="L40" href="#L40">40</a>          <strong class="jxr_keyword">new</strong> Color(0, 10, 255), <strong class="jxr_keyword">new</strong> Color(0, 15, 255), <strong class="jxr_keyword">new</strong> Color(0, 20, 255), <strong class="jxr_keyword">new</strong> Color(0, 25, 255),
+<a class="jxr_linenumber" name="L41" href="#L41">41</a>          <strong class="jxr_keyword">new</strong> Color(0, 30, 255), <strong class="jxr_keyword">new</strong> Color(0, 35, 255), <strong class="jxr_keyword">new</strong> Color(0, 40, 255), <strong class="jxr_keyword">new</strong> Color(0, 45, 255),
+<a class="jxr_linenumber" name="L42" href="#L42">42</a>          <strong class="jxr_keyword">new</strong> Color(0, 50, 255), <strong class="jxr_keyword">new</strong> Color(0, 56, 255), <strong class="jxr_keyword">new</strong> Color(0, 61, 255), <strong class="jxr_keyword">new</strong> Color(0, 66, 255),
+<a class="jxr_linenumber" name="L43" href="#L43">43</a>          <strong class="jxr_keyword">new</strong> Color(0, 71, 255), <strong class="jxr_keyword">new</strong> Color(0, 76, 255), <strong class="jxr_keyword">new</strong> Color(0, 81, 255), <strong class="jxr_keyword">new</strong> Color(0, 86, 255),
+<a class="jxr_linenumber" name="L44" href="#L44">44</a>          <strong class="jxr_keyword">new</strong> Color(0, 91, 255), <strong class="jxr_keyword">new</strong> Color(0, 96, 255), <strong class="jxr_keyword">new</strong> Color(0, 102, 255),
+<a class="jxr_linenumber" name="L45" href="#L45">45</a>          <strong class="jxr_keyword">new</strong> Color(0, 107, 255), <strong class="jxr_keyword">new</strong> Color(0, 112, 255), <strong class="jxr_keyword">new</strong> Color(0, 117, 255),
+<a class="jxr_linenumber" name="L46" href="#L46">46</a>          <strong class="jxr_keyword">new</strong> Color(0, 122, 255), <strong class="jxr_keyword">new</strong> Color(0, 127, 255), <strong class="jxr_keyword">new</strong> Color(0, 132, 255),
+<a class="jxr_linenumber" name="L47" href="#L47">47</a>          <strong class="jxr_keyword">new</strong> Color(0, 137, 255), <strong class="jxr_keyword">new</strong> Color(0, 142, 255), <strong class="jxr_keyword">new</strong> Color(0, 147, 255),
+<a class="jxr_linenumber" name="L48" href="#L48">48</a>          <strong class="jxr_keyword">new</strong> Color(0, 153, 255), <strong class="jxr_keyword">new</strong> Color(0, 158, 255), <strong class="jxr_keyword">new</strong> Color(0, 163, 255),
+<a class="jxr_linenumber" name="L49" href="#L49">49</a>          <strong class="jxr_keyword">new</strong> Color(0, 168, 255), <strong class="jxr_keyword">new</strong> Color(0, 173, 255), <strong class="jxr_keyword">new</strong> Color(0, 178, 255),
+<a class="jxr_linenumber" name="L50" href="#L50">50</a>          <strong class="jxr_keyword">new</strong> Color(0, 183, 255), <strong class="jxr_keyword">new</strong> Color(0, 188, 255), <strong class="jxr_keyword">new</strong> Color(0, 193, 255),
+<a class="jxr_linenumber" name="L51" href="#L51">51</a>          <strong class="jxr_keyword">new</strong> Color(0, 198, 255), <strong class="jxr_keyword">new</strong> Color(0, 204, 255), <strong class="jxr_keyword">new</strong> Color(0, 209, 255),
+<a class="jxr_linenumber" name="L52" href="#L52">52</a>          <strong class="jxr_keyword">new</strong> Color(0, 214, 255), <strong class="jxr_keyword">new</strong> Color(0, 219, 255), <strong class="jxr_keyword">new</strong> Color(0, 224, 255),
+<a class="jxr_linenumber" name="L53" href="#L53">53</a>          <strong class="jxr_keyword">new</strong> Color(0, 229, 255), <strong class="jxr_keyword">new</strong> Color(0, 234, 255), <strong class="jxr_keyword">new</strong> Color(0, 239, 255),
+<a class="jxr_linenumber" name="L54" href="#L54">54</a>          <strong class="jxr_keyword">new</strong> Color(0, 244, 255), <strong class="jxr_keyword">new</strong> Color(0, 249, 255), <strong class="jxr_keyword">new</strong> Color(0, 255, 255),
+<a class="jxr_linenumber" name="L55" href="#L55">55</a>          <strong class="jxr_keyword">new</strong> Color(5, 255, 249), <strong class="jxr_keyword">new</strong> Color(10, 255, 244), <strong class="jxr_keyword">new</strong> Color(15, 255, 239),
+<a class="jxr_linenumber" name="L56" href="#L56">56</a>          <strong class="jxr_keyword">new</strong> Color(20, 255, 234), <strong class="jxr_keyword">new</strong> Color(25, 255, 229), <strong class="jxr_keyword">new</strong> Color(30, 255, 224),
+<a class="jxr_linenumber" name="L57" href="#L57">57</a>          <strong class="jxr_keyword">new</strong> Color(35, 255, 219), <strong class="jxr_keyword">new</strong> Color(40, 255, 214), <strong class="jxr_keyword">new</strong> Color(45, 255, 209),
+<a class="jxr_linenumber" name="L58" href="#L58">58</a>          <strong class="jxr_keyword">new</strong> Color(50, 255, 204), <strong class="jxr_keyword">new</strong> Color(56, 255, 198), <strong class="jxr_keyword">new</strong> Color(61, 255, 193),
+<a class="jxr_linenumber" name="L59" href="#L59">59</a>          <strong class="jxr_keyword">new</strong> Color(66, 255, 188), <strong class="jxr_keyword">new</strong> Color(71, 255, 183), <strong class="jxr_keyword">new</strong> Color(76, 255, 178),
+<a class="jxr_linenumber" name="L60" href="#L60">60</a>          <strong class="jxr_keyword">new</strong> Color(81, 255, 173), <strong class="jxr_keyword">new</strong> Color(86, 255, 168), <strong class="jxr_keyword">new</strong> Color(91, 255, 163),
+<a class="jxr_linenumber" name="L61" href="#L61">61</a>          <strong class="jxr_keyword">new</strong> Color(96, 255, 158), <strong class="jxr_keyword">new</strong> Color(101, 255, 153), <strong class="jxr_keyword">new</strong> Color(107, 255, 147),
+<a class="jxr_linenumber" name="L62" href="#L62">62</a>          <strong class="jxr_keyword">new</strong> Color(112, 255, 142), <strong class="jxr_keyword">new</strong> Color(117, 255, 137), <strong class="jxr_keyword">new</strong> Color(122, 255, 132),
+<a class="jxr_linenumber" name="L63" href="#L63">63</a>          <strong class="jxr_keyword">new</strong> Color(127, 255, 127), <strong class="jxr_keyword">new</strong> Color(132, 255, 122), <strong class="jxr_keyword">new</strong> Color(137, 255, 117),
+<a class="jxr_linenumber" name="L64" href="#L64">64</a>          <strong class="jxr_keyword">new</strong> Color(142, 255, 112), <strong class="jxr_keyword">new</strong> Color(147, 255, 107), <strong class="jxr_keyword">new</strong> Color(153, 255, 101),
+<a class="jxr_linenumber" name="L65" href="#L65">65</a>          <strong class="jxr_keyword">new</strong> Color(158, 255, 96), <strong class="jxr_keyword">new</strong> Color(163, 255, 91), <strong class="jxr_keyword">new</strong> Color(168, 255, 86),
+<a class="jxr_linenumber" name="L66" href="#L66">66</a>          <strong class="jxr_keyword">new</strong> Color(173, 255, 81), <strong class="jxr_keyword">new</strong> Color(178, 255, 76), <strong class="jxr_keyword">new</strong> Color(183, 255, 71),
+<a class="jxr_linenumber" name="L67" href="#L67">67</a>          <strong class="jxr_keyword">new</strong> Color(188, 255, 66), <strong class="jxr_keyword">new</strong> Color(193, 255, 61), <strong class="jxr_keyword">new</strong> Color(198, 255, 56),
+<a class="jxr_linenumber" name="L68" href="#L68">68</a>          <strong class="jxr_keyword">new</strong> Color(203, 255, 51), <strong class="jxr_keyword">new</strong> Color(209, 255, 45), <strong class="jxr_keyword">new</strong> Color(214, 255, 40),
+<a class="jxr_linenumber" name="L69" href="#L69">69</a>          <strong class="jxr_keyword">new</strong> Color(219, 255, 35), <strong class="jxr_keyword">new</strong> Color(224, 255, 30), <strong class="jxr_keyword">new</strong> Color(229, 255, 25),
+<a class="jxr_linenumber" name="L70" href="#L70">70</a>          <strong class="jxr_keyword">new</strong> Color(234, 255, 20), <strong class="jxr_keyword">new</strong> Color(239, 255, 15), <strong class="jxr_keyword">new</strong> Color(244, 255, 10),
+<a class="jxr_linenumber" name="L71" href="#L71">71</a>          <strong class="jxr_keyword">new</strong> Color(249, 255, 5), <strong class="jxr_keyword">new</strong> Color(255, 255, 0), <strong class="jxr_keyword">new</strong> Color(255, 249, 0),
+<a class="jxr_linenumber" name="L72" href="#L72">72</a>          <strong class="jxr_keyword">new</strong> Color(255, 244, 0), <strong class="jxr_keyword">new</strong> Color(255, 239, 0), <strong class="jxr_keyword">new</strong> Color(255, 234, 0),
+<a class="jxr_linenumber" name="L73" href="#L73">73</a>          <strong class="jxr_keyword">new</strong> Color(255, 229, 0), <strong class="jxr_keyword">new</strong> Color(255, 224, 0), <strong class="jxr_keyword">new</strong> Color(255, 219, 0),
+<a class="jxr_linenumber" name="L74" href="#L74">74</a>          <strong class="jxr_keyword">new</strong> Color(255, 214, 0), <strong class="jxr_keyword">new</strong> Color(255, 209, 0), <strong class="jxr_keyword">new</strong> Color(255, 203, 0),
+<a class="jxr_linenumber" name="L75" href="#L75">75</a>          <strong class="jxr_keyword">new</strong> Color(255, 198, 0), <strong class="jxr_keyword">new</strong> Color(255, 193, 0), <strong class="jxr_keyword">new</strong> Color(255, 188, 0),
+<a class="jxr_linenumber" name="L76" href="#L76">76</a>          <strong class="jxr_keyword">new</strong> Color(255, 183, 0), <strong class="jxr_keyword">new</strong> Color(255, 178, 0), <strong class="jxr_keyword">new</strong> Color(255, 173, 0),
+<a class="jxr_linenumber" name="L77" href="#L77">77</a>          <strong class="jxr_keyword">new</strong> Color(255, 168, 0), <strong class="jxr_keyword">new</strong> Color(255, 163, 0), <strong class="jxr_keyword">new</strong> Color(255, 158, 0),
+<a class="jxr_linenumber" name="L78" href="#L78">78</a>          <strong class="jxr_keyword">new</strong> Color(255, 153, 0), <strong class="jxr_keyword">new</strong> Color(255, 147, 0), <strong class="jxr_keyword">new</strong> Color(255, 142, 0),
+<a class="jxr_linenumber" name="L79" href="#L79">79</a>          <strong class="jxr_keyword">new</strong> Color(255, 137, 0), <strong class="jxr_keyword">new</strong> Color(255, 132, 0), <strong class="jxr_keyword">new</strong> Color(255, 127, 0),
+<a class="jxr_linenumber" name="L80" href="#L80">80</a>          <strong class="jxr_keyword">new</strong> Color(255, 122, 0), <strong class="jxr_keyword">new</strong> Color(255, 117, 0), <strong class="jxr_keyword">new</strong> Color(255, 112, 0),
+<a class="jxr_linenumber" name="L81" href="#L81">81</a>          <strong class="jxr_keyword">new</strong> Color(255, 107, 0), <strong class="jxr_keyword">new</strong> Color(255, 101, 0), <strong class="jxr_keyword">new</strong> Color(255, 96, 0),
+<a class="jxr_linenumber" name="L82" href="#L82">82</a>          <strong class="jxr_keyword">new</strong> Color(255, 91, 0), <strong class="jxr_keyword">new</strong> Color(255, 86, 0), <strong class="jxr_keyword">new</strong> Color(255, 81, 0), <strong class="jxr_keyword">new</strong> Color(255, 76, 0),
+<a class="jxr_linenumber" name="L83" href="#L83">83</a>          <strong class="jxr_keyword">new</strong> Color(255, 71, 0), <strong class="jxr_keyword">new</strong> Color(255, 66, 0), <strong class="jxr_keyword">new</strong> Color(255, 61, 0), <strong class="jxr_keyword">new</strong> Color(255, 56, 0),
+<a class="jxr_linenumber" name="L84" href="#L84">84</a>          <strong class="jxr_keyword">new</strong> Color(255, 51, 0), <strong class="jxr_keyword">new</strong> Color(255, 45, 0), <strong class="jxr_keyword">new</strong> Color(255, 40, 0), <strong class="jxr_keyword">new</strong> Color(255, 35, 0),
+<a class="jxr_linenumber" name="L85" href="#L85">85</a>          <strong class="jxr_keyword">new</strong> Color(255, 30, 0), <strong class="jxr_keyword">new</strong> Color(255, 25, 0), <strong class="jxr_keyword">new</strong> Color(255, 20, 0), <strong class="jxr_keyword">new</strong> Color(255, 15, 0),
+<a class="jxr_linenumber" name="L86" href="#L86">86</a>          <strong class="jxr_keyword">new</strong> Color(255, 10, 0), <strong class="jxr_keyword">new</strong> Color(255, 5, 0), <strong class="jxr_keyword">new</strong> Color(255, 0, 0), <strong class="jxr_keyword">new</strong> Color(249, 0, 0),
+<a class="jxr_linenumber" name="L87" href="#L87">87</a>          <strong class="jxr_keyword">new</strong> Color(244, 0, 0), <strong class="jxr_keyword">new</strong> Color(239, 0, 0), <strong class="jxr_keyword">new</strong> Color(234, 0, 0), <strong class="jxr_keyword">new</strong> Color(229, 0, 0),
+<a class="jxr_linenumber" name="L88" href="#L88">88</a>          <strong class="jxr_keyword">new</strong> Color(224, 0, 0), <strong class="jxr_keyword">new</strong> Color(219, 0, 0), <strong class="jxr_keyword">new</strong> Color(214, 0, 0), <strong class="jxr_keyword">new</strong> Color(209, 0, 0),
+<a class="jxr_linenumber" name="L89" href="#L89">89</a>          <strong class="jxr_keyword">new</strong> Color(203, 0, 0), <strong class="jxr_keyword">new</strong> Color(198, 0, 0), <strong class="jxr_keyword">new</strong> Color(193, 0, 0), <strong class="jxr_keyword">new</strong> Color(188, 0, 0),
+<a class="jxr_linenumber" name="L90" href="#L90">90</a>          <strong class="jxr_keyword">new</strong> Color(183, 0, 0), <strong class="jxr_keyword">new</strong> Color(178, 0, 0), <strong class="jxr_keyword">new</strong> Color(173, 0, 0), <strong class="jxr_keyword">new</strong> Color(168, 0, 0),
+<a class="jxr_linenumber" name="L91" href="#L91">91</a>          <strong class="jxr_keyword">new</strong> Color(163, 0, 0), <strong class="jxr_keyword">new</strong> Color(158, 0, 0), <strong class="jxr_keyword">new</strong> Color(153, 0, 0), <strong class="jxr_keyword">new</strong> Color(147, 0, 0),
+<a class="jxr_linenumber" name="L92" href="#L92">92</a>          <strong class="jxr_keyword">new</strong> Color(142, 0, 0), <strong class="jxr_keyword">new</strong> Color(137, 0, 0), <strong class="jxr_keyword">new</strong> Color(132, 0, 0), <strong class="jxr_keyword">new</strong> Color(159, 0, 0),};
+<a class="jxr_linenumber" name="L93" href="#L93">93</a>  
+<a class="jxr_linenumber" name="L94" href="#L94">94</a>      paletteBytes = <strong class="jxr_keyword">new</strong> byte[] {(byte) 255, (byte) 255, (byte) 255, (byte) 0, (byte) 0, (byte) 0,
+<a class="jxr_linenumber" name="L95" href="#L95">95</a>          (byte) 255, (byte) 0, (byte) 0, (byte) 0, (byte) 0, (byte) 255, (byte) 0, (byte) 105,
+<a class="jxr_linenumber" name="L96" href="#L96">96</a>          (byte) 0, (byte) 125, (byte) 125, (byte) 125, (byte) 125, (byte) 125, (byte) 0, (byte) 0,
+<a class="jxr_linenumber" name="L97" href="#L97">97</a>          (byte) 255, (byte) 255, (byte) 200, (byte) 0, (byte) 200, (byte) 0, (byte) 0, (byte) 159,
+<a class="jxr_linenumber" name="L98" href="#L98">98</a>          (byte) 0, (byte) 0, (byte) 132, (byte) 0, (byte) 0, (byte) 137, (byte) 0, (byte) 0,
+<a class="jxr_linenumber" name="L99" href="#L99">99</a>          (byte) 142, (byte) 0, (byte) 0, (byte) 147, (byte) 0, (byte) 0, (byte) 153, (byte) 0,
+<a class="jxr_linenumber" name="L100" href="#L100">100</a>         (byte) 0, (byte) 158, (byte) 0, (byte) 0, (byte) 163, (byte) 0, (byte) 0, (byte) 168,
+<a class="jxr_linenumber" name="L101" href="#L101">101</a>         (byte) 0, (byte) 0, (byte) 173, (byte) 0, (byte) 0, (byte) 178, (byte) 0, (byte) 0,
+<a class="jxr_linenumber" name="L102" href="#L102">102</a>         (byte) 183, (byte) 0, (byte) 0, (byte) 188, (byte) 0, (byte) 0, (byte) 193, (byte) 0,
+<a class="jxr_linenumber" name="L103" href="#L103">103</a>         (byte) 0, (byte) 198, (byte) 0, (byte) 0, (byte) 203, (byte) 0, (byte) 0, (byte) 209,
+<a class="jxr_linenumber" name="L104" href="#L104">104</a>         (byte) 0, (byte) 0, (byte) 214, (byte) 0, (byte) 0, (byte) 219, (byte) 0, (byte) 0,
+<a class="jxr_linenumber" name="L105" href="#L105">105</a>         (byte) 224, (byte) 0, (byte) 0, (byte) 229, (byte) 0, (byte) 0, (byte) 234, (byte) 0,
+<a class="jxr_linenumber" name="L106" href="#L106">106</a>         (byte) 0, (byte) 239, (byte) 0, (byte) 0, (byte) 244, (byte) 0, (byte) 0, (byte) 249,
+<a class="jxr_linenumber" name="L107" href="#L107">107</a>         (byte) 0, (byte) 0, (byte) 255, (byte) 0, (byte) 5, (byte) 255, (byte) 0, (byte) 10,
+<a class="jxr_linenumber" name="L108" href="#L108">108</a>         (byte) 255, (byte) 0, (byte) 15, (byte) 255, (byte) 0, (byte) 20, (byte) 255, (byte) 0,
+<a class="jxr_linenumber" name="L109" href="#L109">109</a>         (byte) 25, (byte) 255, (byte) 0, (byte) 30, (byte) 255, (byte) 0, (byte) 35, (byte) 255,
+<a class="jxr_linenumber" name="L110" href="#L110">110</a>         (byte) 0, (byte) 40, (byte) 255, (byte) 0, (byte) 45, (byte) 255, (byte) 0, (byte) 50,
+<a class="jxr_linenumber" name="L111" href="#L111">111</a>         (byte) 255, (byte) 0, (byte) 56, (byte) 255, (byte) 0, (byte) 61, (byte) 255, (byte) 0,
+<a class="jxr_linenumber" name="L112" href="#L112">112</a>         (byte) 66, (byte) 255, (byte) 0, (byte) 71, (byte) 255, (byte) 0, (byte) 76, (byte) 255,
+<a class="jxr_linenumber" name="L113" href="#L113">113</a>         (byte) 0, (byte) 81, (byte) 255, (byte) 0, (byte) 86, (byte) 255, (byte) 0, (byte) 91,
+<a class="jxr_linenumber" name="L114" href="#L114">114</a>         (byte) 255, (byte) 0, (byte) 96, (byte) 255, (byte) 0, (byte) 102, (byte) 255, (byte) 0,
+<a class="jxr_linenumber" name="L115" href="#L115">115</a>         (byte) 107, (byte) 255, (byte) 0, (byte) 112, (byte) 255, (byte) 0, (byte) 117, (byte) 255,
+<a class="jxr_linenumber" name="L116" href="#L116">116</a>         (byte) 0, (byte) 122, (byte) 255, (byte) 0, (byte) 127, (byte) 255, (byte) 0, (byte) 132,
+<a class="jxr_linenumber" name="L117" href="#L117">117</a>         (byte) 255, (byte) 0, (byte) 137, (byte) 255, (byte) 0, (byte) 142, (byte) 255, (byte) 0,
+<a class="jxr_linenumber" name="L118" href="#L118">118</a>         (byte) 147, (byte) 255, (byte) 0, (byte) 153, (byte) 255, (byte) 0, (byte) 158, (byte) 255,
+<a class="jxr_linenumber" name="L119" href="#L119">119</a>         (byte) 0, (byte) 163, (byte) 255, (byte) 0, (byte) 168, (byte) 255, (byte) 0, (byte) 173,
+<a class="jxr_linenumber" name="L120" href="#L120">120</a>         (byte) 255, (byte) 0, (byte) 178, (byte) 255, (byte) 0, (byte) 183, (byte) 255, (byte) 0,
+<a class="jxr_linenumber" name="L121" href="#L121">121</a>         (byte) 188, (byte) 255, (byte) 0, (byte) 193, (byte) 255, (byte) 0, (byte) 198, (byte) 255,
+<a class="jxr_linenumber" name="L122" href="#L122">122</a>         (byte) 0, (byte) 204, (byte) 255, (byte) 0, (byte) 209, (byte) 255, (byte) 0, (byte) 214,
+<a class="jxr_linenumber" name="L123" href="#L123">123</a>         (byte) 255, (byte) 0, (byte) 219, (byte) 255, (byte) 0, (byte) 224, (byte) 255, (byte) 0,
+<a class="jxr_linenumber" name="L124" href="#L124">124</a>         (byte) 229, (byte) 255, (byte) 0, (byte) 234, (byte) 255, (byte) 0, (byte) 239, (byte) 255,
+<a class="jxr_linenumber" name="L125" href="#L125">125</a>         (byte) 0, (byte) 244, (byte) 255, (byte) 0, (byte) 249, (byte) 255, (byte) 0, (byte) 255,
+<a class="jxr_linenumber" name="L126" href="#L126">126</a>         (byte) 255, (byte) 5, (byte) 255, (byte) 249, (byte) 10, (byte) 255, (byte) 244, (byte) 15,
+<a class="jxr_linenumber" name="L127" href="#L127">127</a>         (byte) 255, (byte) 239, (byte) 20, (byte) 255, (byte) 234, (byte) 25, (byte) 255,
+<a class="jxr_linenumber" name="L128" href="#L128">128</a>         (byte) 229, (byte) 30, (byte) 255, (byte) 224, (byte) 35, (byte) 255, (byte) 219, (byte) 40,
+<a class="jxr_linenumber" name="L129" href="#L129">129</a>         (byte) 255, (byte) 214, (byte) 45, (byte) 255, (byte) 209, (byte) 50, (byte) 255,
+<a class="jxr_linenumber" name="L130" href="#L130">130</a>         (byte) 204, (byte) 56, (byte) 255, (byte) 198, (byte) 61, (byte) 255, (byte) 193, (byte) 66,
+<a class="jxr_linenumber" name="L131" href="#L131">131</a>         (byte) 255, (byte) 188, (byte) 71, (byte) 255, (byte) 183, (byte) 76, (byte) 255,
+<a class="jxr_linenumber" name="L132" href="#L132">132</a>         (byte) 178, (byte) 81, (byte) 255, (byte) 173, (byte) 86, (byte) 255, (byte) 168, (byte) 91,
+<a class="jxr_linenumber" name="L133" href="#L133">133</a>         (byte) 255, (byte) 163, (byte) 96, (byte) 255, (byte) 158, (byte) 101, (byte) 255,
+<a class="jxr_linenumber" name="L134" href="#L134">134</a>         (byte) 153, (byte) 107, (byte) 255, (byte) 147, (byte) 112, (byte) 255, (byte) 142,
+<a class="jxr_linenumber" name="L135" href="#L135">135</a>         (byte) 117, (byte) 255, (byte) 137, (byte) 122, (byte) 255, (byte) 132, (byte) 127,
+<a class="jxr_linenumber" name="L136" href="#L136">136</a>         (byte) 255, (byte) 127, (byte) 132, (byte) 255, (byte) 122, (byte) 137, (byte) 255,
+<a class="jxr_linenumber" name="L137" href="#L137">137</a>         (byte) 117, (byte) 142, (byte) 255, (byte) 112, (byte) 147, (byte) 255, (byte) 107,
+<a class="jxr_linenumber" name="L138" href="#L138">138</a>         (byte) 153, (byte) 255, (byte) 101, (byte) 158, (byte) 255, (byte) 96, (byte) 163,
+<a class="jxr_linenumber" name="L139" href="#L139">139</a>         (byte) 255, (byte) 91, (byte) 168, (byte) 255, (byte) 86, (byte) 173, (byte) 255, (byte) 81,
+<a class="jxr_linenumber" name="L140" href="#L140">140</a>         (byte) 178, (byte) 255, (byte) 76, (byte) 183, (byte) 255, (byte) 71, (byte) 188,
+<a class="jxr_linenumber" name="L141" href="#L141">141</a>         (byte) 255, (byte) 66, (byte) 193, (byte) 255, (byte) 61, (byte) 198, (byte) 255, (byte) 56,
+<a class="jxr_linenumber" name="L142" href="#L142">142</a>         (byte) 203, (byte) 255, (byte) 51, (byte) 209, (byte) 255, (byte) 45, (byte) 214,
+<a class="jxr_linenumber" name="L143" href="#L143">143</a>         (byte) 255, (byte) 40, (byte) 219, (byte) 255, (byte) 35, (byte) 224, (byte) 255, (byte) 30,
+<a class="jxr_linenumber" name="L144" href="#L144">144</a>         (byte) 229, (byte) 255, (byte) 25, (byte) 234, (byte) 255, (byte) 20, (byte) 239,
+<a class="jxr_linenumber" name="L145" href="#L145">145</a>         (byte) 255, (byte) 15, (byte) 244, (byte) 255, (byte) 10, (byte) 249, (byte) 255, (byte) 5,
+<a class="jxr_linenumber" name="L146" href="#L146">146</a>         (byte) 255, (byte) 255, (byte) 0, (byte) 255, (byte) 249, (byte) 0, (byte) 255, (byte) 244,
+<a class="jxr_linenumber" name="L147" href="#L147">147</a>         (byte) 0, (byte) 255, (byte) 239, (byte) 0, (byte) 255, (byte) 234, (byte) 0, (byte) 255,
+<a class="jxr_linenumber" name="L148" href="#L148">148</a>         (byte) 229, (byte) 0, (byte) 255, (byte) 224, (byte) 0, (byte) 255, (byte) 219, (byte) 0,
+<a class="jxr_linenumber" name="L149" href="#L149">149</a>         (byte) 255, (byte) 214, (byte) 0, (byte) 255, (byte) 209, (byte) 0, (byte) 255, (byte) 203,
+<a class="jxr_linenumber" name="L150" href="#L150">150</a>         (byte) 0, (byte) 255, (byte) 198, (byte) 0, (byte) 255, (byte) 193, (byte) 0, (byte) 255,
+<a class="jxr_linenumber" name="L151" href="#L151">151</a>         (byte) 188, (byte) 0, (byte) 255, (byte) 183, (byte) 0, (byte) 255, (byte) 178, (byte) 0,
+<a class="jxr_linenumber" name="L152" href="#L152">152</a>         (byte) 255, (byte) 173, (byte) 0, (byte) 255, (byte) 168, (byte) 0, (byte) 255, (byte) 163,
+<a class="jxr_linenumber" name="L153" href="#L153">153</a>         (byte) 0, (byte) 255, (byte) 158, (byte) 0, (byte) 255, (byte) 153, (byte) 0, (byte) 255,
+<a class="jxr_linenumber" name="L154" href="#L154">154</a>         (byte) 147, (byte) 0, (byte) 255, (byte) 142, (byte) 0, (byte) 255, (byte) 137, (byte) 0,
+<a class="jxr_linenumber" name="L155" href="#L155">155</a>         (byte) 255, (byte) 132, (byte) 0, (byte) 255, (byte) 127, (byte) 0, (byte) 255, (byte) 122,
+<a class="jxr_linenumber" name="L156" href="#L156">156</a>         (byte) 0, (byte) 255, (byte) 117, (byte) 0, (byte) 255, (byte) 112, (byte) 0, (byte) 255,
+<a class="jxr_linenumber" name="L157" href="#L157">157</a>         (byte) 107, (byte) 0, (byte) 255, (byte) 101, (byte) 0, (byte) 255, (byte) 96, (byte) 0,
+<a class="jxr_linenumber" name="L158" href="#L158">158</a>         (byte) 255, (byte) 91, (byte) 0, (byte) 255, (byte) 86, (byte) 0, (byte) 255, (byte) 81,
+<a class="jxr_linenumber" name="L159" href="#L159">159</a>         (byte) 0, (byte) 255, (byte) 76, (byte) 0, (byte) 255, (byte) 71, (byte) 0, (byte) 255,
+<a class="jxr_linenumber" name="L160" href="#L160">160</a>         (byte) 66, (byte) 0, (byte) 255, (byte) 61, (byte) 0, (byte) 255, (byte) 56, (byte) 0,
+<a class="jxr_linenumber" name="L161" href="#L161">161</a>         (byte) 255, (byte) 51, (byte) 0, (byte) 255, (byte) 45, (byte) 0, (byte) 255, (byte) 40,
+<a class="jxr_linenumber" name="L162" href="#L162">162</a>         (byte) 0, (byte) 255, (byte) 35, (byte) 0, (byte) 255, (byte) 30, (byte) 0, (byte) 255,
+<a class="jxr_linenumber" name="L163" href="#L163">163</a>         (byte) 25, (byte) 0, (byte) 255, (byte) 20, (byte) 0, (byte) 255, (byte) 15, (byte) 0,
+<a class="jxr_linenumber" name="L164" href="#L164">164</a>         (byte) 255, (byte) 10, (byte) 0, (byte) 255, (byte) 5, (byte) 0, (byte) 255, (byte) 0,
+<a class="jxr_linenumber" name="L165" href="#L165">165</a>         (byte) 0, (byte) 249, (byte) 0, (byte) 0, (byte) 244, (byte) 0, (byte) 0, (byte) 239,
+<a class="jxr_linenumber" name="L166" href="#L166">166</a>         (byte) 0, (byte) 0, (byte) 234, (byte) 0, (byte) 0, (byte) 229, (byte) 0, (byte) 0,
+<a class="jxr_linenumber" name="L167" href="#L167">167</a>         (byte) 224, (byte) 0, (byte) 0, (byte) 219, (byte) 0, (byte) 0, (byte) 214, (byte) 0,
+<a class="jxr_linenumber" name="L168" href="#L168">168</a>         (byte) 0, (byte) 209, (byte) 0, (byte) 0, (byte) 203, (byte) 0, (byte) 0, (byte) 198,
+<a class="jxr_linenumber" name="L169" href="#L169">169</a>         (byte) 0, (byte) 0, (byte) 193, (byte) 0, (byte) 0, (byte) 188, (byte) 0, (byte) 0,
+<a class="jxr_linenumber" name="L170" href="#L170">170</a>         (byte) 183, (byte) 0, (byte) 0, (byte) 178, (byte) 0, (byte) 0, (byte) 173, (byte) 0,
+<a class="jxr_linenumber" name="L171" href="#L171">171</a>         (byte) 0, (byte) 168, (byte) 0, (byte) 0, (byte) 163, (byte) 0, (byte) 0, (byte) 158,
+<a class="jxr_linenumber" name="L172" href="#L172">172</a>         (byte) 0, (byte) 0, (byte) 153, (byte) 0, (byte) 0, (byte) 147, (byte) 0, (byte) 0,
+<a class="jxr_linenumber" name="L173" href="#L173">173</a>         (byte) 142, (byte) 0, (byte) 0, (byte) 137, (byte) 0, (byte) 0, (byte) 132, (byte) 0,
+<a class="jxr_linenumber" name="L174" href="#L174">174</a>         (byte) 0, (byte) 159, (byte) 0, (byte) 0, (byte) 255, (byte) 101, (byte) 0, (byte) 255,
+<a class="jxr_linenumber" name="L175" href="#L175">175</a>         (byte) 96, (byte) 0, (byte) 255, (byte) 91, (byte) 0, (byte) 255, (byte) 86, (byte) 0,
+<a class="jxr_linenumber" name="L176" href="#L176">176</a>         (byte) 255, (byte) 81, (byte) 0, (byte) 255, (byte) 76, (byte) 0, (byte) 255, (byte) 71,
+<a class="jxr_linenumber" name="L177" href="#L177">177</a>         (byte) 0, (byte) 255, (byte) 66, (byte) 0, (byte) 255, (byte) 61, (byte) 0, (byte) 255,
+<a class="jxr_linenumber" name="L178" href="#L178">178</a>         (byte) 56, (byte) 0, (byte) 255, (byte) 51, (byte) 0, (byte) 255, (byte) 45, (byte) 0,
+<a class="jxr_linenumber" name="L179" href="#L179">179</a>         (byte) 255, (byte) 40, (byte) 0, (byte) 255, (byte) 35, (byte) 0, (byte) 255, (byte) 30,
+<a class="jxr_linenumber" name="L180" href="#L180">180</a>         (byte) 0, (byte) 255, (byte) 25, (byte) 0, (byte) 255, (byte) 20, (byte) 0, (byte) 255,
+<a class="jxr_linenumber" name="L181" href="#L181">181</a>         (byte) 15, (byte) 0, (byte) 255, (byte) 10, (byte) 0, (byte) 255, (byte) 5, (byte) 0,
+<a class="jxr_linenumber" name="L182" href="#L182">182</a>         (byte) 255, (byte) 0, (byte) 0, (byte) 249, (byte) 0, (byte) 0, (byte) 244, (byte) 0,
+<a class="jxr_linenumber" name="L183" href="#L183">183</a>         (byte) 0, (byte) 239, (byte) 0, (byte) 0, (byte) 234, (byte) 0, (byte) 0, (byte) 229,
+<a class="jxr_linenumber" name="L184" href="#L184">184</a>         (byte) 0, (byte) 0, (byte) 224, (byte) 0, (byte) 0, (byte) 219, (byte) 0, (byte) 0,
+<a class="jxr_linenumber" name="L185" href="#L185">185</a>         (byte) 214, (byte) 0, (byte) 0, (byte) 209, (byte) 0, (byte) 0, (byte) 203, (byte) 0,
+<a class="jxr_linenumber" name="L186" href="#L186">186</a>         (byte) 0, (byte) 198, (byte) 0, (byte) 0, (byte) 193, (byte) 0, (byte) 0, (byte) 188,
+<a class="jxr_linenumber" name="L187" href="#L187">187</a>         (byte) 0, (byte) 0, (byte) 183, (byte) 0, (byte) 0, (byte) 178, (byte) 0, (byte) 0,
+<a class="jxr_linenumber" name="L188" href="#L188">188</a>         (byte) 173, (byte) 0, (byte) 0, (byte) 168, (byte) 0, (byte) 0, (byte) 163, (byte) 0,
+<a class="jxr_linenumber" name="L189" href="#L189">189</a>         (byte) 0, (byte) 158, (byte) 0, (byte) 0, (byte) 153, (byte) 0, (byte) 0, (byte) 147,
+<a class="jxr_linenumber" name="L190" href="#L190">190</a>         (byte) 0, (byte) 0, (byte) 142, (byte) 0, (byte) 0, (byte) 137, (byte) 0, (byte) 0,
+<a class="jxr_linenumber" name="L191" href="#L191">191</a>         (byte) 132, (byte) 0, (byte) 0, (byte) 159, (byte) 0, (byte) 0};
+<a class="jxr_linenumber" name="L192" href="#L192">192</a> 
+<a class="jxr_linenumber" name="L193" href="#L193">193</a>     palette = <strong class="jxr_keyword">new</strong> IndexColorModel(8, 255, paletteBytes, 0, false);
+<a class="jxr_linenumber" name="L194" href="#L194">194</a>   }
+<a class="jxr_linenumber" name="L195" href="#L195">195</a> }
+</pre>
+<hr/>
+<div id="footer">Copyright &#169; 2017. All rights reserved.</div>
+</body>
+</html>

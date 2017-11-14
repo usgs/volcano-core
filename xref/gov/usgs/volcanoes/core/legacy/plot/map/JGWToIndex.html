@@ -1,0 +1,55 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head><meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+<title>JGWToIndex xref</title>
+<link type="text/css" rel="stylesheet" href="../../../../../../../stylesheet.css" />
+</head>
+<body>
+<div id="overview"><a href="../../../../../../../../apidocs/gov/usgs/volcanoes/core/legacy/plot/map/JGWToIndex.html">View Javadoc</a></div><pre>
+<a class="jxr_linenumber" name="L1" href="#L1">1</a>   <strong class="jxr_keyword">package</strong> gov.usgs.volcanoes.core.legacy.plot.map;
+<a class="jxr_linenumber" name="L2" href="#L2">2</a>   
+<a class="jxr_linenumber" name="L3" href="#L3">3</a>   <strong class="jxr_keyword">import</strong> gov.usgs.volcanoes.core.util.ResourceReader;
+<a class="jxr_linenumber" name="L4" href="#L4">4</a>   
+<a class="jxr_linenumber" name="L5" href="#L5">5</a>   <strong class="jxr_keyword">import</strong> java.awt.image.BufferedImage;
+<a class="jxr_linenumber" name="L6" href="#L6">6</a>   <strong class="jxr_keyword">import</strong> java.io.File;
+<a class="jxr_linenumber" name="L7" href="#L7">7</a>   <strong class="jxr_keyword">import</strong> java.io.IOException;
+<a class="jxr_linenumber" name="L8" href="#L8">8</a>   
+<a class="jxr_linenumber" name="L9" href="#L9">9</a>   <strong class="jxr_keyword">import</strong> javax.imageio.ImageIO;
+<a class="jxr_linenumber" name="L10" href="#L10">10</a>  
+<a class="jxr_linenumber" name="L11" href="#L11">11</a>  <em class="jxr_javadoccomment">/**</em>
+<a class="jxr_linenumber" name="L12" href="#L12">12</a>  <em class="jxr_javadoccomment"> * &lt;p&gt;Scans dir for .jgw files and send to stdout strings as follow:&lt;/p&gt;</em>
+<a class="jxr_linenumber" name="L13" href="#L13">13</a>  <em class="jxr_javadoccomment"> * &lt;p&gt;name, width, height, west_coord, east_coord, south_coord, north_coord&lt;/p&gt;</em>
+<a class="jxr_linenumber" name="L14" href="#L14">14</a>  <em class="jxr_javadoccomment"> * &lt;p&gt;Syntax is: JGWToIndex [dir_name]&lt;/p&gt;</em>
+<a class="jxr_linenumber" name="L15" href="#L15">15</a>  <em class="jxr_javadoccomment"> * &lt;p&gt;Default is current directory.&lt;/p&gt;</em>
+<a class="jxr_linenumber" name="L16" href="#L16">16</a>  <em class="jxr_javadoccomment"> * </em>
+<a class="jxr_linenumber" name="L17" href="#L17">17</a>  <em class="jxr_javadoccomment"> * @author Dan Cervelli</em>
+<a class="jxr_linenumber" name="L18" href="#L18">18</a>  <em class="jxr_javadoccomment"> */</em>
+<a class="jxr_linenumber" name="L19" href="#L19">19</a>  <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">class</strong> <a href="../../../../../../../gov/usgs/volcanoes/core/legacy/plot/map/JGWToIndex.html">JGWToIndex</a> {
+<a class="jxr_linenumber" name="L20" href="#L20">20</a>    <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">static</strong> <strong class="jxr_keyword">void</strong> main(String[] args) <strong class="jxr_keyword">throws</strong> IOException {
+<a class="jxr_linenumber" name="L21" href="#L21">21</a>      String dir = <span class="jxr_string">"."</span>;
+<a class="jxr_linenumber" name="L22" href="#L22">22</a>      <strong class="jxr_keyword">if</strong> (args.length &gt; 0)
+<a class="jxr_linenumber" name="L23" href="#L23">23</a>        dir = args[0];
+<a class="jxr_linenumber" name="L24" href="#L24">24</a>      String[] files = <strong class="jxr_keyword">new</strong> File(dir).list();
+<a class="jxr_linenumber" name="L25" href="#L25">25</a>      <strong class="jxr_keyword">for</strong> (String fn : files) {
+<a class="jxr_linenumber" name="L26" href="#L26">26</a>        <strong class="jxr_keyword">if</strong> (!fn.endsWith(<span class="jxr_string">".jgw"</span>))
+<a class="jxr_linenumber" name="L27" href="#L27">27</a>          <strong class="jxr_keyword">continue</strong>;
+<a class="jxr_linenumber" name="L28" href="#L28">28</a>        <a href="../../../../../../../gov/usgs/volcanoes/core/util/ResourceReader.html">ResourceReader</a> rr = ResourceReader.getResourceReader(fn);
+<a class="jxr_linenumber" name="L29" href="#L29">29</a>        <strong class="jxr_keyword">double</strong>[] jgw = <strong class="jxr_keyword">new</strong> <strong class="jxr_keyword">double</strong>[6];
+<a class="jxr_linenumber" name="L30" href="#L30">30</a>        <strong class="jxr_keyword">for</strong> (<strong class="jxr_keyword">int</strong> i = 0; i &lt; 6; i++)
+<a class="jxr_linenumber" name="L31" href="#L31">31</a>          jgw[i] = Double.parseDouble(rr.nextLine());
+<a class="jxr_linenumber" name="L32" href="#L32">32</a>        String jpg = fn.substring(0, fn.length() - 2) + <span class="jxr_string">"pg"</span>;
+<a class="jxr_linenumber" name="L33" href="#L33">33</a>        BufferedImage image = ImageIO.read(<strong class="jxr_keyword">new</strong> File(jpg));
+<a class="jxr_linenumber" name="L34" href="#L34">34</a>        <strong class="jxr_keyword">double</strong> w = jgw[4];
+<a class="jxr_linenumber" name="L35" href="#L35">35</a>        <strong class="jxr_keyword">double</strong> e = w + image.getWidth() * jgw[0];
+<a class="jxr_linenumber" name="L36" href="#L36">36</a>        <strong class="jxr_keyword">double</strong> n = jgw[5];
+<a class="jxr_linenumber" name="L37" href="#L37">37</a>        <strong class="jxr_keyword">double</strong> s = n + image.getHeight() * jgw[3];
+<a class="jxr_linenumber" name="L38" href="#L38">38</a>        System.out.printf(<span class="jxr_string">"%s, %d, %d, %f, %f, %f, %f\n"</span>, jpg, image.getWidth(), image.getHeight(), w,
+<a class="jxr_linenumber" name="L39" href="#L39">39</a>            e, s, n);
+<a class="jxr_linenumber" name="L40" href="#L40">40</a>      }
+<a class="jxr_linenumber" name="L41" href="#L41">41</a>    }
+<a class="jxr_linenumber" name="L42" href="#L42">42</a>  }
+</pre>
+<hr/>
+<div id="footer">Copyright &#169; 2017. All rights reserved.</div>
+</body>
+</html>

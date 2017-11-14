@@ -1,0 +1,74 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head><meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+<title>LineRenderer xref</title>
+<link type="text/css" rel="stylesheet" href="../../../../../../../stylesheet.css" />
+</head>
+<body>
+<div id="overview"><a href="../../../../../../../../apidocs/gov/usgs/volcanoes/core/legacy/plot/render/LineRenderer.html">View Javadoc</a></div><pre>
+<a class="jxr_linenumber" name="L1" href="#L1">1</a>   <strong class="jxr_keyword">package</strong> gov.usgs.volcanoes.core.legacy.plot.render;
+<a class="jxr_linenumber" name="L2" href="#L2">2</a>   
+<a class="jxr_linenumber" name="L3" href="#L3">3</a>   <strong class="jxr_keyword">import</strong> java.awt.BasicStroke;
+<a class="jxr_linenumber" name="L4" href="#L4">4</a>   <strong class="jxr_keyword">import</strong> java.awt.Color;
+<a class="jxr_linenumber" name="L5" href="#L5">5</a>   <strong class="jxr_keyword">import</strong> java.awt.Graphics2D;
+<a class="jxr_linenumber" name="L6" href="#L6">6</a>   <strong class="jxr_keyword">import</strong> java.awt.Stroke;
+<a class="jxr_linenumber" name="L7" href="#L7">7</a>   <strong class="jxr_keyword">import</strong> java.awt.geom.Line2D;
+<a class="jxr_linenumber" name="L8" href="#L8">8</a>   
+<a class="jxr_linenumber" name="L9" href="#L9">9</a>   <em class="jxr_javadoccomment">/**</em>
+<a class="jxr_linenumber" name="L10" href="#L10">10</a>  <em class="jxr_javadoccomment"> * A renderer that renders a line</em>
+<a class="jxr_linenumber" name="L11" href="#L11">11</a>  <em class="jxr_javadoccomment"> * TODO: extend ShapeRenderer</em>
+<a class="jxr_linenumber" name="L12" href="#L12">12</a>  <em class="jxr_javadoccomment"> * </em>
+<a class="jxr_linenumber" name="L13" href="#L13">13</a>  <em class="jxr_javadoccomment"> * @author Dan Cervelli</em>
+<a class="jxr_linenumber" name="L14" href="#L14">14</a>  <em class="jxr_javadoccomment"> */</em>
+<a class="jxr_linenumber" name="L15" href="#L15">15</a>  <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">class</strong> <a href="../../../../../../../gov/usgs/volcanoes/core/legacy/plot/render/LineRenderer.html">LineRenderer</a> <strong class="jxr_keyword">implements</strong> <a href="../../../../../../../gov/usgs/volcanoes/core/legacy/plot/render/Renderer.html">Renderer</a> {
+<a class="jxr_linenumber" name="L16" href="#L16">16</a>    <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">static</strong> <strong class="jxr_keyword">final</strong> Stroke DASHED_STROKE = <strong class="jxr_keyword">new</strong> BasicStroke(1.0f, BasicStroke.CAP_BUTT,
+<a class="jxr_linenumber" name="L17" href="#L17">17</a>        BasicStroke.JOIN_MITER, 10.0f, <strong class="jxr_keyword">new</strong> <strong class="jxr_keyword">float</strong>[] {1.0f, 2.0f}, 0.0f);
+<a class="jxr_linenumber" name="L18" href="#L18">18</a>  
+<a class="jxr_linenumber" name="L19" href="#L19">19</a>    <em class="jxr_comment">// Some sort of Java bug causes non-dashed strokes to occasionally to</em>
+<a class="jxr_linenumber" name="L20" href="#L20">20</a>    <em class="jxr_comment">// be offset by one pixel from a dashed stroke. Use this stroke</em>
+<a class="jxr_linenumber" name="L21" href="#L21">21</a>    <em class="jxr_comment">// to line up perfectly with other dashed strokes.</em>
+<a class="jxr_linenumber" name="L22" href="#L22">22</a>    <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">static</strong> <strong class="jxr_keyword">final</strong> Stroke TICK_STROKE = <strong class="jxr_keyword">new</strong> BasicStroke(1.0f, BasicStroke.CAP_BUTT,
+<a class="jxr_linenumber" name="L23" href="#L23">23</a>        BasicStroke.JOIN_MITER, 10.0f, <strong class="jxr_keyword">new</strong> <strong class="jxr_keyword">float</strong>[] {1.0f, 0.0f}, 0.0f);
+<a class="jxr_linenumber" name="L24" href="#L24">24</a>  
+<a class="jxr_linenumber" name="L25" href="#L25">25</a>    <em class="jxr_javadoccomment">/** The Line.</em>
+<a class="jxr_linenumber" name="L26" href="#L26">26</a>  <em class="jxr_javadoccomment">   */</em>
+<a class="jxr_linenumber" name="L27" href="#L27">27</a>    <strong class="jxr_keyword">public</strong> Line2D.Double line;
+<a class="jxr_linenumber" name="L28" href="#L28">28</a>  
+<a class="jxr_linenumber" name="L29" href="#L29">29</a>    <em class="jxr_javadoccomment">/** The Stroke.</em>
+<a class="jxr_linenumber" name="L30" href="#L30">30</a>  <em class="jxr_javadoccomment">   */</em>
+<a class="jxr_linenumber" name="L31" href="#L31">31</a>    <strong class="jxr_keyword">public</strong> Stroke stroke;<em class="jxr_comment">// = NORMAL_STROKE;</em>
+<a class="jxr_linenumber" name="L32" href="#L32">32</a>  
+<a class="jxr_linenumber" name="L33" href="#L33">33</a>    <em class="jxr_javadoccomment">/** The Color.</em>
+<a class="jxr_linenumber" name="L34" href="#L34">34</a>  <em class="jxr_javadoccomment">   */</em>
+<a class="jxr_linenumber" name="L35" href="#L35">35</a>    <strong class="jxr_keyword">public</strong> Color color;
+<a class="jxr_linenumber" name="L36" href="#L36">36</a>  
+<a class="jxr_linenumber" name="L37" href="#L37">37</a>    <em class="jxr_javadoccomment">/** Generic empty constructor.</em>
+<a class="jxr_linenumber" name="L38" href="#L38">38</a>  <em class="jxr_javadoccomment">   */</em>
+<a class="jxr_linenumber" name="L39" href="#L39">39</a>    <strong class="jxr_keyword">public</strong> <a href="../../../../../../../gov/usgs/volcanoes/core/legacy/plot/render/LineRenderer.html">LineRenderer</a>() {}
+<a class="jxr_linenumber" name="L40" href="#L40">40</a>  
+<a class="jxr_linenumber" name="L41" href="#L41">41</a>    <em class="jxr_javadoccomment">/** Renders the line object using the internally stored stroke and color.  </em>
+<a class="jxr_linenumber" name="L42" href="#L42">42</a>  <em class="jxr_javadoccomment">   * @param g the graphics object upon which to render</em>
+<a class="jxr_linenumber" name="L43" href="#L43">43</a>  <em class="jxr_javadoccomment">   */</em>
+<a class="jxr_linenumber" name="L44" href="#L44">44</a>    <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> render(Graphics2D g) {
+<a class="jxr_linenumber" name="L45" href="#L45">45</a>  
+<a class="jxr_linenumber" name="L46" href="#L46">46</a>      Stroke origStroke = g.getStroke();
+<a class="jxr_linenumber" name="L47" href="#L47">47</a>      Color origColor = g.getColor();
+<a class="jxr_linenumber" name="L48" href="#L48">48</a>  
+<a class="jxr_linenumber" name="L49" href="#L49">49</a>      <strong class="jxr_keyword">if</strong> (stroke != <strong class="jxr_keyword">null</strong>)
+<a class="jxr_linenumber" name="L50" href="#L50">50</a>        g.setStroke(stroke);
+<a class="jxr_linenumber" name="L51" href="#L51">51</a>  
+<a class="jxr_linenumber" name="L52" href="#L52">52</a>      <strong class="jxr_keyword">if</strong> (color != <strong class="jxr_keyword">null</strong>)
+<a class="jxr_linenumber" name="L53" href="#L53">53</a>        g.setColor(color);
+<a class="jxr_linenumber" name="L54" href="#L54">54</a>      <strong class="jxr_keyword">if</strong> (line != <strong class="jxr_keyword">null</strong> &amp;&amp; !(Double.isNaN(line.x1) || Double.isNaN(line.x2) || Double.isNaN(line.y1)
+<a class="jxr_linenumber" name="L55" href="#L55">55</a>          || Double.isNaN(line.y2)))
+<a class="jxr_linenumber" name="L56" href="#L56">56</a>        g.draw(line);
+<a class="jxr_linenumber" name="L57" href="#L57">57</a>  
+<a class="jxr_linenumber" name="L58" href="#L58">58</a>      g.setStroke(origStroke);
+<a class="jxr_linenumber" name="L59" href="#L59">59</a>      g.setColor(origColor);
+<a class="jxr_linenumber" name="L60" href="#L60">60</a>    }
+<a class="jxr_linenumber" name="L61" href="#L61">61</a>  }
+</pre>
+<hr/>
+<div id="footer">Copyright &#169; 2017. All rights reserved.</div>
+</body>
+</html>
