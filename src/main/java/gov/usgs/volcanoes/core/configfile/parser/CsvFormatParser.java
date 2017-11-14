@@ -8,9 +8,9 @@ package gov.usgs.volcanoes.core.configfile.parser;
 
 import gov.usgs.volcanoes.core.configfile.Parser;
 
-import org.apache.commons.csv.CSVFormat;
-
 import java.text.ParseException;
+
+import org.apache.commons.csv.CSVFormat;
 
 /**
  * Parse a CSVFormat out of a config file string.

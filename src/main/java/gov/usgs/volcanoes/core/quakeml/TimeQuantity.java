@@ -1,10 +1,10 @@
 package gov.usgs.volcanoes.core.quakeml;
 
+import java.util.Date;
+
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
-
-import java.util.Date;
 
 /**
  * This class represents a point in time, with optional symmetric or asymmetric uncertainties given

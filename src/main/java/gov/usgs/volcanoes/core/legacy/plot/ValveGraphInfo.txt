@@ -1,0 +1,395 @@
+@package gov.usgs.valve.graph;
+
+import java.awt.*;
+import java.util.*;
+import gov.usgs.valve.*;
+import gov.usgs.valve.plot.*;
+import gov.usgs.valve.content.*;
+
+/**
+ * ValveGraphInfo is currently the only concrete subclass of GraphInfo and
+ * provides functionality for creating Valve plots.
+ *
+ * $Log$
+ *
+ * @@author Dan Cervelli
+ * @@version 2.00
+ */
+public class ValveGraphInfo extends GraphInfo
+{
+	private static final int LARGE_WIDTH = 1000;
+	private static final int LARGE_HEIGHT = 250;
+	private static final int LARGE_FR_X = 75;
+	private static final int LARGE_FR_Y = 19;
+	private static final int LARGE_FR_WIDTH = 849;
+	private static final int LARGE_FR_HEIGHT = 188;
+	private static final int LARGE_X_TICKS = 8;
+	private static final int LARGE_Y_TICKS = 7;
+	private static final int SMALL_WIDTH = 488;
+	private static final int SMALL_HEIGHT = 185;
+	private static final int SMALL_FR_X = 50;
+	private static final int SMALL_FR_Y = 19;
+	private static final int SMALL_FR_WIDTH = 380;
+	private static final int SMALL_FR_HEIGHT = 131;
+	private static final int SMALL_X_TICKS = 6;
+	private static final int SMALL_Y_TICKS = 5;
+	private static final Color BACKGROUND_COLOR = new Color(0.97f, 0.97f, 0.97f);
+	
+	/** Generic empty constructor.
+	 */
+	public ValveGraphInfo() {}
+
+	/** Creates the graph.  This originally was going to return some sort 
+	 * of flag indicating whether the graph was successful or not, but that
+	 * functionality was found to be limited.  Any graph errors are now wrapped
+	 * inside the specified Graph object instead. 
+	 *
+	 * @@param graphContext the object that will be renderered on
+	 * @@param graph the Graph object describing the whole graph
+	 * @@return the result (null)
+	 */
+	public Object doGraph(Object graphContext, Graph graph)
+	{
+		graph.setGraphURL(graphURL);
+		graph.setFile(fileName);
+		graph.setPostScript(doPostScript);
+		graph.setRawData(doRawData);
+		graph.setSize(size);
+		graph.setUserData(userData);
+		if (graph.is3D())
+		{
+			for (int i = 0; i < lines.length; i++)
+			{
+				GraphLine line = lines[i];
+				if (line.isRefreshable())
+					graph.setRefreshable(true);
+				line.doGraphLine("Live3D", graph);
+			}
+			return null;
+		}
+		else
+		{
+			Plot plot = new Plot();
+			Color bgColor = graph.getBackgroundColor();
+			if (bgColor == null)
+				bgColor = BACKGROUND_COLOR;
+			plot.setBackgroundColor(bgColor);
+			//plot.setBackgroundColor(Color.white);
+			switch (size)
+			{
+				case 'L':
+					plot.setSize(LARGE_WIDTH, LARGE_HEIGHT);
+					plot.setDefaultFRLocation(LARGE_FR_X, LARGE_FR_Y, LARGE_FR_WIDTH, LARGE_FR_HEIGHT);
+					plot.setDefaultTicks(LARGE_X_TICKS, LARGE_Y_TICKS);
+					break;
+				case 'S':
+					plot.setSize(SMALL_WIDTH, SMALL_HEIGHT);
+					plot.setDefaultFRLocation(SMALL_FR_X, SMALL_FR_Y, SMALL_FR_WIDTH, SMALL_FR_HEIGHT);
+					plot.setDefaultTicks(SMALL_X_TICKS, SMALL_Y_TICKS);
+					break;
+			}
+
+			for (int i = 0; i < lines.length; i++)
+			{
+				GraphLine line = lines[i];
+				if (line != null)
+				{
+					if (line.isRefreshable())
+					graph.setRefreshable(true);
+					line.doGraphLine(plot, graph);
+				}
+				else
+					graph.setError("Unspecified graph error.");
+			}
+
+			if (graph.getError() != null)
+				return null;
+		
+			// find bounds
+			Vector r = plot.getRenderers();
+			double minX = 1E300;
+			double maxX = -1E300;
+			double minY = 1E300;
+			double maxY = -1E300;
+			int gMinX = Integer.MAX_VALUE;
+			int gMaxX = -Integer.MIN_VALUE;
+			int gMinY = Integer.MAX_VALUE;
+			int gMaxY = -Integer.MIN_VALUE;
+			for (int i = 0; i < r.size(); i++)
+			{
+				if (r.elementAt(i) instanceof FrameRenderer)
+				{
+					FrameRenderer fr = (FrameRenderer)r.elementAt(i);
+					minX = Math.min(fr.getMinX(), minX);
+					gMinX = Math.min(fr.getGraphX(), gMinX);
+					maxX = Math.max(fr.getMaxX(), maxX);
+					gMaxX = Math.max(fr.getGraphX() + fr.getGraphWidth(), gMaxX);
+					minY = Math.min(fr.getMinY(), minY);
+					gMinY = Math.min(fr.getGraphY(), gMinY);
+					maxY = Math.max(fr.getMaxY(), maxY);
+					gMaxY = Math.max(fr.getGraphY() + fr.getGraphHeight(), gMaxY);
+				}
+			}
+			double dx = (maxX - minX) / (gMaxX - gMinX);
+			double dy = (maxY - minY) / (gMaxY - gMinY);
+			double d[] = new double[] {
+					dx, minX - dx * gMinX, 
+					dy, minY - dy * (plot.getHeight() - gMaxY), 
+					minX, maxX, minY, maxY};
+			graph.setExtentAndTranslation(d);		 
+			double[] ylims = graph.getYLims();
+			combineFrameRenderers(plot, ylims);
+			plot.writePNG(getFileName() + ".png"); 
+			if (doPostScript)
+				plot.writePS(getFileName() + ".ps");
+		}
+		return null;
+	}
+	
+	/** Combines all of the FrameRenderers on a given plot so that one 
+	 * coherent plot can be rendered.  There is room for improvement in this 
+	 * function: it could follow a more strict approach as to what plots
+	 * get put on various axes, better handle more than 2 plots so that axes
+	 * information is not thrown away, etc.
+	 * @@param plot the plot
+	 * @@param ylims the y-limits to be used on the first FrameRenderer
+	 */
+	protected static void combineFrameRenderers(Plot plot, double[] ylims)
+	{
+		ColorCycler cc = new ColorCycler();
+		HashMap frMap = new HashMap();
+		Vector r = plot.getRenderers();
+		Vector allFR = new Vector();
+		for (int i = 0; i < r.size(); i++)
+		{
+			if (r.elementAt(i) instanceof FrameRenderer)
+			{
+				FrameRenderer fr = (FrameRenderer)r.elementAt(i);
+				Vector group = (Vector)frMap.get(fr.getUnit());
+				if (group == null)
+				{
+					group = new Vector();
+					frMap.put(fr.getUnit(), group);
+				}
+				group.add(fr);
+				allFR.add(fr);
+				if (ylims != null && i == 0)
+				{
+					fr.setMinY(ylims[0]);
+					fr.setMaxY(ylims[1]);
+					AxisRenderer axis = fr.getAxis();
+					double[] t = SmartTick.autoTick(fr.getMinY(), fr.getMaxY(), plot.getDefaultYTicks(), false);
+					axis.createLeftTicks(t);
+					axis.createLeftTickLabels(t, null);
+					axis.createHorizontalGridLines(t);
+				}
+			}
+		}
+		
+		if (allFR.size() <= 1)
+			return;
+		
+		Vector legends = new Vector();
+		DataRenderer lastDR = null;
+		// eliminate all but the first framerenderer's axis' background color
+		//  and collect all datarenderer's legends
+		for (int i = 0; i < allFR.size(); i++)
+		{
+			FrameRenderer fr = (FrameRenderer)allFR.elementAt(i);
+			if (fr.getAxis() != null && i != 0)
+				fr.getAxis().setBackgroundColor(null);
+			
+			if (fr instanceof DataRenderer)
+			{
+				DataRenderer dr = (DataRenderer)fr;
+				lastDR = dr;
+				if (dr.getLegendRenderer() != null)
+				{
+					legends.add(dr.getLegendRenderer());
+					dr.setLegendRenderer(null);
+				}
+			}
+		}
+		
+		// consolidate the legends
+		if (legends.size() > 0)
+		{
+			LegendRenderer flr = new LegendRenderer();
+			for (int i = 0; i < legends.size(); i++)
+			{
+				LegendRenderer lr = (LegendRenderer)legends.elementAt(i);
+				flr.x = lr.x;
+				flr.y = lr.y;
+				Vector es = lr.entries;
+				for (int j = 0; j < es.size(); j++)
+					flr.addLine((LegendRenderer.LegendEntry)es.elementAt(j));
+			}
+			lastDR.setLegendRenderer(flr);
+		}
+		
+		Iterator it = frMap.keySet().iterator();
+		int groupCount = 1;
+		while (it.hasNext())
+		{
+			Vector group = (Vector)frMap.get(it.next());
+			combineFrameRendererGroup(plot, group, groupCount, cc);
+			groupCount++;
+		}
+	}
+
+	/** Utility function for combineFrameRenderers that combines all of the 
+	 * FrameRenderers with identical units into a single FrameRenderer.
+	 * @@param plot the plot
+	 * @@param group a list of FrameRenderers with indentical units
+	 * @@param groupCount which group this is, for assigning axes labels
+	 * @@param cc the ColorCycler for properly assigning colors 
+	 */
+	protected static void combineFrameRendererGroup(Plot plot, Vector group, int groupCount, ColorCycler cc)
+	{
+		//if (group.size() <= 1)
+		//   return;
+
+		// unify the scales
+		double minX = 1E300;
+		double maxX = -1E300;
+		double minY = 1E300;
+		double maxY = -1E300;
+		for (int i = 0; i < group.size(); i++)
+		{
+			FrameRenderer fr = (FrameRenderer)group.elementAt(i);
+			minX = Math.min(fr.getMinX(), minX);
+			maxX = Math.max(fr.getMaxX(), maxX);
+			minY = Math.min(fr.getMinY(), minY);
+			maxY = Math.max(fr.getMaxY(), maxY);
+		}
+		
+		//System.out.println("combine: " + minX + " " + maxX + " " + minY + " " + maxY);
+		//System.out.println(group.size());
+		for (int i = 0; i < group.size(); i++)
+		{
+			FrameRenderer fr = (FrameRenderer)group.elementAt(i);
+			fr.setExtents(minX, maxX, minY, maxY);
+			//fr.createDefaultAxis(plot.getDefaultXTicks(), plot.getDefaultYTicks(), false, true);
+		}
+
+		// eliminate all extra axes
+		for (int i = 1; i < group.size(); i++)
+			((FrameRenderer)group.elementAt(i)).setAxis(null);
+		
+		// reset the remaining axis
+		// fix both axis labels
+		// consolidate legend
+		FrameRenderer fr0 = (FrameRenderer)group.elementAt(0);
+		//System.out.println(fr0);
+		if (groupCount == 1)
+		{
+			// the first group gets the left side of the plot and is in charge
+			// of timeticks
+			fr0.getAxis().setBottomLabelAsText("Time (Data from " + Valve.DATE_FORMAT.format(Util.j2KToDate(minX)) +
+					" to " + Valve.DATE_FORMAT.format(Util.j2KToDate(maxX)) + ")");
+		}
+		else if (groupCount == 2)
+		{
+			// the second only displays y-labels on the right side and nothing else
+			// attempt to get the text off the left label
+			String label = "";
+			if (fr0.getAxis() != null)
+			{
+				Renderer r = fr0.getAxis().getLeftLabel();
+				if (r != null && r instanceof TextRenderer)
+					label = ((TextRenderer)r).text;
+			}
+			AxisRenderer axis = new AxisRenderer(fr0);
+			axis.setRightLabelAsText(label);
+			axis.createRightTickLabels(SmartTick.autoTick(fr0.getMinY(), fr0.getMaxY(), plot.getDefaultYTicks(), false), null);
+			fr0.setAxis(axis);
+		}
+		else 
+		{
+			// silliness, more than 2 different types of framerenderers on a single plot
+			// all additional groups will have no axis
+			fr0.setAxis(null);
+		}
+		//fr0.createDefaultAxis();
+		// special cases for different types of framerenderers
+		if (fr0 instanceof DataRenderer)
+		{
+			// reset the vertical scale
+			if (groupCount == 1)
+			{
+				//System.out.println(fr0.getMinY() + " " + fr0.getMaxY());
+				fr0.createDefaultYAxis(plot.getDefaultYTicks(), true);
+				double newMinY = fr0.getMinY();
+				double newMaxY = fr0.getMaxY();
+				for (int i = 1; i < group.size(); i++)
+				{
+					DataRenderer dr = (DataRenderer)group.elementAt(i);
+					dr.setExtents(dr.getMinX(), dr.getMaxX(), newMinY, newMaxY);
+				}
+			}
+			// alter the line colors
+			for (int i = 0; i < group.size(); i++)
+			{
+				DataRenderer dr = (DataRenderer)group.elementAt(i);
+				Renderer[] lr = dr.getLineRenderers();
+				Renderer[] pr = dr.getPointRenderers();
+				int length = -1;
+				if (lr != null)
+					length = lr.length;
+				if (pr != null)
+					length = pr.length;
+				if (length != -1)
+				{
+					Color nc = null;
+					boolean doNC = false;
+					for (int j = 0; j < length; j++)
+					{
+						if (dr.getData().isVisible(j))
+						{
+							doNC = false;
+							if (lr != null && lr[j] != null)
+							{
+								if (doNC || nc == null)
+									nc = cc.getNextColor();
+								((ShapeRenderer)lr[j]).color = nc;
+								doNC = true;
+							}
+							if (pr != null && pr[j] != null)
+							{
+								if (doNC || nc == null)
+									nc = cc.getNextColor();
+								((DataPointRenderer)pr[j]).color = nc;
+								doNC = true;
+							}
+						}
+					}
+				}
+				
+				/*
+				if (r != null)
+				{
+					for (int j = 0; j < r.length; j++)
+					{
+						if (r[j] != null)
+							((ShapeRenderer)r[j]).color = cc.getNextColor();
+					}
+				}
+				r = dr.getPointRenderers();
+				if (r != null)
+				{
+					for (int j = 0; j < r.length; j++)
+					{
+						if (r[j] != null)
+							((DataPointRenderer)r[j]).color = cc.getNextColor();
+					}
+				}
+				 */
+			}
+		}
+		
+		if (fr0 instanceof LineDataRenderer)
+		{
+			// combination of LineDataRenderers is not implemented.
+		}
+	}
+}
