@@ -159,34 +159,33 @@
 <a class="jxr_linenumber" name="L151" href="#L151">151</a>       }
 <a class="jxr_linenumber" name="L152" href="#L152">152</a>     }
 <a class="jxr_linenumber" name="L153" href="#L153">153</a>     <strong class="jxr_keyword">if</strong> (!success) {
-<a class="jxr_linenumber" name="L154" href="#L154">154</a>       <em class="jxr_comment">// if (isOutput())</em>
-<a class="jxr_linenumber" name="L155" href="#L155">155</a>       LOGGER.error(<span class="jxr_string">"{}: giving up."</span>, getName());;
-<a class="jxr_linenumber" name="L156" href="#L156">156</a>       giveUp();
-<a class="jxr_linenumber" name="L157" href="#L157">157</a>     }
-<a class="jxr_linenumber" name="L158" href="#L158">158</a> 
-<a class="jxr_linenumber" name="L159" href="#L159">159</a>     <strong class="jxr_keyword">return</strong> getResult();
-<a class="jxr_linenumber" name="L160" href="#L160">160</a>   }
-<a class="jxr_linenumber" name="L161" href="#L161">161</a> 
-<a class="jxr_linenumber" name="L162" href="#L162">162</a>   <em class="jxr_javadoccomment">/**</em>
-<a class="jxr_linenumber" name="L163" href="#L163">163</a> <em class="jxr_javadoccomment">   * Check for logging.</em>
-<a class="jxr_linenumber" name="L164" href="#L164">164</a> <em class="jxr_javadoccomment">   * </em>
-<a class="jxr_linenumber" name="L165" href="#L165">165</a> <em class="jxr_javadoccomment">   * @return Flag if we enable logging</em>
-<a class="jxr_linenumber" name="L166" href="#L166">166</a> <em class="jxr_javadoccomment">   */</em>
-<a class="jxr_linenumber" name="L167" href="#L167">167</a>   <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">boolean</strong> isOutput() {
-<a class="jxr_linenumber" name="L168" href="#L168">168</a>     <strong class="jxr_keyword">return</strong> output;
-<a class="jxr_linenumber" name="L169" href="#L169">169</a>   }
-<a class="jxr_linenumber" name="L170" href="#L170">170</a> 
-<a class="jxr_linenumber" name="L171" href="#L171">171</a>   <em class="jxr_javadoccomment">/**</em>
-<a class="jxr_linenumber" name="L172" href="#L172">172</a> <em class="jxr_javadoccomment">   * mutator method for output.</em>
-<a class="jxr_linenumber" name="L173" href="#L173">173</a> <em class="jxr_javadoccomment">   * </em>
-<a class="jxr_linenumber" name="L174" href="#L174">174</a> <em class="jxr_javadoccomment">   * @param output if true, output.</em>
-<a class="jxr_linenumber" name="L175" href="#L175">175</a> <em class="jxr_javadoccomment">   */</em>
-<a class="jxr_linenumber" name="L176" href="#L176">176</a>   <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> setOutput(<strong class="jxr_keyword">boolean</strong> output) {
-<a class="jxr_linenumber" name="L177" href="#L177">177</a>     <strong class="jxr_keyword">this</strong>.output = output;
-<a class="jxr_linenumber" name="L178" href="#L178">178</a>   }
-<a class="jxr_linenumber" name="L179" href="#L179">179</a> }
+<a class="jxr_linenumber" name="L154" href="#L154">154</a>       LOGGER.error(<span class="jxr_string">"{}: unsuccessful after {} attempts."</span>, getName(), attempts);
+<a class="jxr_linenumber" name="L155" href="#L155">155</a>       giveUp();
+<a class="jxr_linenumber" name="L156" href="#L156">156</a>     }
+<a class="jxr_linenumber" name="L157" href="#L157">157</a> 
+<a class="jxr_linenumber" name="L158" href="#L158">158</a>     <strong class="jxr_keyword">return</strong> getResult();
+<a class="jxr_linenumber" name="L159" href="#L159">159</a>   }
+<a class="jxr_linenumber" name="L160" href="#L160">160</a> 
+<a class="jxr_linenumber" name="L161" href="#L161">161</a>   <em class="jxr_javadoccomment">/**</em>
+<a class="jxr_linenumber" name="L162" href="#L162">162</a> <em class="jxr_javadoccomment">   * Check for logging.</em>
+<a class="jxr_linenumber" name="L163" href="#L163">163</a> <em class="jxr_javadoccomment">   * </em>
+<a class="jxr_linenumber" name="L164" href="#L164">164</a> <em class="jxr_javadoccomment">   * @return Flag if we enable logging</em>
+<a class="jxr_linenumber" name="L165" href="#L165">165</a> <em class="jxr_javadoccomment">   */</em>
+<a class="jxr_linenumber" name="L166" href="#L166">166</a>   <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">boolean</strong> isOutput() {
+<a class="jxr_linenumber" name="L167" href="#L167">167</a>     <strong class="jxr_keyword">return</strong> output;
+<a class="jxr_linenumber" name="L168" href="#L168">168</a>   }
+<a class="jxr_linenumber" name="L169" href="#L169">169</a> 
+<a class="jxr_linenumber" name="L170" href="#L170">170</a>   <em class="jxr_javadoccomment">/**</em>
+<a class="jxr_linenumber" name="L171" href="#L171">171</a> <em class="jxr_javadoccomment">   * mutator method for output.</em>
+<a class="jxr_linenumber" name="L172" href="#L172">172</a> <em class="jxr_javadoccomment">   * </em>
+<a class="jxr_linenumber" name="L173" href="#L173">173</a> <em class="jxr_javadoccomment">   * @param output if true, output.</em>
+<a class="jxr_linenumber" name="L174" href="#L174">174</a> <em class="jxr_javadoccomment">   */</em>
+<a class="jxr_linenumber" name="L175" href="#L175">175</a>   <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> setOutput(<strong class="jxr_keyword">boolean</strong> output) {
+<a class="jxr_linenumber" name="L176" href="#L176">176</a>     <strong class="jxr_keyword">this</strong>.output = output;
+<a class="jxr_linenumber" name="L177" href="#L177">177</a>   }
+<a class="jxr_linenumber" name="L178" href="#L178">178</a> }
 </pre>
 <hr/>
-<div id="footer">Copyright &#169; 2015. All rights reserved.</div>
+<div id="footer">Copyright &#169; 2017. All rights reserved.</div>
 </body>
 </html>

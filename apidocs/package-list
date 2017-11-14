@@ -5,9 +5,12 @@ gov.usgs.volcanoes.core.args.parser
 gov.usgs.volcanoes.core.configfile
 gov.usgs.volcanoes.core.configfile.parser
 gov.usgs.volcanoes.core.contrib
+gov.usgs.volcanoes.core.contrib.hypo71
+gov.usgs.volcanoes.core.contrib.hypo71.pause
 gov.usgs.volcanoes.core.data
 gov.usgs.volcanoes.core.legacy
 gov.usgs.volcanoes.core.math
+gov.usgs.volcanoes.core.quakeml
 gov.usgs.volcanoes.core.time
 gov.usgs.volcanoes.core.ui
 gov.usgs.volcanoes.core.util

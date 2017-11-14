@@ -24,7 +24,7 @@
 <a class="jxr_linenumber" name="L16" href="#L16">16</a>  <em class="jxr_javadoccomment"> *</em>
 <a class="jxr_linenumber" name="L17" href="#L17">17</a>  <em class="jxr_javadoccomment"> */</em>
 <a class="jxr_linenumber" name="L18" href="#L18">18</a>  <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">class</strong> <a href="../../../../../gov/usgs/volcanoes/core/time/Ew.html">Ew</a> {
-<a class="jxr_linenumber" name="L19" href="#L19">19</a>    
+<a class="jxr_linenumber" name="L19" href="#L19">19</a>  
 <a class="jxr_linenumber" name="L20" href="#L20">20</a>    <em class="jxr_javadoccomment">/**</em>
 <a class="jxr_linenumber" name="L21" href="#L21">21</a>  <em class="jxr_javadoccomment">   * Converts ew time to a &lt;CODE&gt;Date&lt;/CODE&gt; object.</em>
 <a class="jxr_linenumber" name="L22" href="#L22">22</a>  <em class="jxr_javadoccomment">   *</em>
@@ -53,7 +53,7 @@
 <a class="jxr_linenumber" name="L45" href="#L45">45</a>  <em class="jxr_javadoccomment">   * @return date as UNIX epoch</em>
 <a class="jxr_linenumber" name="L46" href="#L46">46</a>  <em class="jxr_javadoccomment">   */</em>
 <a class="jxr_linenumber" name="L47" href="#L47">47</a>    <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">static</strong> <strong class="jxr_keyword">long</strong> asEpoch(<strong class="jxr_keyword">double</strong> ew) {
-<a class="jxr_linenumber" name="L48" href="#L48">48</a>      <strong class="jxr_keyword">return</strong> ((<strong class="jxr_keyword">long</strong>)ew * 1000);
+<a class="jxr_linenumber" name="L48" href="#L48">48</a>      <strong class="jxr_keyword">return</strong> (<strong class="jxr_keyword">long</strong>) (ew * 1000);
 <a class="jxr_linenumber" name="L49" href="#L49">49</a>    }
 <a class="jxr_linenumber" name="L50" href="#L50">50</a>  
 <a class="jxr_linenumber" name="L51" href="#L51">51</a>    <em class="jxr_javadoccomment">/**</em>
@@ -63,7 +63,7 @@
 <a class="jxr_linenumber" name="L55" href="#L55">55</a>  <em class="jxr_javadoccomment">   * @return date as ew time</em>
 <a class="jxr_linenumber" name="L56" href="#L56">56</a>  <em class="jxr_javadoccomment">   */</em>
 <a class="jxr_linenumber" name="L57" href="#L57">57</a>    <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">static</strong> <strong class="jxr_keyword">double</strong> fromEpoch(Long date) {
-<a class="jxr_linenumber" name="L58" href="#L58">58</a>      <strong class="jxr_keyword">return</strong> (<strong class="jxr_keyword">double</strong>) date / 1000;
+<a class="jxr_linenumber" name="L58" href="#L58">58</a>      <strong class="jxr_keyword">return</strong> date / 1000d;
 <a class="jxr_linenumber" name="L59" href="#L59">59</a>    }
 <a class="jxr_linenumber" name="L60" href="#L60">60</a>  
 <a class="jxr_linenumber" name="L61" href="#L61">61</a>    <em class="jxr_javadoccomment">/**</em>
@@ -117,6 +117,6 @@
 <a class="jxr_linenumber" name="L109" href="#L109">109</a> }
 </pre>
 <hr/>
-<div id="footer">Copyright &#169; 2015. All rights reserved.</div>
+<div id="footer">Copyright &#169; 2017. All rights reserved.</div>
 </body>
 </html>
