@@ -10,6 +10,7 @@ import java.text.DateFormat;
 import java.text.DecimalFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -321,6 +322,39 @@ public final class Time {
    */
   public static String toShortString(Date date) {
     return format(INPUT_TIME_FORMAT, date);
+  }
+
+  /** Gets the number of months between two <CODE>Date</CODE> objects.
+   * The number of months between two dates in the same month in the same year is 0.
+   * @param ds the starting date
+   * @param de the ending date
+   * @return the number of months
+   */
+  public static int getMonthsBetween(java.util.Date ds, java.util.Date de) {
+    Calendar cal = Calendar.getInstance();
+
+    int months = 0;
+    cal.setTime(ds);
+    Calendar cal2 = Calendar.getInstance();
+    cal2.setTime(de);
+    while (cal.get(Calendar.MONTH) != cal2.get(Calendar.MONTH)
+        || cal.get(Calendar.YEAR) != cal2.get(Calendar.YEAR)) {
+      months++;
+      cal.add(Calendar.MONTH, 1);
+    }
+    return months;
+  }
+
+  /** Gets the year from a <CODE>Date</CODE> object.
+   * 
+   * @param date the date
+   * @return the year
+   */
+  public static int getYear(java.util.Date date) {
+    Calendar cal = Calendar.getInstance();
+
+    cal.setTime(date);
+    return cal.get(Calendar.YEAR);
   }
 
   /**

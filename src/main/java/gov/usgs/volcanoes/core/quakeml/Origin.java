@@ -6,15 +6,15 @@
 
 package gov.usgs.volcanoes.core.quakeml;
 
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.Map;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
-
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * Holder for QuakeML origin.
