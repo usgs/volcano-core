@@ -59,7 +59,12 @@ public class Scnl implements Comparable<Scnl> {
     this.station = station;
     this.channel = channel;
     this.network = network;
-    this.location = location;
+
+    if ("".equals(location.trim())) {
+      this.location = DEFAULT_LOCATION;
+    } else {
+      this.location = location;
+    }
   }
 
   /**
