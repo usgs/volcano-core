@@ -27,3 +27,4 @@ gov.usgs.volcanoes.core.quakeml
 gov.usgs.volcanoes.core.time
 gov.usgs.volcanoes.core.ui
 gov.usgs.volcanoes.core.util
+gov.usgs.volcanoes.core.xml
