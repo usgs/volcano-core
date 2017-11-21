@@ -182,12 +182,17 @@ abstract public class FrameRenderer implements Renderer, Transformer {
     return maxX * xAxisMult + xAxisOffset;
   }
 
+
   /**
    * Gets minimum Y axis
    * @return minimum Y axis
    */
   public double getMinYAxis() {
-    return minY * yAxisMult + yAxisOffset;
+    if (yAxisMult < 0) {
+      return maxY * yAxisMult + yAxisOffset;
+    } else {
+      return minY * yAxisMult + yAxisOffset;
+    }
   }
 
   /**
@@ -195,7 +200,11 @@ abstract public class FrameRenderer implements Renderer, Transformer {
    * @return maximum Y axis
    */
   public double getMaxYAxis() {
-    return maxY * yAxisMult + yAxisOffset;
+    if (yAxisMult < 0) {
+      return minY * yAxisMult + yAxisOffset;
+    } else {
+      return maxY * yAxisMult + yAxisOffset;
+    }
   }
 
   /**
