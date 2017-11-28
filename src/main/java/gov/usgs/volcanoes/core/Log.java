@@ -6,13 +6,13 @@
 
 package gov.usgs.volcanoes.core;
 
+import java.io.IOException;
+
 import org.apache.log4j.AsyncAppender;
 import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
 import org.apache.log4j.PatternLayout;
 import org.apache.log4j.RollingFileAppender;
-
-import java.io.IOException;
 
 /**
  * A utility class to handle implementation-specific logging configuration. Most classes will not
