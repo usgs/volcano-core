@@ -43,7 +43,7 @@ public class SCNL {
     if (!network.equals(scnl.network)) {
       return false;
     }
-    if (location == null && scnl.location != null) {
+    if (location == null ^ scnl.location == null) {
       return false;
     }
     if (!location.equals(scnl.location)) {
