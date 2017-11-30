@@ -4,7 +4,7 @@
 
 	<groupId>gov.usgs.volcanoes</groupId>
 	<artifactId>volcano-core</artifactId>
-	<version>1.4.3</version>
+	<version>1.4.4</version>
 	<packaging>jar</packaging>
 
 	<name>volcano-core</name>
@@ -437,7 +437,7 @@
 		<dependency>
 			<groupId>edu.sc.seis</groupId>
 			<artifactId>seisFile</artifactId>
-			<version>1.7.4</version>
+			<version>1.8.0</version>
 		</dependency>
 	</dependencies>
 </project>
