@@ -38,10 +38,6 @@ public class HistogramRenderer extends FrameRenderer {
    */
   public Color strokeColor;
 
-  /** A flag to indicate the presence of real data in the data matrix
-   */
-  public boolean NO_DATA = false;
-
   private List<Renderer> renderers;
 
   /** Constructs a new HistogramRenderer for renderering the specified 

@@ -8,9 +8,6 @@ import gov.usgs.volcanoes.core.math.proj.Projection;
 import gov.usgs.volcanoes.core.math.proj.TransverseMercator;
 import gov.usgs.volcanoes.core.util.Pair;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
@@ -30,6 +27,9 @@ import java.util.List;
 import java.util.ListIterator;
 
 import javax.swing.JFrame;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * <p>A class for managing a set of <code>GeoImage</code>s.</p>
@@ -223,21 +223,24 @@ public class GeoImageSet {
 
   private void addLoadedImage(GeoImage image, List<GeoImage> avoidPurging) {
     GeoImageCacheEntry ce = null;
-    for (Iterator<?> it = loadedImages.iterator(); it.hasNext();) {
-      Object o = it.next();
-      if (o.equals(image)) {
-        ce = (GeoImageCacheEntry) o;
+    for (Iterator<GeoImageCacheEntry> it = loadedImages.iterator(); it.hasNext();) {
+      GeoImageCacheEntry o = it.next();
+      if (o.image.equals(image)) {
+        ce = o;
         break;
       }
     }
+
     if (ce == null) {
       ce = new GeoImageCacheEntry(image);
       loadedImages.add(ce);
-    } else
+    } else {
       ce.touch();
+    }
 
-    if (getLoadedImagesSize() > maxLoadedImagesSize)
+    if (getLoadedImagesSize() > maxLoadedImagesSize) {
       purgeLoadedImages(avoidPurging);
+    }
   }
 
   /**
