@@ -153,7 +153,7 @@ public class Complex {
   /**
    * Tests for equality.
    * 
-   * @param c the other complex
+   * @param other the other complex
    * @return whether or not these complexes are equal
    */
   @Override
