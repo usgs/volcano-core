@@ -33,8 +33,9 @@ public class SCNL {
    * @param scnl
    * @return Are they equal?
    */
+  @Override
   public boolean equals(Object other) {
-    if (other instanceof SCNL) {
+    if (!(other instanceof SCNL)) {
       return false;
     }
 
