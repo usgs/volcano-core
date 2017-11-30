@@ -52,7 +52,6 @@ public class SpectrogramRenderer extends ImageDataRenderer {
   private String yUnitText = null;
   protected byte[] imgBuffer;
   protected Spectrum spectrum;
-  protected AxisRenderer axis;
   protected MemoryImageSource mis;
   protected Image im;
 
