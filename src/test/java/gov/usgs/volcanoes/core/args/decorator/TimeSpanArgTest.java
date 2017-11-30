@@ -14,13 +14,17 @@ import gov.usgs.volcanoes.core.args.Arguments;
 import gov.usgs.volcanoes.core.time.Time;
 import gov.usgs.volcanoes.core.time.TimeSpan;
 
-import org.junit.Before;
-import org.junit.Test;
-
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.TimeZone;
 
+import org.junit.Before;
+import org.junit.Test;
+
+
+@edu.umd.cs.findbugs.annotations.SuppressFBWarnings(
+    value = "STCAL_INVOKE_ON_STATIC_DATE_FORMAT_INSTANCE",
+    justification = "Single-threded testing.")
 public class TimeSpanArgTest {
 
   private static final String DATE_FORMAT_STRING = "yyyyMMddHHmm";
@@ -58,6 +62,7 @@ public class TimeSpanArgTest {
     TimeSpan timeSpan = (TimeSpan) jsapResult.getObject("timeSpan");
 
     assertNotNull(timeSpan);
+
     assertEquals(DATE_FORMAT.parse(start).getTime(), timeSpan.startTime);
     assertEquals(DATE_FORMAT.parse(end).getTime(), timeSpan.endTime);
   }
