@@ -156,8 +156,14 @@ public class Complex {
    * @param c the other complex
    * @return whether or not these complexes are equal
    */
-  public boolean equals(Complex c) {
-    return (c.re == re && c.im == im);
+  @Override
+  public boolean equals(Object other) {
+    if (!(other instanceof Complex)) {
+      return false;
+    } else {
+      Complex c = (Complex) other;
+      return (c.re == re && c.im == im);
+    }
   }
 
   /**
