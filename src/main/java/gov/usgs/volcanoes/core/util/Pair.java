@@ -23,7 +23,7 @@ public class Pair<O1, O2> {
   /**
    * Yields true if otherPair same as this.
    * 
-   * @param otherPair pair being compared to this
+   * @param other pair being compared to this
    * @return result of comparison
    */
   @Override
