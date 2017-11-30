@@ -28,6 +28,8 @@ import edu.iris.dmc.seedcodec.Steim2;
 import edu.iris.dmc.seedcodec.SteimException;
 import edu.iris.dmc.seedcodec.SteimFrameBlock;
 import edu.iris.dmc.seedcodec.UnsupportedCompressionType;
+import edu.sc.seis.seisFile.mseed.Blockette;
+import edu.sc.seis.seisFile.mseed.Blockette100;
 import edu.sc.seis.seisFile.mseed.Blockette1000;
 import edu.sc.seis.seisFile.mseed.Btime;
 import edu.sc.seis.seisFile.mseed.DataHeader;
@@ -104,7 +106,15 @@ public class SeedDataFile extends SeismicDataFile {
           samples.put(code, parts);
         }
 
-        sampleRates.put(code, dh.getSampleRate());
+        Blockette[] blocketts = dr.getBlockettes(100);
+        float sampleRate;
+        if (blocketts.length != 0) {
+          Blockette100 b100 = (Blockette100) blocketts[0];
+          sampleRate = b100.getActualSampleRate();
+        } else {
+          sampleRate = dh.getSampleRate();
+        }
+        sampleRates.put(code, sampleRate);
         long start = btimeToDate(dh.getStartBtime()).getTime();
         parts.put(start, extract(dr));
       }
