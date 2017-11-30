@@ -50,10 +50,6 @@ public class TextRenderer extends PointRenderer {
    */
   public static final int BOTTOM = 5;
 
-  /** Text color.
-   */
-  public Color color;
-
   /** The text string.
    */
   public String text;
