@@ -1,5 +1,6 @@
 package gov.usgs.volcanoes.core.legacy.ew;
 
+import gov.usgs.volcanoes.core.contrib.HashCodeUtil;
 
 /**
  * A class for holding SCNL data.
@@ -54,6 +55,21 @@ public class SCNL {
     } else {
       return true;
     }
+  }
+
+
+  /**
+   * Provide hashCode.
+   */
+  @Override
+  public int hashCode() {
+    int result = HashCodeUtil.SEED;
+    result = HashCodeUtil.hash(result, station);
+    result = HashCodeUtil.hash(result, channel);
+    result = HashCodeUtil.hash(result, network);
+    result = HashCodeUtil.hash(result, location);
+
+    return result;
   }
 
   /**
