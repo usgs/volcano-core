@@ -200,7 +200,7 @@ public class DefaultFrameDecorator extends FrameDecorator {
             c++;
             for (int j = 1; j < 9; j++) {
               value = Math.log10(Math.pow(10, i) + inc * j);
-              if (value < fr.getMinXAxis() | value > fr.getMaxXAxis()) {
+              if (value < fr.getMinXAxis() || value > fr.getMaxXAxis()) {
                 t[c] = Double.NaN;
               } else {
                 t[c] = value;
