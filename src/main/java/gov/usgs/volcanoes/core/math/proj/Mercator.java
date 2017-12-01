@@ -160,7 +160,9 @@ public class Mercator extends Projection {
       f.repaint();
       try {
         Thread.sleep(50);
-      } catch (Exception e) {
+      } catch (InterruptedException ex) {
+        Thread.currentThread().interrupt();
+        throw new RuntimeException(ex);
       }
     }
   }

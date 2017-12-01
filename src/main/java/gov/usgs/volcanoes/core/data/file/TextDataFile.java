@@ -34,25 +34,32 @@ public class TextDataFile extends SeismicDataFile {
 
     BufferedReader in = new BufferedReader(new FileReader(fileName));
     Wave sw = new Wave();
-
-    String line = in.readLine();
-    startTime = Double.parseDouble(line.substring(0, line.indexOf(" ")));
-    sw.setStartTime(Time.ewToj2k(startTime / 1000));
-    iv.add(Integer.parseInt(line.substring(line.indexOf(" ") + 1)));
-
-    line = in.readLine();
-    double nt = Double.parseDouble(line.substring(0, line.indexOf(" ")));
-    sw.setSamplingRate(1 / ((nt - startTime) / 1000));
-    iv.add(Integer.parseInt(line.substring(line.indexOf(" ") + 1)));
-
-    while (line != null) {
+    try {
+      String line = in.readLine();
+      if (line == null) {
+        throw new IOException("Cannot read start time");
+      }
+      startTime = Double.parseDouble(line.substring(0, line.indexOf(" ")));
+      sw.setStartTime(Time.ewToj2k(startTime / 1000));
       iv.add(Integer.parseInt(line.substring(line.indexOf(" ") + 1)));
+
       line = in.readLine();
+      if (line == null) {
+        throw new IOException("Cannot read nt");
+      }
+      double nt = Double.parseDouble(line.substring(0, line.indexOf(" ")));
+      sw.setSamplingRate(1 / ((nt - startTime) / 1000));
+      iv.add(Integer.parseInt(line.substring(line.indexOf(" ") + 1)));
+
+      while (line != null) {
+        iv.add(Integer.parseInt(line.substring(line.indexOf(" ") + 1)));
+        line = in.readLine();
+      }
+
+      sw.buffer = iv.getResizedInts();
+    } finally {
+      in.close();
     }
-
-    sw.buffer = iv.getResizedInts();
-    in.close();
-
     String channel = getChannelFromFilename(fileName);
     waves.put(channel, sw);
   }

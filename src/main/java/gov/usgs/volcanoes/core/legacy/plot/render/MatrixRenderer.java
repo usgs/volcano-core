@@ -206,8 +206,7 @@ public class MatrixRenderer extends BasicFrameRenderer {
     for (int i = 0; i < data.columns() - offset; i++) {
       if (visible[i]) {
         int ic = 1000;
-        if (data != null)
-          ic = data.rows() + 1;
+        ic = data.rows() + 1;
         ShapeRenderer sr = new ShapeRenderer(new GeneralPath(GeneralPath.WIND_NON_ZERO, ic));
         if (color == null) {
           sr.color = cc.getNextColor();
