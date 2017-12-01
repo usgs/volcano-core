@@ -189,7 +189,7 @@ public class DefaultFrameDecorator extends FrameDecorator {
           for (int i = x1; i < x2; i++) {
             inc = Math.pow(10, i);
 
-            if (i < fr.getMinXAxis() | i > fr.getMaxXAxis()) {
+            if (i < fr.getMinXAxis() || i > fr.getMaxXAxis()) {
               t[c] = Double.NaN;
               st[c] = "";
             } else {
