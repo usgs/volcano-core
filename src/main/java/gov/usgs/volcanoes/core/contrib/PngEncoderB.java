@@ -66,7 +66,7 @@ public class PngEncoderB extends PngEncoder
 	/** PLTE tag. */
 	private static final byte PLTE[] = { 80, 76, 84, 69 };
 
-    protected BufferedImage image;
+    protected BufferedImage bImage;
     protected WritableRaster wRaster;
     protected int tType;
 
@@ -124,7 +124,7 @@ public class PngEncoderB extends PngEncoder
     public PngEncoderB( BufferedImage image, boolean encodeAlpha,
       int whichFilter, int compLevel )
     {
-        this.image = image;
+        this.bImage = image;
         this.encodeAlpha = encodeAlpha;
         setFilter( whichFilter );
         if (compLevel >=0 && compLevel <=9)
@@ -140,7 +140,7 @@ public class PngEncoderB extends PngEncoder
      */
     public void setImage( BufferedImage image )
     {
-        this.image = image;
+        this.bImage = image;
         pngBytes = null;
     }
 
@@ -155,13 +155,13 @@ public class PngEncoderB extends PngEncoder
         byte[]  pngIdBytes = { -119, 80, 78, 71, 13, 10, 26, 10 };
         //int     i;  // UNUSED, removed DPC
 
-        if (image == null)
+        if (bImage == null)
         {
             System.err.println("pngEncode: image is null; returning null");
 			return null;
         }
-        width = image.getWidth( null );
-        height = image.getHeight( null );
+        width = bImage.getWidth( null );
+        height = bImage.getHeight( null );
         //this.image = image;
 
         if (!establishStorageInfo())
@@ -224,7 +224,7 @@ public class PngEncoderB extends PngEncoder
     {
         int dataBytes;
     
-        wRaster = image.getRaster();
+        wRaster = bImage.getRaster();
         dataBytes = wRaster.getNumDataElements();
         tType = wRaster.getTransferType();
 
@@ -259,8 +259,8 @@ public class PngEncoderB extends PngEncoder
 
         startPos = bytePos = writeInt4( 13, bytePos );
         bytePos = writeBytes( IHDR, bytePos );
-        width = image.getWidth( null );
-        height = image.getHeight( null );
+        width = bImage.getWidth( null );
+        height = bImage.getHeight( null );
         bytePos = writeInt4( width, bytePos );
         bytePos = writeInt4( height, bytePos );
         bytePos = writeByte( 8, bytePos ); // bit depth
@@ -334,7 +334,7 @@ public class PngEncoderB extends PngEncoder
         byte[] pixels;          // storage area for byte-sized pixels
         int[] iPixels;          // storage area for int-sized pixels
 		short[] sPixels;		// for Win 2000/ME ushort pixels
-		final int type = image.getType();
+		final int type = bImage.getType();
 		// TYPE_INT_RGB        = 1
 		// TYPE_INT_ARGB       = 2
 		// TYPE_INT_ARGB_PRE   = 3
@@ -359,7 +359,7 @@ public class PngEncoderB extends PngEncoder
 
         if (bytesPerPixel == 1)
         {
-            writePalette( (IndexColorModel) image.getColorModel() );
+            writePalette( (IndexColorModel) bImage.getColorModel() );
         }
 
         try

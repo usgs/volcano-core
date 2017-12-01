@@ -50,10 +50,6 @@ public class QuakemlSource {
   }
 
   private void startUpdateThread() {
-    if (refreshIntervalMs == Long.MAX_VALUE) {
-      startUpdateThread();
-    }
-
     final Runnable updater = new Runnable() {
       public void run() {
         try {

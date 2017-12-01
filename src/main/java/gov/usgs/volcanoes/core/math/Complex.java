@@ -1,5 +1,7 @@
 package gov.usgs.volcanoes.core.math;
 
+import gov.usgs.volcanoes.core.contrib.HashCodeUtil;
+
 /**
  * A class for complex numbers. All methods of this class return a new complex
  * number with the result of the operation without altering the original value
@@ -153,12 +155,31 @@ public class Complex {
   /**
    * Tests for equality.
    * 
-   * @param c the other complex
+   * @param other the other complex
    * @return whether or not these complexes are equal
    */
-  public boolean equals(Complex c) {
-    return (c.re == re && c.im == im);
+  @Override
+  public boolean equals(Object other) {
+    if (!(other instanceof Complex)) {
+      return false;
+    } else {
+      Complex c = (Complex) other;
+      return (c.re == re && c.im == im);
+    }
   }
+
+  /**
+   * Provide hashCode.
+   */
+  @Override
+  public int hashCode() {
+    int result = HashCodeUtil.SEED;
+    result = HashCodeUtil.hash(result, re);
+    result = HashCodeUtil.hash(result, im);
+
+    return result;
+  }
+
 
   /**
    * Gets the exponential of this complex.

@@ -137,6 +137,9 @@ public class Mercator extends Projection {
       public static final long serialVersionUID = -1;
       int cycle = 0;
 
+
+      @edu.umd.cs.findbugs.annotations.SuppressFBWarnings(value = "INT_BAD_REM_BY_1",
+          justification = "Hardcoded testing value may be changed.")
       public void paint(Graphics g) {
         Graphics2D g2 = (Graphics2D) g;
 
@@ -157,7 +160,9 @@ public class Mercator extends Projection {
       f.repaint();
       try {
         Thread.sleep(50);
-      } catch (Exception e) {
+      } catch (InterruptedException ex) {
+        Thread.currentThread().interrupt();
+        throw new RuntimeException(ex);
       }
     }
   }

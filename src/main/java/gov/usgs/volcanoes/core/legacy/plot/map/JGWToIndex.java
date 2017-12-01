@@ -22,6 +22,9 @@ public class JGWToIndex {
     if (args.length > 0)
       dir = args[0];
     String[] files = new File(dir).list();
+    if (files == null) {
+      throw new RuntimeException("No file list.");
+    }
     for (String fn : files) {
       if (!fn.endsWith(".jgw"))
         continue;
