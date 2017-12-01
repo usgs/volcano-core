@@ -160,16 +160,25 @@ public class GeoImageSet {
       lastAccess = System.currentTimeMillis();
     }
 
-    public boolean equals(Object o) {
-      if (o instanceof GeoImageCacheEntry) {
-        GeoImageCacheEntry ce = (GeoImageCacheEntry) o;
-        return (image.getFilename().equals(ce.image.getFilename()));
-      } else if (o instanceof GeoImage) {
-        GeoImage gi = (GeoImage) o;
-        return (image.getFilename().equals(gi.getFilename()));
-      } else
+
+    @Override
+    public boolean equals(Object other) {
+      if (other instanceof GeoImageCacheEntry) {
+        return compareTo((GeoImageCacheEntry) other) == 0;
+      } else {
         return false;
+      }
     }
+    // public boolean equals(Object o) {
+    // if (o instanceof GeoImageCacheEntry) {
+    // GeoImageCacheEntry ce = (GeoImageCacheEntry) o;
+    // return (image.getFilename().equals(ce.image.getFilename()));
+    // } else if (o instanceof GeoImage) {
+    // GeoImage gi = (GeoImage) o;
+    // return (image.getFilename().equals(gi.getFilename()));
+    // } else
+    // return false;
+    // }
   }
 
   public void setArealCacheSort(boolean b) {
