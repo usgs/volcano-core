@@ -217,7 +217,7 @@ public class DefaultFrameDecorator extends FrameDecorator {
           t = SmartTick.autoTick(fr.getMinXAxis(), fr.getMaxXAxis(), hTicks, false);
           st = new String[t.length];
           for (int i = 0; i < t.length; i++) {
-            double val = log ? Math.pow(10, t[i]) : t[i];
+            double val = t[i];
             st[i] = numberFormat.format(val) + " Hz";
           }
         }
