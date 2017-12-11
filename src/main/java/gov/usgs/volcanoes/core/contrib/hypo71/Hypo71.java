@@ -696,7 +696,7 @@ public class Hypo71 {
     }
 
     writeln("FPRINT_WRITER",
-        "\r\n  STN  DIST AZM AIN PRMK HRMN P-SEC TPOBS TPCAL DLY/H1 P-RES P-WT AMX PRX CALX K XMAG RMK FMP FMAG SRMK S-SEC TSOBS S-RES  S-WT    DT");
+        "\r\n    STN  DIST AZM AIN PRMK HRMN P-SEC TPOBS TPCAL DLY/H1 P-RES P-WT AMX PRX CALX K XMAG RMK FMP FMAG SRMK S-SEC TSOBS S-RES  S-WT    DT");
 
     for (I = 0; I < O1.NRP; I++) {// DO 200 I=1,NRP
 
@@ -807,7 +807,7 @@ public class Hypo71 {
               DLYK, X4KOUT, WRK[K], WT[K], (int) IAMX, (int) IPRX, CAL[K], KLAS[KJI - 1], XMAGOU,
               RMK3, RMK[K], FMPOUT, FMAGOU, RMK4, SRMK[K], SKOUT, TSKOUT, SRESOU, RMK5, SWTOUT,
               DTKOUT, IW[KJI - 1]),
-          "(1X,A4,F6.1,2I4,1X,A4,1X,2I2,4F6.2,A6,A2,F4.2,I4,I3,F6.2,I2,A4,A1,1X,A3,A4,A4,A1,1X,A4,3A6,A2,A4,A6,T6,A1)");
+          "(1X,A5,F6.1,2I4,1X,A4,1X,2I2,4F6.2,A6,A2,F4.2,I4,I3,F6.2,I2,A4,A1,1X,A3,A4,A4,A1,1X,A4,3A6,A2,A4,A6,T6,A1)");
 
       results.addStationToTheResultList(new Station(MSTA[K], DELTA[K], (int) IAZ, (int) IAIN,
           PRMK[K], JHR, JMIN[K], P[K], TPK, T[K], DLYK, X[3][K], WRK[K], WT[K], (int) IAMX,
@@ -822,7 +822,7 @@ public class Hypo71 {
       writeln("FPUNCH_WRITER",
           data(MSTA[K], DELTA[K], AZ[K], AIN[K], PRMK[K], TPK, X4KOUT, WT[K], XMAGOU, RMK[K],
               FMAGOU, C4.KDATE, C4.KHR, KMIN, ISEC, KJI, SYM3),
-          "(A4,3F6.1,1X,A4,F6.2,A6,F5.1,A6,1X,A3,A6,I7," + "2I2,2I4," + "A1)");
+          "(A5,3F6.1,1X,A4,F6.2,A6,F5.1,A6,1X,A3,A6,I7," + "2I2,2I4," + "A1)");
 
     } // 200 CONTINUE
 
@@ -1976,7 +1976,7 @@ public class Hypo71 {
             for (int L = 0; L < O1.NRP; L++) { // DO 98 L=1,O1.NRP;
               writeln("FPRINT_WRITER",
                   data(MSTA[L], PRMK[L], C4.KDATE, C4.KHR, JMIN[L], P[L], S[L]),
-                  "(5X,2A4,1X,I6,2I2,F5.2,7X,F5.2)");
+                  "(5X,2A5,1X,I6,2I2,F5.2,7X,F5.2)");
             }
             C4.IEXIT = 1;
             if (O1.NRP == 1) {
@@ -3505,10 +3505,10 @@ public class Hypo71 {
         // Integration code goes here
         results.addToDeletedStationsList(getFormattedString(
             data(" ***** ", ICARD, " ***** DELETED: ", MSTA[l], " NOT ON STATION LIST"),
-            "(///,A,A80,A,A4,A)"));
+            "(///,A,A80,A,A5,A)"));
         writeln("FPRINT_WRITER",
             data(" ***** ", ICARD, " ***** DELETED: ", MSTA[l], " NOT ON STATION LIST"),
-            "(///,A,A80,A,A4,A)");
+            "(///,A,A80,A,A5,A)");
         goto30 = true;
         continue;
       }
@@ -3804,12 +3804,12 @@ public class Hypo71 {
       // if (!ISW.equals("1 ")) {
       if (!ISW.trim().equals("1")) {
         KNO = 1;
-        writeln("FPRINT_WRITER", data("L     STN     LAT     LONG    ELV DELAY",
+        writeln("FPRINT_WRITER", data("L      STN     LAT     LONG    ELV DELAY",
             "FMGC  XMGC KL  PRR  CALR IC      DATE HRMN"), "(/,4X,A,5X,A)");
       } else {
         writeln("FPRINT_WRITER",
             data(
-                "L   STN    LAT      LONG      ELV     M  DLY1  DLY2  XMGC FMGC KL CALR IC   DATE HRMN"),
+                "L    STN    LAT      LONG      ELV     M  DLY1  DLY2  XMGC FMGC KL CALR IC   DATE HRMN"),
             "(/,4X,A)");
       }
 
@@ -3904,14 +3904,14 @@ public class Hypo71 {
               data(L, IW[i], NSTA[i], (int) LAT1, LAT2, INS[i], (int) LON1, LON2, IEW[i], IELV[i],
                   DLY[0][i], FMGC[i], XMGC[i], KLAS[i], PRR[i], CALR[i], ICAL[i], NDATE[i],
                   NHRMN[i]),
-              "(I5,3X," + "A1,A4," + "I3,F5.2,A1,I4," + ""
+              "(I5,3X," + "A1,A5," + "I3,F5.2,A1,I4," + ""
                   + "F5.2,A1,I5,F6.2,4X,F5.2,2X,F5.2,1X,I1,F5.2,F7.2,1X,I1,5X,I6,I4)");
         } else {// 30
           writeln("FPRINT_WRITER",
               data(L, NSTA[i], IW[i], LAT1, LAT2, INS[i], LON1, LON2, IEW[i], IELV[i], MNO[i],
                   DLY[0][i], DLY[1][i], XMGC[i], FMGC[i], KLAS[i], CALR[i], ICAL[i], NDATE[i],
                   NHRMN[i]),
-              "I5,2X,A4,A1,I2," + ""
+              "I5,2X,A5,A1,I2," + ""
                   + "1X,F5.2,A1,I4,1X,F5.2,A1,I5,5X,I1,4F6.2,1X,I1,F6.2,1X,I1,2X,I6,I4");
         }
 
@@ -3931,12 +3931,12 @@ public class Hypo71 {
       C4.NS = i;
 
     } // IF (MJUMP-1) 1,100,200
-    if (MJUMP <= 1) {// 100
+    if (MJUMP <= 1) { // 100
       writeln("FPRINT_WRITER", data("CRUSTAL MODEL 1", "VELOCITY     DEPTH"), "(///,7X,A,/,5X,A)");
 
       int i = 0;
       boolean error = true;
-      for (int L = 1; L < LMAX; L++) {// /DO 130 L=1,LMAX
+      for (int L = 1; L < LMAX; L++) { // /DO 130 L=1,LMAX
 
         i = L - 1;
         if (readFromFile) {
