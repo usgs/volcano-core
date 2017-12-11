@@ -1,5 +1,6 @@
 package gov.usgs.volcanoes.core.legacy.ew;
 
+import gov.usgs.volcanoes.core.contrib.HashCodeUtil;
 
 /**
  * A class for holding SCNL data.
@@ -33,24 +34,42 @@ public class SCNL {
    * @param scnl
    * @return Are they equal?
    */
-  public boolean equals(SCNL scnl) {
-    if (!station.equals(scnl.station)) {
-      return false;
-    }
-    if (!channel.equals(scnl.channel)) {
-      return false;
-    }
-    if (!network.equals(scnl.network)) {
-      return false;
-    }
-    if (location == null && scnl.location != null) {
-      return false;
-    }
-    if (!location.equals(scnl.location)) {
+  @Override
+  public boolean equals(Object other) {
+    if (!(other instanceof SCNL)) {
       return false;
     }
 
-    return true;
+    SCNL scnl = (SCNL) other;
+
+    if (!station.equals(scnl.station)) {
+      return false;
+    } else if (!channel.equals(scnl.channel)) {
+      return false;
+    } else if (!network.equals(scnl.network)) {
+      return false;
+    } else if (location == null ^ scnl.location == null) {
+      return false;
+    } else if (!location.equals(scnl.location)) {
+      return false;
+    } else {
+      return true;
+    }
+  }
+
+
+  /**
+   * Provide hashCode.
+   */
+  @Override
+  public int hashCode() {
+    int result = HashCodeUtil.SEED;
+    result = HashCodeUtil.hash(result, station);
+    result = HashCodeUtil.hash(result, channel);
+    result = HashCodeUtil.hash(result, network);
+    result = HashCodeUtil.hash(result, location);
+
+    return result;
   }
 
   /**

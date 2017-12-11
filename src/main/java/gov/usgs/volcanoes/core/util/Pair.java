@@ -1,5 +1,7 @@
 package gov.usgs.volcanoes.core.util;
 
+import gov.usgs.volcanoes.core.contrib.HashCodeUtil;
+
 /**
  * Container for two objects, possible different types.
  * 
@@ -23,11 +25,29 @@ public class Pair<O1, O2> {
   /**
    * Yields true if otherPair same as this.
    * 
-   * @param otherPair pair being compared to this
+   * @param other pair being compared to this
    * @return result of comparison
    */
-  public boolean equals(Pair<O1, O2> otherPair) {
-    return item1.equals(otherPair.item1) && item2.equals(otherPair.item2);
+  @Override
+  public boolean equals(Object other) {
+    if (!(other instanceof Pair<?, ?>)) {
+      return false;
+    } else {
+      Pair<?, ?> otherPair = (Pair<?, ?>) other;
+      return item1.equals(otherPair.item1) && item2.equals(otherPair.item2);
+    }
+  }
+
+  /**
+   * Provide hashCode.
+   */
+  @Override
+  public int hashCode() {
+    int result = HashCodeUtil.SEED;
+    result = HashCodeUtil.hash(result, item1);
+    result = HashCodeUtil.hash(result, item2);
+
+    return result;
   }
 
   /**

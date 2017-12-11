@@ -255,7 +255,7 @@ public class WinDataFile extends SeismicDataFile {
     sw.setSamplingRate(c.samplingRate);
     sw.buffer = new int[c.inBuf.size()];
     for (int j = 0; j < c.inBuf.size(); j++) {
-      sw.buffer[j] = Math.round(c.inBuf.get(j));
+      sw.buffer[j] = c.inBuf.get(j);
     }
     return sw;
   }

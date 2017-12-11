@@ -21,7 +21,7 @@ public class Spectra {
     DoubleFFT_1D FFT = new DoubleFFT_1D(nfft);
     FFT.realForward(transform);
 
-    boolean odd = nfft % 2 == 1;
+    boolean odd = nfft % 2 != 0;
 
     if (odd)
       length = (nfft + 1) / 2;
