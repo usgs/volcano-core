@@ -31,15 +31,15 @@ public class Spectra {
     power = new double[length];
     power[0] = Math.abs(transform[0]);
 
-    for (int i = 2; i < nfft - 1; i = i + 2)
+    for (int i = 2; i < nfft - 1; i += 2) {
       power[i / 2] = Math.sqrt(transform[i] * transform[i] + transform[i + 1] * transform[i + 1]);
-
-    if (odd) {
-      if (length > 1)
-        power[length - 1] =
-            Math.sqrt(transform[1] * transform[1] + transform[nfft - 1] * transform[nfft - 1]);
-    } else
+    }
+    if (odd && length > 1) {
+      power[length - 1] =
+          Math.sqrt(transform[1] * transform[1] + transform[nfft - 1] * transform[nfft - 1]);
+    } else {
       power[length - 1] = Math.abs(transform[1]);
+    }
 
     frequency = new double[length];
     double delta = samplingRate / nfft;
@@ -64,8 +64,9 @@ public class Spectra {
 
     double MIN = Double.MAX_VALUE;
     for (int i = 0; i < length; i++)
-      if (power[i] < MIN & frequency[i] >= F1 & frequency[i] <= F2)
+      if (power[i] < MIN && frequency[i] >= F1 && frequency[i] <= F2)
         MIN = power[i];
+
     return MIN;
   }
 
@@ -83,10 +84,13 @@ public class Spectra {
    */
   public double getMaxPower(double F1, double F2) {
 
-    double MAX = Double.MIN_VALUE;
-    for (int i = 0; i < length; i++)
-      if (power[i] > MAX & frequency[i] >= F1 & frequency[i] <= F2)
+    double MAX = -Double.MAX_VALUE;
+    for (int i = 0; i < length; i++) {
+      if (power[i] > MAX && frequency[i] >= F1 && frequency[i] <= F2) {
         MAX = power[i];
+      }
+    }
+
     return MAX;
 
   }
