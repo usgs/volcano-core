@@ -31,7 +31,7 @@ public class SCNL {
 
   /**
    * Compare another SCNL to this SCNL. A null location is different than a "--" location
-   * @param scnl
+   * @param other object to compare
    * @return Are they equal?
    */
   @Override
