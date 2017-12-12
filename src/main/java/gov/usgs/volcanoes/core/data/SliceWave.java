@@ -263,6 +263,9 @@ public class SliceWave {
 
     double[] signal;
 
+    if (Double.isNaN(m) || Double.isNaN(b)) {
+      deriveStatistics();
+    }
     int nsamples = samples();
 
     signal = new double[nsamples];
