@@ -1065,7 +1065,7 @@
 <a class="jxr_linenumber" name="L1057" href="#L1057">1057</a>   <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> set2mean(<strong class="jxr_keyword">double</strong> p) {
 <a class="jxr_linenumber" name="L1058" href="#L1058">1058</a>     <strong class="jxr_keyword">int</strong> j = 0; <em class="jxr_comment">// index of oldest value in window</em>
 <a class="jxr_linenumber" name="L1059" href="#L1059">1059</a>     <strong class="jxr_keyword">double</strong> jtime = 0; <em class="jxr_comment">// time of oldest value in window</em>
-<a class="jxr_linenumber" name="L1060" href="#L1060">1060</a>     <a href="../../../../../gov/usgs/volcanoes/core/data/Wave.html">Meaner</a> window = <strong class="jxr_keyword">new</strong> <a href="../../../../../gov/usgs/volcanoes/core/data/Wave.html">Meaner</a>();
+<a class="jxr_linenumber" name="L1060" href="#L1060">1060</a>     <a href="../../../../../gov/usgs/volcanoes/core/data/GenericDataMatrix.html">Meaner</a> window = <strong class="jxr_keyword">new</strong> <a href="../../../../../gov/usgs/volcanoes/core/data/GenericDataMatrix.html">Meaner</a>();
 <a class="jxr_linenumber" name="L1061" href="#L1061">1061</a>     window.add((<strong class="jxr_keyword">double</strong>) buffer[0]);
 <a class="jxr_linenumber" name="L1062" href="#L1062">1062</a>     <strong class="jxr_keyword">int</strong> r = <strong class="jxr_keyword">this</strong>.buffer.length;
 <a class="jxr_linenumber" name="L1063" href="#L1063">1063</a>     <strong class="jxr_keyword">for</strong> (<strong class="jxr_keyword">int</strong> i = 1; i &lt; r; i++) {
@@ -1090,7 +1090,7 @@
 <a class="jxr_linenumber" name="L1082" href="#L1082">1082</a>   <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> set2median(<strong class="jxr_keyword">double</strong> p) {
 <a class="jxr_linenumber" name="L1083" href="#L1083">1083</a>     <strong class="jxr_keyword">int</strong> j = 0; <em class="jxr_comment">// index of oldest value in window</em>
 <a class="jxr_linenumber" name="L1084" href="#L1084">1084</a>     <strong class="jxr_keyword">double</strong> jtime = 0; <em class="jxr_comment">// time of oldest value in window</em>
-<a class="jxr_linenumber" name="L1085" href="#L1085">1085</a>     <a href="../../../../../gov/usgs/volcanoes/core/data/Wave.html">Medianer</a> window = <strong class="jxr_keyword">new</strong> <a href="../../../../../gov/usgs/volcanoes/core/data/Wave.html">Medianer</a>();
+<a class="jxr_linenumber" name="L1085" href="#L1085">1085</a>     <a href="../../../../../gov/usgs/volcanoes/core/data/GenericDataMatrix.html">Medianer</a> window = <strong class="jxr_keyword">new</strong> <a href="../../../../../gov/usgs/volcanoes/core/data/GenericDataMatrix.html">Medianer</a>();
 <a class="jxr_linenumber" name="L1086" href="#L1086">1086</a>     window.add((<strong class="jxr_keyword">double</strong>) buffer[0]);
 <a class="jxr_linenumber" name="L1087" href="#L1087">1087</a>     <strong class="jxr_keyword">int</strong> r = <strong class="jxr_keyword">this</strong>.buffer.length;
 <a class="jxr_linenumber" name="L1088" href="#L1088">1088</a>     <strong class="jxr_keyword">for</strong> (<strong class="jxr_keyword">int</strong> i = 1; i &lt; r; i++) {
@@ -1120,11 +1120,11 @@
 <a class="jxr_linenumber" name="L1112" href="#L1112">1112</a>   <em class="jxr_javadoccomment">/**</em>
 <a class="jxr_linenumber" name="L1113" href="#L1113">1113</a> <em class="jxr_javadoccomment">   * Class to maintain a FIFO of doubles &amp; report its mean.</em>
 <a class="jxr_linenumber" name="L1114" href="#L1114">1114</a> <em class="jxr_javadoccomment">   */</em>
-<a class="jxr_linenumber" name="L1115" href="#L1115">1115</a>   <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">class</strong> <a href="../../../../../gov/usgs/volcanoes/core/data/Wave.html">Meaner</a> {
+<a class="jxr_linenumber" name="L1115" href="#L1115">1115</a>   <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">class</strong> <a href="../../../../../gov/usgs/volcanoes/core/data/GenericDataMatrix.html">Meaner</a> {
 <a class="jxr_linenumber" name="L1116" href="#L1116">1116</a>     <strong class="jxr_keyword">private</strong> LinkedList&lt;Double&gt; data; <em class="jxr_comment">// the values</em>
 <a class="jxr_linenumber" name="L1117" href="#L1117">1117</a>     <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">double</strong> sum; <em class="jxr_comment">// their sum</em>
 <a class="jxr_linenumber" name="L1118" href="#L1118">1118</a> 
-<a class="jxr_linenumber" name="L1119" href="#L1119">1119</a>     <a href="../../../../../gov/usgs/volcanoes/core/data/Wave.html">Meaner</a>() {
+<a class="jxr_linenumber" name="L1119" href="#L1119">1119</a>     <a href="../../../../../gov/usgs/volcanoes/core/data/GenericDataMatrix.html">Meaner</a>() {
 <a class="jxr_linenumber" name="L1120" href="#L1120">1120</a>       data = <strong class="jxr_keyword">new</strong> LinkedList&lt;Double&gt;();
 <a class="jxr_linenumber" name="L1121" href="#L1121">1121</a>       sum = 0;
 <a class="jxr_linenumber" name="L1122" href="#L1122">1122</a>     }
@@ -1163,13 +1163,13 @@
 <a class="jxr_linenumber" name="L1155" href="#L1155">1155</a>   <em class="jxr_javadoccomment">/**</em>
 <a class="jxr_linenumber" name="L1156" href="#L1156">1156</a> <em class="jxr_javadoccomment">   * Class to maintain a FIFO of doubles &amp; report its median.</em>
 <a class="jxr_linenumber" name="L1157" href="#L1157">1157</a> <em class="jxr_javadoccomment">   */</em>
-<a class="jxr_linenumber" name="L1158" href="#L1158">1158</a>   <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">class</strong> <a href="../../../../../gov/usgs/volcanoes/core/data/Wave.html">Medianer</a> {
+<a class="jxr_linenumber" name="L1158" href="#L1158">1158</a>   <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">class</strong> <a href="../../../../../gov/usgs/volcanoes/core/data/GenericDataMatrix.html">Medianer</a> {
 <a class="jxr_linenumber" name="L1159" href="#L1159">1159</a> 
-<a class="jxr_linenumber" name="L1160" href="#L1160">1160</a>     <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">class</strong> <a href="../../../../../gov/usgs/volcanoes/core/data/Wave.html">MultiMap</a> {
+<a class="jxr_linenumber" name="L1160" href="#L1160">1160</a>     <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">class</strong> <a href="../../../../../gov/usgs/volcanoes/core/data/GenericDataMatrix.html">MultiMap</a> {
 <a class="jxr_linenumber" name="L1161" href="#L1161">1161</a>       <strong class="jxr_keyword">private</strong> TreeMap&lt;Double, LinkedList&lt;Integer&gt;&gt; mm;
 <a class="jxr_linenumber" name="L1162" href="#L1162">1162</a>       <strong class="jxr_keyword">private</strong> TreeMap&lt;Integer, Double&gt; unmm;
 <a class="jxr_linenumber" name="L1163" href="#L1163">1163</a> 
-<a class="jxr_linenumber" name="L1164" href="#L1164">1164</a>       <a href="../../../../../gov/usgs/volcanoes/core/data/Wave.html">MultiMap</a>() {
+<a class="jxr_linenumber" name="L1164" href="#L1164">1164</a>       <a href="../../../../../gov/usgs/volcanoes/core/data/GenericDataMatrix.html">MultiMap</a>() {
 <a class="jxr_linenumber" name="L1165" href="#L1165">1165</a>         mm = <strong class="jxr_keyword">new</strong> TreeMap&lt;Double, LinkedList&lt;Integer&gt;&gt;();
 <a class="jxr_linenumber" name="L1166" href="#L1166">1166</a>         unmm = <strong class="jxr_keyword">new</strong> TreeMap&lt;Integer, Double&gt;();
 <a class="jxr_linenumber" name="L1167" href="#L1167">1167</a>       }
@@ -1226,7 +1226,7 @@
 <a class="jxr_linenumber" name="L1218" href="#L1218">1218</a>         <strong class="jxr_keyword">return</strong> unmm.size();
 <a class="jxr_linenumber" name="L1219" href="#L1219">1219</a>       }
 <a class="jxr_linenumber" name="L1220" href="#L1220">1220</a> 
-<a class="jxr_linenumber" name="L1221" href="#L1221">1221</a>       <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> addLo(Double key, Integer val, <a href="../../../../../gov/usgs/volcanoes/core/data/Wave.html">MultiMap</a> other) {
+<a class="jxr_linenumber" name="L1221" href="#L1221">1221</a>       <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> addLo(Double key, Integer val, <a href="../../../../../gov/usgs/volcanoes/core/data/GenericDataMatrix.html">MultiMap</a> other) {
 <a class="jxr_linenumber" name="L1222" href="#L1222">1222</a>         <strong class="jxr_keyword">if</strong> (other.size() &gt; 0 &amp;&amp; key &gt;= other.firstKey()) {
 <a class="jxr_linenumber" name="L1223" href="#L1223">1223</a>           other.put(key, val);
 <a class="jxr_linenumber" name="L1224" href="#L1224">1224</a>           key = other.firstKey();
@@ -1235,7 +1235,7 @@
 <a class="jxr_linenumber" name="L1227" href="#L1227">1227</a>         put(key, val);
 <a class="jxr_linenumber" name="L1228" href="#L1228">1228</a>       }
 <a class="jxr_linenumber" name="L1229" href="#L1229">1229</a> 
-<a class="jxr_linenumber" name="L1230" href="#L1230">1230</a>       <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> addHi(Double key, Integer val, <a href="../../../../../gov/usgs/volcanoes/core/data/Wave.html">MultiMap</a> other) {
+<a class="jxr_linenumber" name="L1230" href="#L1230">1230</a>       <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> addHi(Double key, Integer val, <a href="../../../../../gov/usgs/volcanoes/core/data/GenericDataMatrix.html">MultiMap</a> other) {
 <a class="jxr_linenumber" name="L1231" href="#L1231">1231</a>         <strong class="jxr_keyword">if</strong> (other.size() &gt; 0 &amp;&amp; key &lt;= other.lastKey()) {
 <a class="jxr_linenumber" name="L1232" href="#L1232">1232</a>           other.put(key, val);
 <a class="jxr_linenumber" name="L1233" href="#L1233">1233</a>           key = other.lastKey();
@@ -1259,16 +1259,16 @@
 <a class="jxr_linenumber" name="L1251" href="#L1251">1251</a>       }
 <a class="jxr_linenumber" name="L1252" href="#L1252">1252</a>     }
 <a class="jxr_linenumber" name="L1253" href="#L1253">1253</a> 
-<a class="jxr_linenumber" name="L1254" href="#L1254">1254</a>     <strong class="jxr_keyword">private</strong> <a href="../../../../../gov/usgs/volcanoes/core/data/Wave.html">MultiMap</a> loHalf; <em class="jxr_comment">// values in lower half</em>
-<a class="jxr_linenumber" name="L1255" href="#L1255">1255</a>     <strong class="jxr_keyword">private</strong> <a href="../../../../../gov/usgs/volcanoes/core/data/Wave.html">MultiMap</a> hiHalf; <em class="jxr_comment">// values in upper half</em>
+<a class="jxr_linenumber" name="L1254" href="#L1254">1254</a>     <strong class="jxr_keyword">private</strong> <a href="../../../../../gov/usgs/volcanoes/core/data/GenericDataMatrix.html">MultiMap</a> loHalf; <em class="jxr_comment">// values in lower half</em>
+<a class="jxr_linenumber" name="L1255" href="#L1255">1255</a>     <strong class="jxr_keyword">private</strong> <a href="../../../../../gov/usgs/volcanoes/core/data/GenericDataMatrix.html">MultiMap</a> hiHalf; <em class="jxr_comment">// values in upper half</em>
 <a class="jxr_linenumber" name="L1256" href="#L1256">1256</a>     <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">int</strong> idx1; <em class="jxr_comment">// values window have indices idx1..idx2</em>
 <a class="jxr_linenumber" name="L1257" href="#L1257">1257</a>     <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">int</strong> idx2;
 <a class="jxr_linenumber" name="L1258" href="#L1258">1258</a> 
-<a class="jxr_linenumber" name="L1259" href="#L1259">1259</a>     <a href="../../../../../gov/usgs/volcanoes/core/data/Wave.html">Medianer</a>() {
+<a class="jxr_linenumber" name="L1259" href="#L1259">1259</a>     <a href="../../../../../gov/usgs/volcanoes/core/data/GenericDataMatrix.html">Medianer</a>() {
 <a class="jxr_linenumber" name="L1260" href="#L1260">1260</a>       <em class="jxr_comment">// Invariant: |loHalf| - |hiHalf| = 0 or 1</em>
 <a class="jxr_linenumber" name="L1261" href="#L1261">1261</a>       <em class="jxr_comment">// All keys in loHalf &lt;= all keys in hiHalf</em>
-<a class="jxr_linenumber" name="L1262" href="#L1262">1262</a>       loHalf = <strong class="jxr_keyword">new</strong> <a href="../../../../../gov/usgs/volcanoes/core/data/Wave.html">MultiMap</a>();
-<a class="jxr_linenumber" name="L1263" href="#L1263">1263</a>       hiHalf = <strong class="jxr_keyword">new</strong> <a href="../../../../../gov/usgs/volcanoes/core/data/Wave.html">MultiMap</a>();
+<a class="jxr_linenumber" name="L1262" href="#L1262">1262</a>       loHalf = <strong class="jxr_keyword">new</strong> <a href="../../../../../gov/usgs/volcanoes/core/data/GenericDataMatrix.html">MultiMap</a>();
+<a class="jxr_linenumber" name="L1263" href="#L1263">1263</a>       hiHalf = <strong class="jxr_keyword">new</strong> <a href="../../../../../gov/usgs/volcanoes/core/data/GenericDataMatrix.html">MultiMap</a>();
 <a class="jxr_linenumber" name="L1264" href="#L1264">1264</a>       idx1 = 0;
 <a class="jxr_linenumber" name="L1265" href="#L1265">1265</a>       idx2 = -1;
 <a class="jxr_linenumber" name="L1266" href="#L1266">1266</a>     }

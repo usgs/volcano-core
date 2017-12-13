@@ -74,7 +74,7 @@
 <a class="jxr_linenumber" name="L66" href="#L66">66</a>  	<em class="jxr_javadoccomment">/** PLTE tag. */</em>
 <a class="jxr_linenumber" name="L67" href="#L67">67</a>  	<strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">static</strong> <strong class="jxr_keyword">final</strong> byte PLTE[] = { 80, 76, 84, 69 };
 <a class="jxr_linenumber" name="L68" href="#L68">68</a>  
-<a class="jxr_linenumber" name="L69" href="#L69">69</a>      <strong class="jxr_keyword">protected</strong> BufferedImage image;
+<a class="jxr_linenumber" name="L69" href="#L69">69</a>      <strong class="jxr_keyword">protected</strong> BufferedImage bImage;
 <a class="jxr_linenumber" name="L70" href="#L70">70</a>      <strong class="jxr_keyword">protected</strong> WritableRaster wRaster;
 <a class="jxr_linenumber" name="L71" href="#L71">71</a>      <strong class="jxr_keyword">protected</strong> <strong class="jxr_keyword">int</strong> tType;
 <a class="jxr_linenumber" name="L72" href="#L72">72</a>  
@@ -132,7 +132,7 @@
 <a class="jxr_linenumber" name="L124" href="#L124">124</a>     <strong class="jxr_keyword">public</strong> <a href="../../../../../gov/usgs/volcanoes/core/contrib/PngEncoderB.html">PngEncoderB</a>( BufferedImage image, <strong class="jxr_keyword">boolean</strong> encodeAlpha,
 <a class="jxr_linenumber" name="L125" href="#L125">125</a>       <strong class="jxr_keyword">int</strong> whichFilter, <strong class="jxr_keyword">int</strong> compLevel )
 <a class="jxr_linenumber" name="L126" href="#L126">126</a>     {
-<a class="jxr_linenumber" name="L127" href="#L127">127</a>         <strong class="jxr_keyword">this</strong>.image = image;
+<a class="jxr_linenumber" name="L127" href="#L127">127</a>         <strong class="jxr_keyword">this</strong>.bImage = image;
 <a class="jxr_linenumber" name="L128" href="#L128">128</a>         <strong class="jxr_keyword">this</strong>.encodeAlpha = encodeAlpha;
 <a class="jxr_linenumber" name="L129" href="#L129">129</a>         setFilter( whichFilter );
 <a class="jxr_linenumber" name="L130" href="#L130">130</a>         <strong class="jxr_keyword">if</strong> (compLevel &gt;=0 &amp;&amp; compLevel &lt;=9)
@@ -148,7 +148,7 @@
 <a class="jxr_linenumber" name="L140" href="#L140">140</a> <em class="jxr_javadoccomment">     */</em>
 <a class="jxr_linenumber" name="L141" href="#L141">141</a>     <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> setImage( BufferedImage image )
 <a class="jxr_linenumber" name="L142" href="#L142">142</a>     {
-<a class="jxr_linenumber" name="L143" href="#L143">143</a>         <strong class="jxr_keyword">this</strong>.image = image;
+<a class="jxr_linenumber" name="L143" href="#L143">143</a>         <strong class="jxr_keyword">this</strong>.bImage = image;
 <a class="jxr_linenumber" name="L144" href="#L144">144</a>         pngBytes = <strong class="jxr_keyword">null</strong>;
 <a class="jxr_linenumber" name="L145" href="#L145">145</a>     }
 <a class="jxr_linenumber" name="L146" href="#L146">146</a> 
@@ -163,13 +163,13 @@
 <a class="jxr_linenumber" name="L155" href="#L155">155</a>         byte[]  pngIdBytes = { -119, 80, 78, 71, 13, 10, 26, 10 };
 <a class="jxr_linenumber" name="L156" href="#L156">156</a>         <em class="jxr_comment">//int     i;  // UNUSED, removed DPC</em>
 <a class="jxr_linenumber" name="L157" href="#L157">157</a> 
-<a class="jxr_linenumber" name="L158" href="#L158">158</a>         <strong class="jxr_keyword">if</strong> (image == <strong class="jxr_keyword">null</strong>)
+<a class="jxr_linenumber" name="L158" href="#L158">158</a>         <strong class="jxr_keyword">if</strong> (bImage == <strong class="jxr_keyword">null</strong>)
 <a class="jxr_linenumber" name="L159" href="#L159">159</a>         {
 <a class="jxr_linenumber" name="L160" href="#L160">160</a>             System.err.println(<span class="jxr_string">"pngEncode: image is null; returning null"</span>);
 <a class="jxr_linenumber" name="L161" href="#L161">161</a> 			<strong class="jxr_keyword">return</strong> <strong class="jxr_keyword">null</strong>;
 <a class="jxr_linenumber" name="L162" href="#L162">162</a>         }
-<a class="jxr_linenumber" name="L163" href="#L163">163</a>         width = image.getWidth( <strong class="jxr_keyword">null</strong> );
-<a class="jxr_linenumber" name="L164" href="#L164">164</a>         height = image.getHeight( <strong class="jxr_keyword">null</strong> );
+<a class="jxr_linenumber" name="L163" href="#L163">163</a>         width = bImage.getWidth( <strong class="jxr_keyword">null</strong> );
+<a class="jxr_linenumber" name="L164" href="#L164">164</a>         height = bImage.getHeight( <strong class="jxr_keyword">null</strong> );
 <a class="jxr_linenumber" name="L165" href="#L165">165</a>         <em class="jxr_comment">//this.image = image;</em>
 <a class="jxr_linenumber" name="L166" href="#L166">166</a> 
 <a class="jxr_linenumber" name="L167" href="#L167">167</a>         <strong class="jxr_keyword">if</strong> (!establishStorageInfo())
@@ -232,7 +232,7 @@
 <a class="jxr_linenumber" name="L224" href="#L224">224</a>     {
 <a class="jxr_linenumber" name="L225" href="#L225">225</a>         <strong class="jxr_keyword">int</strong> dataBytes;
 <a class="jxr_linenumber" name="L226" href="#L226">226</a>     
-<a class="jxr_linenumber" name="L227" href="#L227">227</a>         wRaster = image.getRaster();
+<a class="jxr_linenumber" name="L227" href="#L227">227</a>         wRaster = bImage.getRaster();
 <a class="jxr_linenumber" name="L228" href="#L228">228</a>         dataBytes = wRaster.getNumDataElements();
 <a class="jxr_linenumber" name="L229" href="#L229">229</a>         tType = wRaster.getTransferType();
 <a class="jxr_linenumber" name="L230" href="#L230">230</a> 
@@ -267,8 +267,8 @@
 <a class="jxr_linenumber" name="L259" href="#L259">259</a> 
 <a class="jxr_linenumber" name="L260" href="#L260">260</a>         startPos = bytePos = writeInt4( 13, bytePos );
 <a class="jxr_linenumber" name="L261" href="#L261">261</a>         bytePos = writeBytes( IHDR, bytePos );
-<a class="jxr_linenumber" name="L262" href="#L262">262</a>         width = image.getWidth( <strong class="jxr_keyword">null</strong> );
-<a class="jxr_linenumber" name="L263" href="#L263">263</a>         height = image.getHeight( <strong class="jxr_keyword">null</strong> );
+<a class="jxr_linenumber" name="L262" href="#L262">262</a>         width = bImage.getWidth( <strong class="jxr_keyword">null</strong> );
+<a class="jxr_linenumber" name="L263" href="#L263">263</a>         height = bImage.getHeight( <strong class="jxr_keyword">null</strong> );
 <a class="jxr_linenumber" name="L264" href="#L264">264</a>         bytePos = writeInt4( width, bytePos );
 <a class="jxr_linenumber" name="L265" href="#L265">265</a>         bytePos = writeInt4( height, bytePos );
 <a class="jxr_linenumber" name="L266" href="#L266">266</a>         bytePos = writeByte( 8, bytePos ); <em class="jxr_comment">// bit depth</em>
@@ -342,7 +342,7 @@
 <a class="jxr_linenumber" name="L334" href="#L334">334</a>         byte[] pixels;          <em class="jxr_comment">// storage area for byte-sized pixels</em>
 <a class="jxr_linenumber" name="L335" href="#L335">335</a>         <strong class="jxr_keyword">int</strong>[] iPixels;          <em class="jxr_comment">// storage area for int-sized pixels</em>
 <a class="jxr_linenumber" name="L336" href="#L336">336</a> 		<strong class="jxr_keyword">short</strong>[] sPixels;		<em class="jxr_comment">// for Win 2000/ME ushort pixels</em>
-<a class="jxr_linenumber" name="L337" href="#L337">337</a> 		<strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">int</strong> type = image.getType();
+<a class="jxr_linenumber" name="L337" href="#L337">337</a> 		<strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">int</strong> type = bImage.getType();
 <a class="jxr_linenumber" name="L338" href="#L338">338</a> 		<em class="jxr_comment">// TYPE_INT_RGB        = 1</em>
 <a class="jxr_linenumber" name="L339" href="#L339">339</a> 		<em class="jxr_comment">// TYPE_INT_ARGB       = 2</em>
 <a class="jxr_linenumber" name="L340" href="#L340">340</a> 		<em class="jxr_comment">// TYPE_INT_ARGB_PRE   = 3</em>
@@ -367,7 +367,7 @@
 <a class="jxr_linenumber" name="L359" href="#L359">359</a> 
 <a class="jxr_linenumber" name="L360" href="#L360">360</a>         <strong class="jxr_keyword">if</strong> (bytesPerPixel == 1)
 <a class="jxr_linenumber" name="L361" href="#L361">361</a>         {
-<a class="jxr_linenumber" name="L362" href="#L362">362</a>             writePalette( (IndexColorModel) image.getColorModel() );
+<a class="jxr_linenumber" name="L362" href="#L362">362</a>             writePalette( (IndexColorModel) bImage.getColorModel() );
 <a class="jxr_linenumber" name="L363" href="#L363">363</a>         }
 <a class="jxr_linenumber" name="L364" href="#L364">364</a> 
 <a class="jxr_linenumber" name="L365" href="#L365">365</a>         <strong class="jxr_keyword">try</strong>

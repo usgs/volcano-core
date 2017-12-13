@@ -197,7 +197,7 @@
 <a class="jxr_linenumber" name="L189" href="#L189">189</a>           <strong class="jxr_keyword">for</strong> (<strong class="jxr_keyword">int</strong> i = x1; i &lt; x2; i++) {
 <a class="jxr_linenumber" name="L190" href="#L190">190</a>             inc = Math.pow(10, i);
 <a class="jxr_linenumber" name="L191" href="#L191">191</a> 
-<a class="jxr_linenumber" name="L192" href="#L192">192</a>             <strong class="jxr_keyword">if</strong> (i &lt; fr.getMinXAxis() | i &gt; fr.getMaxXAxis()) {
+<a class="jxr_linenumber" name="L192" href="#L192">192</a>             <strong class="jxr_keyword">if</strong> (i &lt; fr.getMinXAxis() || i &gt; fr.getMaxXAxis()) {
 <a class="jxr_linenumber" name="L193" href="#L193">193</a>               t[c] = Double.NaN;
 <a class="jxr_linenumber" name="L194" href="#L194">194</a>               st[c] = <span class="jxr_string">""</span>;
 <a class="jxr_linenumber" name="L195" href="#L195">195</a>             } <strong class="jxr_keyword">else</strong> {
@@ -208,7 +208,7 @@
 <a class="jxr_linenumber" name="L200" href="#L200">200</a>             c++;
 <a class="jxr_linenumber" name="L201" href="#L201">201</a>             <strong class="jxr_keyword">for</strong> (<strong class="jxr_keyword">int</strong> j = 1; j &lt; 9; j++) {
 <a class="jxr_linenumber" name="L202" href="#L202">202</a>               value = Math.log10(Math.pow(10, i) + inc * j);
-<a class="jxr_linenumber" name="L203" href="#L203">203</a>               <strong class="jxr_keyword">if</strong> (value &lt; fr.getMinXAxis() | value &gt; fr.getMaxXAxis()) {
+<a class="jxr_linenumber" name="L203" href="#L203">203</a>               <strong class="jxr_keyword">if</strong> (value &lt; fr.getMinXAxis() || value &gt; fr.getMaxXAxis()) {
 <a class="jxr_linenumber" name="L204" href="#L204">204</a>                 t[c] = Double.NaN;
 <a class="jxr_linenumber" name="L205" href="#L205">205</a>               } <strong class="jxr_keyword">else</strong> {
 <a class="jxr_linenumber" name="L206" href="#L206">206</a>                 t[c] = value;
@@ -225,7 +225,7 @@
 <a class="jxr_linenumber" name="L217" href="#L217">217</a>           t = SmartTick.autoTick(fr.getMinXAxis(), fr.getMaxXAxis(), hTicks, false);
 <a class="jxr_linenumber" name="L218" href="#L218">218</a>           st = <strong class="jxr_keyword">new</strong> String[t.length];
 <a class="jxr_linenumber" name="L219" href="#L219">219</a>           <strong class="jxr_keyword">for</strong> (<strong class="jxr_keyword">int</strong> i = 0; i &lt; t.length; i++) {
-<a class="jxr_linenumber" name="L220" href="#L220">220</a>             <strong class="jxr_keyword">double</strong> val = log ? Math.pow(10, t[i]) : t[i];
+<a class="jxr_linenumber" name="L220" href="#L220">220</a>             <strong class="jxr_keyword">double</strong> val = t[i];
 <a class="jxr_linenumber" name="L221" href="#L221">221</a>             st[i] = numberFormat.format(val) + <span class="jxr_string">" Hz"</span>;
 <a class="jxr_linenumber" name="L222" href="#L222">222</a>           }
 <a class="jxr_linenumber" name="L223" href="#L223">223</a>         }
