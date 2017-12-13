@@ -12,8 +12,9 @@ import java.util.ArrayList;
 public enum FileType {
   SAC(".sac", ".*[_\\.](sac|SAC)", "SAC file", false), SEED(".mseed", ".*\\.m?seed",
       "SEED/miniSEED file", true), TEXT(".txt", ".*\\.(txt|mat)", "Matlab-readable text file",
-          false), SEISAN(".MAN", ".*\\.(MAN).*", "Seisan file", true), WIN(".win", ".*\\.(win|WIN)",
-              "WIN file", true), UNKNOWN(".unknown", ".ukn", "Unknown file type", false);
+          false), SEISAN(".MAN", ".*\\.(MAN|seisan).*", "Seisan file", true), WIN(".win",
+              ".*\\.(win|WIN)", "WIN file",
+              true), UNKNOWN(".unknown", ".ukn", "Unknown file type", false);
 
   public final String extensionRe;
   public final String extension;
