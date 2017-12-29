@@ -263,6 +263,8 @@ public class SliceWave {
 
     double[] signal;
 
+    mean(); // required to derive statistics if it is not already done
+
     int nsamples = samples();
 
     signal = new double[nsamples];
