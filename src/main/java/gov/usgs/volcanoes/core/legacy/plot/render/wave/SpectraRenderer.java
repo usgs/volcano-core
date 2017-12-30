@@ -8,6 +8,7 @@ import gov.usgs.volcanoes.core.math.Spectra;
 import gov.usgs.volcanoes.core.math.Util;
 
 import java.awt.Color;
+import java.util.Date;
 
 import cern.colt.matrix.DoubleFactory2D;
 import cern.colt.matrix.DoubleMatrix2D;
@@ -35,6 +36,7 @@ public class SpectraRenderer extends MatrixRenderer {
   private double maxFreq;
 
   private String channelTitle;
+  private Date startDate;
 
   private boolean logFreq;
   private boolean logPower;
@@ -55,12 +57,12 @@ public class SpectraRenderer extends MatrixRenderer {
   protected FrameDecorator decorator;
 
   /**
-   * Default constructor
+   * Default constructor.
    */
   public SpectraRenderer() {}
 
   /**
-   * Set frame decorator to draw graph's frame
+   * Set frame decorator to draw graph's frame.
    * @param  fd frame decorator
    */
   public void setFrameDecorator(FrameDecorator fd) {
@@ -68,7 +70,7 @@ public class SpectraRenderer extends MatrixRenderer {
   }
 
   /**
-   * Set slice to render
+   * Set slice to render.
    * @param sw slice to render
    */
   public void setWave(SliceWave sw) {
@@ -76,11 +78,15 @@ public class SpectraRenderer extends MatrixRenderer {
   }
 
   /**
-   * Set graph title
+   * Set graph title.
    * @param t title
    */
   public void setTitle(String t) {
     channelTitle = t.split("\\.")[0];
+  }
+
+  public void setDate(Date date) {
+    this.startDate = date;
   }
 
   protected class DefaultSpectraFrameDecorator extends DefaultFrameDecorator {
@@ -106,6 +112,7 @@ public class SpectraRenderer extends MatrixRenderer {
       }
       this.title = channelTitle;
       this.titleBackground = Color.WHITE;
+      this.date = startDate;
     }
 
     public void update() {
@@ -116,16 +123,13 @@ public class SpectraRenderer extends MatrixRenderer {
   }
 
   /**
-   * Compute spectra for slice.
-   * Reinitialize frame decorator with this renderer data.
-   * @param oldMaxPower 
-   * @return maximum spectra power value
+   * Update data.
    */
-
   public void update() {
 
-    if (decorator == null)
+    if (decorator == null) {
       decorator = new DefaultSpectraFrameDecorator();
+    }
 
     decorator.update();
 
@@ -140,14 +144,14 @@ public class SpectraRenderer extends MatrixRenderer {
     double minf = Math.max(minFreq, wave.getSamplingRate() / nfft);
     double maxf = Math.min(maxFreq, wave.getNyquist());
 
-    double X1 = logFreq ? Math.log10(minf) : minf;
-    double X2 = logFreq ? Math.log10(maxf) : maxf;
-    double Y1 =
+    double x1 = logFreq ? Math.log10(minf) : minf;
+    double x2 = logFreq ? Math.log10(maxf) : maxf;
+    double y1 =
         logPower ? Math.log10(spectra.getMinPower(minf, maxf)) : spectra.getMinPower(minf, maxf);
-    double Y2 =
+    double y2 =
         logPower ? Math.log10(spectra.getMaxPower(minf, maxf)) : spectra.getMaxPower(minf, maxf);
 
-    setExtents(X1, X2, Y1, Y2);
+    setExtents(x1, x2, y1, y2);
 
     createDefaultLineRenderers(color);
     decorator.decorate(this);
@@ -155,7 +159,7 @@ public class SpectraRenderer extends MatrixRenderer {
   }
 
   /**
-   * Get autoscale flag
+   * Get autoscale flag.
    * @return autoscale flag
    */
   public boolean isAutoScale() {
@@ -163,7 +167,7 @@ public class SpectraRenderer extends MatrixRenderer {
   }
 
   /**
-   * Set autoscale flag
+   * Set autoscale flag.
    * @param autoScale flag
    */
   public void setAutoScale(boolean autoScale) {
@@ -171,7 +175,7 @@ public class SpectraRenderer extends MatrixRenderer {
   }
 
   /**
-   * Get flag if we have logarithm frequency axis
+   * Get flag if we have logarithm frequency axis.
    * @return log freq flag
    */
   public boolean isLogFreq() {
@@ -179,7 +183,7 @@ public class SpectraRenderer extends MatrixRenderer {
   }
 
   /**
-   * Set flag if we have logarithm frequency axis
+   * Set flag if we have logarithm frequency axis.
    * @param logFreq true if freq axis is logarithmic
    */
   public void setLogFreq(boolean logFreq) {
@@ -187,7 +191,7 @@ public class SpectraRenderer extends MatrixRenderer {
   }
 
   /**
-   * Get flag if we have logarithm power axis
+   * Get flag if we have logarithm power axis.
    * @return log power flag
    */
   public boolean isLogPower() {
@@ -195,7 +199,7 @@ public class SpectraRenderer extends MatrixRenderer {
   }
 
   /**
-   * Set flag if we have logarithm power axis
+   * Set flag if we have logarithm power axis.
    * @param logPower true if power axis is logarithmic
    */
   public void setLogPower(boolean logPower) {
@@ -203,7 +207,7 @@ public class SpectraRenderer extends MatrixRenderer {
   }
 
   /**
-   * Get maximum frequency
+   * Get maximum frequency.
    * @return maximum frequency
    */
   public double getMaxFreq() {
@@ -211,7 +215,7 @@ public class SpectraRenderer extends MatrixRenderer {
   }
 
   /**
-   * Set maximum frequency
+   * Set maximum frequency.
    * @param maxFreq maximum frequency
    */
   public void setMaxFreq(double maxFreq) {
@@ -219,7 +223,7 @@ public class SpectraRenderer extends MatrixRenderer {
   }
 
   /**
-  * Get minimum frequency
+  * Get minimum frequency.
   * @return minimum frequency
   */
   public double getMinFreq() {
@@ -227,7 +231,7 @@ public class SpectraRenderer extends MatrixRenderer {
   }
 
   /**
-   * Set minimum frequency
+   * Set minimum frequency.
    * @param minFreq minimum frequency
    */
   public void setMinFreq(double minFreq) {
@@ -235,7 +239,7 @@ public class SpectraRenderer extends MatrixRenderer {
   }
 
   /**
-   * Set Y axis label
+   * Set Y axis label.
    * @param s Y axis label
    */
   public void setYLabelText(String s) {
@@ -243,7 +247,7 @@ public class SpectraRenderer extends MatrixRenderer {
   }
 
   /**
-   * Set Y axis unit
+   * Set Y axis unit.
    * @param s Y axis unit
    */
   public void setYUnitText(String s) {
@@ -251,7 +255,7 @@ public class SpectraRenderer extends MatrixRenderer {
   }
 
   /**
-   * Set color
+   * Set color.
    * @param color color
    */
   public void setColor(Color color) {

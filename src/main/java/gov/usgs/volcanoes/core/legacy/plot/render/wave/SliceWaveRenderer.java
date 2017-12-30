@@ -18,6 +18,7 @@ import java.awt.Stroke;
 import java.awt.geom.GeneralPath;
 import java.awt.geom.Line2D;
 import java.awt.geom.Rectangle2D;
+import java.util.Date;
 
 /**
  * A renderer for slice of wave time series.
@@ -43,6 +44,7 @@ public class SliceWaveRenderer extends FrameRenderer {
   protected String yUnitText = null;
 
   protected String title;
+  protected Date date;
 
   protected FrameDecorator decorator;
 
@@ -54,7 +56,7 @@ public class SliceWaveRenderer extends FrameRenderer {
   public boolean yTickValues = true;
 
   /**
-   * Set frame decorator to draw graph's frame
+   * Set frame decorator to draw graph's frame.
    * @param fd frame decorator
    */
   public void setFrameDecorator(FrameDecorator fd) {
@@ -62,7 +64,7 @@ public class SliceWaveRenderer extends FrameRenderer {
   }
 
   /**
-   * Set highlighted zone
+   * Set highlighted zone.
    * @param x1 minimum x
    * @param x2 maximum X
    */
@@ -72,7 +74,7 @@ public class SliceWaveRenderer extends FrameRenderer {
   }
 
   /**
-   * Get maximum Y value
+   * Get maximum Y value.
    * @return maximum y value
    */
   public double getMaxY() {
@@ -80,7 +82,7 @@ public class SliceWaveRenderer extends FrameRenderer {
   }
 
   /**
-   * Set maximum Y value
+   * Set maximum Y value.
    * @param maxY maximum Y value
    */
   public void setMaxY(double maxY) {
@@ -88,7 +90,7 @@ public class SliceWaveRenderer extends FrameRenderer {
   }
 
   /**
-   * Get minimum Y value
+   * Get minimum Y value.
    * @return minimum Y value
    */
   public double getMinY() {
@@ -96,7 +98,7 @@ public class SliceWaveRenderer extends FrameRenderer {
   }
 
   /**
-   * Set minimum Y value
+   * Set minimum Y value.
    * @param minY minimum Y value
    */
   public void setMinY(double minY) {
@@ -104,7 +106,7 @@ public class SliceWaveRenderer extends FrameRenderer {
   }
 
   /**
-   * Get demean flag
+   * Get demean flag.
    * @return demean flag
    */
   public boolean isRemoveBias() {
@@ -113,7 +115,7 @@ public class SliceWaveRenderer extends FrameRenderer {
 
 
   /**
-   * Set limits on Y axis
+   * Set limits on Y axis.
    * @param min new Y minimum
    * @param max new Y maximum
    */
@@ -123,7 +125,7 @@ public class SliceWaveRenderer extends FrameRenderer {
   }
 
   /**
-   * Set demean flag
+   * Set demean flag.
    * @param b new demean flag
    */
   public void setRemoveBias(boolean b) {
@@ -131,7 +133,7 @@ public class SliceWaveRenderer extends FrameRenderer {
   }
 
   /**
-   * Set draw samples flag
+   * Set draw samples flag.
    * @param b draw samples flag
    */
   public void setDrawSamples(boolean b) {
@@ -139,7 +141,7 @@ public class SliceWaveRenderer extends FrameRenderer {
   }
 
   /**
-   * Set slice to render
+   * Set slice to render.
    * @param w slice to render
    */
   public void setWave(SliceWave w) {
@@ -147,7 +149,7 @@ public class SliceWaveRenderer extends FrameRenderer {
   }
 
   /**
-   * Set limits on time axis
+   * Set limits on time axis.
    * @param t1 start time
    * @param t2 end time
    */
@@ -158,7 +160,7 @@ public class SliceWaveRenderer extends FrameRenderer {
   }
 
   /**
-   * Set limits on time axis from wave
+   * Set limits on time axis from wave.
    * @param timeZone
    */
   public void setViewTimes(String timeZone) {
@@ -166,23 +168,24 @@ public class SliceWaveRenderer extends FrameRenderer {
   }
 
   /**
-   * Set color
+   * Set color.
    * @param c color
    */
   public void setColor(Color c) {
-    if (c != null)
+    if (c != null) {
       color = c;
+    }
   }
 
   /**
-   * Get color
+   * Get color.
    */
   public Color getColor() {
     return color;
   }
 
   /**
-   * Set Y axis label
+   * Set Y axis label.
    * @param s Y axis label
    */
   public void setYLabelText(String s) {
@@ -190,7 +193,7 @@ public class SliceWaveRenderer extends FrameRenderer {
   }
 
   /**
-   * Set Y axis unit
+   * Set Y axis unit.
    * @param s Y axis unit
    */
   public void setYUnitText(String s) {
@@ -198,7 +201,7 @@ public class SliceWaveRenderer extends FrameRenderer {
   }
 
   /**
-   * Set graph title
+   * Set graph title.
    * @param s graph title
    */
   public void setTitle(String s) {
@@ -206,7 +209,15 @@ public class SliceWaveRenderer extends FrameRenderer {
   }
 
   /**
-   * Create default decorator to render frame
+   * Set date for display on graphic.
+   * @param date date to display on graphic
+   */
+  public void setDate(Date date) {
+    this.date = date;
+  }
+
+  /**
+   * Create default decorator to render frame.
    */
   public void createDefaultFrameDecorator() {
     decorator = new DefaultWaveFrameDecorator();
@@ -224,9 +235,11 @@ public class SliceWaveRenderer extends FrameRenderer {
     sr.antiAlias = true;
     sr.color = color;
     sr.stroke = new BasicStroke();
-    for (int i = 0; i < s.length; i++)
-      if (s[i] != null)
+    for (int i = 0; i < s.length; i++) {
+      if (s[i] != null) {
         getLegendRenderer().addLine(sr, null, s[i]);
+      }
+    }
   }
 
   protected class DefaultWaveFrameDecorator extends DefaultFrameDecorator {
@@ -253,23 +266,26 @@ public class SliceWaveRenderer extends FrameRenderer {
       }
       title = SliceWaveRenderer.this.title;
       titleBackground = Color.WHITE;
+      super.date = SliceWaveRenderer.this.date;
     }
   }
 
   /**
-   * Reinitialize frame decorator with this renderer data
+   * Reinitialize frame decorator with this renderer data.
    */
   public void update() {
-    if (decorator == null)
+    if (decorator == null) {
       createDefaultFrameDecorator();
-    if (decorator instanceof DefaultFrameDecorator)
+    }
+    if (decorator instanceof DefaultFrameDecorator) {
       ((DefaultFrameDecorator) decorator).yAxisLabel = yLabelText;
+    }
     this.setExtents(viewStartTime, viewEndTime, minY, maxY);
     decorator.decorate(this);
   }
 
   /**
-   * Render slice graph
+   * Render slice graph.
    * @param g where to render to
    */
   public void render(Graphics2D g) {
@@ -277,8 +293,9 @@ public class SliceWaveRenderer extends FrameRenderer {
     Stroke origStroke = g.getStroke();
     Shape origClip = g.getClip();
 
-    if (axis != null)
+    if (axis != null) {
       axis.render(g);
+    }
 
     g.clip(new Rectangle(graphX + 1, graphY + 1, graphWidth - 1, graphHeight - 1));
 
@@ -287,10 +304,11 @@ public class SliceWaveRenderer extends FrameRenderer {
     wave.reset();
 
     double bias;
-    if (removeBias)
+    if (removeBias) {
       bias = wave.mean();
-    else
+    } else {
       bias = 0;
+    }
 
     g.setColor(color);
 
@@ -307,9 +325,9 @@ public class SliceWaveRenderer extends FrameRenderer {
       while (wave.hasNext()) {
         st += step;
         y = wave.next();
-        if (y == Wave.NO_DATA)
+        if (y == Wave.NO_DATA) {
           gp.moveTo((float) getXPixel(st), lastY);
-        else {
+        } else {
           lastY = (float) getYPixel(y - bias);
           gp.lineTo((float) getXPixel(st), lastY);
           if (drawSamples && (1 / spp) > 2.0) {
@@ -321,8 +339,9 @@ public class SliceWaveRenderer extends FrameRenderer {
       g.draw(gp);
     } else {
       double[][] spans = new double[graphWidth + 1][];
-      for (int i = 0; i < spans.length; i++)
+      for (int i = 0; i < spans.length; i++) {
         spans[i] = new double[] {1E300, -1E300};
+      }
 
       double span = viewEndTime - viewStartTime;
 
@@ -340,7 +359,8 @@ public class SliceWaveRenderer extends FrameRenderer {
       }
 
       Line2D.Double line = new Line2D.Double();
-      double minY, maxY;
+      double minY;
+      double maxY;
       double lastMinY = -1E300;
       double lastMaxY = 1E300;
       for (i = 0; i < spans.length; i++) {
@@ -368,8 +388,9 @@ public class SliceWaveRenderer extends FrameRenderer {
     }
     g.setClip(origClip);
 
-    if (axis != null)
+    if (axis != null) {
       axis.postRender(g);
+    }
     g.setStroke(origStroke);
     g.setColor(origColor);
   }
