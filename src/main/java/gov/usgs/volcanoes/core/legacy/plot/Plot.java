@@ -5,9 +5,6 @@ import gov.usgs.volcanoes.core.contrib.PngEncoderB;
 import gov.usgs.volcanoes.core.legacy.plot.render.Renderer;
 import gov.usgs.volcanoes.core.legacy.plot.render.TextRenderer;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import java.awt.Color;
 import java.awt.Container;
 import java.awt.Dimension;
@@ -38,6 +35,9 @@ import javax.print.attribute.HashPrintRequestAttributeSet;
 import javax.print.attribute.PrintRequestAttributeSet;
 import javax.swing.JFrame;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 /**
  * <p>
  * Plot is the top level class that contains a Valve plot. The Valve plotting
@@ -63,25 +63,23 @@ import javax.swing.JFrame;
  * @author Dan Cervelli
  */
 public class Plot implements Printable {
-  protected final static Logger LOGGER = LoggerFactory.getLogger(Plot.class);
+  protected static final Logger LOGGER = LoggerFactory.getLogger(Plot.class);
   private Dimension size; // plot size in pixels
   private Color backgroundColor;
   protected List<Renderer> renderers;
 
   /**
-   * Creates a new 0x0 empty plot
+   * Creates a new 0x0 empty plot.
    */
   public Plot() {
     this(0, 0);
   }
 
   /**
-   * Creates a new wxh empty plot
+   * Creates a new wxh empty plot.
    * 
-   * @param w
-   *            width
-   * @param h
-   *            height
+   * @param w width
+   * @param h height
    */
   public Plot(int w, int h) {
     size = new Dimension(w, h);
@@ -135,11 +133,9 @@ public class Plot implements Printable {
   }
 
   /**
-   * Perform rendering to buffered image
+   * Perform rendering to buffered image.
    * 
-   * @param alpha
-   *            type of generated image: true - TYPE_INT_ARGB, false -
-   *            TYPE_INT_RGB
+   * @param alpha type of generated image: true - TYPE_INT_ARGB, false - TYPE_INT_RGB
    * @return generated image
    */
   public BufferedImage getAsBufferedImage(boolean alpha) throws PlotException {
@@ -153,8 +149,7 @@ public class Plot implements Printable {
   /**
    * Outputs the plot to a png file.
    * 
-   * @param fn
-   *            the output filename
+   * @param fn the output filename
    */
   public void writePNG(String fn) throws PlotException {
     BufferedImage image = getAsBufferedImage(true);
@@ -177,8 +172,7 @@ public class Plot implements Printable {
   /**
    * Outputs the plot to a jpeg file.
    * 
-   * @param fn
-   *            the output filename
+   * @param fn the output filename
    */
   public void writeJPEG(String fn) throws PlotException {
     BufferedImage image = getAsBufferedImage(false);
@@ -191,7 +185,7 @@ public class Plot implements Printable {
   }
 
   /**
-   * Gets the bytes of an encoded PNG representation of this plot
+   * Gets the bytes of an encoded PNG representation of this plot.
    * 
    * @return the bytes
    */
@@ -210,8 +204,7 @@ public class Plot implements Printable {
   /**
    * Outputs the plot as PostScript.
    * 
-   * @param fn
-   *            the output filename
+   * @param fn the output filename
    */
   public void writePS(String fn) {
     DocFlavor flavor = DocFlavor.SERVICE_FORMATTED.PAGEABLE;
@@ -226,13 +219,6 @@ public class Plot implements Printable {
     }
 
     try {
-      FileOutputStream fos = new FileOutputStream(fn);
-      StreamPrintService sps = factories[0].getPrintService(fos);
-
-      DocPrintJob pj = sps.createPrintJob();
-      PrintRequestAttributeSet aset = new HashPrintRequestAttributeSet();
-
-      Book book = new Book();
       PageFormat pf = new PageFormat();
       Paper p = new Paper();
 
@@ -243,10 +229,15 @@ public class Plot implements Printable {
       p.setSize(w, h);
       p.setImageableArea(0, 0, w, h);
       pf.setPaper(p);
+      Book book = new Book();
       book.append(this, pf);
 
       Doc doc = new SimpleDoc(book, flavor, null);
 
+      FileOutputStream fos = new FileOutputStream(fn);
+      StreamPrintService sps = factories[0].getPrintService(fos);
+      DocPrintJob pj = sps.createPrintJob();
+      PrintRequestAttributeSet aset = new HashPrintRequestAttributeSet();
       pj.print(doc, aset);
       fos.close();
     } catch (PrintException pe) {
@@ -283,8 +274,9 @@ public class Plot implements Printable {
       }
       g2.setTransform(at);
       return Printable.PAGE_EXISTS;
-    } else
+    } else {
       return Printable.NO_SUCH_PAGE;
+    }
   }
 
   /**
@@ -310,24 +302,23 @@ public class Plot implements Printable {
       g.setColor(origColor);
     }
     g.setColor(Color.black);
-    AffineTransform origAT = g.getTransform();
+    AffineTransform origAt = g.getTransform();
 
     for (Renderer renderer : renderers) {
-      if (renderer instanceof TextRenderer)
+      if (renderer instanceof TextRenderer) {
         ((TextRenderer) renderer).antiAlias = true;
+      }
       renderer.render(g);
     }
 
-    g.setTransform(origAT);
+    g.setTransform(origAt);
   }
 
   /**
    * Sets the size of the plot in pixels.
    * 
-   * @param w
-   *            the width
-   * @param h
-   *            the height
+   * @param w the width
+   * @param h the height
    */
   public void setSize(int w, int h) {
     size.width = w;
@@ -418,9 +409,12 @@ public class Plot implements Printable {
    *            the array of Renderers
    */
   public static void renderArray(Graphics2D g, Renderer[] renderers) {
-    if (renderers != null)
-      for (int i = 0; i < renderers.length; i++)
-        if (renderers[i] != null)
+    if (renderers != null) {
+      for (int i = 0; i < renderers.length; i++) {
+        if (renderers[i] != null) {
           renderers[i].render(g);
+        }
+      }
+    }
   }
 }

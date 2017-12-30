@@ -74,13 +74,14 @@ public class AxisRenderer implements Renderer {
   }
 
   /**
-   * Getter for renderer's frame
+   * Getter for renderer's frame.
    */
   public RectangleRenderer getFrame() {
     return frame;
   }
 
-  /** Gets the parent FrameRenderer that this AxisRenderer resides in.
+  /** 
+   * Gets the parent FrameRenderer that this AxisRenderer resides in.
    * @return the parent FrameRenderer
    */
   public FrameRenderer getFrameRenderer() {
@@ -116,8 +117,9 @@ public class AxisRenderer implements Renderer {
    */
   public void createDefault() {
     if (frameRenderer != null) {
-      if (frame == null)
+      if (frame == null) {
         frame = new RectangleRenderer();
+      }
       frame.rect.x = frameRenderer.getGraphX();
       frame.rect.y = frameRenderer.getGraphY();
       frame.rect.width = frameRenderer.getGraphWidth();
@@ -141,8 +143,9 @@ public class AxisRenderer implements Renderer {
    * @param length the length of the tickmarks in pixels
    */
   public void createBottomTicks(double[] ticks, double length, Color color) {
-    if (bottomTicks == null || bottomTicks.length != ticks.length)
+    if (bottomTicks == null || bottomTicks.length != ticks.length) {
       bottomTicks = new Renderer[ticks.length];
+    }
     double minY = frameRenderer.getMinY();
     // double maxY = frameRenderer.getMaxY();
     for (int i = 0; i < ticks.length; i++) {
@@ -156,7 +159,7 @@ public class AxisRenderer implements Renderer {
   }
 
   /**
-   * createBottomTicks() with default color
+   * createBottomTicks() with default color.
    * @param majorTicks the values that should have major tickmarks
    * @param minorTicks the values that should have minor tickmarks
    */
@@ -173,10 +176,12 @@ public class AxisRenderer implements Renderer {
    */
   public void createBottomTicks(double[] majorTicks, double[] minorTicks, Color color) {
     int numTicks = 0;
-    if (majorTicks != null)
+    if (majorTicks != null) {
       numTicks += majorTicks.length;
-    if (minorTicks != null)
+    }
+    if (minorTicks != null) {
       numTicks += minorTicks.length;
+    }
 
     double majorLength = 10.0;
     double minorLength = 5.0;
@@ -190,8 +195,9 @@ public class AxisRenderer implements Renderer {
             new ShapeRenderer(new Line2D.Double(frameRenderer.getXPixel(majorTicks[j]),
                 frameRenderer.getYPixel(minY), frameRenderer.getXPixel(majorTicks[j]),
                 frameRenderer.getYPixel(minY) - majorLength));
-        if (color != null)
+        if (color != null) {
           sr.color = color;
+        }
         bottomTicks[i++] = sr;
 
       }
@@ -203,8 +209,9 @@ public class AxisRenderer implements Renderer {
                 frameRenderer.getYPixel(minY), frameRenderer.getXPixel(minorTicks[j]),
                 frameRenderer.getYPixel(minY) - minorLength));
 
-        if (color != null)
+        if (color != null) {
           sr.color = color;
+        }
         bottomTicks[i++] = sr;
       }
     }
@@ -229,16 +236,18 @@ public class AxisRenderer implements Renderer {
     // double maxY = frameRenderer.getMaxY();
     for (int i = 0; i < ticks.length; i++) {
       TextRenderer tr = new TextRenderer();
-      if (labels != null)
+      if (labels != null) {
         tr.text = labels[i];
-      else
+      } else {
         tr.text = numberFormat.format(ticks[i]);
+      }
       tr.x = (float) frameRenderer.getXPixel(ticks[i]);
       tr.y = (float) frameRenderer.getYPixel(minY);
       tr.horizJustification = TextRenderer.CENTER;
       tr.vertJustification = TextRenderer.TOP;
-      if (color != null)
+      if (color != null) {
         tr.color = color;
+      }
       // tr.transformer = frameRenderer;
       bottomLabels[i] = tr;
     }
@@ -256,12 +265,13 @@ public class AxisRenderer implements Renderer {
     // double maxY = frameRenderer.getMaxY();
     for (int i = 0; i < ticks.length; i++) {
       TextRenderer tr = new TextRenderer();
-      if (labels != null)
+      if (labels != null) {
         tr.text = labels[i];
-      else {
+      } else {
         double t = ticks[i];
-        if (t < -180)
+        if (t < -180) {
           t = 180 + (t + 180);
+        }
         tr.text = numberFormat.format(t);
       }
       tr.x = (float) frameRenderer.getXPixel(ticks[i]);
@@ -290,8 +300,9 @@ public class AxisRenderer implements Renderer {
    * @param color Tick color
    */
   public void createTopTicks(double[] ticks, double length, Color color) {
-    if (topTicks == null || topTicks.length != ticks.length)
+    if (topTicks == null || topTicks.length != ticks.length) {
       topTicks = new Renderer[ticks.length];
+    }
     double maxY = frameRenderer.getMaxY();
     for (int i = 0; i < ticks.length; i++) {
       LineRenderer lr = new LineRenderer();
@@ -305,7 +316,7 @@ public class AxisRenderer implements Renderer {
 
   /**
    * Creates user-specified size tickmarks (no labels) for the top of the
-   * axis with default color
+   * axis with default color.
    * 
    * @param majorTicks the values that should have major tickmarks
    * @param minorTicks the values that should have minor tickmarks
@@ -323,10 +334,12 @@ public class AxisRenderer implements Renderer {
    */
   public void createTopTicks(double[] majorTicks, double[] minorTicks, Color color) {
     int numTicks = 0;
-    if (majorTicks != null)
+    if (majorTicks != null) {
       numTicks += majorTicks.length;
-    if (minorTicks != null)
+    }
+    if (minorTicks != null) {
       numTicks += minorTicks.length;
+    }
 
     double majorLength = 10.0;
     double minorLength = 5.0;
@@ -339,8 +352,9 @@ public class AxisRenderer implements Renderer {
             new ShapeRenderer(new Line2D.Double(frameRenderer.getXPixel(majorTicks[j]),
                 frameRenderer.getYPixel(maxY), frameRenderer.getXPixel(majorTicks[j]),
                 frameRenderer.getYPixel(maxY) + majorLength));
-        if (color != null)
+        if (color != null) {
           sr.color = color;
+        }
         topTicks[i++] = sr;
       }
     }
@@ -350,8 +364,9 @@ public class AxisRenderer implements Renderer {
             new ShapeRenderer(new Line2D.Double(frameRenderer.getXPixel(minorTicks[j]),
                 frameRenderer.getYPixel(maxY), frameRenderer.getXPixel(minorTicks[j]),
                 frameRenderer.getYPixel(maxY) + minorLength));
-        if (color != null)
+        if (color != null) {
           sr.color = color;
+        }
         topTicks[i++] = sr;
       }
     }
@@ -367,10 +382,11 @@ public class AxisRenderer implements Renderer {
     double maxY = frameRenderer.getMaxY();
     for (int i = 0; i < ticks.length; i++) {
       TextRenderer tr = new TextRenderer();
-      if (labels != null)
+      if (labels != null) {
         tr.text = labels[i];
-      else
+      } else {
         tr.text = numberFormat.format(ticks[i]);
+      }
       tr.x = (float) frameRenderer.getXPixel(ticks[i]);
       tr.y = (float) frameRenderer.getYPixel(maxY);
       tr.horizJustification = TextRenderer.CENTER;
@@ -395,8 +411,9 @@ public class AxisRenderer implements Renderer {
    */
   public void createLeftTicks(double[] ticks, double width, Color color) {
     // int length = 10;
-    if (leftTicks == null || leftTicks.length != ticks.length)
+    if (leftTicks == null || leftTicks.length != ticks.length) {
       leftTicks = new Renderer[ticks.length];
+    }
     double minX = frameRenderer.getMinX();
     // double maxX = frameRenderer.getMaxX();
     for (int i = 0; i < ticks.length; i++) {
@@ -410,6 +427,12 @@ public class AxisRenderer implements Renderer {
     }
   }
 
+  /**
+   * Create formatted left tick labels.
+   * 
+   * @param ticks
+   * @param format text format
+   */
   public void createFormattedLeftTickLabels(double[] ticks, String format) {
     leftLabels = new Renderer[ticks.length];
     double minX = frameRenderer.getMinX();
@@ -446,10 +469,12 @@ public class AxisRenderer implements Renderer {
       double min = 1E300;
       double max = -1E300;
       for (int i = 0; i < ticks.length; i++) {
-        if (ticks[i] > max)
+        if (ticks[i] > max) {
           max = ticks[i];
-        if (ticks[i] < min)
+        }
+        if (ticks[i] < min) {
           min = ticks[i];
+        }
       }
       max = Math.max(Math.abs(max), Math.abs(min));
       double exp = Util.getExp(max);
@@ -465,8 +490,9 @@ public class AxisRenderer implements Renderer {
         tr.y = (float) frameRenderer.getYPixel(frameRenderer.getMinY()) - 10;
         tr.horizJustification = TextRenderer.LEFT;
         tr.vertJustification = TextRenderer.CENTER;
-        if (color != null)
+        if (color != null) {
           tr.color = color;
+        }
         // tr.transformer = frameRenderer;
         addRenderer(tr);
       }
@@ -481,8 +507,9 @@ public class AxisRenderer implements Renderer {
         tr.y = (float) frameRenderer.getYPixel(ticks[i]);
         tr.horizJustification = TextRenderer.RIGHT;
         tr.vertJustification = TextRenderer.CENTER;
-        if (color != null)
+        if (color != null) {
           tr.color = color;
+        }
         // tr.transformer = frameRenderer;
         leftLabels[i] = tr;
       }
@@ -506,8 +533,9 @@ public class AxisRenderer implements Renderer {
    */
   public void createRightTicks(double[] ticks, boolean isYTicks, double width, Color color) {
 
-    if (rightTicks == null || rightTicks.length != ticks.length)
+    if (rightTicks == null || rightTicks.length != ticks.length) {
       rightTicks = new Renderer[ticks.length];
+    }
     // double minX = frameRenderer.getMinX();
     double maxX = frameRenderer.getMaxX();
     if (isYTicks) {
@@ -535,10 +563,12 @@ public class AxisRenderer implements Renderer {
       double min = 1E300;
       double max = -1E300;
       for (int i = 0; i < ticks.length; i++) {
-        if (ticks[i] > max)
+        if (ticks[i] > max) {
           max = ticks[i];
-        if (ticks[i] < min)
+        }
+        if (ticks[i] < min) {
           min = ticks[i];
+        }
       }
       max = Math.max(Math.abs(max), Math.abs(min));
       double exp = Util.getExp(max);
@@ -695,6 +725,7 @@ public class AxisRenderer implements Renderer {
   }
 
   /** 
+   * Set inner left label as text.
    * @param s the inner left
    */
   public void setInnerLeftLabelAsText(String s, float x) {
@@ -893,7 +924,7 @@ public class AxisRenderer implements Renderer {
   }
 
   /**
-   * Yield the background color
+   * Yield the background color.
    * @return background color
    */
   public Color getBackgroundColor() {
@@ -901,7 +932,7 @@ public class AxisRenderer implements Renderer {
   }
 
   /**
-   * Setter for left label renderers
+   * Setter for left label renderers.
    * @param r renderers for left labels
    */
   public void setLeftLabels(Renderer[] r) {
@@ -909,7 +940,7 @@ public class AxisRenderer implements Renderer {
   }
 
   /**
-   * Getter for left label renderers
+   * Getter for left label renderers.
    * @return renderers for left labels
    */
   public Renderer[] getLeftLabels() {
@@ -917,7 +948,7 @@ public class AxisRenderer implements Renderer {
   }
 
   /**
-   * Setter for bottom label renderers
+   * Setter for bottom label renderers.
    * @param r renderers for bottom labels
    */
   public void setBottomLabels(Renderer[] r) {
@@ -947,8 +978,9 @@ public class AxisRenderer implements Renderer {
       g.setPaint(origPaint);
     }
 
-    if (color != null)
+    if (color != null) {
       g.setColor(Color.black);
+    }
 
     // grid lines on bottom
     Plot.renderArray(g, horizGridLines);
@@ -961,8 +993,9 @@ public class AxisRenderer implements Renderer {
     Plot.renderArray(g, rightTicks);
 
     // then frame
-    if (frame != null)
+    if (frame != null) {
       frame.render(g);
+    }
 
     // then labels
     Plot.renderArray(g, bottomLabels);
@@ -971,21 +1004,28 @@ public class AxisRenderer implements Renderer {
     Plot.renderArray(g, rightLabels);
 
     // then axis labels
-    if (topLabel != null)
+    if (topLabel != null) {
       topLabel.render(g);
-    if (leftLabel != null)
+    }
+    if (leftLabel != null) {
       leftLabel.render(g);
-    if (bottomLabel != null)
+    }
+    if (bottomLabel != null) {
       bottomLabel.render(g);
-    if (rightLabel != null)
+    }
+    if (rightLabel != null) {
       rightLabel.render(g);
-    if (bottomLeftLabel != null)
+    }
+    if (bottomLeftLabel != null) {
       bottomLeftLabel.render(g);
-    if (bottomRightLabel != null)
+    }
+    if (bottomRightLabel != null) {
       bottomRightLabel.render(g);
+    }
 
-    for (Renderer renderer : renderers)
+    for (Renderer renderer : renderers) {
       renderer.render(g);
+    }
 
     g.setColor(origColor);
   }
@@ -995,7 +1035,8 @@ public class AxisRenderer implements Renderer {
    * @param g the graphics object upon which to render
    */
   public void postRender(Graphics2D g) {
-    for (Renderer renderer : postRenderers)
+    for (Renderer renderer : postRenderers) {
       renderer.render(g);
+    }
   }
 }
