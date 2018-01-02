@@ -115,8 +115,10 @@ public class ParticleMotionRenderer extends FrameRenderer {
 
     g.setColor(origColor);
 
-    DefaultDecorator decorator = new DefaultDecorator(this.title);
-    decorator.setDate(date);
+    DefaultFrameDecorator decorator = new DefaultFrameDecorator();
+    decorator.title = this.title;
+    decorator.titleBackground = Color.WHITE;
+    decorator.date = this.date;
     decorator.decorate(this);
     if (axis != null) {
       axis.postRender(g);
@@ -212,14 +214,6 @@ public class ParticleMotionRenderer extends FrameRenderer {
 
   public void setDate(Date date) {
     this.date = date;
-  }
-
-  protected class DefaultDecorator extends DefaultFrameDecorator {
-    public DefaultDecorator(String title) {
-      super.title = title;
-      super.titleBackground = Color.WHITE;
-      super.date = date;
-    }
   }
 
 }

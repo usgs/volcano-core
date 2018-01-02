@@ -36,7 +36,7 @@ public class SpectraRenderer extends MatrixRenderer {
   private double maxFreq;
 
   private String channelTitle;
-  private Date startDate;
+  private Date date;
 
   private boolean logFreq;
   private boolean logPower;
@@ -85,8 +85,12 @@ public class SpectraRenderer extends MatrixRenderer {
     channelTitle = t.split("\\.")[0];
   }
 
+  /**
+   * Set display date.
+   * @param date date to display
+   */
   public void setDate(Date date) {
-    this.startDate = date;
+    this.date = date;
   }
 
   protected class DefaultSpectraFrameDecorator extends DefaultFrameDecorator {
@@ -112,12 +116,12 @@ public class SpectraRenderer extends MatrixRenderer {
       }
       this.title = channelTitle;
       this.titleBackground = Color.WHITE;
-      this.date = startDate;
     }
 
     public void update() {
       xAxis = (logFreq) ? DefaultFrameDecorator.XAxis.LOG : DefaultFrameDecorator.XAxis.LINEAR;
       yAxis = (logPower) ? DefaultFrameDecorator.YAxis.LOG : DefaultFrameDecorator.YAxis.LINEAR;
+      super.date = SpectraRenderer.this.date;
     }
 
   }

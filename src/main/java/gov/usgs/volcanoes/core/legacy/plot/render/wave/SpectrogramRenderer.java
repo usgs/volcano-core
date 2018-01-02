@@ -63,7 +63,7 @@ public class SpectrogramRenderer extends ImageDataRenderer {
   protected FrameDecorator decorator;
 
   protected String channelTitle;
-  protected Date startDate;
+  protected Date date;
 
   private double[][] powerBuffer;
 
@@ -121,7 +121,7 @@ public class SpectrogramRenderer extends ImageDataRenderer {
   }
 
   public void setDate(Date date) {
-    this.startDate = date;
+    this.date = date;
   }
 
   protected class DefaultWaveFrameDecorator extends DefaultFrameDecorator {
@@ -146,7 +146,10 @@ public class SpectrogramRenderer extends ImageDataRenderer {
       }
       this.title = channelTitle;
       this.titleBackground = Color.white;
-      setDate(startDate);
+    }
+
+    public void update() {
+      super.date = SpectrogramRenderer.this.date;
     }
   }
 
@@ -160,7 +163,7 @@ public class SpectrogramRenderer extends ImageDataRenderer {
     if (decorator == null) {
       createDefaultFrameDecorator();
     }
-
+    decorator.update();
     wave.setSlice(viewStartTime, viewEndTime);
 
     double[] signal = wave.getSignal();

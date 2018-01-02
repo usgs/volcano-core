@@ -266,6 +266,9 @@ public class SliceWaveRenderer extends FrameRenderer {
       }
       title = SliceWaveRenderer.this.title;
       titleBackground = Color.WHITE;
+    }
+
+    public void update() {
       super.date = SliceWaveRenderer.this.date;
     }
   }
@@ -277,10 +280,13 @@ public class SliceWaveRenderer extends FrameRenderer {
     if (decorator == null) {
       createDefaultFrameDecorator();
     }
+    decorator.update();
+
     if (decorator instanceof DefaultFrameDecorator) {
       ((DefaultFrameDecorator) decorator).yAxisLabel = yLabelText;
     }
     this.setExtents(viewStartTime, viewEndTime, minY, maxY);
+
     decorator.decorate(this);
   }
 

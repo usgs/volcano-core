@@ -43,7 +43,7 @@ public class DefaultFrameDecorator extends FrameDecorator {
     TOP, BOTTOM, LEFT, RIGHT, BOTTOM_LEFT, BOTTOM_RIGHT, TOP_LEFT, TOP_RIGHT, GRAPH_TOP, GRAPH_BOTTOM, GRAPH_LEFT, GRAPH_RIGHT, GRAPH_BOTTOM_LEFT, GRAPH_BOTTOM_RIGHT, GRAPH_TOP_LEFT, GRAPH_TOP_RIGHT;
   }
 
-  private final int PIXELS_PER_CHARACTER = 6;
+  private final int pixelsPerCharacter = 6;
 
   public TitleLocation titleLocation = TitleLocation.INSET;
   public Color titleBackground;
@@ -105,6 +105,21 @@ public class DefaultFrameDecorator extends FrameDecorator {
   }
 
   /**
+   * Update date label.
+   * @param fr frame renderer
+   */
+  public void createDate(FrameRenderer fr) {
+    if (date != null) {
+      String dateString = dateFormat.format(date);
+      TextRenderer dateLabel = new TextRenderer(fr.getGraphWidth() - (dateString.length() * 6) + 32,
+          fr.getGraphY() + 32, dateString, Color.BLACK);
+      dateLabel.backgroundColor = Color.WHITE;
+      AxisRenderer ar = fr.getAxis();
+      ar.addPostRenderer(dateLabel);
+    }
+  }
+
+  /**
    * Create and add to Frame Renderer specialized renderer to process plot title according
    * configured properties.
    * 
@@ -118,13 +133,12 @@ public class DefaultFrameDecorator extends FrameDecorator {
     switch (titleLocation) {
       case TOP:
       case INSET:
-        AxisRenderer ar = fr.getAxis();
         if (titleFont == null) {
           titleFont = Font.decode("dialog-plain-12");
         }
 
         TextRenderer label =
-            new TextRenderer(fr.getGraphWidth() - (title.length() * PIXELS_PER_CHARACTER) + 32,
+            new TextRenderer(fr.getGraphWidth() - (title.length() * pixelsPerCharacter) + 32,
                 fr.getGraphY() + 16, title, Color.BLACK);
         label.font = titleFont;
         label.backgroundColor = Color.WHITE;
@@ -146,16 +160,8 @@ public class DefaultFrameDecorator extends FrameDecorator {
          * ar.addPostRenderer(rr);
          * }
          */
+        AxisRenderer ar = fr.getAxis();
         ar.addPostRenderer(label);
-
-        if (date != null) {
-          String dateString = dateFormat.format(date);
-          TextRenderer dateLabel = new TextRenderer(
-              fr.getGraphWidth() - (dateString.length() * PIXELS_PER_CHARACTER) + 32,
-              fr.getGraphY() + 32, dateString, Color.BLACK);
-          dateLabel.backgroundColor = Color.WHITE;
-          ar.addPostRenderer(dateLabel);
-        }
         break;
       default:
         break;
@@ -426,14 +432,8 @@ public class DefaultFrameDecorator extends FrameDecorator {
       createXAxis(fr);
       createYAxis(fr);
       createTitle(fr);
+      createDate(fr);
     }
   }
 
-  public void setDate(Date date) {
-    this.date = date;
-  }
-
-  public void setDateFormat(DateFormat dateFormat) {
-    this.dateFormat = dateFormat;
-  }
 }
