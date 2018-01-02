@@ -11,6 +11,7 @@ import java.awt.Stroke;
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
 import java.text.NumberFormat;
+import java.util.Date;
 import java.util.Locale;
 
 /**
@@ -32,6 +33,7 @@ public class ParticleMotionRenderer extends FrameRenderer {
   private String northComponentStation;
   private String verticalComponentStation;
   private String title;
+  private Date date;
 
   /**
    * Default constructor.
@@ -104,16 +106,19 @@ public class ParticleMotionRenderer extends FrameRenderer {
     // draw user info
     x = x + w + 2 * xoffset;
     g.setColor(Color.GRAY);
-    g.drawString("Number represents", x, y + h / 3);
-    g.drawString("XY limit", x, y + h / 3 + fontSize);
+    g.drawString("Number represents", x, y + h / 2);
+    g.drawString("XY limit", x, y + h / 2 + fontSize);
     g.setColor(Color.RED);
-    g.drawString("Plots start as red", x, y + h / 3 + 3 * fontSize);
+    g.drawString("Plots start as red", x, y + h / 2 + 3 * fontSize);
     g.setColor(Color.BLUE);
-    g.drawString("and end as blue", x, y + h / 3 + 4 * fontSize);
+    g.drawString("and end as blue", x, y + h / 2 + 4 * fontSize);
 
     g.setColor(origColor);
 
-    DefaultDecorator decorator = new DefaultDecorator(this.title);
+    DefaultFrameDecorator decorator = new DefaultFrameDecorator();
+    decorator.title = this.title;
+    decorator.titleBackground = Color.WHITE;
+    decorator.date = this.date;
     decorator.decorate(this);
     if (axis != null) {
       axis.postRender(g);
@@ -207,11 +212,8 @@ public class ParticleMotionRenderer extends FrameRenderer {
     this.title = title;
   }
 
-  protected class DefaultDecorator extends DefaultFrameDecorator {
-    public DefaultDecorator(String title) {
-      super.title = title;
-      super.titleBackground = Color.WHITE;
-    }
+  public void setDate(Date date) {
+    this.date = date;
   }
 
 }

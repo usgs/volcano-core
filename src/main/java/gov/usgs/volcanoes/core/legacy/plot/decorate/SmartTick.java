@@ -1,6 +1,5 @@
 package gov.usgs.volcanoes.core.legacy.plot.decorate;
 
-
 import gov.usgs.volcanoes.core.math.Util;
 import gov.usgs.volcanoes.core.time.J2kSec;
 
@@ -18,17 +17,14 @@ import java.util.TimeZone;
  * @author Dan Cervelli
  */
 public class SmartTick {
+
   /**
-   * Shortcut for autoTick(min, max, ticks, expand, false)
+   * Shortcut for autoTick(min, max, ticks, expand, false).
    * 
-   * @param min
-   *            the minimum
-   * @param max
-   *            the maximum
-   * @param ticks
-   *            the desired number of ticks
-   * @param expand
-   *            whether or not to expand the range for more "pleasant"
+   * @param min the minimum
+   * @param max the maximum
+   * @param ticks the desired number of ticks
+   * @param expand whether or not to expand the range for more "pleasant"
    * @return an array containing the values of the ticks
    */
   public static double[] autoTick(double min, double max, int ticks, boolean expand) {
@@ -43,28 +39,23 @@ public class SmartTick {
    * and maximum specified, otherwise the ticks will be inclusive to min and
    * max.
    * 
-   * @param min
-   *            the minimum axis value
-   * @param max
-   *            the maximum axis value
-   * @param tickCountRequested
-   *            the desired number of ticks
-   * @param expand
-   *            whether or not to expand the range for more "pleasant" ticks
-   * @param clip
-   *            clip the last ticks to the min/max values
+   * @param min the minimum axis value
+   * @param max the maximum axis value
+   * @param tickCountRequested the desired number of ticks
+   * @param expand whether or not to expand the range for more "pleasant" ticks
+   * @param clip clip the last ticks to the min/max values
    * @return an array containing the values of the ticks
    */
   public static double[] autoTick(double min, double max, int tickCountRequested, boolean expand,
       boolean clip) {
 
     double spanExp = Util.getExp(max - min);
-    double stepMult[] = new double[] {0.1, 0.2, 0.5, 1.0, 2.0, 5.0};
+    double[] stepMult = new double[] {0.1, 0.2, 0.5, 1.0, 2.0, 5.0};
 
-    int numTicks[] = new int[stepMult.length];
-    double minTickValues[] = new double[stepMult.length];
-    double maxTickValues[] = new double[stepMult.length];
-    double steps[] = new double[stepMult.length];
+    int[] numTicks = new int[stepMult.length];
+    double[] minTickValues = new double[stepMult.length];
+    double[] maxTickValues = new double[stepMult.length];
+    double[] steps = new double[stepMult.length];
 
     // choose possible tick counts
     for (int i = 0; i < stepMult.length; i++) {
@@ -99,8 +90,9 @@ public class SmartTick {
       }
     }
 
-    if (minDeltaTicksIndex == -1)
+    if (minDeltaTicksIndex == -1) {
       return null;
+    }
 
     int tickIndex = minDeltaTicksIndex;
 
@@ -108,30 +100,30 @@ public class SmartTick {
     double[] result = new double[numTicks[minDeltaTicksIndex]];
     for (int i = 0; i < numTicks[tickIndex]; i++) {
       result[i] = minTickValues[tickIndex] + i * steps[tickIndex];
-      if (clip && result[i] < min)
+      if (clip && result[i] < min) {
         result[i] = min;
-      if (clip && result[i] > max)
+      }
+      if (clip && result[i] > max) {
         result[i] = max;
+      }
     }
 
     return result;
   }
 
   /**
-   * Generate array of tick values
+   * Generate array of tick values.
    * 
-   * @param min
-   *            min interval malue
-   * @param max
-   *            max interval value
-   * @param ticks
-   *            ticks count
+   * @param min min interval malue
+   * @param max max interval value
+   * @param ticks ticks count
    */
   public static double[] intervalTick(double min, double max, int ticks) {
     double interval = (max - min) / (double) ticks;
     double[] result = new double[ticks];
-    for (int i = 0; i < ticks; i++)
+    for (int i = 0; i < ticks; i++) {
       result[i] = min + interval * (i + 1);
+    }
 
     return result;
   }
@@ -156,12 +148,9 @@ public class SmartTick {
    * Generates time ticks over a specified time interval. The ticks parameter
    * is a suggestion: it is not guaranteed to produce that many ticks.
    * 
-   * @param ts
-   *            the start time as a j2ksec
-   * @param te
-   *            the end time as a j2ksec
-   * @param ticks
-   *            the desired number of ticks
+   * @param ts the start time as a j2ksec
+   * @param te the end time as a j2ksec
+   * @param ticks the desired number of ticks
    * @return the dates (in j2ksecs) of the ticks
    */
   public static Object[] autoTimeTick(double ts, double te, int ticks) {
@@ -177,28 +166,26 @@ public class SmartTick {
   }
 
   /**
-   * Helper class to create time ticks
+   * Helper class to create time ticks.
    */
-  abstract private static class TimeTicker {
+  private abstract static class TimeTicker {
     protected double interval;
     protected SimpleDateFormat dateFormat;
     protected String labelFormatString;
 
     /**
-     * Constructor w/ interval i
+     * Constructor w/ interval i.
      * 
-     * @param i
-     *            interval
+     * @param i interval
      */
     public TimeTicker(double i) {
       interval = i;
     }
 
     /**
-     * Set label & date format
+     * Set label & date format.
      * 
-     * @param s
-     *            label format
+     * @param s label format
      */
     public void setLabelFormatString(String s) {
       labelFormatString = s;
@@ -207,12 +194,10 @@ public class SmartTick {
     }
 
     /**
-     * Yield number of ticks from ts to te
+     * Yield number of ticks from ts to te.
      * 
-     * @param ts
-     *            start value
-     * @param ts
-     *            end value
+     * @param ts start value
+     * @param ts end value
      * @return number of ticks
      */
     public long numTicks(double ts, double te) {
@@ -220,10 +205,9 @@ public class SmartTick {
     }
 
     /**
-     * Yield minimum tick for ts
+     * Yield minimum tick for ts.
      * 
-     * @param ts
-     *            start value
+     * @param ts start value
      * @return minimum tick
      */
     public double getMinTick(double ts) {
@@ -231,10 +215,9 @@ public class SmartTick {
     }
 
     /**
-     * Yield maximum tick for ts
+     * Yield maximum tick for ts.
      * 
-     * @param te
-     *            end value
+     * @param te end value
      * @return maximum tick
      */
     public double getMaxTick(double te) {
@@ -242,12 +225,10 @@ public class SmartTick {
     }
 
     /**
-     * Yield array of ticks & labels for range ts..te
+     * Yield array of ticks & labels for range ts..te.
      * 
-     * @param ts
-     *            start value
-     * @param ts
-     *            end value
+     * @param ts start value
+     * @param ts end value
      * @return array with 2 elements: list of ticks, and list of labels
      */
     public Object[] getTicks(double ts, double te) {
@@ -263,7 +244,7 @@ public class SmartTick {
     }
 
     /**
-     * Yield string representation of this TimeTicker
+     * Yield string representation of this TimeTicker.
      * 
      * @return string representation
      */
@@ -273,17 +254,16 @@ public class SmartTick {
   }
 
   /**
-   * Helper class to create year ticks
+   * Helper class to create year ticks.
    */
   private static class YearTicker extends TimeTicker {
     private int years;
     private Calendar cal;
 
     /**
-     * Constructor for year y
+     * Constructor for year y.
      * 
-     * @param y
-     *            year
+     * @param y year
      */
     public YearTicker(int y) {
       super(y * 365.24 * 24 * 60 * 60);
@@ -292,10 +272,9 @@ public class SmartTick {
     }
 
     /**
-     * Yield minimum tick for ts
+     * Yield minimum tick for ts.
      * 
-     * @param ts
-     *            start value
+     * @param ts start value
      * @return minimum tick
      */
     public synchronized double getMinTick(double ts) {
@@ -313,15 +292,13 @@ public class SmartTick {
     }
 
     /**
-     * Yield number of ticks from ts to te
+     * Yield number of ticks from ts to te.
      * 
      * TODO: is there a synchronization problem here? cal.getTime()
      * sometimes throws an ArrayIndexOutOfBoundsException.
      * 
-     * @param ts
-     *            start value
-     * @param ts
-     *            end value
+     * @param ts start value
+     * @param ts end value
      * @return number of ticks
      */
     public long numTicks(double ts, double te) {
@@ -368,17 +345,16 @@ public class SmartTick {
   }
 
   /**
-   * Helper class to create month ticks
+   * Helper class to create month ticks.
    */
   private static class MonthTicker extends TimeTicker {
     private int months;
     private Calendar cal;
 
     /**
-     * Constructor for month m
+     * Constructor for month m.
      * 
-     * @param m
-     *            month
+     * @param m month
      */
     public MonthTicker(int m) {
       super(m * 30 * 24 * 60 * 60);
@@ -387,10 +363,9 @@ public class SmartTick {
     }
 
     /**
-     * Yield minimum tick for ts
+     * Yield minimum tick for ts.
      * 
-     * @param ts
-     *            start value
+     * @param ts start value
      * @return minimum tick
      */
     public synchronized double getMinTick(double ts) {
@@ -407,12 +382,10 @@ public class SmartTick {
     }
 
     /**
-     * Yield number of ticks from ts to te
+     * Yield number of ticks from ts to te.
      * 
-     * @param ts
-     *            start value
-     * @param ts
-     *            end value
+     * @param ts start value
+     * @param ts end value
      * @return number of ticks
      */
     public long numTicks(double ts, double te) {
@@ -459,17 +432,16 @@ public class SmartTick {
   }
 
   /**
-   * Helper class to create day ticks
+   * Helper class to create day ticks.
    */
   private static class DayTicker extends TimeTicker {
     private int days;
     private Calendar cal;
 
     /**
-     * Constructor for day d
+     * Constructor for day d.
      * 
-     * @param y
-     *            year
+     * @param y year
      */
     public DayTicker(int d) {
       super(d * 60 * 60 * 24);
@@ -478,10 +450,9 @@ public class SmartTick {
     }
 
     /**
-     * Yield minimum tick for ts
+     * Yield minimum tick for ts.
      * 
-     * @param ts
-     *            start value
+     * @param ts start value
      * @return minimum tick
      */
     public synchronized double getMinTick(double ts) {
@@ -497,12 +468,10 @@ public class SmartTick {
     }
 
     /**
-     * Yield number of ticks from ts to te
+     * Yield number of ticks from ts to te.
      * 
-     * @param ts
-     *            start value
-     * @param ts
-     *            end value
+     * @param ts start value
+     * @param ts end value
      * @return number of ticks
      */
     public long numTicks(double ts, double te) {
@@ -550,14 +519,13 @@ public class SmartTick {
   }
 
   /**
-   * Helper class to create hour ticks
+   * Helper class to create hour ticks.
    */
   private static class HourTicker extends TimeTicker {
     /**
-     * Constructor for hour h
+     * Constructor for hour h.
      * 
-     * @param h
-     *            hour
+     * @param h hour
      */
     public HourTicker(int h) {
       super(h * 60 * 60);
@@ -566,14 +534,14 @@ public class SmartTick {
   }
 
   /**
-   * Helper class to create minute ticks
+   * Helper class to create minute ticks.
    */
   private static class MinuteTicker extends TimeTicker {
+
     /**
-     * Constructor for minute m
+     * Constructor for minute m.
      * 
-     * @param m
-     *            minute
+     * @param m minute
      */
     public MinuteTicker(int m) {
       super(m * 60);
@@ -582,14 +550,13 @@ public class SmartTick {
   }
 
   /**
-   * Helper class to create seconds ticks
+   * Helper class to create seconds ticks.
    */
   private static class SecondTicker extends TimeTicker {
     /**
-     * Constructor for second s
+     * Constructor for second s.
      * 
-     * @param s
-     *            second
+     * @param s second
      */
     public SecondTicker(int s) {
       super(s);
@@ -598,14 +565,13 @@ public class SmartTick {
   }
 
   /**
-   * Helper class to create milliseconds ticks
+   * Helper class to create milliseconds ticks.
    */
   private static class MillisecondTicker extends TimeTicker {
     /**
-     * Constructor for millisecond m
+     * Constructor for millisecond m.
      * 
-     * @param m
-     *            millisecond
+     * @param m millisecond
      */
     public MillisecondTicker(long m) {
       super((double) m / 1000d);
@@ -614,12 +580,10 @@ public class SmartTick {
   }
 
   /**
-   * Set lable format string for all Time Tickers of class cal
+   * Set lable format string for all Time Tickers of class cal.
    * 
-   * @param c
-   *            class of tickers to set label format string of
-   * @param s
-   *            new label format String
+   * @param c class of tickers to set label format string of
+   * @param s new label format String
    */
   private static void setLabelFormatString(Class<?> c, String s) {
     for (TimeTicker t : tickers) {
@@ -630,16 +594,15 @@ public class SmartTick {
   }
 
   /**
-   * Set lable format string for all Month Tickers
+   * Set lable format string for all Month Tickers.
    * 
-   * @param s
-   *            new label format String
+   * @param s new label format String
    */
   public static void setMonthTickerLabelFormatString(String s) {
     setLabelFormatString(MonthTicker.class, s);
   }
 
-  /** Standard time tickers */
+  /** Standard time tickers. */
   private static final TimeTicker[] tickers =
       new TimeTicker[] {new YearTicker(10), new YearTicker(5), new YearTicker(4), new YearTicker(3),
           new YearTicker(2), new YearTicker(1), new MonthTicker(6), new MonthTicker(4),

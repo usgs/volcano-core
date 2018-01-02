@@ -14,6 +14,7 @@ import java.awt.Color;
 import java.awt.Image;
 import java.awt.Toolkit;
 import java.awt.image.MemoryImageSource;
+import java.util.Date;
 
 /**
  * Renderer to draw spectrograms. Keeps reference to processed wave data,
@@ -62,11 +63,12 @@ public class SpectrogramRenderer extends ImageDataRenderer {
   protected FrameDecorator decorator;
 
   protected String channelTitle;
+  protected Date date;
 
   private double[][] powerBuffer;
 
   /**
-   * Default constructor
+   * Default constructor.
    */
   public SpectrogramRenderer() {
     axis = new AxisRenderer(this);
@@ -84,10 +86,9 @@ public class SpectrogramRenderer extends ImageDataRenderer {
   }
 
   /**
-   * Constructor
+   * Constructor.
    * 
-   * @param w
-   *            slice to present as spectrogram
+   * @param w slice to present as spectrogram
    */
   public SpectrogramRenderer(SliceWave w) {
     this();
@@ -95,30 +96,32 @@ public class SpectrogramRenderer extends ImageDataRenderer {
   }
 
   /**
-   * Set frame decorator
+   * Set frame decorator.
    * 
-   * @param fd
-   *            frame decorator
+   * @param fd frame decorator
    */
   public void setFrameDecorator(FrameDecorator fd) {
     decorator = fd;
   }
 
   /**
-   * Create default decorator to render frame
+   * Create default decorator to render frame.
    */
   public void createDefaultFrameDecorator() {
     decorator = new DefaultWaveFrameDecorator();
   }
 
   /**
-   * Set graph title
+   * Set graph title.
    * 
-   * @param t
-   *            title
+   * @param t title
    */
   public void setTitle(String t) {
     channelTitle = t.split("\\.")[0];
+  }
+
+  public void setDate(Date date) {
+    this.date = date;
   }
 
   protected class DefaultWaveFrameDecorator extends DefaultFrameDecorator {
@@ -144,33 +147,39 @@ public class SpectrogramRenderer extends ImageDataRenderer {
       this.title = channelTitle;
       this.titleBackground = Color.white;
     }
+
+    public void update() {
+      super.date = SpectrogramRenderer.this.date;
+    }
   }
 
   /**
    * Compute spectrogram. Reinitialize frame decorator with this renderer
    * data.
    * 
-   * @param oldMaxPower
    * @return maximum magnitude
    */
   public double[] update() {
-    if (decorator == null)
+    if (decorator == null) {
       createDefaultFrameDecorator();
-
+    }
+    decorator.update();
     wave.setSlice(viewStartTime, viewEndTime);
 
     double[] signal = wave.getSignal();
 
-    if (nfft == 0)
+    if (nfft == 0) {
       nfft = binSize;
+    }
 
     spectrogram = new Spectrogram(signal, (int) wave.getSamplingRate(), nfft, binSize,
         (int) (binSize * overlap), 5);
 
-    if (logPower)
+    if (logPower) {
       powerBuffer = spectrogram.getLogSpectraAmplitude();
-    else
+    } else {
       powerBuffer = spectrogram.getSpectraAmplitude();
+    }
 
     int imgXSize = powerBuffer.length;
     int imgYSize = powerBuffer[0].length;
@@ -182,36 +191,37 @@ public class SpectrogramRenderer extends ImageDataRenderer {
     if (autoScale) {
       maxPower = Double.MIN_VALUE;
       minPower = Double.MAX_VALUE;
-      for (int i = 0; i < imgXSize; i++)
+      for (int i = 0; i < imgXSize; i++) {
         for (int j = 0; j < imgYSize; j++) {
 
           double power = powerBuffer[i][j];
           if (power == Double.NEGATIVE_INFINITY || power == Double.POSITIVE_INFINITY
-              || power == 1E300 | power == -1E300)
+              || power == 1E300 | power == -1E300) {
             continue;
-
-          else if (power > maxPower)
+          } else if (power > maxPower) {
             maxPower = power;
-
-          else if (power < minPower)
+          } else if (power < minPower) {
             minPower = power;
+          }
         }
+      }
     }
 
     double slope = 254 / (maxPower - minPower);
     double intercept = -slope * minPower;
     int counter = 0;
     double index;
-    for (int i = imgXSize - 1; i >= 0; i--)
+    for (int i = imgXSize - 1; i >= 0; i--) {
       for (int j = 0; j < imgYSize; j++) {
-
         index = slope * powerBuffer[i][j] + intercept;
-        if (index < 0)
+        if (index < 0) {
           index = 0;
-        else if (index > 254)
+        } else if (index > 254) {
           index = 254;
+        }
         imgBuffer[counter++] = (byte) index;
       }
+    }
 
     if (mis == null
         || (im != null && (im.getWidth(null) != imgXSize || im.getHeight(null) != imgYSize))) {
@@ -226,13 +236,13 @@ public class SpectrogramRenderer extends ImageDataRenderer {
         Math.max(minFreq, wave.getNyquist() / (imgXSize - 1)), maxFreq);
     decorator.decorate(this);
 
-    double Power[] = {minPower, maxPower};
-    return Power;
+    double[] power = {minPower, maxPower};
+    return power;
 
   }
 
   /**
-   * Return powerBuffer
+   * Return powerBuffer.
    * 
    * @return powerBuffer
    */
@@ -241,7 +251,7 @@ public class SpectrogramRenderer extends ImageDataRenderer {
   }
 
   /**
-   * Return spectrogram
+   * Return spectrogram.
    * 
    * @return spectrogram
    */
@@ -250,30 +260,27 @@ public class SpectrogramRenderer extends ImageDataRenderer {
   }
 
   /**
-   * Set autoscale flag
+   * Set autoscale flag.
    * 
-   * @param autoScale
-   *            autoscale flag
+   * @param autoScale autoscale flag
    */
   public void setAutoScale(boolean autoScale) {
     this.autoScale = autoScale;
   }
 
   /**
-   * Set size of fft
+   * Set size of fft.
    * 
-   * @param nfft
-   *            Sets the number of points for the fft
+   * @param nfft Sets the number of points for the fft
    */
   public void setNfft(int nfft) {
     this.nfft = nfft;
   }
 
   /**
-   * Set size of bin
+   * Set size of bin.
    * 
-   * @param binSize
-   *            The bin size to set.
+   * @param binSize The bin size to set.
    */
   public void setBinSize(int binSize) {
     this.binSize = binSize;
@@ -289,60 +296,54 @@ public class SpectrogramRenderer extends ImageDataRenderer {
   // }
 
   /**
-   * Set flag if we have logarithm power axis
+   * Set flag if we have logarithm power axis.
    * 
-   * @param logPower
-   *            logarithm power axis flag
+   * @param logPower logarithm power axis flag
    */
   public void setLogPower(boolean logPower) {
     this.logPower = logPower;
   }
 
   /**
-   * Set maximum frequency
+   * Set maximum frequency.
    * 
-   * @param maxFreq
-   *            maximum frequency
+   * @param maxFreq maximum frequency
    */
   public void setMaxFreq(double maxFreq) {
     this.maxFreq = maxFreq;
   }
 
   /**
-   * Set maximum power value
+   * Set maximum power value.
    * 
-   * @param maxPower
-   *            new maximum power
+   * @param maxPower new maximum power
    */
   public void setMaxPower(double maxPower) {
     this.maxPower = maxPower;
   }
 
   /**
-   * Set minimum power value
+   * Set minimum power value.
    * 
-   * @param maxPower
-   *            new minimum power
+   * @param minPower new minimum power
    */
   public void setMinPower(double minPower) {
     this.minPower = minPower;
   }
 
   /**
-   * Set minimum frequency
+   * Set minimum frequency.
    * 
-   * @param minFreq
-   *            minimum frequency
+   * @param minFreq minimum frequency
    */
   public void setMinFreq(double minFreq) {
     this.minFreq = minFreq;
   }
 
   /**
-   * Set spectrogram overlapping flag
+   * Set spectrogram overlapping flag.
    * 
-   * @param overlap
-   *            spectrogram overlapping flag
+   * @param overlap spectrogram overlapping flag
    */
   public void setOverlap(double overlap) {
     this.overlap = overlap;
@@ -351,8 +352,7 @@ public class SpectrogramRenderer extends ImageDataRenderer {
   /**
    * Set viewEndTime.
    * 
-   * @param viewEndTime
-   *            view end time
+   * @param viewEndTime view end time
    */
   public void setViewEndTime(double viewEndTime) {
     this.viewEndTime = viewEndTime;
@@ -361,8 +361,7 @@ public class SpectrogramRenderer extends ImageDataRenderer {
   /**
    * Set viewStartTime.
    * 
-   * @param viewStartTime
-   *            view start time
+   * @param viewStartTime view start time
    */
   public void setViewStartTime(double viewStartTime) {
     this.viewStartTime = viewStartTime;
@@ -370,9 +369,6 @@ public class SpectrogramRenderer extends ImageDataRenderer {
 
   /**
    * Set viewStartTime.
-   * 
-   * @param viewStartTime
-   *            view start time
    */
   public void setViewTimes() {
     viewStartTime = wave.getStartTime();
@@ -382,58 +378,52 @@ public class SpectrogramRenderer extends ImageDataRenderer {
   /**
    * Set Time Zone name.
    * 
-   * @param timeZone
-   *            time zone name
+   * @param timeZone time zone name
    */
   public void setTimeZone(String timeZone) {
     this.timeZone = timeZone;
   }
 
   /**
-   * Set Y axis label
+   * Set Y axis label.
    * 
-   * @param s
-   *            Y axis label
+   * @param s Y axis label
    */
   public void setYLabelText(String s) {
     yLabelText = s;
   }
 
   /**
-   * Set Y axis unit
+   * Set Y axis unit.
    * 
-   * @param s
-   *            Y axis unit
+   * @param s  Y axis unit
    */
   public void setYUnitText(String s) {
     yUnitText = s;
   }
 
   /**
-   * Set slice to process
+   * Set slice to process.
    * 
-   * @param wave
-   *            slice to process
+   * @param wave slice to process
    */
   public void setWave(SliceWave wave) {
     this.wave = wave;
   }
 
   /**
-   * Set h ticks count
+   * Set h ticks count.
    * 
-   * @param ticks
-   *            h ticks count
+   * @param ticks h ticks count
    */
   public void setHTicks(int ticks) {
     hTicks = ticks;
   }
 
   /**
-   * Set v ticks count
+   * Set v ticks count.
    * 
-   * @param ticks
-   *            v ticks count
+   * @param ticks v ticks count
    */
   public void setVTicks(int ticks) {
     vTicks = ticks;
