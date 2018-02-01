@@ -7,6 +7,8 @@
 package gov.usgs.volcanoes.core.util;
 
 import java.util.Comparator;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Utility class containing methods for working with Strings.
@@ -133,6 +135,41 @@ public final class StringUtils {
    */
   public static String stringToString(String val, String def) {
     return (val == null) ? def : val;
+  }
+
+  /**
+   * Convert a string of key/val pairs to a map.
+   *
+   * @param src the original string
+   * @return the map
+   */
+  public static Map<String, String> stringToMap(String src) {
+    Map<String, String> ret = new HashMap<String, String>();
+    String[] params = src.split(";");
+    for (String param : params) {
+      int ei = param.indexOf("=");
+      if (ei == -1) {
+        continue;
+      }
+      String key = param.substring(0, ei).trim();
+      String val = param.substring(ei + 1);
+      ret.put(key, val);
+    }
+    return ret;
+  }
+
+  /**
+   * Convert a map to a string of key/val pairs of the form key1=val1, separated by semicolons.
+   *
+   * @param map the map to convert
+   * @return the string
+   */
+  public static String mapToString(Map<String, String> map) {
+    String ret = "";
+    for (String key : map.keySet()) {
+      ret += key + "=" + map.get(key) + "; ";
+    }
+    return ret;
   }
 
   /** uninstantiatable. */
