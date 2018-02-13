@@ -6,6 +6,7 @@ import static org.junit.Assert.assertTrue;
 
 import java.util.HashMap;
 import java.util.Map;
+
 import org.junit.Test;
 
 public class StringUtilsTest {
@@ -76,7 +77,9 @@ public class StringUtilsTest {
     Map<String, String> input = new HashMap<String, String>();
     input.put("key1", "val1");
     input.put("key2", "val2");
-    assertTrue("key1=val1; key2=val2; ".equals(StringUtils.mapToString(input)));
+    System.out.println("TOMP SAYS: " + StringUtils.mapToString(input));
+    assertTrue("key1=val1; key2=val2; ".equals(StringUtils.mapToString(input))
+        || "key2=val2; key1=val1; ".equals(StringUtils.mapToString(input)));
   }
 
   @Test
