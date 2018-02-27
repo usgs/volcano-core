@@ -98,6 +98,9 @@ public class CurrentTime {
 
   private int timeout = DEFAULT_TIMEOUT;
 
+  private boolean running = true;
+  private Thread offsetUpdater;
+
   /**
    * Default constructor.
    */
@@ -120,14 +123,15 @@ public class CurrentTime {
           DEFAULT_RECALIBRATION_INTERVAL);
     }
 
-    new Thread(offsetUpdater()).start();
+    offsetUpdater = new Thread(offsetUpdater());
+    offsetUpdater.start();
 
   }
 
   private Runnable offsetUpdater() {
     Runnable run = new Runnable() {
       public void run() {
-        while (true) {
+        while (running) {
           getOffset();
           try {
             Thread.sleep(recalibrationInterval);
@@ -251,4 +255,13 @@ public class CurrentTime {
   public void setRecalibrationInterval(long ms) {
     recalibrationInterval = ms;
   }
+
+  /**
+   * Stops the update thread so that programs relying on this class can shutdown nicely.
+   */
+  public void stopUpdating() {
+    running = false;
+    offsetUpdater.interrupt();
+  }
+
 }
