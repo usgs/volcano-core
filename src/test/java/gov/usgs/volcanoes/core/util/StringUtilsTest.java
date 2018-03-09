@@ -4,6 +4,9 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import org.junit.Test;
 
 public class StringUtilsTest {
@@ -67,5 +70,24 @@ public class StringUtilsTest {
     assertTrue("3072.000 TB".equals(StringUtils.numBytesToString(val)));
     val *= 1024;
     assertTrue("3072.000 PB".equals(StringUtils.numBytesToString(val)));
+  }
+
+  @Test
+  public void mapToString() {
+    Map<String, String> input = new HashMap<String, String>();
+    input.put("key1", "val1");
+    input.put("key2", "val2");
+    System.out.println("TOMP SAYS: " + StringUtils.mapToString(input));
+    assertTrue("key1=val1; key2=val2; ".equals(StringUtils.mapToString(input))
+        || "key2=val2; key1=val1; ".equals(StringUtils.mapToString(input)));
+  }
+
+  @Test
+  public void stringToMap() {
+    String input = "key1=val1; key2=val2; ";
+    Map<String, String> expectedResult = new HashMap<String, String>();
+    expectedResult.put("key1", "val1");
+    expectedResult.put("key2", "val2");
+    assertEquals(expectedResult, StringUtils.stringToMap(input));
   }
 }
