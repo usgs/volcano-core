@@ -527,7 +527,8 @@ public class Wave implements BinaryDataSet, Comparable<Wave>, Cloneable {
     // obviously this could be compressed to one line, but this is readable:
     // either the new wave is completely right of, completely left of or
     // overlapping the old wave
-    if (getEndTime() <= wave.getStartTime()) {
+    double et = getEndTime();
+    if (Double.isNaN(et) || et <= wave.getStartTime()) {
       return false;
     }
 
@@ -547,8 +548,8 @@ public class Wave implements BinaryDataSet, Comparable<Wave>, Cloneable {
    * @return whether or not these waves overlap
    */
   public boolean overlaps(double t1, double t2) {
-
-    if (getEndTime() <= t1) {
+    double et = getEndTime();
+    if (Double.isNaN(et) || et <= t1) {
       return false;
     }
 
