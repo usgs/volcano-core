@@ -2,13 +2,11 @@ package gov.usgs.volcanoes.core.args.parser;
 
 import static org.junit.Assert.assertEquals;
 
-import org.junit.Test;
-
 import com.martiansoftware.jsap.ParseException;
 
-import gov.usgs.volcanoes.core.args.parser.ScnlParser;
 import gov.usgs.volcanoes.core.data.Scnl;
-import gov.usgs.volcanoes.core.data.ScnlTest;
+
+import org.junit.Test;
 
 /**
  * 
@@ -65,6 +63,6 @@ public class ScnlParserTest {
    */
   @Test(expected = ParseException.class)
   public void when_givenBadScnl_then_throwHelpfulException() throws ParseException {
-    parser.parse("not a SCNL");
+    parser.parse("not-a-SCNL");
   }
 }
