@@ -146,6 +146,9 @@ public class Scnl implements Comparable<Scnl> {
    * @throws UtilException when string cannot be parsed
    */
   public static Scnl parse(String scnlString) throws UtilException {
+    if (scnlString.indexOf("$") == -1) {
+      return Scnl.parse(scnlString, " ");
+    }
     return Scnl.parse(scnlString, DELIMITER);
   }
 
