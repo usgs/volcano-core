@@ -120,7 +120,7 @@ public class SeedDataFile extends SeismicDataFile {
       }
 
       for (String code : samples.keySet()) {
-        long samplePeriod = (long) (1000 / sampleRates.get(code));
+        double samplePeriod = (1000 / sampleRates.get(code));
         Wave wave = join(code, samplePeriod, samples.get(code));
         waves.put(code, wave);
       }
@@ -146,7 +146,7 @@ public class SeedDataFile extends SeismicDataFile {
     dis.reset();
   }
 
-  private Wave join(String code, long samplePeriodMs, Map<Long, int[]> samples) {
+  private Wave join(String code, double samplePeriodMs, Map<Long, int[]> samples) {
     Set<Long> times = samples.keySet();
     long firstTime = Long.MAX_VALUE;
     long lastTime = Long.MIN_VALUE;
@@ -154,8 +154,8 @@ public class SeedDataFile extends SeismicDataFile {
     for (long time : times) {
       firstTime = Math.min(firstTime, time);
 
-      long end = time + samples.get(time).length * samplePeriodMs;
-      lastTime = Math.max(lastTime, end);
+      double end = time + samples.get(time).length * samplePeriodMs;
+      lastTime = Math.max(lastTime, (long) end);
     }
 
     int sampleCount = (int) ((lastTime - firstTime + 1) / samplePeriodMs);
