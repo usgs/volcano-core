@@ -30,7 +30,7 @@ public class RSAMData extends GenericDataMatrix {
   protected int period = -1;
 
   /** 
-   * Generic empty constructor
+   * Generic empty constructor.
    */
   public RSAMData() {
     columnMap.put("time", 0);
@@ -77,7 +77,7 @@ public class RSAMData extends GenericDataMatrix {
   }
 
   /**
-   * Get initialized axis to use with histogram graph
+   * Get initialized axis to use with histogram graph.
    * @param bin histogram section period
    * @return initialized axis
    */
@@ -91,46 +91,51 @@ public class RSAMData extends GenericDataMatrix {
       startTime -= (startTime - 43200) % 60;
       endTime -= (endTime - 43200) % 60 - 60;
       bins = (int) (endTime - startTime) / 60;
-      if (bins > MAX_BINS)
+      if (bins > MAX_BINS) {
         bin = BinSize.HOUR;
-      else
+      } else {
         axis = new FixedAxis(bins, startTime, endTime);
+      }
     }
     if (bin == BinSize.TENMINUTE) {
       startTime -= (startTime - 43200) % 600;
       endTime -= (endTime - 43200) % 600 - 600;
       bins = (int) (endTime - startTime) / 600;
-      if (bins > MAX_BINS)
+      if (bins > MAX_BINS) {
         bin = BinSize.HOUR;
-      else
+      } else {
         axis = new FixedAxis(bins, startTime, endTime);
+      }
     }
     if (bin == BinSize.HOUR) {
       startTime -= (startTime - 43200) % 3600;
       endTime -= (endTime - 43200) % 3600 - 3600;
       bins = (int) (endTime - startTime) / 3600;
-      if (bins > MAX_BINS)
+      if (bins > MAX_BINS) {
         bin = BinSize.DAY;
-      else
+      } else {
         axis = new FixedAxis(bins, startTime, endTime);
+      }
     }
     if (bin == BinSize.DAY) {
       startTime -= (startTime - 43200) % 86400;
       endTime -= (endTime - 43200) % 86400 - 86400;
       bins = (int) (endTime - startTime) / 86400;
-      if (bins > MAX_BINS)
+      if (bins > MAX_BINS) {
         bin = BinSize.WEEK;
-      else
+      } else {
         axis = new FixedAxis(bins, startTime, endTime);
+      }
     }
     if (bin == BinSize.WEEK) {
       startTime -= (startTime - 43200) % 604800;
       endTime -= (endTime - 43200) % 604800 - 604800;
       bins = (int) (endTime - startTime) / 604800;
-      if (bins > MAX_BINS)
+      if (bins > MAX_BINS) {
         bin = BinSize.MONTH;
-      else
+      } else {
         axis = new FixedAxis(bins, startTime, endTime);
+      }
     }
     if (bin == BinSize.MONTH) {
       Date ds = J2kSec.asDate(startTime);
@@ -150,14 +155,15 @@ public class RSAMData extends GenericDataMatrix {
           cal.add(Calendar.MONTH, 1);
         }
         axis = new VariableAxis(edges);
-      } else
+      } else {
         bin = BinSize.YEAR;
+      }
     }
     if (bin == BinSize.YEAR) {
       Date ds = J2kSec.asDate(startTime);
       Date de = J2kSec.asDate(endTime);
       bins = Time.getYear(de) - Time.getYear(ds) + 1;
-      double edges[] = new double[bins + 1];
+      double[] edges = new double[bins + 1];
       Calendar cal = Calendar.getInstance();
       cal.setTime(ds);
       cal.set(Calendar.MONTH, 1);
@@ -176,7 +182,7 @@ public class RSAMData extends GenericDataMatrix {
   }
 
   /**
-   * Loops for data matrix, scans columns and fills events matrix
+   * Loops for data matrix, scans columns and fills events matrix.
    * @param threshold event treshold
    * @param ratio minimum ratio between new and older value to define event
    * @param maxLength maximum event length (ms)
@@ -255,17 +261,18 @@ public class RSAMData extends GenericDataMatrix {
       while (i < rows() && j < other.rows()) {
         double t1 = data.getQuick(i, 0);
         double t2 = other.getQuick(j, 0);
-        if (t1 < t2)
+        if (t1 < t2) {
           i++;
-        else if (t1 > t2)
+        } else if (t1 > t2) {
           j++;
-        else {
+        } else {
           try {
             double[] pt = new double[2];
             pt[0] = t1;
             pt[1] = data.getQuick(i++, 1) / other.getQuick(j++, 1);
             ratList.add(pt);
           } catch (ArithmeticException e) {
+            //
           }
         }
       }
@@ -275,7 +282,7 @@ public class RSAMData extends GenericDataMatrix {
   }
 
   /**
-   * Get cumulative event data by time interval
+   * Get cumulative event data by time interval.
    * @return matrix of event data
    */
   public DoubleMatrix2D getCumulativeCounts() {
@@ -283,7 +290,7 @@ public class RSAMData extends GenericDataMatrix {
   }
 
   /**
-   * Dump cumulative data as CSV string
+   * Dump cumulative data as CSV string.
    * @return string representation in CSV
    */
   public String getCountsCSV() {
@@ -300,7 +307,7 @@ public class RSAMData extends GenericDataMatrix {
   }
 
   /**
-   * Get initialized histogram of event count by time
+   * Get initialized histogram of event count by time.
    * @param bin time interval
    * @return initialized histogram
    */
@@ -309,33 +316,48 @@ public class RSAMData extends GenericDataMatrix {
       return null;
     }
     Histogram1D hist = new Histogram1D("", getHistogramAxis(bin));
-    for (int i = 1; i < events.rows() - 1; i++)
+    for (int i = 1; i < events.rows() - 1; i++) {
       hist.fill(events.get(i, 0));
+    }
 
     return hist;
   }
 
+  /**
+   * Check for overlap.
+   * @param rsamData RSAM data
+   * @return true if RSAM data overlaps.
+   */
   public boolean overlaps(RSAMData rsamData) {
-    if (period != rsamData.period)
+    if (period != rsamData.period) {
       return false;
+    }
 
-    if (getEndTime() < rsamData.getStartTime())
+    if (getEndTime() < rsamData.getStartTime()) {
       return false;
+    }
 
-    if (getStartTime() > rsamData.getEndTime())
+    if (getStartTime() > rsamData.getEndTime()) {
       return false;
-
+    }
     return true;
   }
 
+  /**
+   * Combine RSAM data.
+   * @param rsam RSAM data
+   * @return RSAM data
+   */
   public RSAMData combine(RSAMData rsam) {
     // other wave dominates this wave
-    if (getStartTime() >= rsam.getStartTime() && getEndTime() <= rsam.getEndTime())
+    if (getStartTime() >= rsam.getStartTime() && getEndTime() <= rsam.getEndTime()) {
       return rsam;
+    }
 
     // this wave dominates other wave
-    if (getStartTime() <= rsam.getStartTime() && getEndTime() >= rsam.getEndTime())
+    if (getStartTime() <= rsam.getStartTime() && getEndTime() >= rsam.getEndTime()) {
       return this;
+    }
 
     // this wave is left of other wave
     if (getStartTime() <= rsam.getStartTime()) {
@@ -355,8 +377,9 @@ public class RSAMData extends GenericDataMatrix {
       DoubleMatrix2D[][] ms = new DoubleMatrix2D[2][1];
       ms[0][0] = rsam.getData();
       int i = findClosestTimeIndexLessThan(rsam.getEndTime());
-      if (i == -1)
+      if (i == -1) {
         i = 0;
+      }
       ms[1][0] = getData().viewPart(i, 0, rows() - i, 2);
       data = DoubleFactory2D.dense.compose(ms);
       // logger.fine("combine r: " + data.rows() + " " + data.columns());
@@ -369,27 +392,29 @@ public class RSAMData extends GenericDataMatrix {
 
 
   /**
-   * Yield index of datum w/ smallest time >= time
+   * Yield index of datum w/ smallest time >= time.
    * @param time lower bound of times to consider
    * @return index of time found; -1 if none found
    */
   public int findClosestTimeIndexGreaterThan(double time) {
     for (int i = 0; i < rows(); i++) {
-      if (data.getQuick(i, 0) >= time)
+      if (data.getQuick(i, 0) >= time) {
         return i;
+      }
     }
     return -1;
   }
 
   /**
-   * Yield index of datum w/ largest time <= time
+   * Yield index of datum w/ largest time <= time.
    * @param time upper bound of times to consider
    * @return index of time found; -1 if none found
    */
   public int findClosestTimeIndexLessThan(double time) {
     for (int i = rows() - 1; i >= 0; i--) {
-      if (data.getQuick(i, 0) <= time)
+      if (data.getQuick(i, 0) <= time) {
         return i;
+      }
     }
     return -1;
   }
