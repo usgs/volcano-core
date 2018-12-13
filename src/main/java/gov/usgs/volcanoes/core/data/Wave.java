@@ -641,7 +641,7 @@ public class Wave implements BinaryDataSet, Comparable<Wave>, Cloneable {
   }
 
   /**
-   * Expiremental. For use with Winston static importers. TODO: handle erase a chunk inside the
+   * Experimental. For use with Winston static importers. TODO: handle erase a chunk inside the
    * existing wave
    * 
    * @param t1 start time
