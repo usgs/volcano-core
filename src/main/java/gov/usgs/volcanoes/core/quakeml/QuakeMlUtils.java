@@ -54,9 +54,9 @@ public class QuakeMlUtils {
    */
   public static Date parseDate(String timeString) {
     final String inString = timeString;
-    timeString = timeString.replaceFirst("\\.(\\d)Z?", ".$100Z");
-    timeString = timeString.replaceFirst("\\.(\\d{2})Z?$", ".$10Z");
-    timeString = timeString.replaceFirst(":(\\d{2})Z?$", ":$1.000Z");
+    timeString = inString.replaceFirst("\\.(\\d)Z?", ".$100Z");
+    timeString = inString.replaceFirst("\\.(\\d{2})Z?$", ".$10Z");
+    timeString = inString.replaceFirst(":(\\d{2})Z?$", ":$1.000Z");
 
     final SimpleDateFormat dateF = new SimpleDateFormat(DATE_FORMAT);
     dateF.setTimeZone(TimeZone.getTimeZone("UTC"));
@@ -70,7 +70,7 @@ public class QuakeMlUtils {
   }
 
   /**
-   * Format date for QuakeML
+   * Format date for QuakeML.
    * 
    * @param millis milliseconds since 1/1/1970 00:00:00 GMT
    * @return time string in yyyy-MM-dd'T'HH:mm:ss.SSSX format
