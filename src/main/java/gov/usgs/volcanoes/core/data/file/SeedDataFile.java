@@ -112,7 +112,7 @@ public class SeedDataFile extends SeismicDataFile {
           Blockette100 b100 = (Blockette100) blocketts[0];
           sampleRate = b100.getActualSampleRate();
         } else {
-          sampleRate = dh.getSampleRate();
+          sampleRate = dr.getSampleRate();
         }
         sampleRates.put(code, sampleRate);
         long start = btimeToDate(dh.getStartBtime()).getTime();
