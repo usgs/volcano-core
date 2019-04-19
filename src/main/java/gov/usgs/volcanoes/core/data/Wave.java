@@ -703,7 +703,10 @@ public class Wave implements BinaryDataSet, Comparable<Wave>, Cloneable {
       return wave;
     }
 
-    if (samplingRate != wave.getSamplingRate() || !(adjacent(wave) || overlaps(wave))) {
+    double srdiff = Math.abs(wave.getSamplingRate() - samplingRate);
+    // using 0 below can be problem for sampling rates that are not integers
+    boolean matching = (srdiff < 0.001);
+    if (!matching || !(adjacent(wave) || overlaps(wave))) {
       return null;
     }
 
