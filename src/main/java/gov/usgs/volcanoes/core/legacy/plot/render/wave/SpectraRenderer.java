@@ -154,6 +154,10 @@ public class SpectraRenderer extends MatrixRenderer {
         logPower ? Math.log10(spectra.getMinPower(minf, maxf)) : spectra.getMinPower(minf, maxf);
     double y2 =
         logPower ? Math.log10(spectra.getMaxPower(minf, maxf)) : spectra.getMaxPower(minf, maxf);
+    if (!autoScale) {
+      y1 = Math.min(y1, minY);
+      y2 = Math.max(y2, maxY);
+    }
 
     setExtents(x1, x2, y1, y2);
 

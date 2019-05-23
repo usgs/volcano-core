@@ -37,10 +37,9 @@ public class Spectrogram {
   private final double[][] spectraAmplitude;
 
   /**
-   * Simple constructor that uses default values
+   * Simple constructor that uses default values.
    * 
-   * @param s
-   *            Signal
+   * @param s Signal
    */
 
   public Spectrogram(double[] s) {
@@ -50,20 +49,14 @@ public class Spectrogram {
   }
 
   /**
-   * Complete constructor
+   * Complete constructor.
    * 
-   * @param s
-   *            Signal
-   * @param sr
-   *            Sampling Rate
-   * @param nf
-   *            FFT length
-   * @param bs
-   *            Bin size (in samples)
-   * @param ol
-   *            Overlap (in samples)
-   * @param b
-   *            Beta value for Kaiser window
+   * @param s Signal
+   * @param sr Sampling Rate
+   * @param nf FFT length
+   * @param bs Bin size (in samples)
+   * @param ol Overlap (in samples)
+   * @param b Beta value for Kaiser window
    */
 
   public Spectrogram(double[] s, int sr, int nf, int bs, int ol, double b) {
@@ -208,12 +201,15 @@ public class Spectrogram {
    */
   public double getMinSpectraAmplitude() {
 
-    double MIN = Double.MAX_VALUE;
-    for (int i = 0; i < nRows; i++)
-      for (int j = 0; j < nColumns; j++)
-        if (spectraAmplitude[i][j] < MIN)
-          MIN = spectraAmplitude[i][j];
-    return MIN;
+    double min = Double.MAX_VALUE;
+    for (int i = 0; i < nRows; i++) {
+      for (int j = 0; j < nColumns; j++) {
+        if (spectraAmplitude[i][j] < min) {
+          min = spectraAmplitude[i][j];
+        }
+      }
+    }
+    return min;
 
   }
 
@@ -222,12 +218,15 @@ public class Spectrogram {
    */
   public double getMaxSpectraAmplitude() {
 
-    double MAX = Double.MIN_VALUE;
-    for (int i = 0; i < nRows; i++)
-      for (int j = 0; j < nColumns; j++)
-        if (spectraAmplitude[i][j] > MAX)
-          MAX = spectraAmplitude[i][j];
-    return MAX;
+    double max = Double.MIN_VALUE;
+    for (int i = 0; i < nRows; i++) {
+      for (int j = 0; j < nColumns; j++) {
+        if (spectraAmplitude[i][j] > max) {
+          max = spectraAmplitude[i][j];
+        }
+      }
+    }
+    return max;
 
   }
 
@@ -257,39 +256,43 @@ public class Spectrogram {
    * @param multiplier
    *            Multiplier
    */
-  public double[][] getLogSpectraAmplitude(double multiplier, double reference_amplitude) {
+  public double[][] getLogSpectraAmplitude(double multiplier, double referenceAmplitude) {
 
     double[][] logAmp = new double[nRows][nColumns];
-    for (int i = 0; i < nRows; i++)
-      for (int j = 0; j < nColumns; j++)
-        logAmp[i][j] = multiplier * Math.log10(spectraAmplitude[i][j] / reference_amplitude);
+    for (int i = 0; i < nRows; i++) {
+      for (int j = 0; j < nColumns; j++) {
+        logAmp[i][j] = multiplier * Math.log10(spectraAmplitude[i][j] / referenceAmplitude);
+      }
+    }
 
     return logAmp;
   }
 
   /**
-   * Computes the frequency array
+   * Computes the frequency array.
    */
   private double[] computeFrequency() {
 
     double[] omega = new double[nRows];
     double delta = (double) samplingRate / (double) (nfft);
-    for (int i = 0; i < omega.length; i++)
+    for (int i = 0; i < omega.length; i++) {
       omega[i] = i * delta;
+    }
     return omega;
   }
 
   /**
-   * Computes the time array
+   * Computes the time array.
    */
   private double[] computeTime() {
 
-    double[] T = new double[nColumns];
+    double[] t = new double[nColumns];
     double delta = ((double) binSize - (double) overlap) / (double) samplingRate;
     double alpha = (double) binSize / samplingRate / 2;
-    for (int i = 0; i < T.length; i++)
-      T[i] = i * delta + alpha;
-    return T;
+    for (int i = 0; i < t.length; i++) {
+      t[i] = i * delta + alpha;
+    }
+    return t;
   }
 
   /**
