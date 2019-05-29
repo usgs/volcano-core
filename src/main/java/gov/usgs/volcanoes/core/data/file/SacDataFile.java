@@ -57,41 +57,51 @@ public class SacDataFile extends SeismicDataFile {
     }
     waves.put(channel, sw);
 
-    // get pick data
+    // get first arrival pick
     double refTime = getStartTime().getTime();
+    long milliseconds = (long) (refTime + header.getA() * 1000);
+    String tag = header.getKa();
+    Pick pick = createPick(channel, milliseconds, tag);
+    putPick(channel, pick);
+
+    // get pick data
     for (int i = 0; i <= 9; i++) {
       // T, KT
-      long milliseconds = (long) (refTime + header.getTHeader(i) * 1000);
-      String tag = header.getKTHeader(i);
-
-      Pick pick = new Pick("", milliseconds, channel);
-      switch (tag.substring(0, 1).toUpperCase()) {
-        case "I":
-          pick.setOnset(Onset.IMPULSIVE);
-          break;
-        case "E":
-          pick.setOnset(Onset.EMERGENT);
-          break;
-        default:
-          pick.setOnset(Onset.QUESTIONABLE);
-          break;
-      }
-      pick.setPhaseHint(tag.substring(1, 2));
-      switch (tag.substring(2, 3).toUpperCase()) {
-        case "+":
-        case "U":
-          pick.setPolarity(Polarity.POSITIVE);
-          break;
-        case "-":
-        case "D":
-          pick.setPolarity(Polarity.NEGATIVE);
-          break;
-        default:
-          pick.setPolarity(Polarity.UNDECIDABLE);
-          break;
-      }
+      milliseconds = (long) (refTime + header.getTHeader(i) * 1000);
+      tag = header.getKTHeader(i);
+      pick = createPick(channel, milliseconds, tag);
       putPick(channel, pick);
     }
+  }
+
+  private Pick createPick(String channel, long milliseconds, String tag) {
+    Pick pick = new Pick("", milliseconds, channel);
+    switch (tag.substring(0, 1).toUpperCase()) {
+      case "I":
+        pick.setOnset(Onset.IMPULSIVE);
+        break;
+      case "E":
+        pick.setOnset(Onset.EMERGENT);
+        break;
+      default:
+        pick.setOnset(Onset.QUESTIONABLE);
+        break;
+    }
+    pick.setPhaseHint(tag.substring(1, 2));
+    switch (tag.substring(2, 3).toUpperCase()) {
+      case "+":
+      case "U":
+        pick.setPolarity(Polarity.POSITIVE);
+        break;
+      case "-":
+      case "D":
+        pick.setPolarity(Polarity.NEGATIVE);
+        break;
+      default:
+        pick.setPolarity(Polarity.UNDECIDABLE);
+        break;
+    }
+    return pick;
   }
 
   private double getSamplingRate() {
@@ -166,25 +176,23 @@ public class SacDataFile extends SeismicDataFile {
     if (pickList == null) {
       return header;
     }
-    int i = 0;
-    double mintime = Double.MAX_VALUE;
+    int i = 1;
     for (Pick p : pickList) {
       // user defined time pick or marker (seconds relative to reference time)
       float seconds = (float) (p.getTime() - refTime) / 1000;
-      // A, KA
-      if (seconds < mintime) {
+      if (p.getPhaseHint().substring(0, 1).equals("P")) { // A, KA
         header.setA((float) seconds);
-        header.setKa(p.getTag());
-        mintime = seconds;
-      }
-      // T, KT
-      header.setTHeader(i, seconds);
-      header.setKtHeader(i, p.getTag().toUpperCase());
-
-      // only 0-9
-      i++;
-      if (i > 9) { // can only store up to 9 picks
-        break;
+        header.setKa(p.getTag().toUpperCase());
+      } else if (p.getPhaseHint().substring(0, 1).equals("S")) { // T0, KT0
+        header.setTHeader(0, seconds);
+        header.setKtHeader(0, p.getTag().toUpperCase());
+      } else {
+        header.setTHeader(i, seconds);
+        header.setKtHeader(i, p.getTag().toUpperCase());
+        i++;
+        if (i > 9) {
+          break;
+        }
       }
     }
     return header;
