@@ -167,6 +167,8 @@ public class SacDataFile extends SeismicDataFile {
     header.setNzmin(cal.get(Calendar.MINUTE));
     header.setNzsec(cal.get(Calendar.SECOND));
     header.setNzmsec(cal.get(Calendar.MILLISECOND));
+    header.setB(0);
+    header.setE(wave.numSamples());
 
     header.setDelta((float) wave.getSamplingPeriod());
     header.setNpts(wave.numSamples());
