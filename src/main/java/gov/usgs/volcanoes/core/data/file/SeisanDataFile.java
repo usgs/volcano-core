@@ -235,7 +235,7 @@ public class SeisanDataFile extends SeismicDataFile {
     b = ("" + c.get(Calendar.MINUTE)).getBytes();
     System.arraycopy(b, 0, header, 50, Math.min(b.length, 2));
 
-    float f = c.get(Calendar.SECOND) + c.get(Calendar.MILLISECOND) / 1000;
+    float f = c.get(Calendar.SECOND) + (c.get(Calendar.MILLISECOND) / 1000f);
     b = String.format("%6.3f", f).getBytes();
     System.arraycopy(b, 0, header, 53, Math.min(b.length, 6));
 
@@ -355,8 +355,8 @@ public class SeisanDataFile extends SeismicDataFile {
 
     b = String.format("%2d", c.get(Calendar.MINUTE)).getBytes();
     System.arraycopy(b, 0, header, 26, Math.min(b.length, 2));
-    float f = c.get(Calendar.SECOND) + c.get(Calendar.MILLISECOND) / 1000;
 
+    float f = c.get(Calendar.SECOND) + (c.get(Calendar.MILLISECOND) / 1000f);
     b = String.format("%6.3f", f).getBytes();
     System.arraycopy(b, 0, header, 29, b.length);
 
