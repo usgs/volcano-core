@@ -2,19 +2,14 @@ package gov.usgs.volcanoes.core.args;
 
 import static org.junit.Assert.assertSame;
 
-import org.junit.Before;
-import org.junit.Test;
-
 import com.martiansoftware.jsap.FlaggedOption;
 import com.martiansoftware.jsap.JSAP;
 import com.martiansoftware.jsap.JSAPException;
 import com.martiansoftware.jsap.JSAPResult;
 import com.martiansoftware.jsap.Parameter;
-import com.martiansoftware.jsap.ParseException;
 
-import gov.usgs.volcanoes.core.args.Args;
-import gov.usgs.volcanoes.core.args.ArgumentException;
-import gov.usgs.volcanoes.core.args.Arguments;
+import org.junit.Before;
+import org.junit.Test;
 
 /**
  * 

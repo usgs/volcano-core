@@ -3,21 +3,18 @@ package gov.usgs.volcanoes.core.args.decorator;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
+import com.martiansoftware.jsap.JSAPException;
+import com.martiansoftware.jsap.Parameter;
+
+import gov.usgs.volcanoes.core.args.Args;
+import gov.usgs.volcanoes.core.args.ArgumentException;
+import gov.usgs.volcanoes.core.args.Arguments;
+
 import java.io.File;
 
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-
-import com.martiansoftware.jsap.JSAPException;
-import com.martiansoftware.jsap.Parameter;
-import com.martiansoftware.jsap.ParseException;
-
-import gov.usgs.volcanoes.core.args.Args;
-import gov.usgs.volcanoes.core.args.ArgumentException;
-import gov.usgs.volcanoes.core.args.Arguments;
-import gov.usgs.volcanoes.core.args.decorator.ConfigFileArg;
-import gov.usgs.volcanoes.core.args.decorator.CreateConfigArg;
 
 /**
  * 
@@ -59,7 +56,8 @@ public class CreateConfigArgTest {
    * @throws ArgumentException 
    */
   @Test(expected = ArgumentException.class)
-  public void when_configFileNotCalled_then_trowHelpfulException() throws JSAPException, ArgumentException {
+  public void when_configFileNotCalled_then_trowHelpfulException()
+      throws JSAPException, ArgumentException {
     arg = new CreateConfigArg(EXAMPLE_FILENAME, new Args(null, null, new Parameter[0]));
   }
 

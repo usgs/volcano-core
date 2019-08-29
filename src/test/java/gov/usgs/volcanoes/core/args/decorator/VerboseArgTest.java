@@ -3,18 +3,16 @@ package gov.usgs.volcanoes.core.args.decorator;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
-import org.junit.Before;
-import org.junit.Test;
-
 import com.martiansoftware.jsap.JSAPException;
 import com.martiansoftware.jsap.JSAPResult;
 import com.martiansoftware.jsap.Parameter;
-import com.martiansoftware.jsap.ParseException;
 
 import gov.usgs.volcanoes.core.args.Args;
 import gov.usgs.volcanoes.core.args.ArgumentException;
 import gov.usgs.volcanoes.core.args.Arguments;
-import gov.usgs.volcanoes.core.args.decorator.VerboseArg;
+
+import org.junit.Before;
+import org.junit.Test;
 
 /**
  * 

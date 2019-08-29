@@ -2,11 +2,11 @@ package gov.usgs.volcanoes.core.time;
 
 import static org.junit.Assert.assertEquals;
 
-import org.junit.Test;
-
 import java.text.ParseException;
 import java.util.Calendar;
 import java.util.TimeZone;
+
+import org.junit.Test;
 
 public class EwTest {
   // test date 11/3/2017 18:27:39
@@ -24,7 +24,7 @@ public class EwTest {
     Calendar cal = Calendar.getInstance(TimeZone.getTimeZone("UTC"));
     cal.setTimeInMillis(TEST_DATE_TIME);
 
-    assertEquals(TEST_DATE_EW, Ew.fromDate(cal.getTime()));
+    assertEquals(TEST_DATE_EW, Ew.fromDate(cal.getTime()), 0);
   }
 
   @Test
@@ -34,6 +34,6 @@ public class EwTest {
 
   @Test
   public void when_given_string_return_ew() throws ParseException {
-    assertEquals(TEST_DATE_EW, Ew.parse(Time.STANDARD_TIME_FORMAT, TEST_DATE_STRING));
+    assertEquals(TEST_DATE_EW, Ew.parse(Time.STANDARD_TIME_FORMAT, TEST_DATE_STRING), 0);
   }
 }
