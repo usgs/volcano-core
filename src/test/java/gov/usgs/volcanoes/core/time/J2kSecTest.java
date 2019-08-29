@@ -31,7 +31,7 @@ public class J2kSecTest {
   @Test
   public void asEpoch() {
     long epoch = J2kSec.asEpoch(J2K_TIME);
-    assertEquals(epoch, UNIX_TIME_MS, 0);
+    assertEquals(epoch, UNIX_TIME_MS);
   }
 
   @Test
