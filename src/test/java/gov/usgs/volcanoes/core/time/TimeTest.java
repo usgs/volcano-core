@@ -3,14 +3,14 @@ package gov.usgs.volcanoes.core.time;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
-
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Test;
 
 public class TimeTest {
 
@@ -139,6 +139,6 @@ public class TimeTest {
 
   @Test
   public void when_askedSecondsInYear_then_provideAnswer() {
-    assertEquals(31557600.0, Time.YEAR_IN_S);
+    assertEquals(31557600.0, Time.YEAR_IN_S, 0);
   }
 }

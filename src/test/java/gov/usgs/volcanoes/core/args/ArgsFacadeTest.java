@@ -1,12 +1,8 @@
 package gov.usgs.volcanoes.core.args;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertTrue;
 
 import org.junit.Test;
-
-import com.martiansoftware.jsap.JSAPException;
-
-import gov.usgs.volcanoes.core.args.ArgsFacade;
 
 /**
  * 

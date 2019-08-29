@@ -40,8 +40,8 @@ public class StringUtilsTest {
 
   @Test
   public void stringToDouble() {
-    assertEquals(StringUtils.stringToDouble("not a num", 1.5), 1.5);
-    assertEquals(StringUtils.stringToDouble("2.5", 1), 2.5);
+    assertEquals(StringUtils.stringToDouble("not a num", 1.5), 1.5, 0);
+    assertEquals(StringUtils.stringToDouble("2.5", 1), 2.5, 0);
   }
 
   @Test

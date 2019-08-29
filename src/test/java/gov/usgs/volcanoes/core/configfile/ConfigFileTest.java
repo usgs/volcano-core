@@ -4,10 +4,6 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
-import org.junit.Before;
-import org.junit.BeforeClass;
-import org.junit.Test;
-
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -15,6 +11,10 @@ import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.StandardCopyOption;
+
+import org.junit.Before;
+import org.junit.BeforeClass;
+import org.junit.Test;
 
 /**
  * 
@@ -50,7 +50,7 @@ public class ConfigFileTest {
   @Test
   public void when_askedForValue_then_returnValue() {
     double d = configFile.getDouble("double");
-    assertEquals(d, 3.14);
+    assertEquals(d, 3.14, 0);
 
     int anInt = configFile.getInt("int");
     assertEquals(anInt, 5);
@@ -66,7 +66,7 @@ public class ConfigFileTest {
   @Test
   public void when_askedForValue_then_returnDefault() {
     double aDouble = configFile.getDouble("absent", 2.1);
-    assertEquals(aDouble, 2.1);
+    assertEquals(aDouble, 2.1, 0);
 
     int anInt = configFile.getInt("absent", 1);
     assertEquals(anInt, 1);

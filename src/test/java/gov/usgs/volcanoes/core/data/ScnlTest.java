@@ -4,8 +4,6 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
-import gov.usgs.volcanoes.core.data.Scnl;
-
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
@@ -31,7 +29,6 @@ public class ScnlTest {
       STATION + "$" + COMPONENT + "$" + NETWORK + "$" + LOCATION;
   private static final String EXAMPLE_SCN_AS_STRING =
       STATION + "$" + COMPONENT + "$" + NETWORK + "$" + Scnl.DEFAULT_LOCATION;
-  private static final String EXAMPLE_SCN = STATION + "$" + COMPONENT + "$" + NETWORK;
 
   /**
    * 
@@ -106,9 +103,9 @@ public class ScnlTest {
 
     scnl2 = new Scnl("XXXX", COMPONENT, NETWORK, LOCATION);
     assertFalse(scnl1.equals(scnl2));
-    
+
     assertFalse(scnl1.equals(null));
-    
+
     assertFalse(scnl1.equals(""));
   }
 
@@ -129,7 +126,7 @@ public class ScnlTest {
    */
   @Test
   public void when_askedForCompare_then_compare() {
-    List<Scnl> list = new ArrayList();
+    List<Scnl> list = new ArrayList<Scnl>();
     list.add(new Scnl("Z", COMPONENT, NETWORK, LOCATION));
     list.add(new Scnl("A", COMPONENT, NETWORK, LOCATION));
 

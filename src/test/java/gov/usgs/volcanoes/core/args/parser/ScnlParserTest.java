@@ -23,8 +23,6 @@ public class ScnlParserTest {
 
   private static final String EXAMPLE_SCNL =
       STATION + "$" + COMPONENT + "$" + NETWORK + "$" + LOCATION;
-  private static final String EXAMPLE_SCN_AS_STRING =
-      STATION + "$" + COMPONENT + "$" + NETWORK + "$" + Scnl.DEFAULT_LOCATION;
   private static final String EXAMPLE_SCN = STATION + "$" + COMPONENT + "$" + NETWORK;
 
   ScnlParser parser = new ScnlParser();
