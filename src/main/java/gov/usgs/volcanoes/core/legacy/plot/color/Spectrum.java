@@ -15,12 +15,12 @@ import java.awt.image.IndexColorModel;
  * information and therefore has a protected constructor -- it cannot be 
  * instantiated directly.  See the Jet class for a further information regarding
  * the use of this class.</p>
- *
- * $Log: not supported by cvs2svn $
- * @author Dan Cervelli
+ * 
+ * <p>@author Dan Cervelli</p>
  */
 public class Spectrum {
-  /** The constructor is protected to avoid direct instances of Spectrum
+  /** 
+   * The constructor is protected to avoid direct instances of Spectrum.
    */
   protected Spectrum() {}
 
@@ -29,11 +29,13 @@ public class Spectrum {
    */
   public Color[] colors;
 
-  /** The palette that makes up the colors, used for making image maps
+  /** 
+   * The palette that makes up the colors, used for making image maps.
    */
   public IndexColorModel palette;
 
-  /** The bytes (color values) that make up the palette
+  /** 
+   * The bytes (color values) that make up the palette.
    */
   public byte[] paletteBytes;
 
@@ -75,10 +77,11 @@ public class Spectrum {
     Rectangle2D.Double rect = new Rectangle2D.Double();
     double step = (vertical ? height / colors.length : width / colors.length);
     for (int i = 0; i < colors.length; i++) {
-      if (!vertical)
+      if (!vertical) {
         rect.setRect(x + i * step, y, step, height);
-      else
+      } else {
         rect.setRect(x, y + i * step, width, step);
+      }
 
       g.setPaint(colors[i]);
       g.fill(rect);

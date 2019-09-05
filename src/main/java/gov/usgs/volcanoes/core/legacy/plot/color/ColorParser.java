@@ -5,10 +5,9 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * <p>Translate string color name to appropriate Color class</p>
+ * <p>Translate string color name to appropriate Color class.</p>
  * 
- * $Log: not supported by cvs2svn $
- * @author Dan Cervelli
+ * <p>@author Dan Cervelli</p>
  */
 public class ColorParser {
   private static final Map<String, Color> colorMap = new HashMap<String, Color>();
@@ -30,7 +29,7 @@ public class ColorParser {
   }
 
   /**
-   * Translate string color name to appropriate Color class
+   * Translate string color name to appropriate Color class.
    * @param cs color name
    * @return Initialized class for color
    */
@@ -55,21 +54,24 @@ public class ColorParser {
           b = Integer.parseInt(hc.substring(4, 6), 16);
         }
       } catch (Exception e) {
+        // TODO
       }
-      if (r == -1 || g == -1 || b == -1)
+      if (r == -1 || g == -1 || b == -1) {
         c = null;
-      else
+      } else {
         c = new Color(r, g, b);
+      }
     } else if (cs.indexOf(",") != -1) {
       // parse r,g,b
-    } else
+    } else {
       c = colorMap.get(cs);
+    }
 
     return c;
   }
 
   /**
-   * Main method, prints colos for names in the command line to stdout
+   * Main method, prints colos for names in the command line to stdout.
    */
   public static void main(String[] args) {
     for (String s : args) {

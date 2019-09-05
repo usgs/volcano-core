@@ -9,7 +9,8 @@ import java.awt.Color;
  * @author  Dan Cervelli
  */
 public class ColorCycler {
-  /** Custom color declarations
+  /** 
+   * Custom color declarations.
    */
   private static Color VALVE_BROWN = new Color(165, 42, 42);
   private static Color VALVE_GOLD = new Color(218, 165, 32);
@@ -29,7 +30,7 @@ public class ColorCycler {
   }
 
   /**
-   * Constructor
+   * Constructor.
    * @param start Starting color number (see colorCycle array)
    */
   public ColorCycler(int start) {
@@ -43,7 +44,8 @@ public class ColorCycler {
     return colorCycle[currentColor++ % colorCycle.length];
   }
 
-  /** Resets the color cycler
+  /** 
+   * Resets the color cycler.
    */
   public void reset() {
     currentColor = 0;

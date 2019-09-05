@@ -5,8 +5,7 @@ import java.awt.Color;
 /**
  * <p>Spectra with gradient color filling.</p>
  * 
- * $Log: not supported by cvs2svn $
- * @author Dan Cervelli
+ * <p>@author Dan Cervelli</p>
  */
 public class GradientSpectrum extends Spectrum {
   /**
@@ -19,8 +18,9 @@ public class GradientSpectrum extends Spectrum {
     double dr = (r2 - r1) / (double) size;
     double dg = (g2 - g1) / (double) size;
     double db = (b2 - b1) / (double) size;
-    for (int i = 0; i < size; i++)
+    for (int i = 0; i < size; i++) {
       colors[i] = new Color((float) (r1 + dr * i), (float) (g1 + dg * i), (float) (b1 + db * i));
+    }
 
     paletteBytes = null;
     palette = null;
