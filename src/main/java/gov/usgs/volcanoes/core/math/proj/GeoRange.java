@@ -166,8 +166,8 @@ public class GeoRange {
     if (lr + latPad > 180.0) {
       latPad = 180.0 - lr;
     }
-    setNorth(north - latPad / 2);
-    setSouth(south + latPad / 2);
+    setNorth(north + latPad / 2);
+    setSouth(south - latPad / 2);
   }
 
   public void padPercent(double lonPad, double latPad) {
@@ -270,8 +270,11 @@ public class GeoRange {
    * @param n north coordinate
    */
   public void setNorth(double n) {
-    if (n > 90) {
-      n = 90;
+    while (n > 90) {
+      n -= 180;
+    }
+    while (n < 0) {
+      n += 180;
     }
 
     north = n;
@@ -282,8 +285,11 @@ public class GeoRange {
    * @param s south coordinate
    */
   public void setSouth(double s) {
-    if (s < -90) {
-      s = 90;
+    while (s > 90) {
+      s -= 180;
+    }
+    while (s < -90) {
+      s += 180;
     }
 
     south = s;
