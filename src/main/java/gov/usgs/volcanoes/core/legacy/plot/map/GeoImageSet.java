@@ -48,7 +48,7 @@ public class GeoImageSet {
   private boolean arealCacheSort = true;
 
   /**
-   * Default constructor
+   * Default constructor.
    */
   public GeoImageSet() {
     images = new ArrayList<GeoImage>();
@@ -56,7 +56,7 @@ public class GeoImageSet {
   }
 
   /**
-   * Constructor
+   * Constructor.
    * @param indexFilename file with <code>GeoImage</code> parameter strings list, one per line
    */
   public GeoImageSet(String indexFilename) {
@@ -85,8 +85,9 @@ public class GeoImageSet {
    */
   public static Pair<GeoImageSet, GeoLabelSet> loadMapPacks(String root) {
     File[] files = new File(root).listFiles();
-    if (files == null)
+    if (files == null) {
       return null;
+    }
 
     GeoImageSet gis = new GeoImageSet();
     GeoLabelSet gls = new GeoLabelSet();
@@ -145,8 +146,9 @@ public class GeoImageSet {
         double a1 = image.getLonLatArea();
         double a2 = oce.image.getLonLatArea();
         int val = (int) ((a1 - a2) * 100000);
-        if (val > 100)
+        if (val > 100) {
           return val;
+        }
       }
 
       return (int) (lastAccess - oce.lastAccess);
@@ -199,14 +201,15 @@ public class GeoImageSet {
    */
   private int getLoadedImagesSize() {
     int size = 0;
-    for (Iterator<GeoImageCacheEntry> it = loadedImages.iterator(); it.hasNext();)
+    for (Iterator<GeoImageCacheEntry> it = loadedImages.iterator(); it.hasNext();) {
       size += (it.next()).getMemorySize();
+    }
 
     return size;
   }
 
   /**
-   * Clears cache
+   * Clears cache.
    */
   private void purgeLoadedImages(List<GeoImage> avoid) {
     Collections.sort(loadedImages);
@@ -221,8 +224,9 @@ public class GeoImageSet {
         it.remove();
         needToDelete -= ce.getMemorySize();
         ce.image.disposeImage();
-      } else
+      } else {
         LOGGER.debug("SKIPPED DUE TO AVOID");
+      }
     }
 
     if (needToDelete > 0) {
@@ -253,7 +257,7 @@ public class GeoImageSet {
   }
 
   /**
-   * Create one composite image using list as data source
+   * Create one composite image using list as data source.
    */
   public synchronized GeoImage getCompositeImage(GeoRange range, int ppdLon, int ppdLat) {
     return getCompositeImage(range, ppdLon, ppdLat, Double.NaN);
@@ -283,17 +287,14 @@ public class GeoImageSet {
   }
 
   /**
-   * Create one composite image using list as data source
+   * Create one composite image using list as data source.
    */
   public synchronized GeoImage getCompositeImage(GeoRange range, int ppdLon, int ppdLat,
       double scale) {
-    CodeTimer ct = new CodeTimer("getCompositeImage");
     double width = range.getLonRange() * (double) ppdLon;
     double height = range.getLatRange() * (double) ppdLat;
     double area = width * height;
     Rectangle2D.Double mask = new Rectangle2D.Double(0, 0, (int) width, (int) height);
-    BufferedImage buffer =
-        new BufferedImage((int) width, (int) height, BufferedImage.TYPE_INT_ARGB);
 
     ArrayList<ImageTranslation> txs = new ArrayList<ImageTranslation>();
     for (GeoImage gi : images) {
@@ -306,11 +307,13 @@ public class GeoImageSet {
         double a = subsetArea / area;
         boolean added = false;
         if (Double.isNaN(scale)) {
-          if (a > AREAL_THRESHOLD)
+          if (a > AREAL_THRESHOLD) {
             added = true;
+          }
         } else {
-          if (gi.inScale(scale, a))
+          if (gi.inScale(scale, a)) {
             added = true;
+          }
         }
 
         if (added) {
@@ -345,10 +348,11 @@ public class GeoImageSet {
     ListIterator<ImageTranslation> lit = txs.listIterator(txs.size());
     while (lit.hasPrevious()) {
       ImageTranslation it = lit.previous();
-      if (a.contains(it.rect))
+      if (a.contains(it.rect)) {
         lit.remove();
-      else
+      } else {
         a.add(new Area(it.rect));
+      }
     }
 
 
@@ -358,7 +362,10 @@ public class GeoImageSet {
       gis.add(it.image);
     }
 
+    CodeTimer ct = new CodeTimer("getCompositeImage");
     ct.mark("preload");
+    BufferedImage buffer =
+        new BufferedImage((int) width, (int) height, BufferedImage.TYPE_INT_ARGB);
     Graphics2D g2 = (Graphics2D) buffer.getGraphics();
     for (ImageTranslation it : txs) {
       GeoImage gi = it.image;
@@ -388,7 +395,8 @@ public class GeoImageSet {
     return getMapBackground(proj, range, width, Double.NaN);
   }
 
-  /** Get a map background as a rendered image
+  /** 
+   * Get a map background as a rendered image.
    * @param proj the Projection
    * @param range a GeoRange
    * @param width the width of the image
@@ -426,10 +434,10 @@ public class GeoImageSet {
   }
 
   /**
-   * <p>Main method</p>
+   * Main method.
    * <p>Syntax is: GeoImageSet map_pack_root_dir west east south north</p>
    * <p>Create new frame and shows maps</p>
-   * @throws Exception
+   * @throws Exception exception
    */
   public static void main(String[] args) throws Exception {
     GeoImageSet is = GeoImageSet.loadMapPacks(args[0]).item1;
@@ -480,9 +488,9 @@ public class GeoImageSet {
     int width = 600;
     RenderedImage image = is.getMapBackground(tm, range, width, scale);
     // image = is.getMapBackground(tm, range, width, scale);
-    int INSET = 50;
+    int inset = 50;
     // mr.setLocation(INSET, INSET, width);
-    mr.setLocation(INSET, INSET, image.getWidth());
+    mr.setLocation(inset, inset, image.getWidth());
     mr.setMapImage(image);
     // mr.setGeoLabelSet(labels);
     mr.createGraticule(6, true);
