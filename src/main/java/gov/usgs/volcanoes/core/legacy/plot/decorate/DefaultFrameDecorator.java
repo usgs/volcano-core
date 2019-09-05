@@ -71,7 +71,7 @@ public class DefaultFrameDecorator extends FrameDecorator {
   public String yUnit = null;
 
   protected static NumberFormat numberFormat = NumberFormat.getInstance();
-  protected static DateFormat dateFormat = new SimpleDateFormat("MMM d, YYYY");
+  protected static DateFormat dateFormat = new SimpleDateFormat("MMM d, yyyy");
 
   static {
     numberFormat.setMaximumFractionDigits(6);
