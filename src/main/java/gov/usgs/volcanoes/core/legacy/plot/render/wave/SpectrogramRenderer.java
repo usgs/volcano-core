@@ -429,4 +429,12 @@ public class SpectrogramRenderer extends ImageDataRenderer {
     vTicks = ticks;
   }
 
+  /**
+   * Set color spectrum.
+   * @param spectrum spectrum to use.
+   */
+  public void setSpectrum(Spectrum spectrum) {
+    this.spectrum = spectrum;
+  }
+
 }
