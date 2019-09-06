@@ -32,15 +32,14 @@ public class GeoImage implements Comparable<GeoImage> {
   private BufferedImage image;
 
   /**
-   * Default constructor
+   * Default constructor.
    */
   public GeoImage() {}
 
   /**
-   * Constructor
+   * Constructor.
    * 
-   * @param is
-   *            comma-separated parameter string: pixel width and height, and
+   * @param is  comma-separated parameter string: pixel width and height, and
    *            coordinates for west, east, south and north edge.
    */
   public GeoImage(String is) {
@@ -68,12 +67,10 @@ public class GeoImage implements Comparable<GeoImage> {
   }
 
   /**
-   * Constructor
+   * Constructor.
    * 
-   * @param root
-   *            base directory to store images
-   * @param is
-   *            comma-separated parameter string: pixel width and height, and
+   * @param root base directory to store images
+   * @param is   comma-separated parameter string: pixel width and height, and
    *            coordinates for west, east, south and north edge.
    */
   public GeoImage(String root, String is) {
@@ -89,13 +86,14 @@ public class GeoImage implements Comparable<GeoImage> {
    * 2(t). JAI.create("fileload") 
    * 4. Toolkit.createImage()
    * 
-   * TJP adds: nonetheless, this happens once per mouse click and does not 
+   * <p>TJP adds: nonetheless, this happens once per mouse click and does not 
    * need to be highly optimized to maintain acceptable responsiveness. 
-   * Compatibility and maintainability trumps.
+   * Compatibility and maintainability trumps.</p>
    */
   private void loadImage() {
-    if (filename.equals("memory"))
+    if (filename.equals("memory")) {
       return;
+    }
 
     CodeTimer ct = new CodeTimer("imageLoad: " + filename);
 
@@ -132,20 +130,19 @@ public class GeoImage implements Comparable<GeoImage> {
   }
 
   /**
-   * If image stored in memory, remove links to it
+   * If image stored in memory, remove links to it.
    */
   public void disposeImage() {
-    if (!filename.equals("memory"))
+    if (!filename.equals("memory")) {
       image = null;
+    }
   }
 
   /**
-   * Create GeoImage stored in RAM
+   * Create GeoImage stored in RAM.
    * 
-   * @param pi
-   *            image to draw
-   * @param r
-   *            edge coordinates
+   * @param pi image to draw
+   * @param r edge coordinates
    */
   public static GeoImage createMemoryImage(BufferedImage pi, GeoRange r) {
     GeoImage result = new GeoImage();
@@ -158,59 +155,60 @@ public class GeoImage implements Comparable<GeoImage> {
   }
 
   /**
-   * Get filename to store image, "memory" in case of RAM
+   * Get filename to store image, "memory" in case of RAM.
    */
   public String getFilename() {
     return filename;
   }
 
   /**
-   * Get image to draw
+   * Get image to draw.
    */
   public BufferedImage getImage() {
-    if (image == null)
+    if (image == null) {
       loadImage();
+    }
 
     return image;
   }
 
   /**
-   * Getter for priority
+   * Getter for priority.
    */
   public int getPriority() {
     return priority;
   }
 
   /**
-   * Getter for image pixel width
+   * Getter for image pixel width.
    */
   public int getPixelWidth() {
     return pixelWidth;
   }
 
   /**
-   * Getter for image pixel height
+   * Getter for image pixel height.
    */
   public int getPixelHeight() {
     return pixelHeight;
   }
 
   /**
-   * Get count of pixel in the drawing
+   * Get count of pixel in the drawing.
    */
   public int getPixelArea() {
     return pixelWidth * pixelHeight;
   }
 
   /**
-   * Get longitude range per one pixel
+   * Get longitude range per one pixel.
    */
   public double getLonPerPixel() {
     return range.getLonRange() / (double) pixelWidth;
   }
 
   /**
-   * Get latitude range per one pixel
+   * Get latitude range per one pixel.
    */
   public double getLatPerPixel() {
     return range.getLatRange() / (double) pixelHeight;
@@ -221,14 +219,14 @@ public class GeoImage implements Comparable<GeoImage> {
   }
 
   /**
-   * Get pixel count in one longitude degree
+   * Get pixel count in one longitude degree.
    */
   public double getPixelsPerLon() {
     return 1.0 / getLonPerPixel();
   }
 
   /**
-   * Get pixel count in one latitude degree
+   * Get pixel count in one latitude degree.
    */
   public double getPixelsPerLat() {
     return 1.0 / getLatPerPixel();
@@ -242,11 +240,17 @@ public class GeoImage implements Comparable<GeoImage> {
     return maxScale;
   }
 
+  /**
+   * @param sc
+   * @param area
+   * @return
+   */
   public boolean inScale(double sc, double area) {
     if (Double.isNaN(minScale) && Double.isNaN(maxScale)) {
       return area > 0.8;
-    } else
+    } else {
       return sc >= minScale && sc < maxScale;
+    }
   }
 
   public String toString() {
@@ -319,7 +323,7 @@ public class GeoImage implements Comparable<GeoImage> {
    */
 
   /**
-   * Compare GeoImages by priority
+   * Compare GeoImages by priority.
    */
   public int compareTo(GeoImage o) {
     return priority - o.priority;

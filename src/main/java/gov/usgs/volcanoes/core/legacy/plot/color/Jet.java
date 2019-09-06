@@ -9,8 +9,7 @@ import java.awt.image.IndexColorModel;
  *
  * <p>There are no threading issues because all of this data is read only.</p>
  *
- * $Log: not supported by cvs2svn $ 
- * @author Dan Cervelli
+ * <p>@author Dan Cervelli</p>
  */
 public class Jet extends Spectrum {
   private static Jet self;
@@ -23,8 +22,9 @@ public class Jet extends Spectrum {
    * @return the Jet instance
    */
   public static Spectrum getInstance() {
-    if (self == null)
+    if (self == null) {
       self = new Jet();
+    }
 
     return self;
   }

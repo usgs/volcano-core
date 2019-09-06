@@ -15,10 +15,28 @@ public class GeoRange {
   private double south;
   private double north;
 
+  /**
+   * Default constructor.
+   */
   public GeoRange() {
     west = east = south = north = Double.NaN;
   }
 
+  /**
+   * Constructor.
+   * @param copy georange
+   */
+  public GeoRange(GeoRange copy) {
+    west = copy.west;
+    east = copy.east;
+    south = copy.south;
+    north = copy.north;
+  }
+
+  /**
+   * Constructor.
+   * @param rect rectangle
+   */
   public GeoRange(Rectangle2D.Double rect) {
     setWest(rect.getMinX());
     setEast(rect.getMaxX());
@@ -26,6 +44,13 @@ public class GeoRange {
     setNorth(rect.getMaxY());
   }
 
+  /**
+   * Constructor.
+   * @param w west longitude
+   * @param e east longitude
+   * @param s south latitude
+   * @param n north latitude
+   */
   public GeoRange(double w, double e, double s, double n) {
     setWest(w);
     setEast(e);
@@ -33,22 +58,13 @@ public class GeoRange {
     setNorth(n);
   }
 
-  public int hashCode() {
-    return new Double(west).hashCode() + new Double(east).hashCode() + new Double(south).hashCode()
-        + new Double(north).hashCode();
-  }
-
-  public boolean equals(Object obj) {
-    if (!(obj instanceof GeoRange))
-      return false;
-    GeoRange gr = (GeoRange) obj;
-    return west == gr.west && east == gr.east && north == gr.north && south == gr.south;
-  }
-
-  public GeoRange(Projection proj, double left, double right, double bottom, double top) {
-    set(proj, left, right, bottom, top);
-  }
-
+  /**
+   * Constructor.
+   * @param proj projection
+   * @param center center coordinate
+   * @param xm x range meters?
+   * @param ym y range meters?
+   */
   public GeoRange(Projection proj, Point2D.Double center, double xm, double ym) {
     Point2D.Double pt = proj.forward(center);
     double left = pt.x - xm / 2;
@@ -58,11 +74,47 @@ public class GeoRange {
     set(proj, left, right, bottom, top);
   }
 
+  public GeoRange(Projection proj, double left, double right, double bottom, double top) {
+    set(proj, left, right, bottom, top);
+  }
+
+  /*
+   * (non-Javadoc)
+   * 
+   * @see java.lang.Object#hashCode()
+   */
+  public int hashCode() {
+    return new Double(west).hashCode() + new Double(east).hashCode() + new Double(south).hashCode()
+        + new Double(north).hashCode();
+  }
+
+  /*
+   * (non-Javadoc)
+   * 
+   * @see java.lang.Object#equals(java.lang.Object)
+   */
+  public boolean equals(Object obj) {
+    if (!(obj instanceof GeoRange)) {
+      return false;
+    }
+    GeoRange gr = (GeoRange) obj;
+    return west == gr.west && east == gr.east && north == gr.north && south == gr.south;
+  }
+
+
   public boolean isValid() {
     return !Double.isNaN(west) && !Double.isNaN(east) && !Double.isNaN(south)
         && !Double.isNaN(north);
   }
 
+  /**
+   * Set range.
+   * @param proj projection
+   * @param left left coordinate
+   * @param right right coordinate
+   * @param bottom bottom coordinate
+   * @param top top coordinate
+   */
   public void set(Projection proj, double left, double right, double bottom, double top) {
     Point2D.Double[] pt = new Point2D.Double[8];
     pt[0] = new Point2D.Double(left, top);
@@ -97,24 +149,36 @@ public class GeoRange {
     setNorth(north);
   }
 
+  /**
+   * Pad latitude/longitude.
+   * @param lonPad pad value for longitude
+   * @param latPad pad value for latitude
+   */
   public void pad(double lonPad, double latPad) {
     double lr = getLonRange();
-    if (lr + lonPad > 360.0)
+    if (lr + lonPad > 360.0) {
       lonPad = 360.0 - lr;
+    }
     setWest(west - lonPad / 2);
     setEast(east + lonPad / 2);
 
     lr = getLatRange();
-    if (lr + latPad > 180.0)
+    if (lr + latPad > 180.0) {
       latPad = 180.0 - lr;
-    setWest(west - latPad / 2);
-    setEast(east + latPad / 2);
+    }
+    setNorth(north + latPad / 2);
+    setSouth(south - latPad / 2);
   }
 
   public void padPercent(double lonPad, double latPad) {
     pad(getLonRange() * lonPad, getLatRange() * latPad);
   }
 
+  /**
+   * Include point in range.
+   * @param lonLat coordinate
+   * @param singleBuffer buffer
+   */
   public void includePoint(Point2D.Double lonLat, double singleBuffer) {
     if (Double.isNaN(west)) {
       west = lonLat.x - singleBuffer;
@@ -124,102 +188,128 @@ public class GeoRange {
       return;
     }
 
-    if (contains(lonLat))
+    if (contains(lonLat)) {
       return;
+    }
 
     setSouth(Math.min(south, lonLat.y));
     setNorth(Math.max(north, lonLat.y));
 
     if (!containsLongitude(lonLat.x)) {
       double lrw = Math.abs(getLonRange(west, lonLat.x));
-      if (lrw > 180)
+      if (lrw > 180) {
         lrw = Math.abs(lrw - 360);
+      }
       double lre = Math.abs(getLonRange(east, lonLat.x));
-      if (lre > 180)
+      if (lre > 180) {
         lre = Math.abs(lre - 360);
-      if (lrw <= lre)
+      }
+      if (lrw <= lre) {
         setWest(lonLat.x);
-      else
+      } else {
         setEast(lonLat.x);
+
+      }
     }
   }
 
+  /**
+   * Get scale.
+   * @param proj projection
+   * @param w width
+   * @param h height
+   * @return
+   */
   public double getScale(Projection proj, int w, int h) {
     double[] r = getProjectedExtents(proj);
     double scale = Math.max((r[1] - r[0]) / w, (r[3] - r[2]) / h);
     return scale;
   }
 
+  /**
+   * Flip east and west.
+   */
   public void flipEastWest() {
     double t = west;
     west = east;
     east = t;
   }
 
+  /**
+   * Set West coordinate.
+   * @param w west coordinate
+   */
   public void setWest(double w) {
-    while (w >= 180)
+    while (w >= 180) {
       w -= 360;
-    while (w < -180)
+    }
+    while (w < -180) {
       w += 360;
+    }
 
     west = w;
   }
 
+  /**
+   * Set East coordinate.
+   * @param e east coordinate
+   */
   public void setEast(double e) {
-    while (e > 180)
+    while (e > 180) {
       e -= 360;
-    while (e <= -180)
+    }
+    while (e <= -180) {
       e += 360;
+    }
 
     east = e;
   }
 
+  /**
+   * Set North coordinate.
+   * @param n north coordinate
+   */
   public void setNorth(double n) {
-    if (n > 90)
-      n = 90;
+    while (n > 90) {
+      n -= 180;
+    }
+    while (n < 0) {
+      n += 180;
+    }
 
     north = n;
   }
 
+  /**
+   * Set South coordinate.
+   * @param s south coordinate
+   */
   public void setSouth(double s) {
-    if (s < -90)
-      s = 90;
+    while (s > 90) {
+      s -= 180;
+    }
+    while (s < -90) {
+      s += 180;
+    }
 
     south = s;
   }
 
-  public static double normalize(double d) {
-    d = d % 360.0;
-    while (d > 180)
-      d -= 360;
-    while (d < -180)
-      d += 360;
-
-    return d;
-  }
-
   /**
-   * Gets the span of longitude between a western longitude and an eastern
-   * longitude.  Always returns a positive value between 0 and 360, inclusive.
-   * Assumes inputs are correctly normalized.
-   * 
-   * @param w west edge
-   * @param e east edge
+   * Normalize.
+   * @param d longitude range in degrees
    * @return
    */
-  public static double getLonRange(double w, double e) {
-    double d = e - w;
-    if (e < w)
-      return 360 + d;
-    else
-      return d;
-  }
+  public static double normalize(double d) {
+    d = d % 360.0;
+    while (d > 180) {
+      d -= 360;
+    }
+    while (d < -180) {
+      d += 360;
+    }
 
-  public GeoRange(GeoRange copy) {
-    west = copy.west;
-    east = copy.east;
-    south = copy.south;
-    north = copy.north;
+    return d;
   }
 
   public double getNorth() {
@@ -238,10 +328,33 @@ public class GeoRange {
     return east;
   }
 
+  /**
+   * Gets the span of longitude between a western longitude and an eastern
+   * longitude.  Always returns a positive value between 0 and 360, inclusive.
+   * Assumes inputs are correctly normalized.
+   * 
+   * @param w west edge
+   * @param e east edge
+   * @return
+   */
+  public static double getLonRange(double w, double e) {
+    double d = e - w;
+    if (e < w) {
+      return 360 + d;
+    } else {
+      return d;
+    }
+  }
+
+  /**
+   * Get longitude range.
+   * @return degrees
+   */
   public double getLonRange() {
     double w = west;
-    if (w > east)
+    if (w > east) {
       w -= 360;
+    }
     return Math.abs(w - east);
   }
 
@@ -257,27 +370,45 @@ public class GeoRange {
     return new Rectangle2D.Double(west, south, getLonRange(), getLatRange());
   }
 
+  /**
+   * Check if point is contained in the range.
+   * @param pt point
+   * @return
+   */
   public boolean contains(Point2D.Double pt) {
     double lat = pt.y;
     boolean inLat = lat >= south && lat <= north;
-    if (!inLat)
+    if (!inLat) {
       return false;
+    }
 
     double lon = normalize(pt.x);
-    if (west < east)
+    if (west < east) {
       return west <= lon && lon <= east;
-    else
+    } else {
       return (west <= lon && lon <= 180) || (lon <= east && lon >= -180);
+    }
   }
 
+  /**
+   * Check if longitude is within range.
+   * @param lon longitude in dd.
+   * @return
+   */
   public boolean containsLongitude(double lon) {
     lon = normalize(lon);
-    if (west < east)
+    if (west < east) {
       return west <= lon && lon <= east;
-    else
+    } else {
       return (west <= lon && lon <= 180) || (lon <= east && lon >= -180);
+    }
   }
 
+  /**
+   * See if this range overlaps with given range.
+   * @param range other range
+   * @return
+   */
   public boolean overlaps(GeoRange range) {
     Rectangle2D.Double[] rects = new Rectangle2D.Double[4];
     int numRects = 2;
@@ -293,13 +424,21 @@ public class GeoRange {
       rects[1].width = 180 - rects[1].x;
       rects[numRects++] = new Rectangle2D.Double(-180, rects[1].y, d, rects[1].height);
     }
-    for (int i = 0; i < numRects; i++)
-      for (int j = i + 1; j < numRects; j++)
-        if (rects[i].intersects(rects[j]))
+    for (int i = 0; i < numRects; i++) {
+      for (int j = i + 1; j < numRects; j++) {
+        if (rects[i].intersects(rects[j])) {
           return true;
+        }
+      }
+    }
     return false;
   }
 
+  /**
+   * Get projected extents.
+   * @param proj projection
+   * @return
+   */
   public double[] getProjectedExtents(Projection proj) {
     Point2D.Double[] pt = new Point2D.Double[8];
     pt[0] = new Point2D.Double(west, north);
@@ -329,15 +468,22 @@ public class GeoRange {
     return new double[] {minX, maxX, minY, maxY};
   }
 
+  /**
+   * Get bounding box.
+   * @param pts collection of points
+   * @return
+   */
   public static GeoRange getBoundingBox(Collection<Point2D.Double> pts) {
-    if (pts == null || pts.size() <= 0)
+    if (pts == null || pts.size() <= 0) {
       return null;
+    }
 
     Rectangle2D.Double rect = null;
     for (Point2D.Double pt : pts) {
       if (pt != null) {
-        if (rect == null)
+        if (rect == null) {
           rect = new Rectangle2D.Double(pt.x, pt.y, 0, 0);
+        }
         rect.add(pt);
       }
     }
@@ -367,6 +513,9 @@ public class GeoRange {
     return "GeoRange: " + west + "," + east + "," + south + "," + north;
   }
 
+  /**
+   * Test.
+   */
   public static void test() {
     Point2D.Double[] tps = new Point2D.Double[] {new Point2D.Double(165, 60),
         new Point2D.Double(170, 60), new Point2D.Double(175, 60), new Point2D.Double(-180, 60),
@@ -409,11 +558,16 @@ public class GeoRange {
     }
 
     for (int i = 0; i < grs.length; i++) {
-      for (int j = i; j < grs.length; j++)
+      for (int j = i; j < grs.length; j++) {
         System.out.println(grs[i] + " overlaps " + grs[j] + ": " + grs[i].overlaps(grs[j]) + "\n");
+      }
     }
   }
 
+  /**
+   * Main method.
+   * @param args arguments
+   */
   public static void main(String[] args) {
     test();
 
@@ -427,7 +581,8 @@ public class GeoRange {
 
     double[] d = new double[] {-1E300, -720, -510, -360, -270, -180, -90, 0, 90, 180, 270, 360, 510,
         720, 1E300};
-    for (int i = 0; i < d.length; i++)
+    for (int i = 0; i < d.length; i++) {
       System.out.println(d[i] + " -> " + d[i] % 360.0);
+    }
   }
 }
