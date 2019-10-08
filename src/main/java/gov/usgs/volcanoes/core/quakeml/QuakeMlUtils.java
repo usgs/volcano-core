@@ -54,9 +54,10 @@ public class QuakeMlUtils {
    */
   public static Date parseDate(String timeString) {
     final String inString = timeString;
-    timeString = inString.replaceFirst("\\.(\\d)Z?", ".$100Z");
+    timeString = inString.replaceFirst("\\.(\\d)Z$", ".$100Z");
     timeString = inString.replaceFirst("\\.(\\d{2})Z?$", ".$10Z");
     timeString = inString.replaceFirst(":(\\d{2})Z?$", ":$1.000Z");
+    timeString = inString.replaceFirst("\\.(\\d{3})\\d{3}Z?$", ".$1Z");
 
     final SimpleDateFormat dateF = new SimpleDateFormat(DATE_FORMAT);
     dateF.setTimeZone(TimeZone.getTimeZone("UTC"));
